@@ -11,8 +11,6 @@
 		95CFC32A1AEB72A300D5FB10 /* BJIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFC31E1AEB72A300D5FB10 /* BJIM.framework */; };
 		95CFC3311AEB72A300D5FB10 /* BJIMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95CFC3301AEB72A300D5FB10 /* BJIMTests.m */; };
 		95CFC33B1AEB72B600D5FB10 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFC33A1AEB72B600D5FB10 /* CoreData.framework */; };
-		95CFC3421AEE299700D5FB10 /* DLog.h in Headers */ = {isa = PBXBuildFile; fileRef = 95CFC3401AEE299700D5FB10 /* DLog.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		95CFC3431AEE299700D5FB10 /* DLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 95CFC3411AEE299700D5FB10 /* DLog.m */; };
 		95E3F3221AF8CD520095C84E /* AESCrypt.h in Headers */ = {isa = PBXBuildFile; fileRef = 95E3F31A1AF8CD520095C84E /* AESCrypt.h */; };
 		95E3F3231AF8CD520095C84E /* AESCrypt.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E3F31B1AF8CD520095C84E /* AESCrypt.m */; };
 		95E3F3241AF8CD520095C84E /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 95E3F31C1AF8CD520095C84E /* NSData+Base64.h */; };
@@ -21,6 +19,7 @@
 		95E3F3271AF8CD520095C84E /* NSData+CommonCrypto.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E3F31F1AF8CD520095C84E /* NSData+CommonCrypto.m */; };
 		95E3F3281AF8CD520095C84E /* NSString+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 95E3F3201AF8CD520095C84E /* NSString+Base64.h */; };
 		95E3F3291AF8CD520095C84E /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E3F3211AF8CD520095C84E /* NSString+Base64.m */; };
+		95E3F3601AFD03A30095C84E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E3F35F1AFD03A30095C84E /* Foundation.framework */; };
 		D4D794E937312CCCB98C76BA /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 98ABAD3B713A0D390F961FCD /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -44,8 +43,6 @@
 		95CFC32F1AEB72A300D5FB10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95CFC3301AEB72A300D5FB10 /* BJIMTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BJIMTests.m; sourceTree = "<group>"; };
 		95CFC33A1AEB72B600D5FB10 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
-		95CFC3401AEE299700D5FB10 /* DLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DLog.h; sourceTree = "<group>"; };
-		95CFC3411AEE299700D5FB10 /* DLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DLog.m; sourceTree = "<group>"; };
 		95E3F31A1AF8CD520095C84E /* AESCrypt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AESCrypt.h; path = Vendor/aes/AESCrypt.h; sourceTree = "<group>"; };
 		95E3F31B1AF8CD520095C84E /* AESCrypt.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AESCrypt.m; path = Vendor/aes/AESCrypt.m; sourceTree = "<group>"; };
 		95E3F31C1AF8CD520095C84E /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSData+Base64.h"; path = "Vendor/aes/NSData+Base64.h"; sourceTree = "<group>"; };
@@ -54,6 +51,7 @@
 		95E3F31F1AF8CD520095C84E /* NSData+CommonCrypto.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSData+CommonCrypto.m"; path = "Vendor/aes/NSData+CommonCrypto.m"; sourceTree = "<group>"; };
 		95E3F3201AF8CD520095C84E /* NSString+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSString+Base64.h"; path = "Vendor/aes/NSString+Base64.h"; sourceTree = "<group>"; };
 		95E3F3211AF8CD520095C84E /* NSString+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSString+Base64.m"; path = "Vendor/aes/NSString+Base64.m"; sourceTree = "<group>"; };
+		95E3F35F1AFD03A30095C84E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		98ABAD3B713A0D390F961FCD /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -62,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				95E3F3601AFD03A30095C84E /* Foundation.framework in Frameworks */,
 				95CFC33B1AEB72B600D5FB10 /* CoreData.framework in Frameworks */,
 				D4D794E937312CCCB98C76BA /* libPods.a in Frameworks */,
 			);
@@ -81,6 +80,7 @@
 		59807FF6A1DF4A977DF21B0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				95E3F35F1AFD03A30095C84E /* Foundation.framework */,
 				98ABAD3B713A0D390F961FCD /* libPods.a */,
 			);
 			name = Frameworks;
@@ -122,8 +122,6 @@
 			children = (
 				95CFC3231AEB72A300D5FB10 /* BJIM.h */,
 				95CFC3211AEB72A300D5FB10 /* Supporting Files */,
-				95CFC3401AEE299700D5FB10 /* DLog.h */,
-				95CFC3411AEE299700D5FB10 /* DLog.m */,
 			);
 			path = BJIM;
 			sourceTree = "<group>";
@@ -187,7 +185,6 @@
 				95E3F3221AF8CD520095C84E /* AESCrypt.h in Headers */,
 				95E3F3261AF8CD520095C84E /* NSData+CommonCrypto.h in Headers */,
 				95E3F3281AF8CD520095C84E /* NSString+Base64.h in Headers */,
-				95CFC3421AEE299700D5FB10 /* DLog.h in Headers */,
 				95CFC3241AEB72A300D5FB10 /* BJIM.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -325,7 +322,6 @@
 			files = (
 				95E3F3271AF8CD520095C84E /* NSData+CommonCrypto.m in Sources */,
 				95E3F3231AF8CD520095C84E /* AESCrypt.m in Sources */,
-				95CFC3431AEE299700D5FB10 /* DLog.m in Sources */,
 				95E3F3251AF8CD520095C84E /* NSData+Base64.m in Sources */,
 				95E3F3291AF8CD520095C84E /* NSString+Base64.m in Sources */,
 			);
@@ -448,6 +444,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BJIM/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
@@ -464,6 +461,7 @@
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = BJIM/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;

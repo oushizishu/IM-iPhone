@@ -1,0 +1,43 @@
+PODS:
+  - AFNetworking (2.5.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+    - AFNetworking/UIKit
+  - AFNetworking/NSURLConnection (2.5.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/NSURLSession (2.5.3):
+    - AFNetworking/Reachability
+    - AFNetworking/Security
+    - AFNetworking/Serialization
+  - AFNetworking/Reachability (2.5.3)
+  - AFNetworking/Security (2.5.3)
+  - AFNetworking/Serialization (2.5.3)
+  - AFNetworking/UIKit (2.5.3):
+    - AFNetworking/NSURLConnection
+    - AFNetworking/NSURLSession
+  - Log4Cocoa (0.1.0)
+  - MagicalRecord (2.2):
+    - MagicalRecord/Core
+  - MagicalRecord/Core (2.2)
+  - Mantle (1.5.4):
+    - Mantle/extobjc
+  - Mantle/extobjc (1.5.4)
+
+DEPENDENCIES:
+  - AFNetworking (~> 2.5)
+  - Log4Cocoa (~> 0.1.0)
+  - MagicalRecord (~> 2.2)
+  - Mantle (~> 1.5)
+
+SPEC CHECKSUMS:
+  AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  Log4Cocoa: 0c7285a889c9c491e5f08865b18995ae1291c00d
+  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+  Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3
+
+COCOAPODS: 0.34.4
