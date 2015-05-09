@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F442F1AFD067C0017DF2C /* BJIMManager.h */; };
+		951F44321AFD067C0017DF2C /* BJIMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 951F44301AFD067C0017DF2C /* BJIMManager.m */; };
+		951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F44341AFD0A7C0017DF2C /* BJIMConstants.h */; };
+		951F44381AFD14440017DF2C /* BJIMEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F44361AFD14440017DF2C /* BJIMEngine.h */; };
+		951F44391AFD14440017DF2C /* BJIMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 951F44371AFD14440017DF2C /* BJIMEngine.m */; };
 		95CFC3241AEB72A300D5FB10 /* BJIM.h in Headers */ = {isa = PBXBuildFile; fileRef = 95CFC3231AEB72A300D5FB10 /* BJIM.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		95CFC32A1AEB72A300D5FB10 /* BJIM.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95CFC31E1AEB72A300D5FB10 /* BJIM.framework */; };
 		95CFC3311AEB72A300D5FB10 /* BJIMTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 95CFC3301AEB72A300D5FB10 /* BJIMTests.m */; };
@@ -36,6 +41,11 @@
 /* Begin PBXFileReference section */
 		01FF0DD86E7EE2845C0CA307 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		6FC19F2F574DA11B33F87F84 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
+		951F442F1AFD067C0017DF2C /* BJIMManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMManager.h; sourceTree = "<group>"; };
+		951F44301AFD067C0017DF2C /* BJIMManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMManager.m; sourceTree = "<group>"; };
+		951F44341AFD0A7C0017DF2C /* BJIMConstants.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMConstants.h; sourceTree = "<group>"; };
+		951F44361AFD14440017DF2C /* BJIMEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMEngine.h; sourceTree = "<group>"; };
+		951F44371AFD14440017DF2C /* BJIMEngine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMEngine.m; sourceTree = "<group>"; };
 		95CFC31E1AEB72A300D5FB10 /* BJIM.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BJIM.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		95CFC3221AEB72A300D5FB10 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		95CFC3231AEB72A300D5FB10 /* BJIM.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BJIM.h; sourceTree = "<group>"; };
@@ -80,6 +90,7 @@
 		59807FF6A1DF4A977DF21B0A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				95CFC33A1AEB72B600D5FB10 /* CoreData.framework */,
 				95E3F35F1AFD03A30095C84E /* Foundation.framework */,
 				98ABAD3B713A0D390F961FCD /* libPods.a */,
 			);
@@ -99,7 +110,6 @@
 			isa = PBXGroup;
 			children = (
 				95E3F3181AF8CD180095C84E /* Vendor */,
-				95CFC33A1AEB72B600D5FB10 /* CoreData.framework */,
 				95CFC3201AEB72A300D5FB10 /* BJIM */,
 				95CFC32D1AEB72A300D5FB10 /* BJIMTests */,
 				95CFC31F1AEB72A300D5FB10 /* Products */,
@@ -120,8 +130,13 @@
 		95CFC3201AEB72A300D5FB10 /* BJIM */ = {
 			isa = PBXGroup;
 			children = (
+				951F44341AFD0A7C0017DF2C /* BJIMConstants.h */,
 				95CFC3231AEB72A300D5FB10 /* BJIM.h */,
 				95CFC3211AEB72A300D5FB10 /* Supporting Files */,
+				951F442F1AFD067C0017DF2C /* BJIMManager.h */,
+				951F44301AFD067C0017DF2C /* BJIMManager.m */,
+				951F44361AFD14440017DF2C /* BJIMEngine.h */,
+				951F44371AFD14440017DF2C /* BJIMEngine.m */,
 			);
 			path = BJIM;
 			sourceTree = "<group>";
@@ -183,6 +198,9 @@
 			files = (
 				95E3F3241AF8CD520095C84E /* NSData+Base64.h in Headers */,
 				95E3F3221AF8CD520095C84E /* AESCrypt.h in Headers */,
+				951F44381AFD14440017DF2C /* BJIMEngine.h in Headers */,
+				951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */,
+				951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */,
 				95E3F3261AF8CD520095C84E /* NSData+CommonCrypto.h in Headers */,
 				95E3F3281AF8CD520095C84E /* NSString+Base64.h in Headers */,
 				95CFC3241AEB72A300D5FB10 /* BJIM.h in Headers */,
@@ -320,8 +338,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				951F44321AFD067C0017DF2C /* BJIMManager.m in Sources */,
 				95E3F3271AF8CD520095C84E /* NSData+CommonCrypto.m in Sources */,
 				95E3F3231AF8CD520095C84E /* AESCrypt.m in Sources */,
+				951F44391AFD14440017DF2C /* BJIMEngine.m in Sources */,
 				95E3F3251AF8CD520095C84E /* NSData+Base64.m in Sources */,
 				95E3F3291AF8CD520095C84E /* NSString+Base64.m in Sources */,
 			);

@@ -5,16 +5,19 @@
 //  Created by 杨磊 on 15/4/25.
 //  Copyright (c) 2015年 杨磊. All rights reserved.
 //
-
-#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
 
 //! Project version number for BJIM.
-FOUNDATION_EXPORT double BJIMVersionNumber;
+//FOUNDATION_EXPORT double BJIMVersionNumber;
 
 //! Project version string for BJIM.
-FOUNDATION_EXPORT const unsigned char BJIMVersionString[];
+//FOUNDATION_EXPORT const unsigned char BJIMVersionString[];
 
 // In this header, you should import all the public headers of your framework using statements like #import <BJIM/PublicHeader.h>
 
-#define BJIM_VERSTION 1.0
+#ifndef _BJIM_
+    #define _BJIM_
+#import "BJIMManager.h"
+#import "BJIMConstants.h"
 
+#endif
