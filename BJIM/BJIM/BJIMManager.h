@@ -14,6 +14,11 @@
  */
 @interface BJIMManager : NSObject
 
+/**
+ *  当前服务器环境标志变量
+ */
+@property (nonatomic, assign, setter=setDebugMode:, getter=getDebugMode) IMSERVER_ENVIRONMENT debugMode;
+
 + (instancetype)shareInstance;
 
 #pragma mark - 登录退出 IM

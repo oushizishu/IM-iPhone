@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F442F1AFD067C0017DF2C /* BJIMManager.h */; };
+		951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F442F1AFD067C0017DF2C /* BJIMManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		951F44321AFD067C0017DF2C /* BJIMManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 951F44301AFD067C0017DF2C /* BJIMManager.m */; };
-		951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F44341AFD0A7C0017DF2C /* BJIMConstants.h */; };
+		951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F44341AFD0A7C0017DF2C /* BJIMConstants.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		951F44381AFD14440017DF2C /* BJIMEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = 951F44361AFD14440017DF2C /* BJIMEngine.h */; };
 		951F44391AFD14440017DF2C /* BJIMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 951F44371AFD14440017DF2C /* BJIMEngine.m */; };
 		95CFC3241AEB72A300D5FB10 /* BJIM.h in Headers */ = {isa = PBXBuildFile; fileRef = 95CFC3231AEB72A300D5FB10 /* BJIM.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -197,10 +197,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				95E3F3241AF8CD520095C84E /* NSData+Base64.h in Headers */,
+				951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */,
+				951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */,
 				95E3F3221AF8CD520095C84E /* AESCrypt.h in Headers */,
 				951F44381AFD14440017DF2C /* BJIMEngine.h in Headers */,
-				951F44311AFD067C0017DF2C /* BJIMManager.h in Headers */,
-				951F44351AFD0A7C0017DF2C /* BJIMConstants.h in Headers */,
 				95E3F3261AF8CD520095C84E /* NSData+CommonCrypto.h in Headers */,
 				95E3F3281AF8CD520095C84E /* NSString+Base64.h in Headers */,
 				95CFC3241AEB72A300D5FB10 /* BJIM.h in Headers */,
@@ -466,6 +466,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};
@@ -483,6 +484,7 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACH_O_TYPE = mh_dylib;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 			};

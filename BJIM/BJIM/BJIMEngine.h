@@ -10,7 +10,10 @@
 
 @interface BJIMEngine : NSObject
 
+@property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
+
 - (void)start;
 
 - (void)stop;
+
 @end
