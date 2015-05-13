@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'BJHL-IM-iOS-SDK', :exclusive => true do
+  pod "BJHL-IM-iOS-SDK", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "BJHL-IM-iOS-SDK", :path => "../"
+
+  
+end

@@ -1,0 +1,18 @@
+PODS:
+  - BJHL-IM-iOS-SDK (1.0.0):
+    - BJHL-IM-iOS-SDK/Vendor
+  - BJHL-IM-iOS-SDK/Vendor (1.0.0):
+    - BJHL-IM-iOS-SDK/Vendor/aes
+  - BJHL-IM-iOS-SDK/Vendor/aes (1.0.0)
+
+DEPENDENCIES:
+  - BJHL-IM-iOS-SDK (from `../`)
+
+EXTERNAL SOURCES:
+  BJHL-IM-iOS-SDK:
+    :path: ../
+
+SPEC CHECKSUMS:
+  BJHL-IM-iOS-SDK: f7a7aa7d758c3452df9f58de9e7042a817722b68
+
+COCOAPODS: 0.34.4
