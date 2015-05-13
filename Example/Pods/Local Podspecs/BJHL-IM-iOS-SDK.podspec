@@ -31,7 +31,10 @@ Pod::Spec.new do |s|
 
   s.public_header_files = 'Pod/Classes/*.h'
   s.frameworks = 'CoreData'
-  # s.dependency 'AFNetworking', '~> 2.3'
+  s.dependency 'AFNetworking', '~> 2.5'
+  s.dependency 'Mantle', '~> 1.5'
+  s.dependency 'MagicalRecord', '~> 2.2'
+  s.dependency 'Log4Cocoa', '~> 0.1.0'
  
   s.subspec 'Vendor' do |ss|  
     ss.source_files = 'Pod/Classes/Vendor/*.{h,m}'
