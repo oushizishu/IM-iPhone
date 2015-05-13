@@ -5,6 +5,9 @@
 [![License](https://img.shields.io/cocoapods/l/BJHL-IM-iOS-SDK.svg?style=flat)](http://cocoapods.org/pods/BJHL-IM-iOS-SDK)
 [![Platform](https://img.shields.io/cocoapods/p/BJHL-IM-iOS-SDK.svg?style=flat)](http://cocoapods.org/pods/BJHL-IM-iOS-SDK)
 
+## Introduce
+百家 IM SDK
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
