@@ -22,7 +22,7 @@ pod "BJHL-IM-iOS-SDK"
 
 ## Author
 
-YangLei-bjhl, jxyl9010@gmail.com
+yanglei, yanglei@baijiahulian.com 
 
 ## License
 
