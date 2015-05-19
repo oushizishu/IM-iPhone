@@ -29,7 +29,7 @@ Pod::Spec.new do |s|
     'BJHL-IM-iOS-SDK' => ['Pod/Assets/*']
   }
 
-  s.public_header_files = 'Pod/Classes/*.h'
+  s.public_header_files = 'Pod/Classes/BJHL.h'
   s.frameworks = 'CoreData'
   s.dependency 'AFNetworking', '~> 2.5'
   s.dependency 'Mantle', '~> 1.5'

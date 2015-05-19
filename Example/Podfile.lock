@@ -21,19 +21,19 @@ PODS:
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
   - BJHL-IM-iOS-SDK (1.0.0):
-    - AFNetworking (~> 2.5)
+    - AFNetworking (~> 2.5.3)
     - BJHL-IM-iOS-SDK/Vendor
     - Log4Cocoa (~> 0.1.0)
     - MagicalRecord (~> 2.2)
     - Mantle (~> 1.5)
   - BJHL-IM-iOS-SDK/Vendor (1.0.0):
-    - AFNetworking (~> 2.5)
+    - AFNetworking (~> 2.5.3)
     - BJHL-IM-iOS-SDK/Vendor/aes
     - Log4Cocoa (~> 0.1.0)
     - MagicalRecord (~> 2.2)
     - Mantle (~> 1.5)
   - BJHL-IM-iOS-SDK/Vendor/aes (1.0.0):
-    - AFNetworking (~> 2.5)
+    - AFNetworking (~> 2.5.3)
     - Log4Cocoa (~> 0.1.0)
     - MagicalRecord (~> 2.2)
     - Mantle (~> 1.5)
@@ -54,7 +54,7 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
-  BJHL-IM-iOS-SDK: d09cf4656f513586af0f84c57cdd9f261e0deada
+  BJHL-IM-iOS-SDK: 329fa8e428c8f7422cdc68aaaedc0564e670c547
   Log4Cocoa: 0c7285a889c9c491e5f08865b18995ae1291c00d
   MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
   Mantle: 60acd0cd363e27d945bda0a6b8e90577112d28f3

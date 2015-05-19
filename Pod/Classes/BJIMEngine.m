@@ -25,43 +25,56 @@
     self = [super init];
     if (self)
     {
-       IM_POLLING_DELTA = @[@2, @2, @2, @2, @2];
+       IM_POLLING_DELTA = @[@2, @2, @4, @6, @8];
     }
     return self;
 }
 
 - (void)start
 {
+    if ([self isEngineActive]) return;
     _engineActive = YES;
-    [self nextPollingAt];
-    NSLog(@"BJIMEngien  has started ");
+    [self resetPollingIndex];
+    [self.pollingTimer fire];
+    NSLog(@"BJIMEngine  has started ");
 }
 
 - (void)stop
 {
     _engineActive = NO;
-    NSLog(@"BJIMEngine  had been stoped");
+    [self.pollingTimer invalidate];
+    self.pollingTimer = nil;
+    [self handlePollingEvent];
+    NSLog(@"BJIMEngne has stoped");
 }
 
 
 - (void)nextPollingAt
 {
     if (! [self isEngineActive]) return;
-    NSInteger time = [IM_POLLING_DELTA[_pollingIndex] integerValue];
-    
-    [self performSelector:@selector(handlePollingEvent) withObject:nil afterDelay:time];
     
     _pollingIndex = (MIN([IM_POLLING_DELTA count] - 1, _pollingIndex + 1)) % [IM_POLLING_DELTA count];
 }
 
 - (void)handlePollingEvent
 {
-    if (! [self isEngineActive]) return;
+    static NSInteger index = 0;
+    if (! [self isEngineActive]) {
+        index = 0;
+        return;
+    }
     
-    static int index = 0;
-    NSLog(@"handle polling xxxx  %d", index ++ );
-    
-    [self nextPollingAt];
+    if (index == [IM_POLLING_DELTA[_pollingIndex] integerValue])
+    {
+        [self.pollingTimer invalidate];
+        self.pollingTimer = nil;
+        index = 0;
+        //TODO handle event
+        NSLog(@"handle xxxxxxxx  %@", [NSDate date]);
+        [self nextPollingAt];
+        [self.pollingTimer fire];
+    }
+    index ++ ;
 }
 
 - (void)resetPollingIndex
@@ -73,9 +86,10 @@
 {
     if (_pollingTimer == nil)
     {
-        _pollingTimer = [[NSTimer alloc] init];
+        _pollingTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) userInfo:nil repeats:YES];
+        [[NSRunLoop currentRunLoop] addTimer:_pollingTimer forMode:NSDefaultRunLoopMode];
     }
+    
     return _pollingTimer;
 }
-
 @end
