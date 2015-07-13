@@ -22,7 +22,6 @@
 
 - (void)startService
 {
-    
     self.bIsServiceActive = YES;
 }
 
