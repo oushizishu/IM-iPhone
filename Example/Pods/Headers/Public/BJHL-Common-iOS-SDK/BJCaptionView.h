@@ -1,0 +1,1 @@
+../../../BJHL-Common-iOS-SDK/core/BJPhotoBrowser/Classes/BJCaptionView.h

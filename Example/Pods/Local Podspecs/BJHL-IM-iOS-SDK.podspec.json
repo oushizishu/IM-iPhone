@@ -1,0 +1,47 @@
+{
+  "name": "BJHL-IM-iOS-SDK",
+  "version": "1.0.0",
+  "summary": "BJHL-IM-iOS-SDK.",
+  "description": "                      百家互联 iOS IM SDK\n",
+  "homepage": "http://git.baijiahulian.com/app/im-iphone",
+  "license": "MIT",
+  "authors": {
+    "yanglei": "yanglei@baijiahulian.com"
+  },
+  "source": {
+    "git": "git@git.baijiahulian.com:app/im-iphone.git",
+    "tag": "1.0.0"
+  },
+  "platforms": {
+    "ios": "6.1"
+  },
+  "requires_arc": true,
+  "source_files": "core/**/*.{h,m}",
+  "resource_bundles": {
+    "BJHL-IM-iOS-SDK": [
+      "Resources/*"
+    ]
+  },
+  "public_header_files": "core/**/*.h",
+  "frameworks": "CoreData",
+  "dependencies": {
+    "AFNetworking": [
+      "~> 2.5"
+    ],
+    "Mantle": [
+      "~> 1.5"
+    ],
+    "MagicalRecord": [
+      "~> 2.2"
+    ],
+    "Log4Cocoa": [
+      "~> 0.1.0"
+    ],
+    "BJHL-Common-iOS-SDK": [
+      "0.4.2"
+    ],
+    "LKDBHelper": [
+      "~>2.1.3"
+    ]
+  }
+}

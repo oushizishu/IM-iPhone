@@ -1,4 +1,5 @@
 source 'https://github.com/CocoaPods/Specs.git'
+source 'http://git.baijiahulian.com/app/specs.git'
 
 target 'BJHL-IM-iOS-SDK', :exclusive => true do
   pod "BJHL-IM-iOS-SDK", :path => "../"

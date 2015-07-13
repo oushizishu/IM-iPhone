@@ -24,22 +24,18 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.1'
   s.requires_arc = true
 
-  s.source_files = 'Pod/Classes/*.{h,m}'
+  s.source_files = 'core/**/*.{h,m}'
   s.resource_bundles = {
-    'BJHL-IM-iOS-SDK' => ['Pod/Assets/*']
+    'BJHL-IM-iOS-SDK' => ['Resources/*']
   }
 
-  s.public_header_files = 'Pod/Classes/BJHL.h'
+  s.public_header_files = 'core/**/*.h'
   s.frameworks = 'CoreData'
   s.dependency 'AFNetworking', '~> 2.5'
   s.dependency 'Mantle', '~> 1.5'
   s.dependency 'MagicalRecord', '~> 2.2'
   s.dependency 'Log4Cocoa', '~> 0.1.0'
- 
-  s.subspec 'Vendor' do |ss|  
-    ss.source_files = 'Pod/Classes/Vendor/*.{h,m}'
-    ss.subspec 'aes' do |sss|
-      sss.source_files = 'Pod/Classes/Vendor/aes/*.{h,m}'
-    end 
-  end
+  s.dependency 'BJHL-Common-iOS-SDK', '0.4.2'
+  s.dependency 'LKDBHelper', '~>2.1.3'
+
 end

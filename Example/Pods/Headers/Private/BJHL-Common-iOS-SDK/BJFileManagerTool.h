@@ -1,0 +1,1 @@
+../../../BJHL-Common-iOS-SDK/core/FileCache/BJFileManagerTool.h
