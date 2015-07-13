@@ -6342,7 +6342,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 480F7B949C7BAE319CEFBED9 /* Pods-BJHL-IM-iOS-SDK-Log4Cocoa-Private.xcconfig */;
 			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-BJHL-IM-iOS-SDK-Log4Cocoa/Pods-BJHL-IM-iOS-SDK-Log4Cocoa-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -6454,7 +6454,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 480F7B949C7BAE319CEFBED9 /* Pods-BJHL-IM-iOS-SDK-Log4Cocoa-Private.xcconfig */;
 			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = NO;
 				GCC_PREFIX_HEADER = "Target Support Files/Pods-BJHL-IM-iOS-SDK-Log4Cocoa/Pods-BJHL-IM-iOS-SDK-Log4Cocoa-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
 				MTL_ENABLE_DEBUG_INFO = YES;

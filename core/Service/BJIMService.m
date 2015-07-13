@@ -49,6 +49,7 @@
     {
         _imEngine = [[BJIMEngine alloc] init];
     }
+    return _imEngine;
 }
 
 - (BJIMStorage *)imStorage
@@ -62,6 +63,6 @@
 
 - (BOOL)bIsServiceActive
 {
-    return bIsServiceActive;
+    return _bIsServiceActive;
 }
 @end

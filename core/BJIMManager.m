@@ -41,7 +41,6 @@
                    userRole:(IMUserRole)userRole
 {
     [self.imService startService];
-    [log4Info(<#message, ...#>)];
 }
 
 - (void)logout

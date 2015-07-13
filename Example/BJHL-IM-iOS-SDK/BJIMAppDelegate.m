@@ -7,14 +7,13 @@
 //
 
 #import "BJIMAppDelegate.h"
-#import <BJHL-IM-iOS-SDK/BJIM.h>
+#import <BJHL-IM-iOS-SDK/BJIMManager.h>
 
 @implementation BJIMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
-    [[BJIMManager shareInstance] loginWithUserId:123 userName:@"123" userAvatar:@"abc" userRole:eUserRole_Teacher];
     return YES;
 }
 							
