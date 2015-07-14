@@ -15,4 +15,12 @@
     return @"USERS";
 }
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+      @"userId":@"user_id",
+      @"userRole":@"user_role",
+      @"name":@"name",
+      };
+}
 @end

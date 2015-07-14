@@ -14,6 +14,7 @@
 #define BJIM_VERSTION @"1.0"
 
 #import <LKDBHelper/NSObject+LKModel.h>
+#import <Mantle/Mantle.h>
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)

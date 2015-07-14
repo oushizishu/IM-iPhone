@@ -7,10 +7,12 @@
 //
 
 #import "BJIMStorage.h"
-#import <CoreData/CoreData.h>
+#import <LKDBHelper/LKDBHelper.h>
+
+#define IM_STRAGE_NAME @"bjhl-hermes-db"
 
 @interface BJIMStorage()
-@property (nonatomic, strong) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) LKDBHelper *dbHelper;
 
 @end
 
@@ -21,15 +23,10 @@
     self = [super init];
     if (self)
     {
-//        NSManagedObjectContext
+        self.dbHelper = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME];
     }
     return self;
 }
 
-#pragma mark - Setter & Getter
-- (NSManagedObjectContext *)managedObjectContext
-{
-    
-}
 
 @end

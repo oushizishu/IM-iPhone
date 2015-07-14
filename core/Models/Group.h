@@ -10,7 +10,7 @@
 #import "BJIMConstants.h"
 #import <LKDBHelper/NSObject+LKModel.h>
 
-@interface Group : NSObject
+@interface Group : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) int64_t groupId ;
 @property (nonatomic, copy) NSString *groupName;

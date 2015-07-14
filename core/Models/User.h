@@ -12,7 +12,7 @@
 /**
  * 确定一个 User 需要两个参数， userId 和 userRole
  */
-@interface User : NSObject
+@interface User : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) int16_t userId;
 @property (nonatomic, strong) NSString *name;

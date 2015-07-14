@@ -4,4 +4,4 @@
 
 #import "Pods-BJHL-IM-iOS-SDK-environment.h"
 #import <CoreData/CoreData.h>
-#import "CoreData+MagicalRecord.h"
+#import <MagicalRecord/MagicalRecord.h>

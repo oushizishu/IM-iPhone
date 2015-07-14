@@ -10,4 +10,14 @@
 
 @implementation Contacts
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"userId":@"user_id",
+             @"contactId":@"contact_id",
+             @"contactRole":@"contact_role",
+             @"createTime":@"create_time"
+             };
+}
+
 @end

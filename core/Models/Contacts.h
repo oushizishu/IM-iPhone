@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 
-@interface Contacts : NSObject
+@interface Contacts : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) int64_t contactId;

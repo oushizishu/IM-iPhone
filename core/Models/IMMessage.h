@@ -9,8 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 #import "Conversation.h"
+#import "IMMessageBody.h"
 
-@interface IMMessage : NSObject
+@interface IMMessage : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) double_t msgId;
 @property (nonatomic, assign) int64_t sender;
@@ -27,5 +28,6 @@
 @property (nonatomic, assign) NSInteger played;
 @property (nonatomic, copy) NSString *sign;
 @property (nonatomic, strong) Conversation *conversation;
+@property (nonatomic, strong) IMMessageBody *messageBody;
 
 @end
