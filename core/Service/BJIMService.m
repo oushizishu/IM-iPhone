@@ -20,7 +20,7 @@
 
 @implementation BJIMService
 
-- (void)startService
+- (void)startServiceWithOwner:(User *)owner
 {
     self.bIsServiceActive = YES;
 }
@@ -30,15 +30,9 @@
     self.bIsServiceActive = NO;
 }
 
-
-- (void)applicationEnterForeground
+#pragma mark - 消息操作
+- (void)sendMessage:(IMMessage *)message
 {
-    [self.imEngine start];
-}
-
-- (void)applicationEnterBackground
-{
-    [self.imEngine stop];
 }
 
 #pragma mark - Setter & Getter
@@ -64,4 +58,16 @@
 {
     return _bIsServiceActive;
 }
+
+- (void)applicationEnterForeground
+{
+    [self.imEngine start];
+}
+
+- (void)applicationEnterBackground
+{
+    [self.imEngine stop];
+}
+
+
 @end

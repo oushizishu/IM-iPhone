@@ -15,6 +15,11 @@
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
+#import "IMEnvironment.h"
+#import "User.h"
+#import "Conversation.h"
+#import "Group.h"
+#import "IMMessage.h"
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
@@ -30,7 +35,7 @@ typedef NS_ENUM(NSInteger, IMUserRole)
 {
     eUserRole_Teacher = 0,
     eUserRole_Student = 2,
-    eUserRole_Insitution = 6,
+    eUserRole_Institution = 6,
     eUserRole_Kefu = 7,
 };
 
@@ -40,7 +45,7 @@ typedef NS_ENUM(NSInteger, IMMessageType)
     eMessageType_TXT = 0,
     eMessageType_IMG = 1,
     eMessageType_AUDIO = 2,
-    eMessageType_Location = 3,
+    eMessageType_LOCATION = 3,
     eMessageType_NOTIFICATION = 4,
     eMessageType_CARD = 5,
     eMessageTYpe_EMOJI = 6,

@@ -24,6 +24,24 @@
 
 - (void)initialize
 {
-    
+   //TODO init log config
+}
+
+- (void)loginWithOauthToken:(NSString *)oAuthToken
+                      owner:(User *)owner
+{
+    _oAuthToken = oAuthToken;
+    _owner = owner;
+}
+
+- (void)logout
+{
+    _oAuthToken = nil;
+    _owner = nil;
+}
+
+- (BOOL)isLogin
+{
+    return _oAuthToken != nil;
 }
 @end

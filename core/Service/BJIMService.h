@@ -7,12 +7,16 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BJIMConstants.h"
 
 @interface BJIMService : NSObject
 
-- (void)startService;
+- (void)startServiceWithOwner:(User *)owner;
 
 - (void)stopService;
+
+#pragma mark - 消息操作
+- (void)sendMessage:(IMMessage *)message;
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;

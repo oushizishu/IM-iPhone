@@ -29,7 +29,7 @@
  *  @param userAvatar <#userAvatar description#>
  *  @param userRole   <#userRole description#>
  */
-- (void)loginWithOauthToken:(NSString *)OathToken
+- (void)loginWithOauthToken:(NSString *)OauthToken
                      UserId:(int64_t)userId
                    userName:(NSString *)userName
                  userAvatar:(NSString *)userAvatar
@@ -39,6 +39,9 @@
  *  退出 IM
  */
 - (void)logout;
+
+#pragma mark - 消息操作
+- (void)sendMessage:(IMMessage *)message;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;

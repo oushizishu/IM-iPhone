@@ -32,18 +32,37 @@
 }
 
 #pragma mark - 登录退出 IM
-- (void)loginWithOauthToken:(NSString *)OathToken
+- (void)loginWithOauthToken:(NSString *)OauthToken
                      UserId:(int64_t)userId
                    userName:(NSString *)userName
                  userAvatar:(NSString *)userAvatar
                    userRole:(IMUserRole)userRole
 {
-    [self.imService startService];
+    User *owner = [[User alloc] init];
+    [owner setUserId:userId];
+    [owner setName:userName];
+    [owner setAvatar:userAvatar];
+    [owner setUserRole:userRole];
+    
+    [[IMEnvironment shareInstance] loginWithOauthToken:OauthToken owner:owner];
+    
+    [self.imService startServiceWithOwner:owner];
 }
 
 - (void)logout
 {
     [self.imService stopService];
+    [[IMEnvironment shareInstance] logout];
+}
+
+#pragma mark - 消息操作
+- (void)sendMessage:(IMMessage *)message
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return;
+    }
+    [self.imService sendMessage:message];
 }
 
 #pragma mark - 应用进入前后台
