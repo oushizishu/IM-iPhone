@@ -10,4 +10,8 @@
 
 @implementation IMMessage
 
++ (NSString *)getTableName
+{
+    return @"IMMESSAGE";
+}
 @end

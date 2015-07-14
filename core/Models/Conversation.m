@@ -10,4 +10,9 @@
 
 @implementation Conversation
 
++ (NSString *)getTableName
+{
+    return @"CONVERSATION";
+}
+
 @end

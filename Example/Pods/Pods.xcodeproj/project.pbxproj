@@ -546,6 +546,11 @@
 		9597C7EE1B53AAB0004A2C39 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7ED1B53AAB0004A2C39 /* Group.m */; };
 		9597C7F11B53AD4B004A2C39 /* Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7F01B53AD4B004A2C39 /* Conversation.m */; };
 		9597C7F41B53AE61004A2C39 /* IMMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7F31B53AE61004A2C39 /* IMMessage.m */; };
+		9597C7F71B54A803004A2C39 /* GroupMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7F61B54A803004A2C39 /* GroupMember.m */; };
+		9597C7FA1B54AA12004A2C39 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7F91B54AA12004A2C39 /* Contacts.m */; };
+		9597C7FD1B54AAED004A2C39 /* StudentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7FC1B54AAED004A2C39 /* StudentContacts.m */; };
+		9597C8001B54AB3A004A2C39 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C7FF1B54AB3A004A2C39 /* TeacherContacts.m */; };
+		9597C8031B54AB6C004A2C39 /* InstitutionContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9597C8021B54AB6C004A2C39 /* InstitutionContacts.m */; };
 		96BF2062E35EE7C58AB33746 /* L4LoggerProtocols.h in Headers */ = {isa = PBXBuildFile; fileRef = FF3C42C90BD49F58EC794898 /* L4LoggerProtocols.h */; };
 		96E3641C94510A4814DA30A3 /* TMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E7C9AC83DA3F8303BB177AF /* TMMemoryCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		973BFEE7D1D66BDE9B27E918 /* BJIMEngine.h in Headers */ = {isa = PBXBuildFile; fileRef = F0FD7B7A8CD39B064E6A2518 /* BJIMEngine.h */; };
@@ -1651,6 +1656,16 @@
 		9597C7F01B53AD4B004A2C39 /* Conversation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Conversation.m; sourceTree = "<group>"; };
 		9597C7F21B53AE61004A2C39 /* IMMessage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMMessage.h; sourceTree = "<group>"; };
 		9597C7F31B53AE61004A2C39 /* IMMessage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMMessage.m; sourceTree = "<group>"; };
+		9597C7F51B54A803004A2C39 /* GroupMember.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMember.h; sourceTree = "<group>"; };
+		9597C7F61B54A803004A2C39 /* GroupMember.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMember.m; sourceTree = "<group>"; };
+		9597C7F81B54AA12004A2C39 /* Contacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Contacts.h; sourceTree = "<group>"; };
+		9597C7F91B54AA12004A2C39 /* Contacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Contacts.m; sourceTree = "<group>"; };
+		9597C7FB1B54AAED004A2C39 /* StudentContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentContacts.h; sourceTree = "<group>"; };
+		9597C7FC1B54AAED004A2C39 /* StudentContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentContacts.m; sourceTree = "<group>"; };
+		9597C7FE1B54AB3A004A2C39 /* TeacherContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherContacts.h; sourceTree = "<group>"; };
+		9597C7FF1B54AB3A004A2C39 /* TeacherContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherContacts.m; sourceTree = "<group>"; };
+		9597C8011B54AB6C004A2C39 /* InstitutionContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionContacts.h; sourceTree = "<group>"; };
+		9597C8021B54AB6C004A2C39 /* InstitutionContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutionContacts.m; sourceTree = "<group>"; };
 		95DE8BE781DDDBC396C01A53 /* lame.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = lame.h; path = core/MediaRecorder/lame.h; sourceTree = "<group>"; };
 		961E1D4085ACD006C8E610EF /* libPods-BJHL-IM-iOS-SDK-TMCache.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK-TMCache.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		96217DB711DBF9D0E96F42D8 /* MagicalRecord+iCloud.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MagicalRecord+iCloud.h"; path = "MagicalRecord/Core/MagicalRecord+iCloud.h"; sourceTree = "<group>"; };
@@ -2511,6 +2526,16 @@
 				9597C7F01B53AD4B004A2C39 /* Conversation.m */,
 				9597C7F21B53AE61004A2C39 /* IMMessage.h */,
 				9597C7F31B53AE61004A2C39 /* IMMessage.m */,
+				9597C7F51B54A803004A2C39 /* GroupMember.h */,
+				9597C7F61B54A803004A2C39 /* GroupMember.m */,
+				9597C7F81B54AA12004A2C39 /* Contacts.h */,
+				9597C7F91B54AA12004A2C39 /* Contacts.m */,
+				9597C7FB1B54AAED004A2C39 /* StudentContacts.h */,
+				9597C7FC1B54AAED004A2C39 /* StudentContacts.m */,
+				9597C7FE1B54AB3A004A2C39 /* TeacherContacts.h */,
+				9597C7FF1B54AB3A004A2C39 /* TeacherContacts.m */,
+				9597C8011B54AB6C004A2C39 /* InstitutionContacts.h */,
+				9597C8021B54AB6C004A2C39 /* InstitutionContacts.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5250,10 +5275,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9597C7F71B54A803004A2C39 /* GroupMember.m in Sources */,
+				9597C8031B54AB6C004A2C39 /* InstitutionContacts.m in Sources */,
 				9597C7F11B53AD4B004A2C39 /* Conversation.m in Sources */,
+				9597C7FA1B54AA12004A2C39 /* Contacts.m in Sources */,
 				9597C7F41B53AE61004A2C39 /* IMMessage.m in Sources */,
 				112731527334FF8DFF0E6359 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				9597C7EE1B53AAB0004A2C39 /* Group.m in Sources */,
+				9597C7FD1B54AAED004A2C39 /* StudentContacts.m in Sources */,
+				9597C8001B54AB3A004A2C39 /* TeacherContacts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

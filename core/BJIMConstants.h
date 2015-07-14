@@ -13,6 +13,8 @@
 #pragma mark - im version.
 #define BJIM_VERSTION @"1.0"
 
+#import <LKDBHelper/NSObject+LKModel.h>
+
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
 {
@@ -58,4 +60,5 @@ typedef NS_ENUM(NSInteger, IMChatType) {
     eChatType_Chat = 0, // 单聊
     eChatType_GroupChat = 1 // 群聊
 };
+
 #endif

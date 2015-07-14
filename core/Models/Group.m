@@ -10,4 +10,8 @@
 
 @implementation Group
 
++ (NSString *)getTableName
+{
+    return @"IMGROUPS";
+}
 @end

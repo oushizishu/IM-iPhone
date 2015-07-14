@@ -10,4 +10,9 @@
 
 @implementation User
 
++ (NSString *)getTableName
+{
+    return @"USERS";
+}
+
 @end

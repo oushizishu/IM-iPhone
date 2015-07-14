@@ -12,20 +12,20 @@
 
 @interface IMMessage : NSObject
 
-@property (nonatomic, assign) double_t msg_id;
+@property (nonatomic, assign) double_t msgId;
 @property (nonatomic, assign) int64_t sender;
-@property (nonatomic, assign) IMUserRole sender_r;
+@property (nonatomic, assign) IMUserRole senderRole;
 @property (nonatomic, assign) int64_t receiver;
-@property (nonatomic, assign) IMUserRole receiver_r;
+@property (nonatomic, assign) IMUserRole receiverRole;
 @property (nonatomic, copy) NSString *body;
 @property (nonatomic, copy) NSString *ext;
-@property (nonatomic, assign) int64_t create_at;
+@property (nonatomic, assign) int64_t createAt;
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) IMMessageType msg_t;
 @property (nonatomic, assign) IMMessageStatus status;
 @property (nonatomic, assign) NSInteger read;
 @property (nonatomic, assign) NSInteger played;
 @property (nonatomic, copy) NSString *sign;
-@property (nonatomic, assign) int64_t conversation_id;
+@property (nonatomic, strong) Conversation *conversation;
 
 @end

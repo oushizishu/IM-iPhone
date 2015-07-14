@@ -13,14 +13,13 @@
 
 @interface Conversation : NSObject
 
-@property (nonatomic, assign) int64_t conversation_id;
-@property (nonatomic, assign) int64_t owner_id;
-@property (nonatomic, assign) IMUserRole owner_role;
-@property (nonatomic, assign) int64_t to_id;
-@property (nonatomic, assign) IMUserRole to_role;
-@property (nonatomic, assign) int64_t last_msg_id;
+@property (nonatomic, assign) int64_t ownerId;
+@property (nonatomic, assign) IMUserRole ownerRole;
+@property (nonatomic, assign) int64_t toId;
+@property (nonatomic, assign) IMUserRole toRole;
+@property (nonatomic, assign) int64_t lastMsgRawId;
 @property (nonatomic, assign) IMChatType chat_t;
-@property (nonatomic, assign) NSInteger unread_num;
+@property (nonatomic, assign) NSInteger unReadNum;
 
 @property (nonatomic, strong, readonly) User *chatToUser;
 @property (nonatomic, strong, readonly) Group *chatToGroup;
