@@ -157,10 +157,18 @@ PODS:
   - BJHL-IM-iOS-SDK (1.0.0):
     - AFNetworking (~> 2.5)
     - BJHL-Common-iOS-SDK (= 0.4.2)
+    - CocoaLumberjack (~> 2.0.1)
     - LKDBHelper (~> 2.1.3)
-    - Log4Cocoa (~> 0.1.0)
     - MagicalRecord (~> 2.2)
     - Mantle (~> 2.0)
+  - CocoaLumberjack (2.0.1):
+    - CocoaLumberjack/Default (= 2.0.1)
+    - CocoaLumberjack/Extensions (= 2.0.1)
+  - CocoaLumberjack/Core (2.0.1)
+  - CocoaLumberjack/Default (2.0.1):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.0.1):
+    - CocoaLumberjack/Default
   - FMDB (2.5):
     - FMDB/standard (= 2.5)
   - FMDB/common (2.5)
@@ -168,7 +176,6 @@ PODS:
     - FMDB/common
   - LKDBHelper (2.1.3):
     - FMDB
-  - Log4Cocoa (0.1.0)
   - MagicalRecord (2.3.0)
   - Mantle (2.0.2):
     - Mantle/extobjc (= 2.0.2)
@@ -192,10 +199,10 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   BJHL-Common-iOS-SDK: b5dd14114f4f1c94ea0411e4e7615b214e87e7ca
-  BJHL-IM-iOS-SDK: 9eb2195ed630eab99d11788b61237d4f33f4f6cd
+  BJHL-IM-iOS-SDK: f6262817b3c02badf8a00530cc26fcc99dc9410b
+  CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   LKDBHelper: 64b2c85c6783d453d6db4635a8cfa6c5cc6783ed
-  Log4Cocoa: 0c7285a889c9c491e5f08865b18995ae1291c00d
   MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
   Mantle: 967fd31ea0220890b2e76589198996b534bb3fb1
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
@@ -205,4 +212,4 @@ SPEC CHECKSUMS:
   TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
   UMengAnalytics-NO-IDFA: 68a71671c10067315339fc3fd1283be416f02a8b
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.37.0
