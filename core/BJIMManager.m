@@ -9,8 +9,6 @@
 #import "BJIMManager.h"
 #import "BJIMService.h"
 
-#import <Log4Cocoa/Log4Cocoa.h>
-
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
 @end

@@ -7,7 +7,6 @@
 //
 
 #import "IMEnvironment.h"
-#import  <Log4Cocoa/Log4Cocoa.h>
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 
 @implementation IMEnvironment
@@ -25,9 +24,6 @@
 
 - (void)initialize
 {
-    [[L4Logger rootLogger] setLevel:[L4Level all]];
-    [[L4Logger rootLogger] addAppender:[[L4FileAppender alloc] initWithLayout:[L4Layout simpleLayout] fileName:@""]];
-    NSString *docPath = [BJFileManagerTool docDir];
     
 }
 @end
