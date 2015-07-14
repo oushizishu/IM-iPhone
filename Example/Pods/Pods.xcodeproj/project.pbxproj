@@ -572,6 +572,7 @@
 		94F21258A15A570CA63D3133 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 61ADE51BB6A12E8C2D9B3CF1 /* TeacherContacts.m */; };
 		94FE279813181EBBDD3E7F20 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 982BF86AB87DE17B35D24750 /* UIImageView+AFNetworking.m */; };
 		950E2D771B54ECEF00DC79F2 /* SendMsgOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D761B54ECEF00DC79F2 /* SendMsgOperation.m */; };
+		950E2D7D1B54F38B00DC79F2 /* IMBaseOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D7C1B54F38B00DC79F2 /* IMBaseOperation.m */; };
 		954C08CDCE23EAA53E4EDEF8 /* Pods-Tests-PureLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E10EF0D346C517EF86758A44 /* Pods-Tests-PureLayout-dummy.m */; };
 		957DFC4B10037796F3F3D690 /* NSError+MTLModelException.h in Headers */ = {isa = PBXBuildFile; fileRef = EA7E6F4564CB6446AD660414 /* NSError+MTLModelException.h */; };
 		95AD7D482FDBF485EC1F9881 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 3BD4767D1539BE473CB40E87 /* Contacts.m */; };
@@ -1736,6 +1737,8 @@
 		94B528E3EEA525C978ECF61C /* L4XMLLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = L4XMLLayout.m; path = Log4Cocoa/L4XMLLayout.m; sourceTree = "<group>"; };
 		950E2D751B54ECEF00DC79F2 /* SendMsgOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMsgOperation.h; sourceTree = "<group>"; };
 		950E2D761B54ECEF00DC79F2 /* SendMsgOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMsgOperation.m; sourceTree = "<group>"; };
+		950E2D7B1B54F38B00DC79F2 /* IMBaseOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMBaseOperation.h; sourceTree = "<group>"; };
+		950E2D7C1B54F38B00DC79F2 /* IMBaseOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMBaseOperation.m; sourceTree = "<group>"; };
 		953925EBCD7FABF35BB1B61D /* Pods-Tests-MagicalRecord-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-Tests-MagicalRecord-dummy.m"; path = "../Pods-Tests-MagicalRecord/Pods-Tests-MagicalRecord-dummy.m"; sourceTree = "<group>"; };
 		955A1BA66FF72DE68C2F6D01 /* Pods-BJHL-IM-iOS-SDK-Mantle-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BJHL-IM-iOS-SDK-Mantle-Private.xcconfig"; sourceTree = "<group>"; };
 		95B524F5A156DC2410CE89D9 /* SDWebImageManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageManager.m; path = SDWebImage/SDWebImageManager.m; sourceTree = "<group>"; };
@@ -3159,6 +3162,8 @@
 				AE560749E8DBB35CF50E6F25 /* BJIMService.m */,
 				950E2D751B54ECEF00DC79F2 /* SendMsgOperation.h */,
 				950E2D761B54ECEF00DC79F2 /* SendMsgOperation.m */,
+				950E2D7B1B54F38B00DC79F2 /* IMBaseOperation.h */,
+				950E2D7C1B54F38B00DC79F2 /* IMBaseOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -4820,6 +4825,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				950E2D7D1B54F38B00DC79F2 /* IMBaseOperation.m in Sources */,
 				BC09C41CC8DB1D941A4B1BEB /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				950E2D771B54ECEF00DC79F2 /* SendMsgOperation.m in Sources */,
 			);
