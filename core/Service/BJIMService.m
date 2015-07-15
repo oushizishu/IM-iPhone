@@ -9,7 +9,7 @@
 #import "BJIMService.h"
 #import "SendMsgOperation.h"
 
-@interface BJIMService()
+@interface BJIMService()<IMEnginePostMessageDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -45,6 +45,17 @@
 
 }
 
+#pragma mark - Post Message Delegate
+- (void)onPostMessageSucc:(IMMessage *)message
+{
+    message.status = eMessageStatus_Send_Succ;
+}
+
+- (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error
+{
+    message.status = eMessageStatus_Send_Fail;
+}
+
 #pragma mark - Setter & Getter
 - (BJIMEngine *)imEngine
 {
@@ -69,6 +80,7 @@
     if (_operationQueue == nil)
     {
         _operationQueue = [[NSOperationQueue alloc] init];
+        [_operationQueue setMaxConcurrentOperationCount:3];
     }
     return _operationQueue;
 }

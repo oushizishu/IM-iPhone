@@ -6,7 +6,7 @@
 //
 //
 
-#import "NetTool.h"
+#import "NetWorkTool.h"
 
 
 #define HOST_APIS @[@"http://test-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
@@ -16,7 +16,7 @@
 #define HERMES_API_MY_CONTACTS [NSString stringWithFormat:@"%@/hermes/myContacts", HOST_API]
 #define HERMES_API_SEND_MESSAGE [NSString stringWithFormat:@"%@/hermes/sendMsg", HOST_API]
 
-@implementation NetTool
+@implementation NetWorkTool
 
 + (BJNetRequestOperation *)hermesSendMessage:(IMMessage *)message
                                         succ:(onSuccess)succ

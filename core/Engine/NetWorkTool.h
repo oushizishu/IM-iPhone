@@ -12,7 +12,7 @@
 #import "IMMessage.h"
 #import "IMEnvironment.h"
 
-@interface NetTool : NSObject
+@interface NetWorkTool : NSObject
 
 + (BJNetRequestOperation *)hermesSendMessage:(IMMessage *)message
                                         succ:(onSuccess)succ

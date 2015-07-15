@@ -16,7 +16,7 @@
 
 - (void)doAfterOperationOnMain
 {
-
+    [self.imService.imEngine postMessage:self.message];
 }
 
 @end

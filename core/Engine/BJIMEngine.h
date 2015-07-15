@@ -7,13 +7,24 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IMMessage.h"
+
+@protocol IMEnginePostMessageDelegate <NSObject>
+
+- (void)onPostMessageSucc:(IMMessage *)message;
+- (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error;
+
+@end
 
 @interface BJIMEngine : NSObject
 
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
+@property (nonatomic, weak) id<IMEnginePostMessageDelegate> postMessageDelegate;
 
 - (void)start;
 
 - (void)stop;
+
+- (void)postMessage:(IMMessage *)message;
 
 @end

@@ -24,4 +24,6 @@
 @property (nonatomic, strong, readonly) User *chatToUser;
 @property (nonatomic, strong, readonly) Group *chatToGroup;
 
+@property (nonatomic, strong) NSArray *messages;
+
 @end
