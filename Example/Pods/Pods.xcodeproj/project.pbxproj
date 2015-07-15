@@ -516,6 +516,7 @@
 		93B8D5D42C415CB092436377 /* DDTTYLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = BC6CD7E0C599D336F1FDD92C /* DDTTYLogger.h */; };
 		93B9A829E973E2EDD1F2649C /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = B8D5C03D3877B57679AFC71D /* UIView+Borders.m */; };
 		93F3CC9DDF13CD1847E01738 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 569024FA81AC3931E43F8EBB /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		950E2D801B555EAF00DC79F2 /* NetTool.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D7F1B555EAF00DC79F2 /* NetTool.m */; };
 		9513367620F7D445516E25C7 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A81D5407159B422D992B578 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		957B596BCE6F402FA4862A25 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2975975A81930955BD0E6610 /* CoreData.framework */; };
 		959BC041383306EE8FA4FC76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4ABD9519C23451EB841115 /* Foundation.framework */; };
@@ -1664,6 +1665,8 @@
 		942679A1F928E37DEBB13938 /* AFNetworkReachabilityManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFNetworkReachabilityManager.h; path = AFNetworking/AFNetworkReachabilityManager.h; sourceTree = "<group>"; };
 		944D455F0209429739EB2F96 /* Pods-Tests-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-Tests-environment.h"; sourceTree = "<group>"; };
 		949DA8C6886F22721F0003EB /* UIRefreshControl+AFNetworking.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIRefreshControl+AFNetworking.m"; path = "UIKit+AFNetworking/UIRefreshControl+AFNetworking.m"; sourceTree = "<group>"; };
+		950E2D7E1B555EAF00DC79F2 /* NetTool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NetTool.h; sourceTree = "<group>"; };
+		950E2D7F1B555EAF00DC79F2 /* NetTool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NetTool.m; sourceTree = "<group>"; };
 		955128CC4435C6C5B8CDF17E /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = Mantle/extobjc/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
 		95855D55943C75231DEC7377 /* TKAlertViewController+Private.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "TKAlertViewController+Private.m"; path = "TKAlert&TKActionSheet/TKAlert/TKAlertViewController+Private.m"; sourceTree = "<group>"; };
 		9706BE60D5F34ABD9C97C7F6 /* BJPictueBrowser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJPictueBrowser.m; path = core/BJPhotoBrowser/Classes/BJPictueBrowser.m; sourceTree = "<group>"; };
@@ -3072,6 +3075,8 @@
 			children = (
 				6483EA85987D2816A9620BD4 /* BJIMEngine.h */,
 				6F5BD7F346BC294E7213C84D /* BJIMEngine.m */,
+				950E2D7E1B555EAF00DC79F2 /* NetTool.h */,
+				950E2D7F1B555EAF00DC79F2 /* NetTool.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -4990,6 +4995,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7395EB8A73B3E8E43570F61B /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
+				950E2D801B555EAF00DC79F2 /* NetTool.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

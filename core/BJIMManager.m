@@ -65,6 +65,12 @@
     [self.imService sendMessage:message];
 }
 
+#pragma mark - setter & getter
+- (void)setDebugMode:(IMSERVER_ENVIRONMENT)debugMode
+{
+    [IMEnvironment shareInstance].debugMode = debugMode;
+}
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {

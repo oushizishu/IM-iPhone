@@ -7,7 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "IMBaseOperation.h"
+#import "BJIMService.h"
 
-@interface SendMsgOperation : NSOperation
+@interface SendMsgOperation : IMBaseOperation
+
+@property (nonatomic, weak) BJIMService *imService;
 
 @end

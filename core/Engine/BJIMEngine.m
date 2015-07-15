@@ -7,6 +7,7 @@
 //
 
 #import "BJIMEngine.h"
+#import "NetTool.h"
 
 @interface BJIMEngine()
 {

@@ -15,11 +15,6 @@
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
-#import "IMEnvironment.h"
-#import "User.h"
-#import "Conversation.h"
-#import "Group.h"
-#import "IMMessage.h"
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
@@ -48,17 +43,17 @@ typedef NS_ENUM(NSInteger, IMMessageType)
     eMessageType_LOCATION = 3,
     eMessageType_NOTIFICATION = 4,
     eMessageType_CARD = 5,
-    eMessageTYpe_EMOJI = 6,
-    eMessageTYpe_CMD = 7,
+    eMessageType_EMOJI = 6,
+    eMessageType_CMD = 7,
 };
 
 #pragma mark - 消息状态
 typedef NS_ENUM(NSInteger, IMMessageStatus)
 {
-    eMessageState_init = 0,
-    eMessageState_Sending = 1,
-    eMessageState_Send_Succ = 2,
-    eMessageState_Send_Fail = 3,
+    eMessageStatus_init = 0,
+    eMessageStatus_Sending = 1,
+    eMessageStatus_Send_Succ = 2,
+    eMessageStatus_Send_Fail = 3,
 };
 
 #pragma mark - 聊天类型

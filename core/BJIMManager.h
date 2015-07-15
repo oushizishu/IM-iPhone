@@ -7,6 +7,11 @@
 
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
+#import "IMMessage.h"
+#import "User.h"
+#import "Group.h"
+#import "Conversation.h"
+#import "IMEnvironment.h"
 
 /**
  *  IM 管理类， 与上层交互
@@ -16,7 +21,7 @@
 /**
  *  当前服务器环境标志变量
  */
-@property (nonatomic, assign, setter=setDebugMode:, getter=getDebugMode) IMSERVER_ENVIRONMENT debugMode;
+@property (nonatomic, assign, setter=setDebugMode:) IMSERVER_ENVIRONMENT debugMode;
 
 + (instancetype)shareInstance;
 

@@ -10,4 +10,13 @@
 
 @implementation SendMsgOperation
 
+- (void)doOperationOnBackground
+{
+}
+
+- (void)doAfterOperationOnMain
+{
+
+}
+
 @end
