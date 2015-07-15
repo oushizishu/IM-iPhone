@@ -21,6 +21,7 @@
       @"userId":@"user_id",
       @"userRole":@"user_role",
       @"name":@"name",
+      @"avatar":@"avatar",
       };
 }
 @end

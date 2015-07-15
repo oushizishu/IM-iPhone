@@ -11,7 +11,7 @@
 #import "User.h"
 #import "Group.h"
 
-@interface Conversation : MTLModel<MTLJSONSerializing>
+@interface Conversation : NSObject
 
 @property (nonatomic, assign) int64_t ownerId;
 @property (nonatomic, assign) IMUserRole ownerRole;

@@ -10,6 +10,7 @@
 #import "BJIMConstants.h"
 #import "Conversation.h"
 #import "IMMessageBody.h"
+#import "IMTxtMessageBody.h"
 
 @interface IMMessage : MTLModel<MTLJSONSerializing>
 
@@ -19,7 +20,7 @@
 @property (nonatomic, assign) int64_t receiver;
 @property (nonatomic, assign) IMUserRole receiverRole;
 @property (nonatomic, copy) NSString *body;
-@property (nonatomic, copy) NSString *ext;
+@property (nonatomic, copy) NSDictionary *ext;
 @property (nonatomic, assign) int64_t createAt;
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) IMMessageType msg_t;

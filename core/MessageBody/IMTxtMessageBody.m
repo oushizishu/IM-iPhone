@@ -10,4 +10,11 @@
 
 @implementation IMTxtMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+            @"type":@"type",
+            @"content":@"content"
+             };
+}
 @end

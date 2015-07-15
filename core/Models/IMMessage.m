@@ -22,9 +22,27 @@
            if ([value isKindOfClass:[NSArray class]])
            {
                IMMessageBody *messageBody = nil;
+               NSString *body = value[0];
+               NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+               IMMessageType msg_t = [value[1] integerValue];
+               switch (msg_t) {
+                   case eMessageType_TXT:
+                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_IMG:
+                       break;
+                       
+                   default:
+                       break;
+               }
                return messageBody;
            }
             return nil;
+        }];
+    }
+    else if ([key isEqualToString:@"ext"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            return nil; // dictionary
         }];
     }
     return nil;
@@ -33,6 +51,17 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
+             @"msgId":@"msg_id",
+             @"sender":@"sender",
+             @"senderRole":@"sender_r",
+             @"receiver":@"receiver",
+             @"receiverRole":@"receiver_r",
+             @"ext":@"ext",
+             @"createAt":@"create_at",
+             @"chat_t":@"chat_t",
+             @"msg_t":@"msg_t",
+             @"status":@"status",
+             @"sign":@"sign",
              @"body":@"body",
              @"messageBody":@[@"body", @"msg_t"],
              };

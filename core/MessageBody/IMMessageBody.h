@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "BJIMConstants.h"
 
-@interface IMMessageBody : NSObject
+@interface IMMessageBody : MTLModel<MTLJSONSerializing>
 
 @end

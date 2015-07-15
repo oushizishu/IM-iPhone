@@ -8,6 +8,8 @@
 
 #import "BJIMEngine.h"
 #import "NetWorkTool.h"
+#import "BaseResponse.h"
+#import "SendMsgModel.h"
 
 @interface BJIMEngine()
 {
@@ -49,6 +51,18 @@
     NSLog(@"BJIMEngne has stoped");
 }
 
+- (void)postMessage:(IMMessage *)message
+{
+    [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        BaseResponse *result = [BaseResponse modelWithDictionary:responseHeaders error:nil];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            SendMsgModel *model = [SendMsgModel modelWithDictionary:result.data error:nil];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        
+    }];
+}
 
 - (void)nextPollingAt
 {
