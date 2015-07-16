@@ -15,5 +15,13 @@
     return @"CONVERSATION";
 }
 
+- (NSMutableArray *)messages
+{
+    if (_messages == nil)
+    {
+    }
+    return _messages;
+}
+
 
 @end

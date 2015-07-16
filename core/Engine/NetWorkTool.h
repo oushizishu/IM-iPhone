@@ -14,6 +14,9 @@
 
 @interface NetWorkTool : NSObject
 
++ (BJNetRequestOperation *)hermesSyncConfig:(onSuccess)succ
+                                    failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesSendMessage:(IMMessage *)message
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure;

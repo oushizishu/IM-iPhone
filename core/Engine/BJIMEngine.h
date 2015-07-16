@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "IMMessage.h"
+#import "SyncConfigModel.h"
+
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -16,14 +18,25 @@
 
 @end
 
+@protocol IMEnginePollingDelegate <NSObject>
+
+- (void)onShouldStartPolling;
+
+- (void)onPollingFinish;
+
+@end
+
 @interface BJIMEngine : NSObject
 
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
 @property (nonatomic, weak) id<IMEnginePostMessageDelegate> postMessageDelegate;
+@property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
 
 - (void)start;
 
 - (void)stop;
+
+- (void)syncConfig;
 
 - (void)postMessage:(IMMessage *)message;
 

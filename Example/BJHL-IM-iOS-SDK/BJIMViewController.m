@@ -8,7 +8,8 @@
 
 #import "BJIMViewController.h"
 #import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
-
+#import <BJHL-IM-iOS-SDK/BJIMManager.h>
+#import "ConversationListViewController.h"
 
 @interface BJIMViewController ()
 @property (nonatomic, strong) UITextView *userIdText;
@@ -41,7 +42,14 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:@"http://hermes.genshuixue.com/hermes/getImToken" method:kHttpMethod_POST];
     [requestParams appendPostParamValue:self.userIdText.text forKey:@"user_id"];
     [requestParams appendPostParamValue:@"2" forKey:@"user_type"];
+    
+    __WeakSelf__ weakSelf = self;
     [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSString *authToken = [[response objectForKey:@"data"] valueForKey:@"im_token"];
+        [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Student];
+        
+        ConversationListViewController *conversatinList = [[ConversationListViewController alloc] init];
+        [weakSelf.navigationController pushViewController:conversatinList animated:YES];
         
     } failure:^(NSError *error, RequestParams *params) {
         

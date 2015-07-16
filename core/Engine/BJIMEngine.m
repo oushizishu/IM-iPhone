@@ -51,6 +51,18 @@
     NSLog(@"BJIMEngne has stoped");
 }
 
+- (void)syncConfig
+{
+    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+       //TODO log
+    }];
+}
+
 - (void)postMessage:(IMMessage *)message
 {
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
@@ -62,6 +74,12 @@
     } failure:^(NSError *error, RequestParams *params) {
         
     }];
+}
+
+- (void)postPollingRequest
+{
+    [self nextPollingAt];
+    [self.pollingTimer fire];
 }
 
 - (void)nextPollingAt
@@ -84,10 +102,8 @@
         [self.pollingTimer invalidate];
         self.pollingTimer = nil;
         index = 0;
-        //TODO handle event
-        NSLog(@"handle xxxxxxxx  %@", [NSDate date]);
-        [self nextPollingAt];
-        [self.pollingTimer fire];
+        
+        [self.pollingDelegate onShouldStartPolling];
     }
     index ++ ;
 }
