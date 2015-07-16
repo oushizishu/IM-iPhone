@@ -64,6 +64,12 @@
     }];
 }
 
+- (void)postPollingRequest
+{
+    [self nextPollingAt];
+    [self.pollingTimer fire];
+}
+
 - (void)nextPollingAt
 {
     if (! [self isEngineActive]) return;
@@ -84,10 +90,8 @@
         [self.pollingTimer invalidate];
         self.pollingTimer = nil;
         index = 0;
-        //TODO handle event
-        NSLog(@"handle xxxxxxxx  %@", [NSDate date]);
-        [self nextPollingAt];
-        [self.pollingTimer fire];
+        
+        [self.pollingDelegate onShouldStartPolling];
     }
     index ++ ;
 }

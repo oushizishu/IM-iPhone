@@ -16,10 +16,19 @@
 
 @end
 
+@protocol IMEnginePollingDelegate <NSObject>
+
+- (void)onShouldStartPolling;
+
+- (void)onPollingFinish;
+
+@end
+
 @interface BJIMEngine : NSObject
 
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
 @property (nonatomic, weak) id<IMEnginePostMessageDelegate> postMessageDelegate;
+@property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
 
 - (void)start;
 

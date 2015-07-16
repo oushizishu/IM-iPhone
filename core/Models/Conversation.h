@@ -10,6 +10,7 @@
 #import "BJIMConstants.h"
 #import "User.h"
 #import "Group.h"
+#import "LKDBHelper.h"
 
 @interface Conversation : NSObject
 
@@ -17,13 +18,13 @@
 @property (nonatomic, assign) IMUserRole ownerRole;
 @property (nonatomic, assign) int64_t toId;
 @property (nonatomic, assign) IMUserRole toRole;
-@property (nonatomic, assign) int64_t lastMsgRawId;
+@property (nonatomic, assign) int64_t lastMsgRowId;
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) NSInteger unReadNum;
 
 @property (nonatomic, strong, readonly) User *chatToUser;
 @property (nonatomic, strong, readonly) Group *chatToGroup;
 
-@property (nonatomic, strong) NSArray *messages;
+@property (nonatomic, strong) NSMutableArray *messages;
 
 @end
