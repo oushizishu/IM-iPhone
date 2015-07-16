@@ -13,11 +13,11 @@
 
 @interface BJIMEngine()
 {
-    NSArray *IM_POLLING_DELTA;
     NSInteger _pollingIndex;
 }
 
 @property (nonatomic, strong) NSTimer *pollingTimer;
+@property (nonatomic, strong) NSArray *im_polling_delta;
 
 @end
 
@@ -28,7 +28,7 @@
     self = [super init];
     if (self)
     {
-       IM_POLLING_DELTA = @[@2, @2, @4, @6, @8];
+       self.im_polling_delta = @[@2, @2, @4, @6, @8];
     }
     return self;
 }
@@ -53,10 +53,12 @@
 
 - (void)syncConfig
 {
+    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
+            weakSelf.im_polling_delta = result.data[@"polling_delta"];
         }
     } failure:^(NSError *error, RequestParams *params) {
        //TODO log
@@ -86,7 +88,7 @@
 {
     if (! [self isEngineActive]) return;
     
-    _pollingIndex = (MIN([IM_POLLING_DELTA count] - 1, _pollingIndex + 1)) % [IM_POLLING_DELTA count];
+    _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
 }
 
 - (void)handlePollingEvent
@@ -97,7 +99,7 @@
         return;
     }
     
-    if (index == [IM_POLLING_DELTA[_pollingIndex] integerValue])
+    if (index == [self.im_polling_delta[_pollingIndex] integerValue])
     {
         [self.pollingTimer invalidate];
         self.pollingTimer = nil;

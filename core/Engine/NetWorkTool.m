@@ -38,7 +38,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)message.senderRole] forKey:@"sender_r"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", message.receiver] forKey:@"receiver"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", message.receiverRole] forKey:@"receiver_r"];
-    [requestParams appendPostParamValue:message.body forKey:@"body"];
+    [requestParams appendPostParamValue:message.messageBody.description forKey:@"body"];
     if (message.ext != nil) {
         [requestParams appendPostParamValue:message.ext.description forKey:@"ext"];
     }

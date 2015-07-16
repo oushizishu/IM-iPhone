@@ -19,7 +19,6 @@
 @property (nonatomic, assign) IMUserRole senderRole;
 @property (nonatomic, assign) int64_t receiver;
 @property (nonatomic, assign) IMUserRole receiverRole;
-@property (nonatomic, copy) NSString *body;
 @property (nonatomic, copy) NSDictionary *ext;
 @property (nonatomic, assign) int64_t createAt;
 @property (nonatomic, assign) IMChatType chat_t;

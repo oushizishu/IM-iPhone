@@ -42,7 +42,9 @@
     }
     else if ([key isEqualToString:@"ext"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            return nil; // dictionary
+            NSData *data = [value dataUsingEncoding:NSUTF8StringEncoding];
+            NSDictionary *dic = [NSJSONSerialization JSONObjectWithData:data options:0 error:nil];
+            return dic; // dictionary
         }];
     }
     return nil;
@@ -62,7 +64,6 @@
              @"msg_t":@"msg_t",
              @"status":@"status",
              @"sign":@"sign",
-             @"body":@"body",
              @"messageBody":@[@"body", @"msg_t"],
              };
 }
