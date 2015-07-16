@@ -651,6 +651,8 @@
 		B7D20AFE0F234D62AFC93509 /* MagicalRecord+Setup.h in Headers */ = {isa = PBXBuildFile; fileRef = 790C375F3A91C2500B416150 /* MagicalRecord+Setup.h */; };
 		B7F370EFD589E5DE0C4C5589 /* Pods-Tests-BJHL-Common-iOS-SDK-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 417947B7926B579B090660E4 /* Pods-Tests-BJHL-Common-iOS-SDK-dummy.m */; };
 		B83A212202FF27A1031756AE /* NSArray+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 7FB6C6F0B7D5CFAE8505FCC7 /* NSArray+PureLayout.m */; };
+		B84630951B57882E0045908C /* BJIMDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B84630941B57882E0045908C /* BJIMDBManager.m */; };
+		B84630981B5788810045908C /* BJIMConversationDBManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B84630971B5788810045908C /* BJIMConversationDBManager.m */; };
 		B8500D70C331F201E9C05C07 /* TKTextFieldAlertViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = CEAC99735D4263E40B79F2A9 /* TKTextFieldAlertViewController.h */; };
 		B86E9176226CC14D528FAFC4 /* NSPersistentStore+MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA10736A41B31CBC2217147 /* NSPersistentStore+MagicalRecord.m */; };
 		B87B665899D03279B84B417B /* NSValueTransformer+MTLInversionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = E16F8E3293434B1661F027A5 /* NSValueTransformer+MTLInversionAdditions.h */; };
@@ -1750,6 +1752,10 @@
 		B646BB4492CECAF674371D9C /* Pods-Tests-AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-Tests-AFNetworking-prefix.pch"; path = "../Pods-Tests-AFNetworking/Pods-Tests-AFNetworking-prefix.pch"; sourceTree = "<group>"; };
 		B709B99AC8218313B51FE514 /* Pods-Tests-AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-Tests-AFNetworking-dummy.m"; path = "../Pods-Tests-AFNetworking/Pods-Tests-AFNetworking-dummy.m"; sourceTree = "<group>"; };
 		B7EE68D400E17F59D58AF155 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
+		B84630931B57882E0045908C /* BJIMDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMDBManager.h; sourceTree = "<group>"; };
+		B84630941B57882E0045908C /* BJIMDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMDBManager.m; sourceTree = "<group>"; };
+		B84630961B5788810045908C /* BJIMConversationDBManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMConversationDBManager.h; sourceTree = "<group>"; };
+		B84630971B5788810045908C /* BJIMConversationDBManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMConversationDBManager.m; sourceTree = "<group>"; };
 		B8924C4A45902A788AD87FC1 /* UIAlertView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+AFNetworking.h"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.h"; sourceTree = "<group>"; };
 		B8B0A4751CD2F0873E15CDDE /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+MultiFormat.m"; path = "SDWebImage/UIImage+MultiFormat.m"; sourceTree = "<group>"; };
 		B8D5C03D3877B57679AFC71D /* UIView+Borders.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+Borders.m"; path = "core/UIView/UIView+Borders.m"; sourceTree = "<group>"; };
@@ -3056,6 +3062,10 @@
 			children = (
 				A3CBFDB5B4CFFFD78AABB405 /* BJIMStorage.h */,
 				06532F3E7613BA956BBC548F /* BJIMStorage.m */,
+				B84630931B57882E0045908C /* BJIMDBManager.h */,
+				B84630941B57882E0045908C /* BJIMDBManager.m */,
+				B84630961B5788810045908C /* BJIMConversationDBManager.h */,
+				B84630971B5788810045908C /* BJIMConversationDBManager.m */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -5005,6 +5015,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				7395EB8A73B3E8E43570F61B /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
+				B84630951B57882E0045908C /* BJIMDBManager.m in Sources */,
+				B84630981B5788810045908C /* BJIMConversationDBManager.m in Sources */,
 				950E2D831B56508100DC79F2 /* BaseResponse.m in Sources */,
 				950E2D801B555EAF00DC79F2 /* NetWorkTool.m in Sources */,
 				950E2D8C1B5653F700DC79F2 /* SendMsgModel.m in Sources */,

@@ -24,9 +24,11 @@
     if (self)
     {
         self.dbHelper = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME];
+        self.conversitionManager.dbHelper = self.dbHelper;
     }
     return self;
 }
+
 
 
 @end
