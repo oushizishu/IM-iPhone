@@ -10,4 +10,12 @@
 
 @implementation BaseResponse
 
+//+ (NSDictionary *)JSONKeyPathsByPropertyKey
+//{
+//    return @{
+//             @"code":@"code",
+//             @"msg":@"msg",
+//             @"data":@"data"
+//             };
+//}
 @end

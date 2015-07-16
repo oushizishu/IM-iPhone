@@ -51,6 +51,18 @@
     NSLog(@"BJIMEngne has stoped");
 }
 
+- (void)syncConfig
+{
+    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+       //TODO log
+    }];
+}
+
 - (void)postMessage:(IMMessage *)message
 {
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {

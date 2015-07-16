@@ -8,6 +8,7 @@
 
 #import "BJIMService.h"
 #import "SendMsgOperation.h"
+#import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 
 @interface BJIMService()<IMEnginePostMessageDelegate>
 
@@ -22,6 +23,8 @@
 
 - (void)startServiceWithOwner:(User *)owner
 {
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine syncConfig];
     self.bIsServiceActive = YES;
 }
 

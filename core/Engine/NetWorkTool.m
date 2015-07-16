@@ -18,6 +18,15 @@
 
 @implementation NetWorkTool
 
++ (BJNetRequestOperation *)hermesSyncConfig:(onSuccess)succ
+                                    failure:(onFailure)failure
+{
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+    
+}
+
 + (BJNetRequestOperation *)hermesSendMessage:(IMMessage *)message
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure

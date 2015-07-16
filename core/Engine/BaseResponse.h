@@ -11,10 +11,10 @@
 
 #define RESULT_CODE_SUCC 0
 
-@interface BaseResponse : MTLJSONAdapter<MTLJSONSerializing>
+@interface BaseResponse : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, assign) NSString *msg;
-@property (nonatomic, strong) NSDictionary *data;
+@property (nonatomic, strong) id data;
 
 @end

@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 #import "IMMessage.h"
+#import "SyncConfigModel.h"
+
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -33,6 +35,8 @@
 - (void)start;
 
 - (void)stop;
+
+- (void)syncConfig;
 
 - (void)postMessage:(IMMessage *)message;
 
