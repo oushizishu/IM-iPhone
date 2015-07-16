@@ -23,7 +23,6 @@
 
 - (void)startServiceWithOwner:(User *)owner
 {
-    __WeakSelf__ weakSelf = self;
     [self.imEngine syncConfig];
     self.bIsServiceActive = YES;
 }
@@ -49,7 +48,7 @@
 }
 
 #pragma mark - Post Message Delegate
-- (void)onPostMessageSucc:(IMMessage *)message
+- (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model
 {
     message.status = eMessageStatus_Send_Succ;
 }

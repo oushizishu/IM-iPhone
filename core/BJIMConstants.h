@@ -15,6 +15,7 @@
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)

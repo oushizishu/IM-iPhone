@@ -9,11 +9,12 @@
 #import <Foundation/Foundation.h>
 #import "IMMessage.h"
 #import "SyncConfigModel.h"
+#import "SendMsgModel.h"
 
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
-- (void)onPostMessageSucc:(IMMessage *)message;
+- (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model;
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error;
 
 @end

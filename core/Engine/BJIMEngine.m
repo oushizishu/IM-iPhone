@@ -9,7 +9,8 @@
 #import "BJIMEngine.h"
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
-#import "SendMsgModel.h"
+
+extern int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
 {
@@ -39,7 +40,6 @@
     _engineActive = YES;
     [self resetPollingIndex];
     [self.pollingTimer fire];
-    NSLog(@"BJIMEngine  has started ");
 }
 
 - (void)stop
@@ -48,7 +48,6 @@
     [self.pollingTimer invalidate];
     self.pollingTimer = nil;
     [self handlePollingEvent];
-    NSLog(@"BJIMEngne has stoped");
 }
 
 - (void)syncConfig
@@ -60,8 +59,13 @@
         {
             weakSelf.im_polling_delta = result.data[@"polling_delta"];
         }
+        else
+        {
+            DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
+        }
     } failure:^(NSError *error, RequestParams *params) {
-       //TODO log
+        DDLogError(@"Sync Config Fail [%@]", error.userInfo);
+        
     }];
 }
 
@@ -72,9 +76,17 @@
         if (result.code == RESULT_CODE_SUCC)
         {
             SendMsgModel *model = [SendMsgModel modelWithDictionary:result.data error:nil];
+            [self.postMessageDelegate onPostMessageSucc:message result:model];
+        }
+        else
+        {
+            NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
+            [self.postMessageDelegate onPostMessageFail:message error:error];
+            DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
         }
     } failure:^(NSError *error, RequestParams *params) {
-        
+        DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
+        [self.postMessageDelegate onPostMessageFail:message error:error];
     }];
 }
 

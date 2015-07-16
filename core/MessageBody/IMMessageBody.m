@@ -10,4 +10,9 @@
 
 @implementation IMMessageBody
 
+- (NSString *)description
+{
+    return @"";
+}
+
 @end
