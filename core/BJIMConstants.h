@@ -61,5 +61,7 @@ typedef NS_ENUM(NSInteger, IMChatType) {
     eChatType_Chat = 0, // 单聊
     eChatType_GroupChat = 1 // 群聊
 };
+static const int MESSAGE_PAGE_COUNT = 10;
+static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 #endif

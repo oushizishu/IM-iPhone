@@ -23,11 +23,11 @@
     if (conversation == nil)
     {
         conversation = [[Conversation alloc] init];
-        conversation.ownerId = [IMEnvironment shareInstance].owner.userId;
-        conversation.ownerRole = [IMEnvironment shareInstance].owner.userRole;
-        conversation.toId = self.message.receiver;
-        conversation.toRole = self.message.receiverRole;
-        conversation.chat_t = self.message.chat_t;
+//        conversation.ownerId = [IMEnvironment shareInstance].owner.userId;
+//        conversation.ownerRole = [IMEnvironment shareInstance].owner.userRole;
+//        conversation.toId = self.message.receiver;
+//        conversation.toRole = self.message.receiverRole;
+//        conversation.chat_t = self.message.chat_t;
     }
      
 }

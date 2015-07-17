@@ -10,7 +10,7 @@
 #import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import "ConversationListViewController.h"
-
+#import <BJHL-IM-iOS-SDK/BJIMStorage.h>
 @interface BJIMViewController ()
 @property (nonatomic, strong) UITextView *userIdText;
 @property (nonatomic, strong) UITextView *userNameText;
@@ -54,6 +54,32 @@
     } failure:^(NSError *error, RequestParams *params) {
         
     }];
+    static BJIMStorage * storage;
+    if (!storage) {
+        storage = [[BJIMStorage alloc]init];
+    }
+    /*
+     
+     @interface ConversationModel : MTLModel<MTLJSONSerializing>
+     
+     @property (nonatomic, assign) int64_t ownerId;
+     @property (nonatomic, assign) IMUserRole ownerRole;
+     @property (nonatomic, assign) int64_t toId;
+     @property (nonatomic, assign) IMUserRole toRole;
+     @property (nonatomic, assign) int64_t lastMsgRowId;
+     @property (nonatomic, assign) IMChatType chat_t;
+     @property (nonatomic, assign) NSInteger unReadNum;
+     @end
+     */
+    Conversation *model = [[Conversation alloc]init];
+    model.ownerId  = 100;
+    model.ownerRole  = 100;
+    model.toId  = 100;
+    model.toRole  = 100;
+    model.lastMsgRowId  = 100;
+    model.chat_t  = 100;
+    model.unReadNum  = 100;
+    [storage insertConversation:model];
 }
 
 - (void)didReceiveMemoryWarning
