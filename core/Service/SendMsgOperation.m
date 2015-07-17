@@ -28,6 +28,7 @@
         conversation.toId = self.message.receiver;
         conversation.toRole = self.message.receiverRole;
         conversation.chat_t = self.message.chat_t;
+        // insert conversation
     }
      
 }

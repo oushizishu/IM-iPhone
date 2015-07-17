@@ -8,12 +8,20 @@
 
 #import "BJIMAppDelegate.h"
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
+#import "BJIMViewController.h"
 
 @implementation BJIMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    self.window = [[UIWindow alloc] init];
+    
+    BJIMViewController *viewController = [[BJIMViewController alloc] init];
+    UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];
+    self.window.rootViewController = navi;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							

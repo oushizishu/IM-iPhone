@@ -12,7 +12,7 @@
 
 - (NSString *)description
 {
-    return @"";
+    return [[MTLJSONAdapter JSONDictionaryFromModel:self error:nil] description];
 }
 
 @end

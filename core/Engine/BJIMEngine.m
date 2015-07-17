@@ -10,11 +10,13 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 
-extern int ddLogLevel = DDLogLevelInfo;
+int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
 {
     NSInteger _pollingIndex;
+    NSInteger _heatBeatIndex;
+    BOOL _bIsPollingRequesting;
 }
 
 @property (nonatomic, strong) NSTimer *pollingTimer;
@@ -92,38 +94,46 @@ extern int ddLogLevel = DDLogLevelInfo;
 
 - (void)postPollingRequest
 {
+    _bIsPollingRequesting = YES;
     [self nextPollingAt];
     [self.pollingTimer fire];
 }
 
 - (void)nextPollingAt
 {
-    if (! [self isEngineActive]) return;
-    
+    _heatBeatIndex = 0;
     _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
+    [self.pollingTimer fire];
 }
 
 - (void)handlePollingEvent
 {
-    static NSInteger index = 0;
+    if (_bIsPollingRequesting) return;
+    
+    _heatBeatIndex ++ ;
+    if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
+        return;
+    
     if (! [self isEngineActive]) {
-        index = 0;
         return;
     }
     
-    if (index == [self.im_polling_delta[_pollingIndex] integerValue])
+    [self.pollingTimer invalidate];
+    self.pollingTimer = nil;
+    
+    if (self.postMessageDelegate == nil)
     {
-        [self.pollingTimer invalidate];
-        self.pollingTimer = nil;
-        index = 0;
-        
+        [self nextPollingAt];
+    }
+    else
+    {
         [self.pollingDelegate onShouldStartPolling];
     }
-    index ++ ;
 }
 
 - (void)resetPollingIndex
 {
+    _heatBeatIndex = 0;
     _pollingIndex = 0;
 }
 
