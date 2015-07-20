@@ -67,6 +67,8 @@ static char BJIMConversationLastMessage;
         else
         {
             Group *_chatToGroup = [self chatToGroup];
+            NSArray *array = [self.imService.imStorage loadGroupChatMessages:_chatToGroup inConversation:self.rowid];
+            _messages = [NSMutableArray arrayWithArray:array];
         }
         
         objc_setAssociatedObject(self, &BJIMConversationMessages, _messages, OBJC_ASSOCIATION_RETAIN);

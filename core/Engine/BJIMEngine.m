@@ -121,6 +121,7 @@ int ddLogLevel = DDLogLevelInfo;
     if (_bIsPollingRequesting) return;
     
     _heatBeatIndex ++ ;
+    _heatBeatIndex = MAX(0, MIN(_heatBeatIndex, [self.im_polling_delta[_pollingIndex] integerValue]));
     if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
         return;
     

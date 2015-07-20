@@ -24,7 +24,7 @@
 
 - (void)initialize
 {
-   //TODO init log config
+   //init log config
 }
 
 - (void)loginWithOauthToken:(NSString *)oAuthToken

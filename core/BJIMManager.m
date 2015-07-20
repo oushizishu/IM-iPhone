@@ -89,7 +89,7 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin])
         return nil;
- 	return nil;
+ 	return [self.imService getAllConversationWithOwner:[IMEnvironment shareInstance].owner];
 }
 
 #pragma mark - 应用进入前后台
