@@ -9,15 +9,18 @@
 #import "BJIMEngine.h"
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
-#import "SendMsgModel.h"
+
+int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
 {
-    NSArray *IM_POLLING_DELTA;
     NSInteger _pollingIndex;
+    NSInteger _heatBeatIndex;
+    BOOL _bIsPollingRequesting;
 }
 
 @property (nonatomic, strong) NSTimer *pollingTimer;
+@property (nonatomic, strong) NSArray *im_polling_delta;
 
 @end
 
@@ -28,7 +31,7 @@
     self = [super init];
     if (self)
     {
-       IM_POLLING_DELTA = @[@2, @2, @4, @6, @8];
+       self.im_polling_delta = @[@2, @2, @4, @6, @8];
     }
     return self;
 }
@@ -39,7 +42,6 @@
     _engineActive = YES;
     [self resetPollingIndex];
     [self.pollingTimer fire];
-    NSLog(@"BJIMEngine  has started ");
 }
 
 - (void)stop
@@ -48,18 +50,24 @@
     [self.pollingTimer invalidate];
     self.pollingTimer = nil;
     [self handlePollingEvent];
-    NSLog(@"BJIMEngne has stoped");
 }
 
 - (void)syncConfig
 {
+    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
+            weakSelf.im_polling_delta = result.data[@"polling_delta"];
+        }
+        else
+        {
+            DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
         }
     } failure:^(NSError *error, RequestParams *params) {
-       //TODO log
+        DDLogError(@"Sync Config Fail [%@]", error.userInfo);
+        
     }];
 }
 
@@ -70,46 +78,62 @@
         if (result.code == RESULT_CODE_SUCC)
         {
             SendMsgModel *model = [SendMsgModel modelWithDictionary:result.data error:nil];
+            [self.postMessageDelegate onPostMessageSucc:message result:model];
+        }
+        else
+        {
+            NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
+            [self.postMessageDelegate onPostMessageFail:message error:error];
+            DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
         }
     } failure:^(NSError *error, RequestParams *params) {
-        
+        DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
+        [self.postMessageDelegate onPostMessageFail:message error:error];
     }];
 }
 
 - (void)postPollingRequest
 {
+    _bIsPollingRequesting = YES;
     [self nextPollingAt];
     [self.pollingTimer fire];
 }
 
 - (void)nextPollingAt
 {
-    if (! [self isEngineActive]) return;
-    
-    _pollingIndex = (MIN([IM_POLLING_DELTA count] - 1, _pollingIndex + 1)) % [IM_POLLING_DELTA count];
+    _heatBeatIndex = 0;
+    _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
+    [self.pollingTimer fire];
 }
 
 - (void)handlePollingEvent
 {
-    static NSInteger index = 0;
+    if (_bIsPollingRequesting) return;
+    
+    _heatBeatIndex ++ ;
+    if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
+        return;
+    
     if (! [self isEngineActive]) {
-        index = 0;
         return;
     }
     
-    if (index == [IM_POLLING_DELTA[_pollingIndex] integerValue])
+    [self.pollingTimer invalidate];
+    self.pollingTimer = nil;
+    
+    if (self.postMessageDelegate == nil)
     {
-        [self.pollingTimer invalidate];
-        self.pollingTimer = nil;
-        index = 0;
-        
+        [self nextPollingAt];
+    }
+    else
+    {
         [self.pollingDelegate onShouldStartPolling];
     }
-    index ++ ;
 }
 
 - (void)resetPollingIndex
 {
+    _heatBeatIndex = 0;
     _pollingIndex = 0;
 }
 
