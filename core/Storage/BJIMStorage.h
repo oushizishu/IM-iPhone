@@ -13,6 +13,7 @@
 @class Group;
 @class IMMessage;
 @class Conversation;
+@class GroupMember;
 @interface BJIMStorage : NSObject
 
 //user
@@ -52,15 +53,20 @@
 - (BOOL)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
 - (BOOL)deleteMyContactWithUser:(User*)user;
 
+
 - (NSArray*)queryTeacherContactWithUserId:(long)userId userRole:(IMUserRole)userRole;;
 - (NSArray*)queryStudentContactWithUserId:(long)userId userRole:(IMUserRole)userRole;
 - (NSArray*)queryInstitutionContactWithUserId:(long)userId userRole:(IMUserRole)userRole;
 
-//other
+//groupMember
+- (GroupMember*)queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole;
+- (BOOL)insertGroupMember:(GroupMember*)groupMember;
+
+//other 
 - ( BOOL)checkMessageStatus;
 -  (NSArray*)loadMoreMessageWithConversationId:(long)conversationId minMsgId:(double)minMsgId;
-- (void)queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole;
-- (BOOL)insertGroupMember:(Group*)groupMember;
+
+
 - (double)getConversationMaxMsgId:(long)conversationId;
 
 @end

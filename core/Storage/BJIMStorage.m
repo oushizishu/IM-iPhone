@@ -13,8 +13,11 @@
 #import "Group.h"
 #import "IMMessage.h"
 #import "Contacts.h"
+#import "GroupMember.h"
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
-
+const NSString *const IMTeacherContactTableName  = @"techerContact";
+const NSString *const IMStudentContactTabaleName = @"studentContact";
+const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 @interface BJIMStorage()
 @property (nonatomic, strong) LKDBHelper *dbHelper;
 
@@ -88,7 +91,9 @@
 
 - (IMMessage*)queryMessage:(int64_t)messageId
 {
-//TODO
+    NSString *queryString = [NSString stringWithFormat:@"rowId= %lld",messageId];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return message;
 }
 
 - (IMMessage*)queryMessageWithMessageId:(int64_t)messageId
@@ -196,12 +201,26 @@
     if ([self hasContactOwner:owner contact:contact]) {
         return NO;
     }
+    NSString *sqlString = @"";
+    if (contact.userRole == eUserRole_Student) {
+        sqlString = @"studentContacts";
+    }else if(contact .userRole == eUserRole_Teacher)
+    {
+        sqlString = @"teacherContacts";
+    }else if (contact.userRole == eUserRole_Institution){
+        sqlString = @"institutionContacts";
+    }
+    NSString *tableName = sqlString;
+    sqlString = [NSString stringWithFormat:@"CREAT TABLE %@(userId INTEGER, contactId INTEGER, contactRole INTEGER,createTime INTEGER)",sqlString];
+    [self.dbHelper executeSQL:sqlString arguments:nil];
+    
     Contacts *contacts = [[Contacts alloc]init];
     contacts.userId = owner.userId;
     contacts.contactId = contacts.userId;
     contacts.contactRole = contacts.contactRole;
     contacts.createTime = [[NSDate date] timeIntervalSince1970];
-   return [self.dbHelper insertToDB:contacts];
+    sqlString = [NSString stringWithFormat:@"INSERT INTO  %@ VALUES(%lld,%lld,%ld,%hd)",tableName,contacts.userId,contacts.contactId,(long)contacts.contactRole,contacts.createTime];
+    return [self.dbHelper executeSQL:sqlString arguments:nil];
 }
 
 - (Group*)queryGroupWithGroupId:(long)groupId
@@ -209,24 +228,11 @@
     NSString *queryString = [NSString stringWithFormat:@"groupId = %ld",groupId];
     return [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
 }
-/*
- List<StudentContact> list = daoSession.getStudentContactDao().queryRaw(" where " +
- StudentContactDao.Properties.User_id.columnName + "=" + user_id
- +" and " +
- StudentContactDao.Properties.Contact_role.columnName+"="+ IMConstants.IMMessageUserRole.TEACHER.value(), null);
- if (list == null || list.size() == 0) return users;
- for (int i = 0; i < list.size(); ++ i) {
- StudentContact contact = list.get(i);
- User user = queryUser(contact.getContact_id(), contact.getContact_role());
- if (user != null) {
- users.add(user);
- }
- }
- */
 
-- (NSArray*)queryTeacherContactWithUserId:(long)userId userRole:(IMUserRole)userRole
+
+- (NSArray*)queryStudentContactWithTableName:(NSString*)tableName UserId:(long)userId userRole:(IMUserRole)userRole
 {
-    NSString *queryString  = [NSString stringWithFormat:@"userId = %ld AND contactRole = %ld",userId,userRole];
+    NSString *queryString  = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE  userId = %ld AND contactRole = %ld;",tableName,userId,userRole];
     NSArray *array = [self.dbHelper  searchWithSQL:queryString toClass:[Contacts class]];
     if ([array count] == 0) {
         return nil;
@@ -241,17 +247,49 @@
     return users;
 }
 
+- (NSArray*)queryTeacherContactWithUserId:(long)userId userRole:(IMUserRole)userRole
+{
+    NSString *tableName = nil;
+    if (userRole == eUserRole_Student){
+        tableName = (NSString*)IMStudentContactTabaleName;
+    }else if(userRole == eUserRole_Institution){
+        tableName = (NSString*)IMInstitutionContactTableName;
+    }
+    if (!tableName) {
+        return nil;
+    }
+    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];
+}
+
 - (NSArray*)queryStudentContactWithUserId:(long)userId userRole:(IMUserRole)userRole
 {
-    [self queryTeacherContactWithUserId:userId userRole:userRole];
+    NSString *tableName = nil;
+    if (userRole == eUserRole_Institution){
+        tableName = (NSString*)IMInstitutionContactTableName;
+    }else if(userRole == eUserRole_Teacher){
+        tableName = (NSString*)IMTeacherContactTableName;
+    }
+    if (!tableName) {
+        return nil;
+    }
+    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];
 }
 
 
 
 - (NSArray*)queryInstitutionContactWithUserId:(long)userId userRole:(IMUserRole)userRole
 {
-    return [self queryTeacherContactWithUserId:userId userRole:userRole];
-}
+    NSString *tableName = nil;
+    if (userRole == eUserRole_Student){
+        tableName = (NSString*)IMStudentContactTabaleName;
+    }else if(userRole == eUserRole_Teacher)
+    {
+        tableName = (NSString*)IMTeacherContactTableName;
+    }
+    if (!tableName) {
+        return nil;
+    }
+    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];}
 
 - ( BOOL)checkMessageStatus{
     NSString *queryString = [NSString stringWithFormat:@"UPDATE IMMESSAGE SET status = %ld WHERE status = %ld",eMessageStatus_Send_Fail,eMessageStatus_Sending];
@@ -266,24 +304,10 @@
     return array;
 }
 
-/*
- public GroupMember queryGroupMember(long groupId, long userId, IMConstants.IMMessageUserRole userRole) {
- List<GroupMember> members = daoSession.getGroupMemberDao().queryRaw(" where " +
- GroupMemberDao.Properties.Group_id.columnName + "=" + groupId
- + " and " +
- GroupMemberDao.Properties.User_id.columnName+"="+userId
- + " and " +
- GroupMemberDao.Properties.User_role.columnName+"="+userRole.value(), null);
- 
- if (members == null || members.size() == 0) return null;
- return members.get(0);
-	}
- */
-
-- (void)queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole
+- ()queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole
 {
-//TODO
-    NSString *queryString = [NSString stringWithFormat:@""];
+    NSString *queryString = [NSString stringWithFormat:@"groupId = %ld AND userId = %ld and userRole = %ld",groupId,userId,(long)userRole];
+    return [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
 }
 
 
