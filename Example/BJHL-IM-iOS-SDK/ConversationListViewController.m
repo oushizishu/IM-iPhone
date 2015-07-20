@@ -8,6 +8,7 @@
 
 #import "ConversationListViewController.h"
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
+#import "ConversationTableViewCell.h"
 
 @interface ConversationListViewController()<UITableViewDataSource, UITableViewDelegate>
 
@@ -41,7 +42,17 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return nil;
+    static NSString *identity = @"ConversationTableViewCell";
+    
+    ConversationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    if (cell == nil)
+    {
+        cell = [[ConversationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identity];
+    }
+    
+    cell.conversation = [self.allConversations objectAtIndex:indexPath.row];
+    
+    return cell;
 }
 
 

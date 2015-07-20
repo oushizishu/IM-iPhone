@@ -8,6 +8,8 @@
 
 #import "ConversationTableViewCell.h"
 
+#import <BJHL-IM-iOS-SDK/Conversation+DB.h>
+#import <BJHL-IM-iOS-SDK/IMMessage.h>
 
 @interface ConversationTableViewCell()
 
@@ -39,8 +41,25 @@
     self.name.frame = CGRectMake(10, 5, 50, self.current_h - 5);
     self.unreadNum.frame = CGRectMake(self.name.current_x_w + 5, self.name.current_y, 50, self.current_h  - 5);
     self.message.frame = CGRectMake(self.unreadNum.current_x_w, self.unreadNum.current_y, self.current_w - self.unreadNum.current_x_w- 10, self.unreadNum.current_h);
-    
 
+    if (self.conversation.chat_t == eChatType_Chat)
+    {
+        self.name.text = self.conversation.chatToUser.name;
+    }
+    else
+    {
+        self.name.text = self.conversation.chatToGroup.groupName;
+    }
+    
+    NSInteger unreadNum =  self.conversation.unReadNum;
+    self.unreadNum.text = [NSString stringWithFormat:@"未读 %ld", unreadNum];
+    
+    IMMessageBody *messageBody = [[self.conversation lastMessage] messageBody];
+    if ([self.conversation lastMessage].msg_t == eMessageType_TXT)
+    {
+        IMTxtMessageBody *body = (IMTxtMessageBody *)messageBody;
+        self.message.text = body.content;
+    }
 }
 
 /*
