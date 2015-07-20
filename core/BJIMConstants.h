@@ -33,6 +33,7 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Student = 2,
     eUserRole_Institution = 6,
     eUserRole_Kefu = 7,
+    eUserRole_Anonymous = -1,
 };
 
 #pragma mark - 消息类型
