@@ -45,6 +45,9 @@
  */
 - (void)logout;
 
+#pragma mark - 会话 
+- (NSArray *)getAllConversation;
+
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
 

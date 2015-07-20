@@ -14,28 +14,42 @@
 
 - (void)doOperationOnBackground
 {
+    self.message.read = 1;
+    self.message.played = 1;
+    
+    
+    [self.imService.imStorage insertMessage:self.message];
+    
     Conversation *conversation = self.message.conversation;
     if (conversation == nil)
     {
         //TODO query conversation
+        [self.imService.imStorage queryConversation:self.message.sender userRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     }
     
     if (conversation == nil)
     {
         conversation = [[Conversation alloc] init];
-//        conversation.ownerId = [IMEnvironment shareInstance].owner.userId;
-//        conversation.ownerRole = [IMEnvironment shareInstance].owner.userRole;
-//        conversation.toId = self.message.receiver;
-//        conversation.toRole = self.message.receiverRole;
-//        conversation.chat_t = self.message.chat_t;
         conversation.ownerId = [IMEnvironment shareInstance].owner.userId;
         conversation.ownerRole = [IMEnvironment shareInstance].owner.userRole;
         conversation.toId = self.message.receiver;
         conversation.toRole = self.message.receiverRole;
         conversation.chat_t = self.message.chat_t;
-        // insert conversation
     }
-     
+    
+    conversation.lastMsgRowId = self.message.rowid;
+    self.message.conversation = conversation;
+    self.message.msgId = [self.imService.imStorage getConversationMaxMsgId:conversation.rowid] + 0.001;
+    
+    if (self.message.chat_t == eChatType_GroupChat)
+    {
+        Group *group = [self.imService.imStorage queryGroupWithGroupId:self.message.receiver];
+        group.lastMessageId = self.message.msgId;
+        group.endMessageId = self.message.msgId;
+        [self.imService.imStorage updateGroup:group];
+    }
+    
+    [self.imService.imStorage updateMessage:self.message];
 }
 
 - (void)doAfterOperationOnMain

@@ -85,6 +85,13 @@
     [IMEnvironment shareInstance].debugMode = debugMode;
 }
 
+- (NSArray *)getAllConversation
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return nil;
+ 	return nil;
+}
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {

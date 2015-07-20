@@ -13,7 +13,10 @@
 #import "Group.h"
 #import "IMMessage.h"
 #import "Contacts.h"
+
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
+#define KEY_LOAD_MESSAGE_PAGE_COUNT 30
+
 
 @interface BJIMStorage()
 @property (nonatomic, strong) LKDBHelper *dbHelper;
@@ -125,6 +128,20 @@
     NSString *queryString = [NSString stringWithFormat:@"receiveer = %ld ORDER BY msgId LIMIT 1",groupId];
     IMMessage *message = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
     return message.msgId;
+}
+
+- (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId
+{
+    NSString *queryString = [NSString stringWithFormat:@" conversationId = %lld \
+                              ORDER BY msgId DESC LIMIT %d ", conversationId, KEY_LOAD_MESSAGE_PAGE_COUNT];
+    NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
+    NSArray *__array = [[_array reverseObjectEnumerator] allObjects];
+    return __array;
+}
+
+- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId
+{
+    return nil;
 }
 
 #pragma mark conversation

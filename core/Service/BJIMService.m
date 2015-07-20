@@ -9,6 +9,7 @@
 #import "BJIMService.h"
 #import "SendMsgOperation.h"
 #import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
+#import "Conversation+DB.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate>
 
@@ -59,6 +60,19 @@
 }
 
 #pragma mark - Setter & Getter
+- (NSArray *)getAllConversationWithOwner:(User *)owner
+{
+    NSArray *list = [self.imStorage queryAllConversationOwnerId:owner.userId userRole:owner.userRole];
+    
+    __WeakSelf__ weakSelf = self;
+    [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        Conversation *conversation = (Conversation *)obj;
+        conversation.imService = weakSelf;
+    }];
+    return list;
+}
+
+
 - (BJIMEngine *)imEngine
 {
     if (_imEngine == nil)
