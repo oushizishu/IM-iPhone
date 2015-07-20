@@ -520,6 +520,7 @@
 		950E2D831B56508100DC79F2 /* BaseResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D821B56508100DC79F2 /* BaseResponse.m */; };
 		950E2D8C1B5653F700DC79F2 /* SendMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D8B1B5653F700DC79F2 /* SendMsgModel.m */; };
 		950E2D8F1B57627F00DC79F2 /* SyncConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D8E1B57627F00DC79F2 /* SyncConfigModel.m */; };
+		950E2D981B5CC95600DC79F2 /* Conversation+DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D971B5CC95600DC79F2 /* Conversation+DB.m */; };
 		9513367620F7D445516E25C7 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 6A81D5407159B422D992B578 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		957B596BCE6F402FA4862A25 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2975975A81930955BD0E6610 /* CoreData.framework */; };
 		959BC041383306EE8FA4FC76 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4ABD9519C23451EB841115 /* Foundation.framework */; };
@@ -1676,6 +1677,8 @@
 		950E2D8B1B5653F700DC79F2 /* SendMsgModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMsgModel.m; sourceTree = "<group>"; };
 		950E2D8D1B57627F00DC79F2 /* SyncConfigModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncConfigModel.h; sourceTree = "<group>"; };
 		950E2D8E1B57627F00DC79F2 /* SyncConfigModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncConfigModel.m; sourceTree = "<group>"; };
+		950E2D961B5CC95600DC79F2 /* Conversation+DB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Conversation+DB.h"; sourceTree = "<group>"; };
+		950E2D971B5CC95600DC79F2 /* Conversation+DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Conversation+DB.m"; sourceTree = "<group>"; };
 		955128CC4435C6C5B8CDF17E /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = Mantle/extobjc/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
 		95855D55943C75231DEC7377 /* TKAlertViewController+Private.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "TKAlertViewController+Private.m"; path = "TKAlert&TKActionSheet/TKAlert/TKAlertViewController+Private.m"; sourceTree = "<group>"; };
 		9706BE60D5F34ABD9C97C7F6 /* BJPictueBrowser.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJPictueBrowser.m; path = core/BJPhotoBrowser/Classes/BJPictueBrowser.m; sourceTree = "<group>"; };
@@ -3017,6 +3020,8 @@
 				D5B561180DE905ED657D0A30 /* TeacherContacts.m */,
 				683F77B582B7E090D9EEF541 /* User.h */,
 				2B8E5A1907B2A0222B2F50F4 /* User.m */,
+				950E2D961B5CC95600DC79F2 /* Conversation+DB.h */,
+				950E2D971B5CC95600DC79F2 /* Conversation+DB.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -5011,6 +5016,7 @@
 			files = (
 				7395EB8A73B3E8E43570F61B /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				950E2D831B56508100DC79F2 /* BaseResponse.m in Sources */,
+				950E2D981B5CC95600DC79F2 /* Conversation+DB.m in Sources */,
 				950E2D801B555EAF00DC79F2 /* NetWorkTool.m in Sources */,
 				950E2D8F1B57627F00DC79F2 /* SyncConfigModel.m in Sources */,
 				950E2D8C1B5653F700DC79F2 /* SendMsgModel.m in Sources */,

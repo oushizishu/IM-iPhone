@@ -31,6 +31,8 @@
 - (IMMessage*)queryMessage:(int64_t)messageId;
 - (IMMessage*)queryMessageWithMessageId:(int64_t)messageId;
 - (BOOL)updateMessage:(IMMessage*)message;
+- (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId;
+- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId;
 
 - (double)queryChatLastMsgIdOwnerId:(long)ownerId  ownerRole:(IMUserRole)ownerRole;
 - (double)queryGroupChatLastMsgId:(long)groupId;
