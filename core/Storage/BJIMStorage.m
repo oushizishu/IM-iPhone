@@ -145,7 +145,17 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId
 {
-    return nil;
+    NSString *queryString = [NSString stringWithFormat:@" conversationId = %lld \
+                             AND msgId >= %lf \
+                             AND msgId <= %lf \
+                             ORDER BY msgId DESC LIMIT %d ",
+                             conversationId,
+                             group.endMessageId,
+                             group.lastMessageId,
+                             KEY_LOAD_MESSAGE_PAGE_COUNT];
+    NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
+    NSArray *__array = [[_array reverseObjectEnumerator] allObjects];
+    return __array;
 }
 
 #pragma mark conversation

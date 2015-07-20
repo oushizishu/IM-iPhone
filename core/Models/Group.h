@@ -25,7 +25,7 @@
 @property (nonatomic, assign) NSInteger status; // 0 保留 1 开发 2删除
 @property (nonatomic, assign) int64_t createTime;
 
-@property (nonatomic, assign) int64_t lastMessageId;
-@property (nonatomic, assign) int64_t startMessageId;
-@property (nonatomic, assign) int64_t endMessageId;
+@property (nonatomic, assign) double lastMessageId;
+@property (nonatomic, assign) double startMessageId;
+@property (nonatomic, assign) double endMessageId;
 @end
