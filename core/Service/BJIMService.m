@@ -10,11 +10,15 @@
 #import "SendMsgOperation.h"
 #import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import "Conversation+DB.h"
-
-@interface BJIMService()<IMEnginePostMessageDelegate>
+#import  "NSDictionary+MTLMappingAdditions.h"
+#import "IMEnvironment.h"
+#import "ContactFactory.h"
+#import "BJIMStorage.h"
+@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
+@property (nonatomic ,strong) BJIMStorage *storage;
 
 @end
 
@@ -26,6 +30,7 @@
 {
     [self.imEngine syncConfig];
     self.bIsServiceActive = YES;
+    self.storage = [[BJIMStorage alloc]init];
 }
 
 - (void)stopService
@@ -45,7 +50,7 @@
 
 - (void)retryMessage:(IMMessage *)message
 {
-
+    
 }
 
 #pragma mark - Post Message Delegate
@@ -57,6 +62,25 @@
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error
 {
     message.status = eMessageStatus_Send_Fail;
+}
+#pragma mark syncContact 
+
+
+ - (void)synContact:(NSDictionary *)dictionary
+{
+    User *currentUser = [[IMEnvironment shareInstance] owner];
+    if ([dictionary  isKindOfClass:[NSDictionary class]]) {
+        NSArray *groupList = [dictionary  objectForKey:@"group_list"];
+        NSArray *organizationList = [dictionary  objectForKey:@"organization_list"];
+        NSArray *studentList = [dictionary  objectForKey:@"student_list"];
+        for (NSDictionary *dict  in groupList) {
+            Contacts *contacts = [MTLJSONAdapter modelOfClass:[Contacts class] fromJSONDictionary:dictionary error:nil];
+            [self.storage insertOrUpdateContactOwner:currentUser contact:contacts];
+        }
+        
+        
+    }
+    
 }
 
 #pragma mark - Setter & Getter

@@ -49,4 +49,11 @@
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
++ (BJNetRequestOperation*)hermesGetContactSucc:(onSuccess)succ failure:(onFailure)failure
+{
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
 @end

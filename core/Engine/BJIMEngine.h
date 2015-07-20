@@ -19,6 +19,11 @@
 
 @end
 
+@protocol IMEngineSynContactDelegate <NSObject>
+
+
+- (void)synContact:(NSDictionary*)dictionary;
+@end
 @protocol IMEnginePollingDelegate <NSObject>
 
 - (void)onShouldStartPolling;
@@ -32,6 +37,7 @@
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
 @property (nonatomic, weak) id<IMEnginePostMessageDelegate> postMessageDelegate;
 @property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
+@property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 
 - (void)start;
 

@@ -9,7 +9,8 @@
 #import "BJIMEngine.h"
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
-
+#import "BJIMStorage.h"
+#import "Contacts.h"
 int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
@@ -21,7 +22,7 @@ int ddLogLevel = DDLogLevelInfo;
 
 @property (nonatomic, strong) NSTimer *pollingTimer;
 @property (nonatomic, strong) NSArray *im_polling_delta;
-
+@property (nonatomic, strong) BJIMStorage *storage;
 @end
 
 @implementation BJIMEngine
@@ -39,6 +40,9 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)start
 {
     if ([self isEngineActive]) return;
+    if (!self.storage) {
+        self.storage = [[BJIMStorage alloc] init];
+    }
     _engineActive = YES;
     [self resetPollingIndex];
     [self.pollingTimer fire];
@@ -60,6 +64,12 @@ int ddLogLevel = DDLogLevelInfo;
         if (result.code == RESULT_CODE_SUCC)
         {
             weakSelf.im_polling_delta = result.data[@"polling_delta"];
+            [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+                if (self.synContactDelegate) {
+                    [self.synContactDelegate synContact:response];
+                }
+            } failure:^(NSError *error, RequestParams *params) {
+            }];
         }
         else
         {

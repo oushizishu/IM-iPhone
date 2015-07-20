@@ -1,4 +1,4 @@
-//
+
 //  BJIMAppDelegate.m
 //  BJHL-IM-iOS-SDK
 //
@@ -16,7 +16,7 @@
 {
     // Override point for customization after application launch.
     
-    self.window = [[UIWindow alloc] init];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
     BJIMViewController *viewController = [[BJIMViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];

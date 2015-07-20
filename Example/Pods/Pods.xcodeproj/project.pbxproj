@@ -64,9 +64,7 @@
 		0E6676E54958CCAFADAD4A04 /* NSRelationshipDescription+MagicalDataImport.h in Headers */ = {isa = PBXBuildFile; fileRef = BBC712AED03303964A4D0287 /* NSRelationshipDescription+MagicalDataImport.h */; };
 		0EBE6CE9F32088A684D8D706 /* SDWebImageDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = E8B7F3C664F2430E0A71C941 /* SDWebImageDecoder.h */; };
 		1070B358E02998F4B2942633 /* UIWebView+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = E40B54912958111197590484 /* UIWebView+AFNetworking.h */; };
-		109A9CA6050FA3AE90DE82F2 /* InstitutionContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EB9E2E7C33CB454A991092 /* InstitutionContacts.m */; };
 		1103D3DCEAF0D4F0CE8644DA /* IMTxtMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = CF47513CD857AD95C60191D5 /* IMTxtMessageBody.m */; };
-		11830669EF8F770F563463DE /* StudentContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE5AED1286ACF41E1872CB1 /* StudentContacts.h */; };
 		1185A6A2B447E81F7A902FE3 /* NSManagedObject+MagicalFinders.h in Headers */ = {isa = PBXBuildFile; fileRef = 977682A25BC410DC93E0C157 /* NSManagedObject+MagicalFinders.h */; };
 		119DB4EC822203D2053C0527 /* UIView+Basic.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AD2FE3119D3EBD26CAA1345 /* UIView+Basic.m */; };
 		11F67CB81355A195A4B99D21 /* SDWebImagePrefetcher.m in Sources */ = {isa = PBXBuildFile; fileRef = 1060B17375FDB89D710E18EF /* SDWebImagePrefetcher.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -140,7 +138,6 @@
 		2604FEE4FF0D16341D66020E /* AFURLSessionManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 04672115259E2A6AEDBC4F63 /* AFURLSessionManager.h */; };
 		26592059412A0E601EDB3179 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 429AE99E5AC5EB6EB9AE1810 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		26635A1007CFEF30A463B33A /* RequestParams.h in Headers */ = {isa = PBXBuildFile; fileRef = 99ACBF678F53CC321FD7543F /* RequestParams.h */; };
-		26B4460DBD3908B8D130A359 /* TeacherContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 21FF6DE90163BE5316C56C16 /* TeacherContacts.h */; };
 		270F456E2D0E72E54D65FA4E /* AFURLRequestSerialization.h in Headers */ = {isa = PBXBuildFile; fileRef = 9FF9338888E4B249356C4B25 /* AFURLRequestSerialization.h */; };
 		277D618D8857F14C5E257836 /* JLRemindersPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = 4D79ADB0053F27843FA647CC /* JLRemindersPermission.h */; };
 		27B10A6E7CF87C190F6E689B /* PureLayoutDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = BCDF3E88FB3FB2841E4CB8B7 /* PureLayoutDefines.h */; };
@@ -226,7 +223,6 @@
 		3F1B4DC8E61F22909AA27345 /* RecordAudio.h in Headers */ = {isa = PBXBuildFile; fileRef = F37D7B485F58349B52323902 /* RecordAudio.h */; };
 		3F2486E0C29F37FE46FF78BB /* UIViewAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 6120F5F910E9D229B90A3D45 /* UIViewAdditions.h */; };
 		3FD15A85315AF478C6C50C8A /* Mantle.h in Headers */ = {isa = PBXBuildFile; fileRef = 54B51BC6C2F6913CF6863869 /* Mantle.h */; };
-		41431EF59B08F2ADEC29074E /* StudentContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 9CE5AED1286ACF41E1872CB1 /* StudentContacts.h */; };
 		4144F63339C40CBAF8CA0A05 /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FA310F542BB88E9D23CF4D6 /* MTLJSONAdapter.h */; };
 		41644DE09985A33E3555726F /* MagicalRecord+ShorthandMethods.h in Headers */ = {isa = PBXBuildFile; fileRef = F387BE4068BB6AB14FADEFAC /* MagicalRecord+ShorthandMethods.h */; };
 		416AF5C4B26CBB557BAF23F6 /* NSDictionary+MTLManipulationAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = C840B32F7CB8D3FD391F69E9 /* NSDictionary+MTLManipulationAdditions.h */; };
@@ -243,12 +239,10 @@
 		46425B78B98936AD8D095A10 /* NSObject+MTLComparisonAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = AD70ABF999D269079BD94DA3 /* NSObject+MTLComparisonAdditions.h */; };
 		469B768F0F4034C07B511ABF /* JLContactsPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = B2D19DD0E1637F98EEB58F98 /* JLContactsPermission.h */; };
 		46D97D41FD53E67EBB7F1F0E /* IMMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 4A9E7B9EEA523FAFBCCD5731 /* IMMessageBody.m */; };
-		47A423E0F97DA15B191014B7 /* StudentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 87CFA360F6CCB97CA86431FC /* StudentContacts.m */; };
 		47E336DB928A7350B411F99B /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F3428CACCC2B4F0F1164A48 /* CoreGraphics.framework */; };
 		481753DEAE0BE29068E4CDAA /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = ABC64D870C05833FD2A2EFE9 /* MobileCoreServices.framework */; };
 		4823E2E94753704024AABEA9 /* IMImgMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 29E2835EF06733F1B5EF5DFC /* IMImgMessageBody.m */; };
 		4865404B714DEF9B693C3FE0 /* AFNetworkActivityIndicatorManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 045A15DCBAE77DF02A537A28 /* AFNetworkActivityIndicatorManager.m */; };
-		48681CD9366F3DAF8BEA2FF5 /* StudentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 87CFA360F6CCB97CA86431FC /* StudentContacts.m */; };
 		48A209A669F39F1F6B552B2A /* IMMessageBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 164E2538B2AE3CD4CC6E9322 /* IMMessageBody.h */; };
 		48B2CCB7ACF8D4701F5FA1E4 /* Pods-Tests-MagicalRecord-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EB7658A28B68E7915734DB81 /* Pods-Tests-MagicalRecord-dummy.m */; };
 		4946D96498952F6B6D953428 /* BJIMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 06532F3E7613BA956BBC548F /* BJIMStorage.m */; };
@@ -271,7 +265,6 @@
 		50C190CDDFD7491FB2A411EE /* BJCommonDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = E6E8B3C58D3B20CDC6E569D4 /* BJCommonDefines.h */; };
 		50CA6FB66723F3B1C2E974C8 /* NSArray+MTLManipulationAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 2889EC10632BDB12EC9667A1 /* NSArray+MTLManipulationAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		510004FB8B4F0B47C8618FE3 /* AFSecurityPolicy.h in Headers */ = {isa = PBXBuildFile; fileRef = 5CF170B07BEC7E61B4A676E2 /* AFSecurityPolicy.h */; };
-		52717C4EC58FA258591AEF5A /* InstitutionContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 19EB9E2E7C33CB454A991092 /* InstitutionContacts.m */; };
 		52C0CA13B7F930F887E4C760 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F3428CACCC2B4F0F1164A48 /* CoreGraphics.framework */; };
 		52D68F58B07659E14D8BB6F5 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7D4ABD9519C23451EB841115 /* Foundation.framework */; };
 		5311AB8E74274A04165733A0 /* BJCommonProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FC498CBCA1F6E6101D5E968D /* BJCommonProxy.m */; };
@@ -492,7 +485,6 @@
 		8E0A801872123C622CB10375 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 380B780CBA7621FDA79F22FE /* FMDatabaseAdditions.h */; };
 		8E108C3C45CE885D8256ED59 /* TKFullScreenWindowBackground.m in Sources */ = {isa = PBXBuildFile; fileRef = 332EDA2BEC633E7B54CA897F /* TKFullScreenWindowBackground.m */; };
 		8E43B2D4F475C078432E44D4 /* MagicalRecord+Options.m in Sources */ = {isa = PBXBuildFile; fileRef = 63FA245E8ACBCC89A7220CEC /* MagicalRecord+Options.m */; };
-		8E4F2C4F48BD125D59833287 /* InstitutionContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 999D28C027BCB88FDA0FBCD5 /* InstitutionContacts.h */; };
 		8F347FCFF0E56B6AF9659BAB /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = BFE0E49945F0413231605113 /* NSData+Base64.m */; };
 		8F55E51DE3B95ED3EEAB941B /* UIButton+WebCache.h in Headers */ = {isa = PBXBuildFile; fileRef = 2024C3A40A25BD96526FD603 /* UIButton+WebCache.h */; };
 		8FB2E0257525536388C4505A /* LKDBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DDEBA59C4811CB65D621C3D /* LKDBUtils.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -574,7 +566,6 @@
 		A23EAFBEF89DA6EEFA77C310 /* BJGridCell.h in Headers */ = {isa = PBXBuildFile; fileRef = DF45B576E4FCE06F6FF4C659 /* BJGridCell.h */; };
 		A28681A35CA404D70809080A /* TKTextFieldAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A1326C64CF479B88D1CE9FCA /* TKTextFieldAlertViewController.m */; };
 		A29A9A26E2FE799C22C47A09 /* IMEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = E590456F819883C65DD46B36 /* IMEnvironment.m */; };
-		A2DA60643B1A244C87D5AC7A /* TeacherContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 21FF6DE90163BE5316C56C16 /* TeacherContacts.h */; };
 		A331C4C9853FC78C818300BE /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A5B29B85CA3F83C90C6D7884 /* AFHTTPSessionManager.m */; };
 		A361C6D947E849B76BBF4842 /* TKActionSheetManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 140FFE51B8C8CA71ABFBDE15 /* TKActionSheetManager.h */; };
 		A3AE7CFD78D685FC6C404665 /* NSRelationshipDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = 3B719A466D1F288D681350DA /* NSRelationshipDescription+MagicalDataImport.m */; };
@@ -611,7 +602,6 @@
 		AAFF39C874420D9196D1A999 /* AFSecurityPolicy.m in Sources */ = {isa = PBXBuildFile; fileRef = 7CB389FA8C181F1151E06265 /* AFSecurityPolicy.m */; };
 		ABCB7C6CBA2016BD74CFCA74 /* BJCommonProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = FC498CBCA1F6E6101D5E968D /* BJCommonProxy.m */; };
 		AC36A491BFAC839D263FCC2A /* UIKit+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 92BA38F0A01441AAEF362A44 /* UIKit+AFNetworking.h */; };
-		AC481C1CB535D7DE8F1348B1 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B561180DE905ED657D0A30 /* TeacherContacts.m */; };
 		AC87CB1D4C27AE88A2D93DEE /* MTLTransformerErrorHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = E129978C61B6C164D16515A3 /* MTLTransformerErrorHandling.h */; };
 		AC994286CABCFE84A0726999 /* PictureBrowserCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6A8A02B23C7940EA94972BF0 /* PictureBrowserCollectionViewCell.h */; };
 		ACD4974FB3E141F4F1750710 /* UIViewAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 03D9A2946F5C39D8B3BB1A4D /* UIViewAdditions.m */; };
@@ -620,7 +610,6 @@
 		AD2B94CA2F2C2B5C61374F7E /* DDDispatchQueueLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 63772AED211E3ED540892A22 /* DDDispatchQueueLogFormatter.h */; };
 		AD74CF5449DE42F19C84F480 /* UIRefreshControl+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 949DA8C6886F22721F0003EB /* UIRefreshControl+AFNetworking.m */; };
 		ADB6E8D135C0D4465C62C89B /* AFURLSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = A2DA582AC3D7ABD70F437486 /* AFURLSessionManager.m */; };
-		ADBD2CE28602B5122BAD8BF9 /* InstitutionContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 999D28C027BCB88FDA0FBCD5 /* InstitutionContacts.h */; };
 		AE6CB0E0F131B37BCA4C19AA /* JLFacebookPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = 735640DCED7E6902F414304A /* JLFacebookPermission.m */; };
 		AF546012ADE070FDA288280C /* MagicalRecordInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = 8B0F98DDCAE34F50D6505580 /* MagicalRecordInternal.h */; };
 		AF6E4813CDB3938ABCAD0905 /* IMMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 4703EC99C3A2747D0157A651 /* IMMessage.h */; };
@@ -657,6 +646,7 @@
 		B86E9176226CC14D528FAFC4 /* NSPersistentStore+MagicalRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = ABA10736A41B31CBC2217147 /* NSPersistentStore+MagicalRecord.m */; };
 		B87B665899D03279B84B417B /* NSValueTransformer+MTLInversionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = E16F8E3293434B1661F027A5 /* NSValueTransformer+MTLInversionAdditions.h */; };
 		B89DED5BD4AFC0E507D9FCD4 /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 45EAD2974E4B3B6D4E2B06C4 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		B8AB91061B5D12BC002CF82A /* ContactFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = B8AB91051B5D12BC002CF82A /* ContactFactory.m */; };
 		B8BC6DF3EA3954D7692C8B42 /* NSManagedObjectContext+MagicalObserving.m in Sources */ = {isa = PBXBuildFile; fileRef = 7594CB4355B6988D85184838 /* NSManagedObjectContext+MagicalObserving.m */; };
 		B8BFF000AFC515E59EBF2B26 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = A2E7667576371297CDD7224D /* FMDatabasePool.h */; };
 		B8E25D0D75AA34AB041F951E /* GroupMember.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E3558D55BE4B1944CE5A398 /* GroupMember.h */; };
@@ -784,7 +774,6 @@
 		DBBAF9F35F93E2AAA24D13D4 /* DDTTYLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A90748627E372645B6A58E2 /* DDTTYLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		DC2AE71E478F973F5D7FBDF3 /* JLRemindersPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5FF900349FB094CE5F398B /* JLRemindersPermission.m */; };
 		DC545DA85F793F0ED4754D18 /* TKFirstResponseAlertViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F859FA5C3998C75A1A7E1497 /* TKFirstResponseAlertViewController.m */; };
-		DC96B4CAE8115B28C1C809A5 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = D5B561180DE905ED657D0A30 /* TeacherContacts.m */; };
 		DCA513C9E8655208C8172BD4 /* UIImageView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 33FD7DFF19CCA281D1813A3A /* UIImageView+AFNetworking.m */; };
 		DCD7E53360EFD8F1C4A4D2BA /* PictureBrowserCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 66321BB12D0EBB8C31208C0B /* PictureBrowserCollectionViewCell.m */; };
 		DCE9931928FEEBC7C202E670 /* BJIMService.h in Headers */ = {isa = PBXBuildFile; fileRef = BAD70C0525035ED7F6A69676 /* BJIMService.h */; };
@@ -1378,7 +1367,6 @@
 		18A2F569E8ECD918D2659AE5 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
 		18B90E19FC6A09BE3BE9B243 /* NSAttributeDescription+MagicalDataImport.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSAttributeDescription+MagicalDataImport.h"; path = "MagicalRecord/Categories/DataImport/NSAttributeDescription+MagicalDataImport.h"; sourceTree = "<group>"; };
 		19C6B8EC8481B41F2E776A16 /* DDLog+LOGV.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "DDLog+LOGV.h"; path = "Classes/DDLog+LOGV.h"; sourceTree = "<group>"; };
-		19EB9E2E7C33CB454A991092 /* InstitutionContacts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = InstitutionContacts.m; sourceTree = "<group>"; };
 		1A3D942B069A5512CDADCDBC /* UIView+WebCacheOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+WebCacheOperation.m"; path = "SDWebImage/UIView+WebCacheOperation.m"; sourceTree = "<group>"; };
 		1B44BCCCAC190FC8086E0F39 /* NSManagedObjectContext+MagicalRecord.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObjectContext+MagicalRecord.m"; path = "MagicalRecord/Categories/NSManagedObjectContext/NSManagedObjectContext+MagicalRecord.m"; sourceTree = "<group>"; };
 		1BB2642EFAB2B62E94182F88 /* Pods-Tests-AFNetworking.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-AFNetworking.xcconfig"; path = "../Pods-Tests-AFNetworking/Pods-Tests-AFNetworking.xcconfig"; sourceTree = "<group>"; };
@@ -1403,7 +1391,6 @@
 		211777A9384ABE2689FFED09 /* UIImage+GIF.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImage+GIF.h"; path = "SDWebImage/UIImage+GIF.h"; sourceTree = "<group>"; };
 		21201F0B1748DD2BDD92C46E /* JLPermissionsCore.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLPermissionsCore.h; path = core/JLPermissions/JLPermissionsCore.h; sourceTree = "<group>"; };
 		21D1B710F4531BB127767BCA /* JLPermissionsCore.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JLPermissionsCore.m; path = core/JLPermissions/JLPermissionsCore.m; sourceTree = "<group>"; };
-		21FF6DE90163BE5316C56C16 /* TeacherContacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = TeacherContacts.h; sourceTree = "<group>"; };
 		2213277EF81B211A12AC0CEF /* UIImageView+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+WebCache.h"; path = "SDWebImage/UIImageView+WebCache.h"; sourceTree = "<group>"; };
 		222A08846E0BC702A7685930 /* libPods-BJHL-IM-iOS-SDK-MagicalRecord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK-MagicalRecord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22F4ECD7F2FAB382EEF83724 /* Pods-Tests-CocoaLumberjack.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-CocoaLumberjack.xcconfig"; path = "../Pods-Tests-CocoaLumberjack/Pods-Tests-CocoaLumberjack.xcconfig"; sourceTree = "<group>"; };
@@ -1637,7 +1624,6 @@
 		85868E385B31ED5227BA9775 /* TKActionSheetManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKActionSheetManager.m; path = "TKAlert&TKActionSheet/TKActionSheet/TKActionSheetManager.m"; sourceTree = "<group>"; };
 		858ABCBC6D65380CC5054C16 /* TKFullScreenWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TKFullScreenWindow.h; path = "TKAlert&TKActionSheet/TKFullScreenWindow.h"; sourceTree = "<group>"; };
 		8706E27CB739D0F7196F20BE /* NSValueTransformer+MTLInversionAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSValueTransformer+MTLInversionAdditions.m"; path = "Mantle/NSValueTransformer+MTLInversionAdditions.m"; sourceTree = "<group>"; };
-		87CFA360F6CCB97CA86431FC /* StudentContacts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = StudentContacts.m; sourceTree = "<group>"; };
 		87D31F9EB8F433AEF5D65FC6 /* SDImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCache.m; path = SDWebImage/SDImageCache.m; sourceTree = "<group>"; };
 		87D4416388C5EC2BE5AD6401 /* BJPicture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJPicture.m; path = core/BJPhotoBrowser/Classes/BJPicture.m; sourceTree = "<group>"; };
 		87DF236536DC83D73FA53A6D /* DDAbstractDatabaseLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDAbstractDatabaseLogger.h; path = Classes/DDAbstractDatabaseLogger.h; sourceTree = "<group>"; };
@@ -1686,7 +1672,6 @@
 		9870F1F1A7B03CC468A41082 /* Pods-BJHL-IM-iOS-SDK-SDWebImage-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BJHL-IM-iOS-SDK-SDWebImage-prefix.pch"; sourceTree = "<group>"; };
 		99243751EC94402DE89F2456 /* DDLog.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDLog.m; path = Classes/DDLog.m; sourceTree = "<group>"; };
 		995298177E29A90A0E4875C5 /* SDWebImageDownloader.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDWebImageDownloader.m; path = SDWebImage/SDWebImageDownloader.m; sourceTree = "<group>"; };
-		999D28C027BCB88FDA0FBCD5 /* InstitutionContacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = InstitutionContacts.h; sourceTree = "<group>"; };
 		99ACBF678F53CC321FD7543F /* RequestParams.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RequestParams.h; path = core/NetWork/RequestParams.h; sourceTree = "<group>"; };
 		9A4D538DEB875BE0EB5D0056 /* Pods-BJHL-IM-iOS-SDK-TMCache-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BJHL-IM-iOS-SDK-TMCache-prefix.pch"; sourceTree = "<group>"; };
 		9AD9B2A22064D9F63E82795E /* TMMemoryCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TMMemoryCache.m; path = TMCache/TMMemoryCache.m; sourceTree = "<group>"; };
@@ -1694,7 +1679,6 @@
 		9B880166CC001F2A791D3243 /* LKDBHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LKDBHelper.h; path = LKDBHelper/Helper/LKDBHelper.h; sourceTree = "<group>"; };
 		9BA6745917B874AE53B80A28 /* Pods-Tests-PureLayout.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-PureLayout.xcconfig"; path = "../Pods-Tests-PureLayout/Pods-Tests-PureLayout.xcconfig"; sourceTree = "<group>"; };
 		9C3F405168DE129E742B90C6 /* Pods-Tests-PureLayout-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-PureLayout-Private.xcconfig"; path = "../Pods-Tests-PureLayout/Pods-Tests-PureLayout-Private.xcconfig"; sourceTree = "<group>"; };
-		9CE5AED1286ACF41E1872CB1 /* StudentContacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = StudentContacts.h; sourceTree = "<group>"; };
 		9D4EACF45B9D24003692A0FD /* TKAlertViewController+Private.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "TKAlertViewController+Private.h"; path = "TKAlert&TKActionSheet/TKAlert/TKAlertViewController+Private.h"; sourceTree = "<group>"; };
 		9D5988E42A514025A829DAD5 /* AFURLConnectionOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLConnectionOperation.m; path = AFNetworking/AFURLConnectionOperation.m; sourceTree = "<group>"; };
 		9E3558D55BE4B1944CE5A398 /* GroupMember.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = GroupMember.h; sourceTree = "<group>"; };
@@ -1757,6 +1741,8 @@
 		B709B99AC8218313B51FE514 /* Pods-Tests-AFNetworking-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-Tests-AFNetworking-dummy.m"; path = "../Pods-Tests-AFNetworking/Pods-Tests-AFNetworking-dummy.m"; sourceTree = "<group>"; };
 		B7EE68D400E17F59D58AF155 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
 		B8924C4A45902A788AD87FC1 /* UIAlertView+AFNetworking.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIAlertView+AFNetworking.h"; path = "UIKit+AFNetworking/UIAlertView+AFNetworking.h"; sourceTree = "<group>"; };
+		B8AB91041B5D12BC002CF82A /* ContactFactory.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ContactFactory.h; sourceTree = "<group>"; };
+		B8AB91051B5D12BC002CF82A /* ContactFactory.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ContactFactory.m; sourceTree = "<group>"; };
 		B8B0A4751CD2F0873E15CDDE /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+MultiFormat.m"; path = "SDWebImage/UIImage+MultiFormat.m"; sourceTree = "<group>"; };
 		B8D5C03D3877B57679AFC71D /* UIView+Borders.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+Borders.m"; path = "core/UIView/UIView+Borders.m"; sourceTree = "<group>"; };
 		B90D00D6D0E6DDED098E9673 /* libPods-BJHL-IM-iOS-SDK-SDWebImage.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK-SDWebImage.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1818,7 +1804,6 @@
 		D44725569C6CE60C80BC6116 /* JLLocationPermission.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JLLocationPermission.m; path = core/JLPermissions/JLLocationPermission.m; sourceTree = "<group>"; };
 		D496C6A8E018F4EFD8C4AC7B /* LKDB+Mapping.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "LKDB+Mapping.m"; path = "LKDBHelper/Helper/LKDB+Mapping.m"; sourceTree = "<group>"; };
 		D5AEC78A77A6C181B0FB4B38 /* GroupMember.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = GroupMember.m; sourceTree = "<group>"; };
-		D5B561180DE905ED657D0A30 /* TeacherContacts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = TeacherContacts.m; sourceTree = "<group>"; };
 		D627B4CA2E06FEECABCDF896 /* NSDateFormatter+Category.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSDateFormatter+Category.h"; path = "core/utils/NSDateFormatter+Category.h"; sourceTree = "<group>"; };
 		D72C1EB4250566CD905905A1 /* MTLValueTransformer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MTLValueTransformer.h; path = Mantle/MTLValueTransformer.h; sourceTree = "<group>"; };
 		D75FC295B5F359570678AFC6 /* Pods-Tests-Mantle-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "Pods-Tests-Mantle-prefix.pch"; path = "../Pods-Tests-Mantle/Pods-Tests-Mantle-prefix.pch"; sourceTree = "<group>"; };
@@ -3012,16 +2997,12 @@
 				D5AEC78A77A6C181B0FB4B38 /* GroupMember.m */,
 				4703EC99C3A2747D0157A651 /* IMMessage.h */,
 				CDE24362D6A9087C9794B3AC /* IMMessage.m */,
-				999D28C027BCB88FDA0FBCD5 /* InstitutionContacts.h */,
-				19EB9E2E7C33CB454A991092 /* InstitutionContacts.m */,
-				9CE5AED1286ACF41E1872CB1 /* StudentContacts.h */,
-				87CFA360F6CCB97CA86431FC /* StudentContacts.m */,
-				21FF6DE90163BE5316C56C16 /* TeacherContacts.h */,
-				D5B561180DE905ED657D0A30 /* TeacherContacts.m */,
 				683F77B582B7E090D9EEF541 /* User.h */,
 				2B8E5A1907B2A0222B2F50F4 /* User.m */,
 				950E2D961B5CC95600DC79F2 /* Conversation+DB.h */,
 				950E2D971B5CC95600DC79F2 /* Conversation+DB.m */,
+				B8AB91041B5D12BC002CF82A /* ContactFactory.h */,
+				B8AB91051B5D12BC002CF82A /* ContactFactory.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3737,13 +3718,10 @@
 				18253DD12B03BFB834C2EEF4 /* IMMessage.h in Headers */,
 				B9C57588BF765ED2932319C1 /* IMMessageBody.h in Headers */,
 				95C1EAEE7C75D59FBE3A8289 /* IMTxtMessageBody.h in Headers */,
-				ADBD2CE28602B5122BAD8BF9 /* InstitutionContacts.h in Headers */,
 				C79F9F8ACDDF5C2636DCDCDE /* NSData+Base64.h in Headers */,
 				181D28763962D950BF0B0567 /* NSData+CommonCrypto.h in Headers */,
 				8A1277CE13A21D91AC5A491E /* NSString+Base64.h in Headers */,
 				6B17FE812957598DFF4D621C /* SendMsgOperation.h in Headers */,
-				11830669EF8F770F563463DE /* StudentContacts.h in Headers */,
-				A2DA60643B1A244C87D5AC7A /* TeacherContacts.h in Headers */,
 				A88DC0C198AECADD87CC411D /* User.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3810,13 +3788,10 @@
 				AF6E4813CDB3938ABCAD0905 /* IMMessage.h in Headers */,
 				48A209A669F39F1F6B552B2A /* IMMessageBody.h in Headers */,
 				0B5820902E80F60141137AF3 /* IMTxtMessageBody.h in Headers */,
-				8E4F2C4F48BD125D59833287 /* InstitutionContacts.h in Headers */,
 				6A24E52B69FBE2FC40B46036 /* NSData+Base64.h in Headers */,
 				F2DE92F726328E5405FF6094 /* NSData+CommonCrypto.h in Headers */,
 				0564A8F87982C7D1B64E540F /* NSString+Base64.h in Headers */,
 				6136105671C20887A0D22073 /* SendMsgOperation.h in Headers */,
-				41431EF59B08F2ADEC29074E /* StudentContacts.h in Headers */,
-				26B4460DBD3908B8D130A359 /* TeacherContacts.h in Headers */,
 				05B04A41D2C6AE2D97D76A86 /* User.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4887,14 +4862,11 @@
 				00212244D289F7464F681ED5 /* IMMessage.m in Sources */,
 				E67A08B627631AE6F5FC1EFC /* IMMessageBody.m in Sources */,
 				1103D3DCEAF0D4F0CE8644DA /* IMTxtMessageBody.m in Sources */,
-				52717C4EC58FA258591AEF5A /* InstitutionContacts.m in Sources */,
 				8F347FCFF0E56B6AF9659BAB /* NSData+Base64.m in Sources */,
 				EE7AC48048BEA9C9A27EAED9 /* NSData+CommonCrypto.m in Sources */,
 				545B44ED2F4574E9D7C3FFAA /* NSString+Base64.m in Sources */,
 				B572AD1637F8A8BD8E866D9B /* Pods-BJHL-IM-iOS-SDK-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				313B15D38626F880D8905AAA /* SendMsgOperation.m in Sources */,
-				47A423E0F97DA15B191014B7 /* StudentContacts.m in Sources */,
-				DC96B4CAE8115B28C1C809A5 /* TeacherContacts.m in Sources */,
 				E1E040BF21C2BDDFCBF51176 /* User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -4922,14 +4894,11 @@
 				7533A578DCFDC9BAAC0A9CBC /* IMMessage.m in Sources */,
 				46D97D41FD53E67EBB7F1F0E /* IMMessageBody.m in Sources */,
 				555E60D03E66EFD9DA2C8E25 /* IMTxtMessageBody.m in Sources */,
-				109A9CA6050FA3AE90DE82F2 /* InstitutionContacts.m in Sources */,
 				78CF37339A8C2480689871AF /* NSData+Base64.m in Sources */,
 				C3E7A76CEA017C268BDD1BB1 /* NSData+CommonCrypto.m in Sources */,
 				6C9C79CBC97D36CE6A7F6783 /* NSString+Base64.m in Sources */,
 				979A4DC27812D445B033A001 /* Pods-Tests-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				C2518FB60A9ACBF575C4E89F /* SendMsgOperation.m in Sources */,
-				48681CD9366F3DAF8BEA2FF5 /* StudentContacts.m in Sources */,
-				AC481C1CB535D7DE8F1348B1 /* TeacherContacts.m in Sources */,
 				F77DC9D8C0C68750804DDCF2 /* User.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -5017,6 +4986,7 @@
 				7395EB8A73B3E8E43570F61B /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				950E2D831B56508100DC79F2 /* BaseResponse.m in Sources */,
 				950E2D981B5CC95600DC79F2 /* Conversation+DB.m in Sources */,
+				B8AB91061B5D12BC002CF82A /* ContactFactory.m in Sources */,
 				950E2D801B555EAF00DC79F2 /* NetWorkTool.m in Sources */,
 				950E2D8F1B57627F00DC79F2 /* SyncConfigModel.m in Sources */,
 				950E2D8C1B5653F700DC79F2 /* SendMsgModel.m in Sources */,

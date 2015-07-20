@@ -36,6 +36,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     if (self)
     {
         self.dbHelper = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME];
+        
     }
     return self;
 }
@@ -111,10 +112,8 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return  [self.dbHelper  updateToDB:message where:queryString];
 }
 
-/*
- */
 - (double)queryChatLastMsgIdOwnerId:(long)ownerId  ownerRole:(IMUserRole)ownerRole
-{//TODO
+{
     NSString *queryString = [NSString stringWithFormat:@"chat_t = 0 \
                              AND sender = %ld\
                              AND senderRole = %ld\
