@@ -38,11 +38,8 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 #pragma mark User表
 - (User*)queryUser:(int64_t)userId userRole:(int)userRole
 {
-    NSArray *array = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId = %lld  AND userRole = %d",userId,userRole] orderBy:nil];
-    if ([array count]  == 1) {
-        return array[0];
-    }
-    return nil;
+   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId = %lld  AND userRole = %d",userId,userRole] orderBy:nil];
+   return user;
 }
 
 
