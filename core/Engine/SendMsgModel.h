@@ -11,7 +11,7 @@
 
 @interface SendMsgModel : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) double mstId;
+@property (nonatomic, assign) double msgId;
 @property (nonatomic, assign) int64_t createAt;
 
 @end

@@ -87,6 +87,26 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 {
     [self.dbHelper updateToDB:group where:[NSString stringWithFormat:@"groupId = %lld",group.groupId]];;
 }
+
+- (NSArray *)queryGroupsWithUser:(User *)user
+{
+    NSString *queryGroupMember = [NSString stringWithFormat:@" userId=%lld \
+                                   AND userRole=%ld", user.userId, user.userRole];
+    NSArray *groupMembers = [self.dbHelper search:[GroupMember class] where:queryGroupMember orderBy:nil offset:0 count:0];
+    if ([groupMembers count] == 0) return nil;
+    
+    NSMutableArray *groups = [[NSMutableArray alloc] initWithCapacity:[groupMembers count]];
+    
+    for (NSInteger index = 0; index < [groupMembers count]; ++ index) {
+        GroupMember *member = [groupMembers objectAtIndex:index];
+        Group *group = [self queryGroupWithGroupId:member.groupId];
+        if (group == nil) continue;
+        
+        [groups addObject:group];
+    }
+    return groups;
+}
+
 #pragma mark message 
 - (BOOL)insertMessage:(IMMessage*)message{
     return [self.dbHelper insertToDB:message];
@@ -112,13 +132,11 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return  [self.dbHelper  updateToDB:message where:queryString];
 }
 
-- (double)queryChatLastMsgIdOwnerId:(long)ownerId  ownerRole:(IMUserRole)ownerRole
+- (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole
 {
     NSString *queryString = [NSString stringWithFormat:@"chat_t = 0 \
-                             AND sender = %ld\
-                             AND senderRole = %ld\
-                             AND receiver ＝ %ld\
-                             AND receiverRole =  %ld ORDER BY msgId  DESC LIMIT 1",ownerId,(long)ownerRole,ownerId,ownerRole];
+                             AND receiver ＝ %lld\
+                             AND receiverRole =  %ld ORDER BY msgId  DESC LIMIT 1",ownerId, ownerRole];
     
     IMMessage *message = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
     return message.msgId;
@@ -126,10 +144,13 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 
 
-- (double)queryGroupChatLastMsgId:(long)groupId
-{//DOTO groupId ????
-    NSString *queryString = [NSString stringWithFormat:@"receiveer = %ld ORDER BY msgId LIMIT 1",groupId];
-    IMMessage *message = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
+- (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole
+{
+    NSString *queryString = [NSString stringWithFormat:@"receiver = %lld \
+                             AND sender <> %lld \
+                             AND senderRole <> %ld ORDER BY msgId LIMIT 1",groupId, sender, senderRole];
+    
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }
 
@@ -248,9 +269,9 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return [self.dbHelper executeSQL:sqlString arguments:nil];
 }
 
-- (Group*)queryGroupWithGroupId:(long)groupId
+- (Group*)queryGroupWithGroupId:(int64_t)groupId
 {
-    NSString *queryString = [NSString stringWithFormat:@"groupId = %ld",groupId];
+    NSString *queryString = [NSString stringWithFormat:@"groupId = %lld",groupId];
     return [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
 }
 
@@ -342,7 +363,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 }
 
 - (double)getConversationMaxMsgId:(int64_t)conversationId {
-    NSString *queryString = [NSString stringWithFormat:@"conversationId = %lld ORDER BY msg_id DESC LIMIT 1",conversationId];
+    NSString *queryString = [NSString stringWithFormat:@"conversationId = %lld ORDER BY msgId DESC LIMIT 1",conversationId];
     NSArray *array = [self.dbHelper searchWithSQL:queryString toClass:[IMMessage class]];
     if ([array count] == 0) {
         return UNAVALIABLE_MESSAGE_ID;

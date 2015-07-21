@@ -543,6 +543,9 @@
 		941DF55E3B6B8C2F17AB0DF3 /* MagicalRecord+Setup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC98439A7390DB1669EC61 /* MagicalRecord+Setup.m */; };
 		949CD75376EF96F2DE01F6CA /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 153237BB451DAAD7BB7E9729 /* NSData+ImageContentType.h */; };
 		94B40F5C416C9E00A4C82399 /* BJCommonDefines.h in Headers */ = {isa = PBXBuildFile; fileRef = FF9A5CC5A115CAA441625C8F /* BJCommonDefines.h */; };
+		950E2D9E1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D9D1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m */; };
+		950E2DA41B5EA2F900DC79F2 /* PrePollingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2DA31B5EA2F900DC79F2 /* PrePollingOperation.m */; };
+		954728231B5EA5BE00569902 /* PollingResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728221B5EA5BE00569902 /* PollingResultModel.m */; };
 		958CA56AC09179703F62A8F4 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2835A08CAC1E0E348EED8CF3 /* DACircularProgressView.m */; };
 		95B0011B703697A10DE08AAD /* IMEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = DE88270CC47A9F8289766891 /* IMEnvironment.h */; };
 		95E9F2935C0E80EF7673E674 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1C7A92BEEF7FC2C29FF509 /* Foundation.framework */; };
@@ -1652,7 +1655,13 @@
 		93D2C3D71B694F100A3FF485 /* Pods-BJHL-IM-iOS-SDK-MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BJHL-IM-iOS-SDK-MBProgressHUD.xcconfig"; sourceTree = "<group>"; };
 		93E882AAB6D56DA2EAFA6C40 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/ImageIO.framework; sourceTree = DEVELOPER_DIR; };
 		94A25101DF3E9B653AF4970C /* NSData+Base64.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		950E2D9C1B5E959400DC79F2 /* HandlePostMessageSuccOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandlePostMessageSuccOperation.h; sourceTree = "<group>"; };
+		950E2D9D1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandlePostMessageSuccOperation.m; sourceTree = "<group>"; };
+		950E2DA21B5EA2F900DC79F2 /* PrePollingOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrePollingOperation.h; sourceTree = "<group>"; };
+		950E2DA31B5EA2F900DC79F2 /* PrePollingOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PrePollingOperation.m; sourceTree = "<group>"; };
 		9531ABBA1E3FBBCE3B127F06 /* libPods-BJHL-IM-iOS-SDK-MagicalRecord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK-MagicalRecord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		954728211B5EA5BE00569902 /* PollingResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingResultModel.h; sourceTree = "<group>"; };
+		954728221B5EA5BE00569902 /* PollingResultModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingResultModel.m; sourceTree = "<group>"; };
 		95CCFD5CC43DB2C7344147E8 /* JLContactsPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLContactsPermission.h; path = core/JLPermissions/JLContactsPermission.h; sourceTree = "<group>"; };
 		964E6F71D82927308E9E0CDF /* NSManagedObject+MagicalFinders.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+MagicalFinders.m"; path = "MagicalRecord/Categories/NSManagedObject/NSManagedObject+MagicalFinders.m"; sourceTree = "<group>"; };
 		967D43C9052F92EB516ACA3C /* JLLocationPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLLocationPermission.h; path = core/JLPermissions/JLLocationPermission.h; sourceTree = "<group>"; };
@@ -2533,12 +2542,16 @@
 		59DF2BA293BF07AF9DF1FAF2 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				950E2DA21B5EA2F900DC79F2 /* PrePollingOperation.h */,
+				950E2DA31B5EA2F900DC79F2 /* PrePollingOperation.m */,
 				3BC898F357B50700BDB12039 /* BJIMService.h */,
 				2478322C478D8D913A61B05A /* BJIMService.m */,
 				51517864AE1EE7528B7E7F8D /* IMBaseOperation.h */,
 				EB511D667FB612B31060786A /* IMBaseOperation.m */,
 				1C87CA070CF86145DD3BF17C /* SendMsgOperation.h */,
 				0A2583AAA2C4AE55603E66A0 /* SendMsgOperation.m */,
+				950E2D9C1B5E959400DC79F2 /* HandlePostMessageSuccOperation.h */,
+				950E2D9D1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3204,6 +3217,8 @@
 				0A77CE46ADDD4B1744973290 /* SendMsgModel.m */,
 				BEB1EF7277134B03378D62E9 /* SyncConfigModel.h */,
 				ED4790B48F3B20ED0AF75B6B /* SyncConfigModel.m */,
+				954728211B5EA5BE00569902 /* PollingResultModel.h */,
+				954728221B5EA5BE00569902 /* PollingResultModel.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -4736,7 +4751,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954728231B5EA5BE00569902 /* PollingResultModel.m in Sources */,
+				950E2D9E1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m in Sources */,
 				64BB60AC01CD301394D8F3D9 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
+				950E2DA41B5EA2F900DC79F2 /* PrePollingOperation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

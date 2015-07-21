@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 
-#define RESULT_CODE_SUCC 0
-
 @interface BaseResponse : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) NSInteger code;

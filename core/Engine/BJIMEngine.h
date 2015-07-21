@@ -8,9 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import "IMMessage.h"
+
 #import "SyncConfigModel.h"
 #import "SendMsgModel.h"
-
+#import "PollingResultModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -29,7 +30,7 @@
 
 - (void)onShouldStartPolling;
 
-- (void)onPollingFinish;
+- (void)onPollingFinish:(PollingResultModel *)model;
 
 @end
 
@@ -47,5 +48,9 @@
 - (void)syncConfig;
 
 - (void)postMessage:(IMMessage *)message;
+
+- (void)postPollingRequest:(int64_t)max_user_msg_id
+          groupsLastMsgIds:(NSString *)group_last_msg_ids
+              currentGroup:(int64_t)groupId;
 
 @end

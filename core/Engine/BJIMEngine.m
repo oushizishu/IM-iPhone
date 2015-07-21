@@ -12,6 +12,7 @@
 #import "BJIMStorage.h"
 #import "Contacts.h"
 #import "BJTimer.h"
+
 int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
@@ -93,13 +94,38 @@ int ddLogLevel = DDLogLevelInfo;
         }
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
-        [self.postMessageDelegate onPostMessageFail:message error:error];
+        NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
+        [self.postMessageDelegate onPostMessageFail:message error:_error];
     }];
 }
 
-- (void)postPollingRequest
+- (void)postPollingRequest:(int64_t)max_user_msg_id
+          groupsLastMsgIds:(NSString *)group_last_msg_ids
+              currentGroup:(int64_t)groupId
 {
     _bIsPollingRequesting = YES;
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        _bIsPollingRequesting = NO;
+        
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            if (weakSelf.pollingDelegate)
+            {
+                PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
+                [weakSelf.pollingDelegate onPollingFinish:model];
+            }
+        }
+        else
+        {
+            DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
+        }
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        _bIsPollingRequesting = NO;
+        DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
+    }];
     [self nextPollingAt];
     [self.pollingTimer.timer fire];
 }

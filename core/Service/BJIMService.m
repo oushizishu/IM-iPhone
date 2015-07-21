@@ -7,14 +7,19 @@
 //
 
 #import "BJIMService.h"
-#import "SendMsgOperation.h"
 #import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import "Conversation+DB.h"
 #import  "NSDictionary+MTLMappingAdditions.h"
 #import "IMEnvironment.h"
 #import "ContactFactory.h"
 #import "BJIMStorage.h"
-@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate>
+
+
+#import "SendMsgOperation.h"
+#import "HandlePostMessageSuccOperation.h"
+#import "PrePollingOperation.h"
+
+@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -63,17 +68,37 @@
 #pragma mark - Post Message Delegate
 - (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model
 {
-    message.status = eMessageStatus_Send_Succ;
+    if (!self.bIsServiceActive) return;
+    
+    HandlePostMessageSuccOperation *operation = [[HandlePostMessageSuccOperation alloc] init];
+    operation.imService = self;
+    operation.message = message;
+    operation.model = model;
+    
+    [self.operationQueue addOperation:operation];
 }
 
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error
 {
+    if (! self.bIsServiceActive) return;
+    
     message.status = eMessageStatus_Send_Fail;
+    [self.imStorage updateMessage:message];
+    
+    [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
 }
+
+#pragma mark - Polling Delegate
+- (void)onShouldStartPolling
+{
+    if (! self.bIsServiceActive) return;
+    PrePollingOperation *operation = [[PrePollingOperation alloc] init];
+    operation.imService = self;
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark syncContact 
-
-
- - (void)synContact:(NSDictionary *)dictionary
+- (void)synContact:(NSDictionary *)dictionary
 {
 //    User *currentUser = [[IMEnvironment shareInstance] owner];
 //    if ([dictionary  isKindOfClass:[NSDictionary class]]) {
