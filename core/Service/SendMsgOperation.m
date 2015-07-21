@@ -24,7 +24,7 @@
     
     if (conversation == nil)
     {
-        //TODO query conversation
+        //query conversation
         conversation = [self.imService.imStorage queryConversation:self.message.sender userRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     }
     
@@ -40,7 +40,8 @@
     
     conversation.lastMsgRowId = self.message.rowid;
     self.message.conversationId = conversation.rowid;
-    self.message.msgId = [self.imService.imStorage getConversationMaxMsgId:conversation.rowid] + 0.001;
+    
+    self.message.msgId = MAX([self.imService.imStorage getConversationMaxMsgId:conversation.rowid], 0) + 0.001;
     
     if (self.message.chat_t == eChatType_GroupChat)
     {

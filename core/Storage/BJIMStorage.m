@@ -341,8 +341,8 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
    return   [self.dbHelper insertToDB:groupMember];
 }
 
-- (double)getConversationMaxMsgId:(long)conversationId {
-    NSString *queryString = [NSString stringWithFormat:@"conversationId = %ld ORDER BY msg_id DESC LIMIT 1",conversationId];
+- (double)getConversationMaxMsgId:(int64_t)conversationId {
+    NSString *queryString = [NSString stringWithFormat:@"conversationId = %lld ORDER BY msg_id DESC LIMIT 1",conversationId];
     NSArray *array = [self.dbHelper searchWithSQL:queryString toClass:[IMMessage class]];
     if ([array count] == 0) {
         return UNAVALIABLE_MESSAGE_ID;

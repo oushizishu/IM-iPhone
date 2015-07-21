@@ -69,6 +69,6 @@
 -  (NSArray*)loadMoreMessageWithConversationId:(long)conversationId minMsgId:(double)minMsgId;
 
 
-- (double)getConversationMaxMsgId:(long)conversationId;
+- (double)getConversationMaxMsgId:(int64_t)conversationId;
 
 @end
