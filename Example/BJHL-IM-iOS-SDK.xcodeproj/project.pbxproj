@@ -25,7 +25,6 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		950E2D921B57847200DC79F2 /* ConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D911B57847200DC79F2 /* ConversationListViewController.m */; };
 		950E2D9B1B5D1A7D00DC79F2 /* ConversationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -69,10 +68,8 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		70B42517535184E74628C63F /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		950E2D901B57847200DC79F2 /* ConversationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationListViewController.h; sourceTree = "<group>"; };
-		950E2D911B57847200DC79F2 /* ConversationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationListViewController.m; sourceTree = "<group>"; };
-		950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationTableViewCell.h; sourceTree = "<group>"; };
-		950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationTableViewCell.m; sourceTree = "<group>"; };
+		950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationTableViewCell.h; path = "BJHL-IM-iOS-SDK/ConversationTableViewCell.h"; sourceTree = SOURCE_ROOT; };
+		950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationTableViewCell.m; path = "BJHL-IM-iOS-SDK/ConversationTableViewCell.m"; sourceTree = SOURCE_ROOT; };
 		D5A93FC3807182589853DE32 /* BJHL-IM-iOS-SDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "BJHL-IM-iOS-SDK.podspec"; path = "../BJHL-IM-iOS-SDK.podspec"; sourceTree = "<group>"; };
 		DFDE990F4FDB056A24DBA9C6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FF511DA1B396C8FD68E20F39 /* libPods-BJHL-IM-iOS-SDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -104,11 +101,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2549ABBA1B5E743000097AEE /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
 		2552069F1B57AFC7007B34C4 /* Conversation */ = {
 			isa = PBXGroup;
 			children = (
 				255206A01B57AFC7007B34C4 /* ConversationListViewController.h */,
 				255206A11B57AFC7007B34C4 /* ConversationListViewController.m */,
+				950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */,
+				950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */,
 			);
 			path = Conversation;
 			sourceTree = "<group>";
@@ -161,6 +167,7 @@
 		6003F593195388D20070C39A /* BJHL-IM-iOS-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				2549ABBA1B5E743000097AEE /* Chat */,
 				2552069F1B57AFC7007B34C4 /* Conversation */,
 				6003F59C195388D20070C39A /* BJIMAppDelegate.h */,
 				6003F59D195388D20070C39A /* BJIMAppDelegate.m */,
@@ -170,10 +177,6 @@
 				6003F5A6195388D20070C39A /* BJIMViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
-				950E2D901B57847200DC79F2 /* ConversationListViewController.h */,
-				950E2D911B57847200DC79F2 /* ConversationListViewController.m */,
-				950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */,
-				950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */,
 			);
 			path = "BJHL-IM-iOS-SDK";
 			sourceTree = "<group>";
