@@ -13,6 +13,7 @@
 #import "Conversation.h"
 #import "IMEnvironment.h"
 
+
 /**
  *  IM 管理类， 与上层交互
  */
@@ -54,4 +55,13 @@
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
 - (void)applicationDidBecomeActive;
+
+#pragma mark - add Delegates
+- (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
+- (void)addReceiveNewMessageDelegate:(id<IMReceiveNewMessageDelegate>)delegate;
+- (void)addDeliveryMessageDelegate:(id<IMDeliveredMessageDelegate>)delegate;
+- (void)addCmdMessageDelegate:(id<IMCmdMessageDelegate>)delegate;
+- (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
+- (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
+
 @end

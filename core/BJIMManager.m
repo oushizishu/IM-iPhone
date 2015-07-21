@@ -102,5 +102,35 @@
 {
     [self.imService applicationEnterBackground];
 }
+#pragma mark - add Delegates
+- (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate
+{
+    [self.imService addConversationChangedDelegate:delegate];
+}
+
+- (void)addReceiveNewMessageDelegate:(id<IMReceiveNewMessageDelegate>)delegate
+{
+    [self.imService addReceiveNewMessageDelegate:delegate];
+}
+
+- (void)addDeliveryMessageDelegate:(id<IMDeliveredMessageDelegate>)delegate
+{
+    [self.imService addDeliveryMessageDelegate:delegate];
+}
+
+- (void)addCmdMessageDelegate:(id<IMCmdMessageDelegate>)delegate
+{
+    [self.imService addCmdMessageDelegate:delegate];
+}
+
+- (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate
+{
+    [self.imService addContactChangedDelegate:delegate];
+}
+
+- (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate
+{
+    [self.imService addLoadMoreMessagesDelegate:delegate];
+}
 
 @end;

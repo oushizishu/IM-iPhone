@@ -23,7 +23,6 @@ int ddLogLevel = DDLogLevelInfo;
 
 @property (nonatomic, strong) BJTimer *pollingTimer;
 @property (nonatomic, strong) NSArray *im_polling_delta;
-@property (nonatomic, strong) BJIMStorage *storage;
 @end
 
 @implementation BJIMEngine
@@ -33,17 +32,13 @@ int ddLogLevel = DDLogLevelInfo;
     self = [super init];
     if (self)
     {
-       self.im_polling_delta = @[@2, @2, @4, @6, @8];
+       self.im_polling_delta = @[@2, @4, @6, @8, @10];
     }
     return self;
 }
 
 - (void)start
 {
-    if ([self isEngineActive]) return;
-    if (!self.storage) {
-        self.storage = [[BJIMStorage alloc] init];
-    }
     _engineActive = YES;
     [self resetPollingIndex];
     [self.pollingTimer.timer fire];
@@ -54,7 +49,6 @@ int ddLogLevel = DDLogLevelInfo;
     _engineActive = NO;
     [self.pollingTimer invalidate];
     self.pollingTimer = nil;
-    [self handlePollingEvent];
 }
 
 - (void)syncConfig
@@ -65,12 +59,12 @@ int ddLogLevel = DDLogLevelInfo;
         if (result.code == RESULT_CODE_SUCC)
         {
             weakSelf.im_polling_delta = result.data[@"polling_delta"];
-            [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-                if (self.synContactDelegate) {
-                    [self.synContactDelegate synContact:response];
-                }
-            } failure:^(NSError *error, RequestParams *params) {
-            }];
+//            [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+//                if (self.synContactDelegate) {
+//                    [self.synContactDelegate synContact:response];
+//                }
+//            } failure:^(NSError *error, RequestParams *params) {
+//            }];
         }
         else
         {
@@ -119,16 +113,17 @@ int ddLogLevel = DDLogLevelInfo;
 
 - (void)handlePollingEvent
 {
+    
+    if (! [self isEngineActive]) {
+        return;
+    }
+    
     if (_bIsPollingRequesting) return;
     
     _heatBeatIndex ++ ;
     _heatBeatIndex = MAX(0, MIN(_heatBeatIndex, [self.im_polling_delta[_pollingIndex] integerValue]));
     if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
         return;
-    
-    if (! [self isEngineActive]) {
-        return;
-    }
     
     [self.pollingTimer invalidate];
     self.pollingTimer = nil;

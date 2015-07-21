@@ -31,4 +31,23 @@
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
+
+#pragma mark - add Delegates
+- (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
+- (void)notifyConversationChanged;
+
+- (void)addReceiveNewMessageDelegate:(id<IMReceiveNewMessageDelegate>)delegate;
+- (void)notifyReceiveNewMessages:(NSArray *)newMessages;
+
+- (void)addDeliveryMessageDelegate:(id<IMDeliveredMessageDelegate>)delegate;
+- (void)notifyDeliverMessage:(IMMessage *)message errorCode:(NSInteger)errorCode error:(NSString *)errorMsg;
+
+- (void)addCmdMessageDelegate:(id<IMCmdMessageDelegate>)delegate;
+- (void)notifyCmdMessages:(NSArray *)cmdMessages;
+
+- (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
+- (void)notifyContactChanged;
+
+- (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
+- (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore;
 @end

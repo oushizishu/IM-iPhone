@@ -21,9 +21,10 @@
 
 @protocol IMEngineSynContactDelegate <NSObject>
 
-
 - (void)synContact:(NSDictionary*)dictionary;
+
 @end
+
 @protocol IMEnginePollingDelegate <NSObject>
 
 - (void)onShouldStartPolling;
