@@ -15,6 +15,7 @@
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
+#import <CocoaLumberjack/CocoaLumberjack.h>
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
@@ -32,6 +33,7 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Student = 2,
     eUserRole_Institution = 6,
     eUserRole_Kefu = 7,
+    eUserRole_Anonymous = -1,
 };
 
 #pragma mark - 消息类型
@@ -61,5 +63,7 @@ typedef NS_ENUM(NSInteger, IMChatType) {
     eChatType_Chat = 0, // 单聊
     eChatType_GroupChat = 1 // 群聊
 };
+static const int MESSAGE_PAGE_COUNT = 10;
+static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 #endif

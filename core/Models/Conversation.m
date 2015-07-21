@@ -15,13 +15,17 @@
     return @"CONVERSATION";
 }
 
-- (NSMutableArray *)messages
++ (NSDictionary *)getTableMapping
 {
-    if (_messages == nil)
-    {
-    }
-    return _messages;
+    return @{@"ownerId":@"ownerId",
+             @"ownerRole":@"ownerRole",
+             @"toId":@"toId",
+             @"toRole":@"toRole",
+             @"lastMsgRowId":@"lastMsgRowId",
+             @"chat_t":@"chat_t",
+             @"unReadNum":@"unReadNum",
+             };
 }
 
-
 @end
+

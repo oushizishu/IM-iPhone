@@ -21,4 +21,6 @@
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure;
 
++ (BJNetRequestOperation*)hermesGetContactSucc:(onSuccess)succ
+                                       failure:(onFailure)failure;
 @end

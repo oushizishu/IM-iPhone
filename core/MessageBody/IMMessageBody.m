@@ -10,4 +10,9 @@
 
 @implementation IMMessageBody
 
+- (NSString *)description
+{
+    return [[MTLJSONAdapter JSONDictionaryFromModel:self error:nil] description];
+}
+
 @end

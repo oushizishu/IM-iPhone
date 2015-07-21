@@ -9,15 +9,21 @@
 #import <Foundation/Foundation.h>
 #import "IMMessage.h"
 #import "SyncConfigModel.h"
+#import "SendMsgModel.h"
 
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
-- (void)onPostMessageSucc:(IMMessage *)message;
+- (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model;
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error;
 
 @end
 
+@protocol IMEngineSynContactDelegate <NSObject>
+
+
+- (void)synContact:(NSDictionary*)dictionary;
+@end
 @protocol IMEnginePollingDelegate <NSObject>
 
 - (void)onShouldStartPolling;
@@ -31,6 +37,7 @@
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
 @property (nonatomic, weak) id<IMEnginePostMessageDelegate> postMessageDelegate;
 @property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
+@property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 
 - (void)start;
 

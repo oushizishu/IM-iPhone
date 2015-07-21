@@ -8,6 +8,8 @@
 
 #import "BJIMManager.h"
 #import "BJIMService.h"
+#import <CocoaLumberjack/CocoaLumberjack.h>
+#import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
@@ -29,6 +31,18 @@
 - (void)initialize
 {
     self.imService = [[BJIMService alloc] init];
+    [DDLog addLogger:[DDASLLogger sharedInstance]];
+    [DDLog addLogger:[DDTTYLogger sharedInstance]];
+    NSCalendar *greCalendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    //  通过已定义的日历对象，获取某个时间点的NSDateComponents表示，并设置需要表示哪些信息（NSYearCalendarUnit, NSMonthCalendarUnit, NSDayCalendarUnit等）
+    NSDateComponents *dateComponents = [greCalendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit fromDate:[NSDate date]];
+    
+    
+    NSString *logDir = [NSString stringWithFormat:@"%@/%ld-%ld-%ld", [BJFileManagerTool docDir], dateComponents.year, dateComponents.month, dateComponents.day];
+    
+    [DDLog addLogger:[[DDFileLogger alloc] initWithLogFileManager:[[DDLogFileManagerDefault alloc] initWithLogsDirectory:logDir]]];
+    // And we also enable colors
+    [[DDTTYLogger sharedInstance] setColorsEnabled:YES];
 }
 
 #pragma mark - 登录退出 IM
@@ -69,6 +83,13 @@
 - (void)setDebugMode:(IMSERVER_ENVIRONMENT)debugMode
 {
     [IMEnvironment shareInstance].debugMode = debugMode;
+}
+
+- (NSArray *)getAllConversation
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return nil;
+ 	return [self.imService getAllConversationWithOwner:[IMEnvironment shareInstance].owner];
 }
 
 #pragma mark - 应用进入前后台

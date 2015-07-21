@@ -18,13 +18,8 @@
 @property (nonatomic, assign) IMUserRole ownerRole;
 @property (nonatomic, assign) int64_t toId;
 @property (nonatomic, assign) IMUserRole toRole;
-@property (nonatomic, assign) int64_t lastMsgRowId;
+@property (nonatomic, assign) int64_t lastMsgRowId; // message 的主键id 
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) NSInteger unReadNum;
-
-@property (nonatomic, strong, readonly) User *chatToUser;
-@property (nonatomic, strong, readonly) Group *chatToGroup;
-
-@property (nonatomic, strong) NSMutableArray *messages;
 
 @end

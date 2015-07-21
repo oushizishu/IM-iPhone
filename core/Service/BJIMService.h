@@ -26,6 +26,9 @@
 - (void)sendMessage:(IMMessage *)message;
 - (void)retryMessage:(IMMessage *)message;
 
+#pragma mark - getter 
+- (NSArray *)getAllConversationWithOwner:(User *)owner;
+
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
 @end
