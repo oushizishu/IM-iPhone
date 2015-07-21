@@ -9,7 +9,7 @@
 #import "BJIMViewController.h"
 #import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
-#import "ConversationListViewController.h"
+#import "Conversation/ConversationListViewController.h"
 
 @interface BJIMViewController ()
 @property (nonatomic, strong) UITextView *userIdText;
