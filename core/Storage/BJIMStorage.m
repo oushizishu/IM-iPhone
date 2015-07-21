@@ -175,8 +175,8 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return array;
 }
 
-- (Conversation*)queryConversation:(long)conversationId{
-//TODO
+- (Conversation*)queryConversation:(long)conversationId
+{
     NSString *queryString = [NSString stringWithFormat:@"conversationId = %ld",conversationId];
     return  [self.dbHelper  searchSingle:[Conversation class] where:queryString orderBy:nil];
 }
