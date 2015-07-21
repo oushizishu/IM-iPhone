@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C1C79E7D3E2A7ECC23D7EAF /* libPods-BJHL-IM-iOS-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF511DA1B396C8FD68E20F39 /* libPods-BJHL-IM-iOS-SDK.a */; };
+		255206A21B57AFC7007B34C4 /* ConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255206A11B57AFC7007B34C4 /* ConversationListViewController.m */; };
 		45619B6F7E7337F86342075F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B42517535184E74628C63F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -24,7 +25,6 @@
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
 		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
-		950E2D921B57847200DC79F2 /* ConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D911B57847200DC79F2 /* ConversationListViewController.m */; };
 		950E2D9B1B5D1A7D00DC79F2 /* ConversationTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +41,8 @@
 /* Begin PBXFileReference section */
 		0DF388E93CF84D319664775D /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1D279237435A9B5BE6A39168 /* Pods-BJHL-IM-iOS-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; sourceTree = "<group>"; };
+		255206A01B57AFC7007B34C4 /* ConversationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationListViewController.h; sourceTree = "<group>"; };
+		255206A11B57AFC7007B34C4 /* ConversationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationListViewController.m; sourceTree = "<group>"; };
 		31DE67A144DDD652919468A2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4C6E475EBFADD0326E2C4B93 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5D2ADCAE4E9F06C218C22E20 /* Pods-BJHL-IM-iOS-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.release.xcconfig"; sourceTree = "<group>"; };
@@ -66,10 +68,8 @@
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		70B42517535184E74628C63F /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		950E2D901B57847200DC79F2 /* ConversationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationListViewController.h; sourceTree = "<group>"; };
-		950E2D911B57847200DC79F2 /* ConversationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationListViewController.m; sourceTree = "<group>"; };
-		950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationTableViewCell.h; sourceTree = "<group>"; };
-		950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationTableViewCell.m; sourceTree = "<group>"; };
+		950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ConversationTableViewCell.h; path = "BJHL-IM-iOS-SDK/ConversationTableViewCell.h"; sourceTree = SOURCE_ROOT; };
+		950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ConversationTableViewCell.m; path = "BJHL-IM-iOS-SDK/ConversationTableViewCell.m"; sourceTree = SOURCE_ROOT; };
 		D5A93FC3807182589853DE32 /* BJHL-IM-iOS-SDK.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = "BJHL-IM-iOS-SDK.podspec"; path = "../BJHL-IM-iOS-SDK.podspec"; sourceTree = "<group>"; };
 		DFDE990F4FDB056A24DBA9C6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		FF511DA1B396C8FD68E20F39 /* libPods-BJHL-IM-iOS-SDK.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -101,6 +101,24 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2549ABBA1B5E743000097AEE /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		2552069F1B57AFC7007B34C4 /* Conversation */ = {
+			isa = PBXGroup;
+			children = (
+				255206A01B57AFC7007B34C4 /* ConversationListViewController.h */,
+				255206A11B57AFC7007B34C4 /* ConversationListViewController.m */,
+				950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */,
+				950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */,
+			);
+			path = Conversation;
+			sourceTree = "<group>";
+		};
 		5872C8EACEE0B4B50E814DAA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -149,6 +167,8 @@
 		6003F593195388D20070C39A /* BJHL-IM-iOS-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				2549ABBA1B5E743000097AEE /* Chat */,
+				2552069F1B57AFC7007B34C4 /* Conversation */,
 				6003F59C195388D20070C39A /* BJIMAppDelegate.h */,
 				6003F59D195388D20070C39A /* BJIMAppDelegate.m */,
 				6003F59F195388D20070C39A /* Main_iPhone.storyboard */,
@@ -157,10 +177,6 @@
 				6003F5A6195388D20070C39A /* BJIMViewController.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
-				950E2D901B57847200DC79F2 /* ConversationListViewController.h */,
-				950E2D911B57847200DC79F2 /* ConversationListViewController.m */,
-				950E2D991B5D1A7D00DC79F2 /* ConversationTableViewCell.h */,
-				950E2D9A1B5D1A7D00DC79F2 /* ConversationTableViewCell.m */,
 			);
 			path = "BJHL-IM-iOS-SDK";
 			sourceTree = "<group>";
@@ -374,7 +390,7 @@
 				6003F59E195388D20070C39A /* BJIMAppDelegate.m in Sources */,
 				950E2D9B1B5D1A7D00DC79F2 /* ConversationTableViewCell.m in Sources */,
 				6003F5A7195388D20070C39A /* BJIMViewController.m in Sources */,
-				950E2D921B57847200DC79F2 /* ConversationListViewController.m in Sources */,
+				255206A21B57AFC7007B34C4 /* ConversationListViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

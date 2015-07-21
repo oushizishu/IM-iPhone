@@ -11,6 +11,7 @@
 #import "BaseResponse.h"
 #import "BJIMStorage.h"
 #import "Contacts.h"
+#import "BJTimer.h"
 int ddLogLevel = DDLogLevelInfo;
 
 @interface BJIMEngine()
@@ -20,7 +21,7 @@ int ddLogLevel = DDLogLevelInfo;
     BOOL _bIsPollingRequesting;
 }
 
-@property (nonatomic, strong) NSTimer *pollingTimer;
+@property (nonatomic, strong) BJTimer *pollingTimer;
 @property (nonatomic, strong) NSArray *im_polling_delta;
 @property (nonatomic, strong) BJIMStorage *storage;
 @end
@@ -45,7 +46,7 @@ int ddLogLevel = DDLogLevelInfo;
     }
     _engineActive = YES;
     [self resetPollingIndex];
-    [self.pollingTimer fire];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)stop
@@ -106,14 +107,14 @@ int ddLogLevel = DDLogLevelInfo;
 {
     _bIsPollingRequesting = YES;
     [self nextPollingAt];
-    [self.pollingTimer fire];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)nextPollingAt
 {
     _heatBeatIndex = 0;
     _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
-    [self.pollingTimer fire];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)handlePollingEvent
@@ -148,12 +149,11 @@ int ddLogLevel = DDLogLevelInfo;
     _pollingIndex = 0;
 }
 
-- (NSTimer *)pollingTimer
+- (BJTimer *)pollingTimer
 {
     if (_pollingTimer == nil)
     {
-        _pollingTimer = [NSTimer timerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) userInfo:nil repeats:YES];
-        [[NSRunLoop currentRunLoop] addTimer:_pollingTimer forMode:NSDefaultRunLoopMode];
+        _pollingTimer = [BJTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) forMode:NSRunLoopCommonModes];
     }
     
     return _pollingTimer;
