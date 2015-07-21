@@ -107,14 +107,14 @@ int ddLogLevel = DDLogLevelInfo;
 {
     _bIsPollingRequesting = YES;
     [self nextPollingAt];
-    [self.pollingTimer fire];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)nextPollingAt
 {
     _heatBeatIndex = 0;
     _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
-    [self.pollingTimer fire];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)handlePollingEvent
