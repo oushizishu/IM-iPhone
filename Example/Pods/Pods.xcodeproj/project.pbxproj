@@ -546,6 +546,7 @@
 		950E2D9E1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2D9D1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m */; };
 		950E2DA41B5EA2F900DC79F2 /* PrePollingOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 950E2DA31B5EA2F900DC79F2 /* PrePollingOperation.m */; };
 		954728231B5EA5BE00569902 /* PollingResultModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728221B5EA5BE00569902 /* PollingResultModel.m */; };
+		954728261B5F781300569902 /* HandlePollingResultOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728251B5F781300569902 /* HandlePollingResultOperation.m */; };
 		958CA56AC09179703F62A8F4 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2835A08CAC1E0E348EED8CF3 /* DACircularProgressView.m */; };
 		95B0011B703697A10DE08AAD /* IMEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = DE88270CC47A9F8289766891 /* IMEnvironment.h */; };
 		95E9F2935C0E80EF7673E674 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1C7A92BEEF7FC2C29FF509 /* Foundation.framework */; };
@@ -1662,6 +1663,8 @@
 		9531ABBA1E3FBBCE3B127F06 /* libPods-BJHL-IM-iOS-SDK-MagicalRecord.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BJHL-IM-iOS-SDK-MagicalRecord.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		954728211B5EA5BE00569902 /* PollingResultModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PollingResultModel.h; sourceTree = "<group>"; };
 		954728221B5EA5BE00569902 /* PollingResultModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PollingResultModel.m; sourceTree = "<group>"; };
+		954728241B5F781300569902 /* HandlePollingResultOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandlePollingResultOperation.h; sourceTree = "<group>"; };
+		954728251B5F781300569902 /* HandlePollingResultOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandlePollingResultOperation.m; sourceTree = "<group>"; };
 		95CCFD5CC43DB2C7344147E8 /* JLContactsPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLContactsPermission.h; path = core/JLPermissions/JLContactsPermission.h; sourceTree = "<group>"; };
 		964E6F71D82927308E9E0CDF /* NSManagedObject+MagicalFinders.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+MagicalFinders.m"; path = "MagicalRecord/Categories/NSManagedObject/NSManagedObject+MagicalFinders.m"; sourceTree = "<group>"; };
 		967D43C9052F92EB516ACA3C /* JLLocationPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLLocationPermission.h; path = core/JLPermissions/JLLocationPermission.h; sourceTree = "<group>"; };
@@ -2552,6 +2555,8 @@
 				0A2583AAA2C4AE55603E66A0 /* SendMsgOperation.m */,
 				950E2D9C1B5E959400DC79F2 /* HandlePostMessageSuccOperation.h */,
 				950E2D9D1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m */,
+				954728241B5F781300569902 /* HandlePollingResultOperation.h */,
+				954728251B5F781300569902 /* HandlePollingResultOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -4751,6 +4756,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				954728261B5F781300569902 /* HandlePollingResultOperation.m in Sources */,
 				954728231B5EA5BE00569902 /* PollingResultModel.m in Sources */,
 				950E2D9E1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m in Sources */,
 				64BB60AC01CD301394D8F3D9 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,

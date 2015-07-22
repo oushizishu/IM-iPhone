@@ -18,6 +18,7 @@
 #import "SendMsgOperation.h"
 #import "HandlePostMessageSuccOperation.h"
 #import "PrePollingOperation.h"
+#import "HandlePollingResultOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate>
 
@@ -94,6 +95,16 @@
     if (! self.bIsServiceActive) return;
     PrePollingOperation *operation = [[PrePollingOperation alloc] init];
     operation.imService = self;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)onPollingFinish:(PollingResultModel *)model
+{
+    if (! self.bIsServiceActive) return;
+    
+    HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
+    operation.imService = self;
+    operation.model = model;
     [self.operationQueue addOperation:operation];
 }
 
