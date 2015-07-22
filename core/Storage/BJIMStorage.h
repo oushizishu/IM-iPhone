@@ -39,6 +39,12 @@
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
 // 群组会话最大的消息id 
 - (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
+// 查询会话的最小 msgId
+- (double)queryMinMsgIdInConversation:(int64_t)conversationId;
+// 根据 id 区间查询 messages
+- (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
+                                 minMsgId:(double_t)minMsgId
+                                 maxMsgId:(double_t)maxMsgId;
 
 //conversation
 - (BOOL)insertConversation:(NSObject *)conversation;
@@ -70,7 +76,7 @@
 
 //other 
 - ( BOOL)checkMessageStatus;
--  (NSArray*)loadMoreMessageWithConversationId:(long)conversationId minMsgId:(double)minMsgId;
+-  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(double)minMsgId;
 
 
 - (double)getConversationMaxMsgId:(int64_t)conversationId;

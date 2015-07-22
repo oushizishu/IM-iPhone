@@ -111,23 +111,56 @@ int ddLogLevel = DDLogLevelInfo;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
+            PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
             if (weakSelf.pollingDelegate)
             {
-                PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
                 [weakSelf.pollingDelegate onPollingFinish:model];
             }
+            if ([model.msgs count] > 0)
+            {
+                [self resetPollingIndex];
+            }
+            
+            [self nextPollingAt];
+            [self.pollingTimer.timer fire];
         }
         else
         {
             DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
+            [self nextPollingAt];
+            [self.pollingTimer.timer fire];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         _bIsPollingRequesting = NO;
         DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
+        [self nextPollingAt];
+        [self.pollingTimer.timer fire];
     }];
-    [self nextPollingAt];
-    [self.pollingTimer.timer fire];
+
+}
+
+- (void)getMsgConversation:(NSInteger)conversationId minMsgId:(int64_t)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesGetMsg:eid groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if(result.code == RESULT_CODE_SUCC)
+        {
+            PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
+            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId result:model];
+        }
+        else
+        {
+            DDLogWarn(@"Get MSG FAIL [url:%@][%@]", params.url, params.urlPostParams);
+            [weakSelf.getMsgDelegate onGetMsgFail:conversationId];
+        }
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        DDLogError(@"Get MSG FAIL [url:%@][%@]", params.url, error.userInfo);
+        [weakSelf.getMsgDelegate onGetMsgFail:conversationId];
+    }];
 }
 
 - (void)nextPollingAt
@@ -167,7 +200,7 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)resetPollingIndex
 {
     _heatBeatIndex = 0;
-    _pollingIndex = 0;
+    _pollingIndex = -1;
 }
 
 - (BJTimer *)pollingTimer

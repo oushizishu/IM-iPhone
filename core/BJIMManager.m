@@ -79,6 +79,24 @@
     [self.imService sendMessage:message];
 }
 
+- (void)retryMessage:(IMMessage *)message
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return;
+    }
+    [self.imService retryMessage:message];
+}
+
+- (void)loadMoreMessages:(Conversation *)conversation
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return;
+    }
+    [self.imService loadMoreMessages:conversation];
+}
+
 #pragma mark - setter & getter
 - (void)setDebugMode:(IMSERVER_ENVIRONMENT)debugMode
 {
