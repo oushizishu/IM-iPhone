@@ -27,6 +27,7 @@
 @property (nonatomic, assign) NSInteger read;
 @property (nonatomic, assign) NSInteger played;
 @property (nonatomic, copy) NSString *sign;
+
 @property (nonatomic, strong) Conversation *conversation;
 @property (nonatomic, strong) IMMessageBody *messageBody;
 

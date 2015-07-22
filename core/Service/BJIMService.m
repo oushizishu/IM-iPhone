@@ -14,6 +14,7 @@
 #import "IMEnvironment.h"
 #import "ContactFactory.h"
 #import "BJIMStorage.h"
+#import "SyncContactOperation.h"
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
@@ -68,19 +69,13 @@
 
  - (void)synContact:(NSDictionary *)dictionary
 {
-    User *currentUser = [[IMEnvironment shareInstance] owner];
-    if ([dictionary  isKindOfClass:[NSDictionary class]]) {
-        NSArray *groupList = [dictionary  objectForKey:@"group_list"];
-        NSArray *organizationList = [dictionary  objectForKey:@"organization_list"];
-        NSArray *studentList = [dictionary  objectForKey:@"student_list"];
-        for (NSDictionary *dict  in groupList) {
-            Contacts *contacts = [MTLJSONAdapter modelOfClass:[Contacts class] fromJSONDictionary:dictionary error:nil];
-            [self.storage insertOrUpdateContactOwner:currentUser contact:contacts];
-        }
-        
-        
+    if (nil ==  dictionary) {
+        return;
     }
-    
+    SyncContactOperation *operation = [[SyncContactOperation alloc]init];
+    operation.imService = self;
+    operation.contactDictionary = dictionary;
+    [self.operationQueue addOperation:operation];
 }
 
 #pragma mark - Setter & Getter
@@ -102,6 +97,7 @@
     if (_imEngine == nil)
     {
         _imEngine = [[BJIMEngine alloc] init];
+        _imEngine.synContactDelegate = self;
     }
     return _imEngine;
 }
