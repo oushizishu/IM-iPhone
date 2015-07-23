@@ -29,4 +29,12 @@
                                                     currentGroup:(int64_t)groupId
                                                             succ:(onSuccess)succ
                                                          failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesGetMsg:(int64_t)eid
+                                groupId:(int64_t)groupId
+                                    uid:(int64_t)uid
+                          excludeMsgIds:(NSString *)excludeMsgIds
+                                   succ:(onSuccess)succ
+                                failure:(onFailure)failure;
+
 @end

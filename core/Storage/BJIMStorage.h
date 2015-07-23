@@ -29,7 +29,7 @@
 
 //message
 - (BOOL)insertMessage:(IMMessage*)message;
-- (IMMessage*)queryMessage:(int64_t)messageId;
+- (IMMessage*)queryMessage:(NSInteger)messageRowid;
 - (IMMessage*)queryMessageWithMessageId:(int64_t)messageId;
 - (BOOL)updateMessage:(IMMessage*)message;
 - (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId;
@@ -37,19 +37,28 @@
 
 - (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole;
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
+// 群组会话最大的消息id 
+- (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
+// 查询会话的最小 msgId
+- (double)queryMinMsgIdInConversation:(int64_t)conversationId;
+// 根据 id 区间查询 messages
+- (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
+                                 minMsgId:(double_t)minMsgId
+                                 maxMsgId:(double_t)maxMsgId;
 
 //conversation
 - (BOOL)insertConversation:(NSObject *)conversation;
-- (NSArray*)queryAllConversationOwnerId:(long)ownerId
+- (NSArray*)queryAllConversationOwnerId:(int64_t)ownerId
                                userRole:(IMUserRole)userRole;
-- (Conversation*)queryConversation:(long)conversationId;
-- (Conversation*)queryConversation:(long)ownerId
+- (Conversation*)queryConversation:(int64_t)conversationId;
+- (Conversation*)queryConversation:(int64_t)ownerId
                           userRole:(IMUserRole)userRole
-                otherUserOrGroupId:(long)userId
+                otherUserOrGroupId:(int64_t)userId
                           userRole:(IMUserRole)otherRserRole
                           chatType:(IMChatType)chatType;
 
-- (long)sumOfAllConversationUnReadNumOwnerId:(long)ownerId userRole:(IMUserRole)userRole;
+- (void)updateConversation:(Conversation *)conversation;
+- (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole;
 
 //contact
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact;
@@ -67,7 +76,7 @@
 
 //other 
 - ( BOOL)checkMessageStatus;
--  (NSArray*)loadMoreMessageWithConversationId:(long)conversationId minMsgId:(double)minMsgId;
+-  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(double)minMsgId;
 
 
 - (double)getConversationMaxMsgId:(int64_t)conversationId;

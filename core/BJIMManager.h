@@ -51,6 +51,8 @@
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
+- (void)retryMessage:(IMMessage *)message;
+- (void)loadMoreMessages:(Conversation *)conversation;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;

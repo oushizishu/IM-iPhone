@@ -18,8 +18,12 @@
 #import "SendMsgOperation.h"
 #import "HandlePostMessageSuccOperation.h"
 #import "PrePollingOperation.h"
+#import "HandlePollingResultOperation.h"
+#import "LoadMoreMessagesOperation.h"
+#import "HandleGetMsgOperation.h"
 
-@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate>
+@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
+    IMEngineGetMessageDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -65,6 +69,14 @@
     
 }
 
+- (void)loadMoreMessages:(Conversation *)conversation
+{
+    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
+    operation.imService = self;
+    operation.conversation = conversation;
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark - Post Message Delegate
 - (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model
 {
@@ -94,6 +106,36 @@
     if (! self.bIsServiceActive) return;
     PrePollingOperation *operation = [[PrePollingOperation alloc] init];
     operation.imService = self;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)onPollingFinish:(PollingResultModel *)model
+{
+    if (! self.bIsServiceActive) return;
+    
+    HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
+    operation.imService = self;
+    operation.model = model;
+    [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - get Msg Delegate
+- (void)onGetMsgSucc:(NSInteger)conversationId result:(PollingResultModel *)model
+{
+    if (!self.bIsServiceActive)return;
+    HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
+    operation.imService = self;
+    operation.conversationId = conversationId;
+    operation.model = model;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)onGetMsgFail:(NSInteger)conversationId
+{
+    if (!self.bIsServiceActive)return;
+    HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
+    operation.imService = self;
+    operation.conversationId = conversationId;
     [self.operationQueue addOperation:operation];
 }
 
