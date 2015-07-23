@@ -21,10 +21,11 @@
 
 @implementation ConversationTableViewCell
 
-- (id)initWithFrame:(CGRect)frame
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
-    self = [super initWithFrame:frame];
-    if (self) {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self)
+    {
         self.name = [[UILabel alloc] init];
         self.name.textColor = [UIColor blackColor];
         self.unreadNum = [[UILabel alloc] init];

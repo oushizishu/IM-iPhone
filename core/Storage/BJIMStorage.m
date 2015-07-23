@@ -85,7 +85,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (void)updateGroup:(Group*)group
 {
-    [self.dbHelper updateToDB:group where:[NSString stringWithFormat:@"groupId = %lld",group.groupId]];;
+    [self.dbHelper updateToDB:group where:[NSString stringWithFormat:@"groupId=%lld",group.groupId]];;
 }
 
 - (NSArray *)queryGroupsWithUser:(User *)user
@@ -121,24 +121,23 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (IMMessage*)queryMessageWithMessageId:(int64_t)messageId
 {
-    NSString *queryString = [NSString stringWithFormat:@"messageId = %lld",messageId];
+    NSString *queryString = [NSString stringWithFormat:@"msgId = %lld",messageId];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message;
 }
 
 - (BOOL)updateMessage:(IMMessage*)message
 {
-    NSString *queryString = [NSString stringWithFormat:@"messageId = %f",message.msgId];
+    NSString *queryString = [NSString stringWithFormat:@"msgId = %f",message.msgId];
     return  [self.dbHelper  updateToDB:message where:queryString];
 }
 
+// 我收到的最大消息id
 - (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole
 {
-    NSString *queryString = [NSString stringWithFormat:@"chat_t = 0 \
-                             AND receiver ＝ %lld\
-                             AND receiverRole =  %ld ORDER BY msgId  DESC LIMIT 1",ownerId, ownerRole];
+    NSString *queryString = [NSString stringWithFormat:@"chat_t=0 AND receiver=%lld AND receiverRole=%ld ORDER BY msgId  DESC ",ownerId, ownerRole];
     
-    IMMessage *message = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }
 
@@ -223,8 +222,8 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 - (NSArray*)queryAllConversationOwnerId:(int64_t)ownerId
                                userRole:(IMUserRole)userRole
 {
-    NSString *queryString  = [NSString stringWithFormat:@"ownerId = %lld \
-                                                     AND userRole = %ld  ORDER BY last_msg_id DESC",ownerId,(long)userRole];
+    NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
+                                                     AND ownerRole=%ld  ORDER BY lastMsgRowId DESC",ownerId,(long)userRole];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     array = [array count]>0?array:nil;
     return array;
@@ -400,7 +399,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 
 
-- (BOOL)insertGroupMember:(Group*)groupMember{
+- (BOOL)insertGroupMember:(GroupMember*)groupMember{
    return   [self.dbHelper insertToDB:groupMember];
 }
 

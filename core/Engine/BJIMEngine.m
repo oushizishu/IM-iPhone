@@ -112,7 +112,7 @@ int ddLogLevel = DDLogLevelInfo;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
-            PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
+            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:nil];
             if (weakSelf.pollingDelegate)
             {
                 [weakSelf.pollingDelegate onPollingFinish:model];

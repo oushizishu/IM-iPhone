@@ -18,6 +18,8 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
+    [[BJIMManager shareInstance] setDebugMode:eIMServer_Environment_www];
+    
     BJIMViewController *viewController = [[BJIMViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navi;

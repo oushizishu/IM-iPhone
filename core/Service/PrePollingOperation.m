@@ -31,8 +31,6 @@
     
     NSArray *groups = [self.imService.imStorage queryGroupsWithUser:owner];
     
-    if ([groups count] == 0) return;
-    
     NSMutableArray *lastGroupMsgIds = [[NSMutableArray alloc] initWithCapacity:[groups count]];
     for (NSInteger index = 0; index < [groups count]; ++ index)
     {
@@ -44,7 +42,7 @@
         [lastGroupMsgIds addObject:dic];
     }
     
-    self.groups_last_msg_id = [lastGroupMsgIds description];
+    self.groups_last_msg_id = [lastGroupMsgIds count] > 0 ? [lastGroupMsgIds description] : nil;
 }
 
 - (void)doAfterOperationOnMain

@@ -27,7 +27,6 @@
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
-@property (nonatomic ,strong) BJIMStorage *storage;
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
@@ -44,15 +43,29 @@
 
 - (void)startServiceWithOwner:(User *)owner
 {
-    [self.imEngine syncConfig];
     self.bIsServiceActive = YES;
-    self.storage = [[BJIMStorage alloc]init];
+    self.imEngine.pollingDelegate = self;
+    self.imEngine.postMessageDelegate = self;
+    self.imEngine.getMsgDelegate = self;
+    self.imEngine.synContactDelegate = self;
+    
+    [self.imEngine start];
+    
+    [self.imEngine syncConfig];
 }
 
 - (void)stopService
 {
     [self.operationQueue cancelAllOperations];
     self.bIsServiceActive = NO;
+    
+    [self.imEngine stop];
+    
+    self.imEngine.pollingDelegate = nil;
+    self.imEngine.postMessageDelegate = nil;
+    self.imEngine.getMsgDelegate = nil;
+    self.imEngine.synContactDelegate = nil;
+    
 }
 
 #pragma mark - 消息操作
@@ -199,15 +212,11 @@
     return _operationQueue;
 }
 
-- (BOOL)bIsServiceActive
-{
-    return _bIsServiceActive;
-}
-
 #pragma mark - application call back
 - (void)applicationEnterForeground
 {
-    [self.imEngine start];
+    if (self.bIsServiceActive)
+        [self.imEngine start];
 }
 
 - (void)applicationEnterBackground

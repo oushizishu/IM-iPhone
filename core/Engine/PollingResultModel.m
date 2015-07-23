@@ -12,6 +12,14 @@
 
 @implementation UnReadNum
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"group_id":@"group_id",
+             @"num":@"num"
+             };
+}
+
 @end
 
 @implementation PollingResultModel
@@ -35,7 +43,7 @@
            
            if ([value isKindOfClass:[NSArray class]])
            {
-               NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:nil];
+               NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:error];
                return array;
            }
            return nil;

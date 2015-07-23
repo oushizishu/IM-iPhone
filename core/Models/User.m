@@ -15,6 +15,16 @@
     return @"USERS";
 }
 
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"userId"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            return @([value longLongValue]);
+        }];
+    }
+    return nil;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{

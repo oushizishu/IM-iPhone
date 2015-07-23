@@ -129,12 +129,12 @@
 - (void)loginClick:(id)sender {
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:@"http://hermes.genshuixue.com/hermes/getImToken" method:kHttpMethod_POST];
     [requestParams appendPostParamValue:self.userIdText.text forKey:@"user_number"];
-    [requestParams appendPostParamValue:@"2" forKey:@"user_role"];
+    [requestParams appendPostParamValue:@"0" forKey:@"user_role"];
     
     __WeakSelf__ weakSelf = self;
     [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSString *authToken = [[response objectForKey:@"data"] valueForKey:@"im_token"];
-        [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Student];
+        [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Teacher];
         
         ConversationListViewController *conversatinList = [[ConversationListViewController alloc] init];
         [weakSelf.navigationController pushViewController:conversatinList animated:YES];

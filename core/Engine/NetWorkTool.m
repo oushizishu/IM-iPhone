@@ -67,11 +67,18 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_POLLING method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
-    [requestParams appendPostParamValue:group_last_msg_ids forKey:@"groups_last_msg_id"];
+    if ([group_last_msg_ids length] > 0)
+    {
+        [requestParams appendPostParamValue:group_last_msg_ids forKey:@"groups_last_msg_id"];
+    }
+    
     if (groupId > 0)
     {
         [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"current_group_id"];
     }
+    
+
+    NSLog(@"post polling [url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
