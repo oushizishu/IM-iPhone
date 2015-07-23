@@ -9,7 +9,7 @@
 #import "BJIMAppDelegate.h"
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import "BJIMViewController.h"
-
+#import "BJChatViewController.h"
 @implementation BJIMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -18,7 +18,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    BJIMViewController *viewController = [[BJIMViewController alloc] init];
+    BJChatViewController *viewController = [[BJChatViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];
     self.window.rootViewController = navi;
     [self.window makeKeyAndVisible];
