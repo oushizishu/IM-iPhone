@@ -35,7 +35,7 @@ static BJChatCellFactory *sharedInstance = nil;
 {
     id key = @(type);
     if (![self canHandleMessageType:type]) {
-        NSAssert1(0, @"%ld 此类型没有支持的cell显示，请实现此cell并调用 BJChatCellFactory 的注册方法 registerClass:forMessageType", type);
+//        NSAssert1(0, @"%ld 此类型没有支持的cell显示，请实现此cell并调用 BJChatCellFactory 的注册方法 registerClass:forMessageType", type);
         key = @(unKownMessageType);
     }
     

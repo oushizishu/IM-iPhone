@@ -38,6 +38,7 @@
         IMMessage *message = [[IMMessage alloc] init];
         message.msg_t = eMessageType_TXT;
         message.msgId = 1;
+        message.status = eMessageStatus_Send_Fail;
         IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];
         body.content = @"测试";
         message.messageBody = body;
@@ -67,7 +68,7 @@
     
     {
         IMMessage *message = [[IMMessage alloc] init];
-        message.msg_t = eMessageType_TXT;
+        message.msg_t = eMessageType_AUDIO;
         message.msgId = 4;
         message.sender = 2;
         IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];

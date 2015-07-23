@@ -10,7 +10,8 @@
 #import "BJChatCellFactory.h"
 
 @interface BJChatUnSupportCell ()
-
+@property (strong, nonatomic)IMMessage *message;
+@property (strong, nonatomic)NSIndexPath *indexPath;
 @end
 
 @implementation BJChatUnSupportCell
@@ -38,13 +39,16 @@
  */
 - (instancetype)init;
 {
-    return [[BJChatUnSupportCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJChatUnSupportCell class])];
+    BJChatUnSupportCell *cell = [[BJChatUnSupportCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJChatUnSupportCell class])];
+    cell.textLabel.font = [UIFont systemFontOfSize:NAME_LABEL_FONT_SIZE];
+    return cell;
 }
 
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath;
 {
-    [super setCellInfo:info indexPath:indexPath];
-    self.textLabel.text = @"当前版本暂不支持查看此消息，请升级新版本。";
+    self.message = info;
+    self.indexPath = indexPath;
+    self.textLabel.text = @"当前版本暂不支持查看此消息";
 }
 
 + (CGFloat)cellHeightWithInfo:(id)dic indexPath:(NSIndexPath *)indexPath;

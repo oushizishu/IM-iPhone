@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "BJChatBaseCell.h"
 #import "BJChatViewCellProtocol.h"
-@interface BJChatUnSupportCell : BJChatBaseCell<BJChatViewCellProtocol>
+@interface BJChatUnSupportCell : UITableViewCell<BJChatViewCellProtocol>
 
 @end

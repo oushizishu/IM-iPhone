@@ -17,6 +17,7 @@
 		256AB8A51B60E1A5006019D3 /* bg_speech_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB8A11B60E1A5006019D3 /* bg_speech_nor@2x.png */; };
 		256AB8A61B60E1A5006019D3 /* bg_speech_pr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB8A21B60E1A5006019D3 /* bg_speech_pr@2x.png */; };
 		256AB8A81B6120BA006019D3 /* img_head_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB8A71B6120BA006019D3 /* img_head_default@2x.png */; };
+		256AB8AA1B61249D006019D3 /* ic_warn_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB8A91B61249D006019D3 /* ic_warn_nor@2x.png */; };
 		25DBA9CE1B5F6B4C00C907FD /* BJChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DBA9CD1B5F6B4C00C907FD /* BJChatViewController.m */; };
 		25DBA9D11B5F6B6700C907FD /* BJChatInputViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DBA9D01B5F6B6700C907FD /* BJChatInputViewController.m */; };
 		25DBA9D41B5F6DD600C907FD /* BJChatCellFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DBA9D31B5F6DD600C907FD /* BJChatCellFactory.m */; };
@@ -66,6 +67,7 @@
 		256AB8A11B60E1A5006019D3 /* bg_speech_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_nor@2x.png"; sourceTree = "<group>"; };
 		256AB8A21B60E1A5006019D3 /* bg_speech_pr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_pr@2x.png"; sourceTree = "<group>"; };
 		256AB8A71B6120BA006019D3 /* img_head_default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "img_head_default@2x.png"; sourceTree = "<group>"; };
+		256AB8A91B61249D006019D3 /* ic_warn_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_warn_nor@2x.png"; sourceTree = "<group>"; };
 		25DBA9CC1B5F6B4C00C907FD /* BJChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatViewController.h; sourceTree = "<group>"; };
 		25DBA9CD1B5F6B4C00C907FD /* BJChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatViewController.m; sourceTree = "<group>"; };
 		25DBA9CF1B5F6B6700C907FD /* BJChatInputViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatInputViewController.h; sourceTree = "<group>"; };
@@ -169,6 +171,7 @@
 		256AB89E1B60E19D006019D3 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				256AB8A91B61249D006019D3 /* ic_warn_nor@2x.png */,
 				256AB8A71B6120BA006019D3 /* img_head_default@2x.png */,
 				256AB89F1B60E1A5006019D3 /* bg_speech_gre_nor@2x.png */,
 				256AB8A01B60E1A5006019D3 /* bg_speech_gre_pr@2x.png */,
@@ -368,6 +371,7 @@
 				256AB8A81B6120BA006019D3 /* img_head_default@2x.png in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				256AB8A41B60E1A5006019D3 /* bg_speech_gre_pr@2x.png in Resources */,
+				256AB8AA1B61249D006019D3 /* ic_warn_nor@2x.png in Resources */,
 				256AB8A31B60E1A5006019D3 /* bg_speech_gre_nor@2x.png in Resources */,
 				6003F5A1195388D20070C39A /* Main_iPhone.storyboard in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
