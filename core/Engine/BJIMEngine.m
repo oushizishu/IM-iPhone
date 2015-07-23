@@ -42,6 +42,7 @@ int ddLogLevel = DDLogLevelInfo;
 {
     _engineActive = YES;
     [self resetPollingIndex];
+    [self nextPollingAt];
     [self.pollingTimer.timer fire];
 }
 
