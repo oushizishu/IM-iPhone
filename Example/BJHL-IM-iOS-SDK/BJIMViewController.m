@@ -9,7 +9,7 @@
 #import "BJIMViewController.h"
 #import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
-#import "ConversationListViewController.h"
+#import "BJConversationListViewController.h"
 #import <BJHL-IM-iOS-SDK/BJIMStorage.h>
 @interface BJIMViewController ()
 @property (nonatomic, strong) UITextField *userIdText;
@@ -136,7 +136,7 @@
         NSString *authToken = [[response objectForKey:@"data"] valueForKey:@"im_token"];
         [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Teacher];
         
-        ConversationListViewController *conversatinList = [[ConversationListViewController alloc] init];
+        BJConversationListViewController *conversatinList = [[BJConversationListViewController alloc] init];
         [weakSelf.navigationController pushViewController:conversatinList animated:YES];
         
     } failure:^(NSError *error, RequestParams *params) {

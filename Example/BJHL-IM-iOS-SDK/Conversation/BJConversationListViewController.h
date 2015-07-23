@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ConversationListViewController : UIViewController
+@interface BJConversationListViewController : UIViewController
 
 @end

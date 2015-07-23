@@ -10,7 +10,7 @@
 #import <BJHL-Common-iOS-SDK/UIView+Basic.h>
 #import <BJHL-IM-iOS-SDK/Conversation.h>
 
-@interface ConversationTableViewCell : UITableViewCell
+@interface BJConversationTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) Conversation *conversation;
 
