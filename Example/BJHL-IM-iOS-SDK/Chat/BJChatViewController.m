@@ -125,7 +125,7 @@
 
 - (void)didReceiveNewMessages:(NSArray *)newMessages
 {
-    [[self.conversation messages] addObjectsFromArray:newMessages];
+    [self.messageList addObjectsFromArray:newMessages];
 }
 
 @end
