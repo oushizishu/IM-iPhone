@@ -8,7 +8,7 @@
 
 #import "Conversation+DB.h"
 #import "BJIMService.h"
-#import "IMMessage.h"
+#import "IMMessage+DB.h"
 
 @implementation Conversation(DB)
 
@@ -33,8 +33,8 @@ static char BJIMConversationIMService;
     if (_chatToUser != nil) return _chatToUser;
     
     if (self.imService == nil) return nil;
-    _chatToUser = [self.imService.imStorage queryUser:self.toId userRole:self.toRole];
-    objc_setAssociatedObject(self, &BJIMConversationChatToUser, _chatToUser, OBJC_ASSOCIATION_RETAIN);
+    _chatToUser = [self.imService getUser:self.toId role:self.toRole];
+    objc_setAssociatedObject(self, &BJIMConversationChatToUser, _chatToUser, OBJC_ASSOCIATION_ASSIGN);
     return _chatToUser;
 }
 
@@ -48,8 +48,8 @@ static char BJIMConversationIMService;
     if (_chatToGroup != nil) return _chatToGroup;
     
     if(self.imService == nil) return nil;
-    _chatToGroup = [self.imService.imStorage queryGroupWithGroupId:self.toId];
-    objc_setAssociatedObject(self, &BJIMConversationChatToGroup, _chatToGroup, OBJC_ASSOCIATION_RETAIN);
+    _chatToGroup = [self.imService getGroup:self.toId];
+    objc_setAssociatedObject(self, &BJIMConversationChatToGroup, _chatToGroup, OBJC_ASSOCIATION_ASSIGN);
     return _chatToGroup;
 }
 
@@ -74,6 +74,10 @@ static char BJIMConversationIMService;
         
         objc_setAssociatedObject(self, &BJIMConversationMessages, _messages, OBJC_ASSOCIATION_RETAIN);
     }
+    [_messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        IMMessage *msg = (IMMessage *)obj;
+        msg.imService = self.imService;
+    }];
     return _messages;
 }
 

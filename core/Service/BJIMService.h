@@ -29,6 +29,8 @@
 
 #pragma mark - getter 
 - (NSArray *)getAllConversationWithOwner:(User *)owner;
+- (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
+- (Group *)getGroup:(int64_t)groupId;
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;

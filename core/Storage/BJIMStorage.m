@@ -42,9 +42,9 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 }
 
 #pragma mark User表
-- (User*)queryUser:(int64_t)userId userRole:(int)userRole
+- (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole
 {
-   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId = %lld  AND userRole = %d",userId,userRole] orderBy:nil];
+   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId = %lld  AND userRole = %ld",userId,userRole] orderBy:nil];
    return user;
 }
 
@@ -288,7 +288,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     NSString *sqlString = @"";
     if (contact.userRole == eUserRole_Student) {
         sqlString = @"studentContacts";
-    }else if(contact .userRole == eUserRole_Teacher)
+    }else if(contact.userRole == eUserRole_Teacher)
     {
         sqlString = @"teacherContacts";
     }else if (contact.userRole == eUserRole_Institution){
@@ -391,16 +391,15 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return _array;
 }
 
-- (GroupMember *)queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole
+- (GroupMember *)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole
 {
-    NSString *queryString = [NSString stringWithFormat:@"groupId = %ld AND userId = %ld and userRole = %ld",groupId,userId,(long)userRole];
+    NSString *queryString = [NSString stringWithFormat:@"groupId=%lld AND userId=%lld and userRole=%ld",groupId, userId, userRole];
     return [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
 }
 
 
-
 - (BOOL)insertGroupMember:(GroupMember*)groupMember{
-   return   [self.dbHelper insertToDB:groupMember];
+   return [self.dbHelper insertToDB:groupMember];
 }
 
 - (double)getConversationMaxMsgId:(int64_t)conversationId {
@@ -418,7 +417,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (BOOL)deleteMyContactWithUser:(User*)user
 {
-    NSString *queryString = [NSString stringWithFormat:@"DELETE FROM CONTACTS WHERE  userId = %hd",user.userId];
+    NSString *queryString = [NSString stringWithFormat:@"DELETE FROM CONTACTS WHERE userId=%lld",user.userId];
    return  [self.dbHelper executeSQL:queryString arguments:nil];
 }
 

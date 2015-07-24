@@ -17,7 +17,7 @@
 @interface BJIMStorage : NSObject
 
 //user
-- (User*)queryUser:(int64_t)userId userRole:(int)userRole;
+- (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole;
 - (BOOL)insertOrUpdateUser:(User *)user;
 
 //group
@@ -71,7 +71,7 @@
 - (NSArray*)queryInstitutionContactWithUserId:(long)userId userRole:(IMUserRole)userRole;
 
 //groupMember
-- (GroupMember*)queryGroupMemberWithGroupId:(long)groupId userId:(long)userId userRole:(IMUserRole)userRole;
+- (GroupMember*)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (BOOL)insertGroupMember:(GroupMember*)groupMember;
 
 //other 

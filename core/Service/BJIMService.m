@@ -35,6 +35,9 @@
 @property (nonatomic, strong) NSHashTable *contactChangedDelegates;
 @property (nonatomic, strong) NSHashTable *loadMoreMessagesDelegates;
 
+@property (nonatomic, strong) NSMutableArray *usersCache;
+@property (nonatomic, strong) NSMutableArray *groupsCache;
+
 @end
 
 @implementation BJIMService
@@ -65,6 +68,9 @@
     self.imEngine.postMessageDelegate = nil;
     self.imEngine.getMsgDelegate = nil;
     self.imEngine.synContactDelegate = nil;
+    
+    [self.usersCache removeAllObjects];
+    [self.groupsCache removeAllObjects];
     
 }
 
@@ -183,6 +189,42 @@
     return list;
 }
 
+- (User *)getUser:(int64_t)userId role:(IMUserRole)userRole
+{
+    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
+    {
+        User *user = [self.usersCache objectAtIndex:index];
+        if (user.userId == userId && user.userRole == userRole)
+        {
+            return user;
+        }
+    }
+    
+    User *user = [self.imStorage queryUser:userId userRole:userRole];
+    if (user) {
+        [self.usersCache addObject:user];
+    }
+    
+    return user;
+}
+
+- (Group *)getGroup:(int64_t)groupId
+{
+    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
+        Group *group = [self.groupsCache objectAtIndex:index];
+        if (group.groupId == groupId) {
+            return group;
+        }
+    }
+    
+    Group *group = [self.imStorage queryGroupWithGroupId:groupId];
+    if (group)
+    {
+        [self.groupsCache addObject:group];
+    }
+    return group;
+}
+
 
 - (BJIMEngine *)imEngine
 {
@@ -210,6 +252,24 @@
         [_operationQueue setMaxConcurrentOperationCount:3];
     }
     return _operationQueue;
+}
+
+- (NSMutableArray *)usersCache
+{
+    if (_usersCache == nil)
+    {
+        _usersCache = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    return _usersCache;
+}
+
+- (NSMutableArray *)groupsCache
+{
+    if (_groupsCache == nil)
+    {
+        _groupsCache = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    return _groupsCache;
 }
 
 #pragma mark - application call back
