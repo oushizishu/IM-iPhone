@@ -11,13 +11,13 @@
 #import "BJIMService.h"
 #import "Conversation+DB.h"
 #import "Group.h"
+#import "IMMessage+DB.h"
 
 @interface LoadMoreMessagesOperation()
 
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, assign) BOOL hasMore;
-@property (nonatomic, assign) double minMsgId;
 @property (nonatomic, copy) NSMutableString *excludeIds;
 
 @end
@@ -33,8 +33,7 @@
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
-        double chatMinMsgId = [[[self.conversation messages] objectAtIndex:0] msgId];
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:chatMinMsgId];
+        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
         
         if ([self.messages count] == 0) {
             self.hasMore = NO;
@@ -50,7 +49,6 @@
     else
     {
         Group *group = [self.conversation chatToGroup];
-        self.minMsgId = 0;
         
         if ([self.messages count] > 0)
         {
@@ -100,11 +98,16 @@
 {
     if (self.messages)
     {
+        [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            IMMessage *_message = (IMMessage *)obj;
+            _message.imService = _imService;
+        }];
+        
         [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
     }
     else
     {
-    
+        [self.imService.imEngine getMsgConversation:self.conversation.rowid minMsgId:self.minMsgId groupId:self.conversation.toId userId:0 excludeIds:self.excludeIds];
     }
 }
 

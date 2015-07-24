@@ -88,12 +88,31 @@
     
 }
 
-- (void)loadMoreMessages:(Conversation *)conversation
+- (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
 {
+    if (minMsgId <= 0)
+    {
+    
+        if (conversation.chat_t == eChatType_Chat)
+        {
+            NSArray *array = [self.imStorage loadChatMessagesInConversation:conversation.rowid];
+            return array;
+        }
+        else
+        {
+            Group *_chatToGroup = [conversation chatToGroup];
+            NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
+            return array;
+        }
+    }
+    
     LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
+    
+    operation.minMsgId = minMsgId;
     operation.imService = self;
     operation.conversation = conversation;
     [self.operationQueue addOperation:operation];
+    return nil;
 }
 
 #pragma mark - Post Message Delegate

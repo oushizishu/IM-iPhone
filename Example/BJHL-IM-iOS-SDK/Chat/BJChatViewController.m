@@ -9,10 +9,10 @@
 #import "BJChatViewController.h"
 #import <IMMessage.h>
 #import "BJChatCellFactory.h"
-
+#import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import <Conversation+DB.h>
 
-@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate>
+@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (strong, nonatomic) Conversation *conversation;
@@ -33,52 +33,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    {
-        IMMessage *message = [[IMMessage alloc] init];
-        message.msg_t = eMessageType_TXT;
-        message.msgId = 1;
-        message.status = eMessageStatus_Send_Fail;
-        IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];
-        body.content = @"测试";
-        message.messageBody = body;
-        [self.messageList addObject:message];
-    }
     
-    {
-        IMMessage *message = [[IMMessage alloc] init];
-        message.msg_t = eMessageType_TXT;
-        message.msgId = 2;
-        IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];
-        body.content = @"测试sdfsafdsakfjlkjsaf;lkjaks;ljfl;ajs;fljasf;ajsf;ljaksjf";
-        message.messageBody = body;
-        [self.messageList addObject:message];
-    }
+    [[BJIMManager shareInstance] addReceiveNewMessageDelegate:self];
     
-    {
-        IMMessage *message = [[IMMessage alloc] init];
-        message.msg_t = eMessageType_TXT;
-        message.msgId = 3;
-        IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];
-        body.content = @"测试 3333";
-        message.sender = 3;
-        message.messageBody = body;
-        [self.messageList addObject:message];
-    }
-    
-    {
-        IMMessage *message = [[IMMessage alloc] init];
-        message.msg_t = eMessageType_AUDIO;
-        message.msgId = 4;
-        message.sender = 2;
-        IMTxtMessageBody *body = [[IMTxtMessageBody alloc] init];
-        body.content = @"测试sdfsafdsakfjlkjsaf;lkjaks;ljfl;ajs;fljasf;ajsf;ljaksjf";
-        message.messageBody = body;
-        [self.messageList addObject:message];
-    }
     [self.view addSubview:self.tableView];
 
 }
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -160,6 +121,11 @@
         _messageHeightDic = [[NSMutableDictionary alloc] initWithCapacity:0];
     }
     return _messageHeightDic;
+}
+
+- (void)didReceiveNewMessages:(NSArray *)newMessages
+{
+    [[self.conversation messages] addObjectsFromArray:newMessages];
 }
 
 @end

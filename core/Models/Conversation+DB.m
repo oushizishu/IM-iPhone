@@ -13,7 +13,6 @@
 @implementation Conversation(DB)
 
 @dynamic imService;
-@dynamic messages;
 
 static char BJIMConversationChatToUser;
 static char BJIMConversationChatToGroup;
@@ -53,33 +52,33 @@ static char BJIMConversationIMService;
     return _chatToGroup;
 }
 
-- (NSMutableArray *)messages
-{
-    NSMutableArray *_messages = objc_getAssociatedObject(self, &BJIMConversationMessages);
-    if (_messages == nil)
-    {
-        if (self.imService == nil) return nil;
-        
-        if (self.chat_t == eChatType_Chat)
-        {
-            NSArray *array = [self.imService.imStorage loadChatMessagesInConversation:self.rowid];
-            _messages = [NSMutableArray arrayWithArray:array];
-        }
-        else
-        {
-            Group *_chatToGroup = [self chatToGroup];
-            NSArray *array = [self.imService.imStorage loadGroupChatMessages:_chatToGroup inConversation:self.rowid];
-            _messages = [NSMutableArray arrayWithArray:array];
-        }
-        
-        objc_setAssociatedObject(self, &BJIMConversationMessages, _messages, OBJC_ASSOCIATION_RETAIN);
-    }
-    [_messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        IMMessage *msg = (IMMessage *)obj;
-        msg.imService = self.imService;
-    }];
-    return _messages;
-}
+//- (NSMutableArray *)messages
+//{
+//    NSMutableArray *_messages = objc_getAssociatedObject(self, &BJIMConversationMessages);
+//    if (_messages == nil)
+//    {
+//        if (self.imService == nil) return nil;
+//        
+//        if (self.chat_t == eChatType_Chat)
+//        {
+//            NSArray *array = [self.imService.imStorage loadChatMessagesInConversation:self.rowid];
+//            _messages = [NSMutableArray arrayWithArray:array];
+//        }
+//        else
+//        {
+//            Group *_chatToGroup = [self chatToGroup];
+//            NSArray *array = [self.imService.imStorage loadGroupChatMessages:_chatToGroup inConversation:self.rowid];
+//            _messages = [NSMutableArray arrayWithArray:array];
+//        }
+//        
+//        objc_setAssociatedObject(self, &BJIMConversationMessages, _messages, OBJC_ASSOCIATION_RETAIN);
+//    }
+//    [_messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+//        IMMessage *msg = (IMMessage *)obj;
+//        msg.imService = self.imService;
+//    }];
+//    return _messages;
+//}
 
 - (IMMessage *)lastMessage
 {

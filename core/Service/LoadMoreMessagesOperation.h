@@ -14,5 +14,6 @@
 
 @property (nonatomic, weak) BJIMService *imService;
 @property (nonatomic, strong) Conversation *conversation;
+@property (nonatomic, assign) double_t minMsgId;
 
 @end

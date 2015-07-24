@@ -18,7 +18,7 @@
 @property (nonatomic, strong, readonly) User *chatToUser;
 @property (nonatomic, strong, readonly) Group *chatToGroup;
 
-@property (nonatomic, strong) NSMutableArray *messages;
+//@property (nonatomic, strong) NSMutableArray *messages;
 
 @property (nonatomic, strong, readonly)IMMessage *lastMessage;
 

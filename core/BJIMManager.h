@@ -52,7 +52,9 @@
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
 - (void)retryMessage:(IMMessage *)message;
-- (void)loadMoreMessages:(Conversation *)conversation;
+//- (void)loadMoreMessages:(Conversation *)conversation;
+// 初始化以及加载会话消息
+- (NSArray *)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;

@@ -88,13 +88,22 @@
     [self.imService retryMessage:message];
 }
 
-- (void)loadMoreMessages:(Conversation *)conversation
+//- (void)loadMoreMessages:(Conversation *)conversation
+//{
+//    if (! [[IMEnvironment shareInstance] isLogin])
+//    {
+//        return;
+//    }
+//    [self.imService loadMoreMessages:conversation];
+//}
+
+- (NSArray *)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
-        return;
+        return nil;
     }
-    [self.imService loadMoreMessages:conversation];
+    return [self.imService loadMessages:conversation minMsgId:minMsgId];
 }
 
 #pragma mark - setter & getter

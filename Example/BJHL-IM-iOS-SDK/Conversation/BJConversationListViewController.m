@@ -64,7 +64,8 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BJChatViewController *vc = [[BJChatViewController alloc] init];
+    BJChatViewController *vc = [[BJChatViewController alloc] initWithConversation:[self.allConversations objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 #pragma mark - converstaion delegate
