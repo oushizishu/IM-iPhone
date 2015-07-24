@@ -109,7 +109,7 @@
                 message.rowid = _message.rowid;
             }
             
-            conversation = [self.imService.imStorage queryConversation:message.sender userRole:message.senderRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
+            conversation = [self.imService.imStorage queryConversation:message.sender ownerRole:message.senderRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
             
             if (conversation == nil)
             {// 创建新的 conversation，unreadnumber 不增加
@@ -145,7 +145,7 @@
         
             if (message.chat_t == eChatType_Chat)
             { // 单聊
-                conversation = [self.imService.imStorage queryConversation:message.receiver userRole:message.receiverRole otherUserOrGroupId:message.sender userRole:message.senderRole chatType:message.chat_t];
+                conversation = [self.imService.imStorage queryConversation:message.receiver ownerRole:message.receiverRole otherUserOrGroupId:message.sender userRole:message.senderRole chatType:message.chat_t];
                 
                 if (conversation == nil)
                 {
@@ -172,7 +172,7 @@
             }
             else
             { // 群聊
-                conversation = [self.imService.imStorage queryConversation:owner.userId userRole:owner.userRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
+                conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
                 
                 Group *chatToGroup = [self.imService.imStorage queryGroupWithGroupId:conversation.toId];
                 if (conversation == nil)
@@ -246,7 +246,7 @@
         for (NSInteger index = 0; index < [unread_number count]; ++ index)
         {
             UnReadNum *num = [unread_number objectAtIndex:index];
-            Conversation *conversation = [self.imService.imStorage queryConversation:owner.userId userRole:owner.userRole otherUserOrGroupId:num.group_id userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
+            Conversation *conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:num.group_id userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
             
             if (conversation)
             {
@@ -281,7 +281,7 @@
 {
     if (self.receiveNewMessages)
     {
-        [self.imService notifyContactChanged];
+        [self.imService notifyConversationChanged];
         [self.imService notifyReceiveNewMessages:self.receiveNewMessages];
     }
     

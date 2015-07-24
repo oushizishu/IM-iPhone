@@ -11,7 +11,7 @@
 #import "BJConversationTableViewCell.h"
 #import "BJChatViewController.h"
 
-@interface BJConversationListViewController()<UITableViewDataSource, UITableViewDelegate>
+@interface BJConversationListViewController()<UITableViewDataSource, UITableViewDelegate, IMConversationChangedDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *allConversations;
@@ -29,6 +29,12 @@
     [self.view addSubview:self.tableView];
     
     self.allConversations = [[BJIMManager shareInstance] getAllConversation];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[BJIMManager shareInstance] addConversationChangedDelegate:self];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -59,6 +65,13 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     BJChatViewController *vc = [[BJChatViewController alloc] init];
+}
+
+#pragma mark - converstaion delegate
+- (void)didConversationDidChanged
+{
+    self.allConversations = [[BJIMManager shareInstance] getAllConversation];
+    [self.tableView reloadData];
 }
 
 

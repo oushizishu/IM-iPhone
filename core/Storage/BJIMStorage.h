@@ -52,7 +52,7 @@
                                userRole:(IMUserRole)userRole;
 - (Conversation*)queryConversation:(int64_t)conversationId;
 - (Conversation*)queryConversation:(int64_t)ownerId
-                          userRole:(IMUserRole)userRole
+                          ownerRole:(IMUserRole)ownerRole
                 otherUserOrGroupId:(int64_t)userId
                           userRole:(IMUserRole)otherRserRole
                           chatType:(IMChatType)chatType;

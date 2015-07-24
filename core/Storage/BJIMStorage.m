@@ -236,21 +236,21 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 }
 
 - (Conversation*)queryConversation:(int64_t)ownerId
-                          userRole:(IMUserRole)userRole
+                          ownerRole:(IMUserRole)ownerRole
                 otherUserOrGroupId:(int64_t)userId
                           userRole:(IMUserRole)otherRserRole
                           chatType:(IMChatType)chatType
 {
     NSString *query = @"";
     if (chatType ==  eChatType_Chat) {
-        query = [NSString stringWithFormat:@" AND toRole = %ld" ,userRole];
+        query = [NSString stringWithFormat:@" AND toRole = %ld" ,otherRserRole];
     }else{
         query = @"";
     }
-    NSString  *queryString = [NSString stringWithFormat:@"ownerId = %lld\
-                                                     AND ownerRole = %ld\
-                                                     AND toId = %lld %@\
-                                                     AND chat_t = %ld",ownerId,(long)userRole,userId,query,(long)chatType];
+    NSString  *queryString = [NSString stringWithFormat:@"ownerId=%lld\
+                                                     AND ownerRole=%ld\
+                                                     AND toId=%lld %@\
+                                                     AND chat_t=%ld",ownerId, ownerRole,userId,query,chatType];
     return [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
 }
 
