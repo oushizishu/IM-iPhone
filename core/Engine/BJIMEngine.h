@@ -36,8 +36,8 @@
 
 @protocol  IMEngineGetMessageDelegate <NSObject>
 
-- (void)onGetMsgSucc:(NSInteger)conversationId result:(PollingResultModel *)model;
-- (void)onGetMsgFail:(NSInteger)conversationId;
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId result:(PollingResultModel *)model;
+- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId;
 
 
 @end

@@ -158,22 +158,25 @@
 }
 
 #pragma mark - get Msg Delegate
-- (void)onGetMsgSucc:(NSInteger)conversationId result:(PollingResultModel *)model
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId result:(PollingResultModel *)model
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
     operation.imService = self;
     operation.conversationId = conversationId;
     operation.model = model;
+    operation.minMsgId = minMsgId;
     [self.operationQueue addOperation:operation];
 }
 
-- (void)onGetMsgFail:(NSInteger)conversationId
+- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
     operation.imService = self;
     operation.conversationId = conversationId;
+    operation.minMsgId = minMsgId;
+    
     [self.operationQueue addOperation:operation];
 }
 

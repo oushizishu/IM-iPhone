@@ -11,5 +11,6 @@
 @interface HandleGetMsgOperation : HandlePollingResultOperation
 
 @property (nonatomic, assign) NSInteger conversationId;
+@property (nonatomic, assign) double_t minMsgId;
 
 @end

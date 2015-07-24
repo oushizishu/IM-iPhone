@@ -35,16 +35,10 @@
     self.conversation.imService = self.imService;
     if (self.conversation.chat_t == eChatType_GroupChat)
     {
-        double minMsgId = 0;
-        if ([[self.conversation messages] count] > 0)
-        {
-            minMsgId = [[[self.conversation messages] objectAtIndex:0] msgId];
-        }
-        
         Group *group = [self.conversation chatToGroup];
         if (self.model && [self.model.msgs count] > 0)
         {
-            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:minMsgId];
+            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId];
             if ([list count] > 0)
             {
                 group.endMessageId = [[list objectAtIndex:0] msgId];
@@ -66,7 +60,7 @@
         if (group.endMessageId <= group.startMessageId && group.startMessageId != 0)
         {
             //没有空洞
-            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:minMsgId];
+            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId];
             double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
             if ([self.messages count] == 0)
             {
@@ -83,7 +77,7 @@
         else
         {
             // 还存在空洞
-            self.messages = [self.imService.imStorage loadMoreMessagesConversation:self.conversationId minMsgId:group.endMessageId maxMsgId:minMsgId];
+            self.messages = [self.imService.imStorage loadMoreMessagesConversation:self.conversationId minMsgId:group.endMessageId maxMsgId:self.minMsgId];
             self.hasMore = YES;
         }
     }

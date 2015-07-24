@@ -150,17 +150,17 @@ int ddLogLevel = DDLogLevelInfo;
         if(result.code == RESULT_CODE_SUCC)
         {
             PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
-            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId result:model];
+            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid result:model];
         }
         else
         {
             DDLogWarn(@"Get MSG FAIL [url:%@][%@]", params.url, params.urlPostParams);
-            [weakSelf.getMsgDelegate onGetMsgFail:conversationId];
+            [weakSelf.getMsgDelegate onGetMsgFail:conversationId minMsgId:eid];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Get MSG FAIL [url:%@][%@]", params.url, error.userInfo);
-        [weakSelf.getMsgDelegate onGetMsgFail:conversationId];
+        [weakSelf.getMsgDelegate onGetMsgFail:conversationId minMsgId:eid];
     }];
 }
 
