@@ -72,17 +72,6 @@
             return nil;
         }];
     }
-    else if ([key isEqualToString:@"ops"])
-    {
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            if ([value isKindOfClass:[NSArray class]])
-            {
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[NSNumber class] fromJSONArray:value error:nil];
-                return array;
-            }
-            return nil;
-        }];
-    }
     return nil;
 }
 
