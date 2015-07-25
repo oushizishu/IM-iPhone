@@ -64,7 +64,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    BJChatViewController *vc = [[BJChatViewController alloc] initWithConversation:[self.allConversations objectAtIndex:indexPath.row]];
+    Conversation *cov = [self.allConversations objectAtIndex:indexPath.row];
+    BJChatInfo *chatInfo = [[BJChatInfo alloc] initWithConversation:cov];
+    BJChatViewController *vc = [[BJChatViewController alloc] initWithChatInfo:chatInfo];
     [self.navigationController pushViewController:vc animated:YES];
 }
 

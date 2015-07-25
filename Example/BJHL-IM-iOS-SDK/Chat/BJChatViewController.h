@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <Conversation.h>
+#import "BJChatInfo.h"
 @interface BJChatViewController : UIViewController
-- (instancetype)initWithConversation:(Conversation *)conversation;
+- (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo;
 @end

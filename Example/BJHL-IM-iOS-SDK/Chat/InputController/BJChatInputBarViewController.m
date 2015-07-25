@@ -16,7 +16,7 @@
 #define kTouchToRecord @"按住说话"
 #define kTouchToFinish @"松开发送"
 
-@interface BJChatInputBarViewController ()
+@interface BJChatInputBarViewController ()<UITextViewDelegate>
 /**
  *  用于输入文本消息的输入框
  */
@@ -48,9 +48,9 @@
 
 @implementation BJChatInputBarViewController
 
-- (instancetype)initWithConversation:(Conversation *)conversation
+- (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo
 {
-    self = [super initWithConversation:conversation];
+    self = [super initWithChatInfo:chatInfo];
     if (self) {
         [self setupConfigure];
     }
@@ -76,6 +76,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -97,10 +98,10 @@
 - (void)setupConfigure
 {
     self.maxTextInputViewHeight = kInputTextViewMaxHeight;
-    self.view.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.toolbarView];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackground) name:UIApplicationDidEnterBackgroundNotification object:nil];
 }
 
 - (void)setupSubviews
@@ -144,16 +145,16 @@
     self.inputTextView = [[XHMessageTextView  alloc] initWithFrame:CGRectMake(textViewLeftMargin, kVerticalPadding, width, kInputTextViewMinHeight)];
     self.inputTextView.autoresizingMask = UIViewAutoresizingFlexibleHeight;
     //    self.inputTextView.contentMode = UIViewContentModeCenter;
-    _inputTextView.scrollEnabled = YES;
-    _inputTextView.returnKeyType = UIReturnKeySend;
-    _inputTextView.enablesReturnKeyAutomatically = YES; // UITextView内部判断send按钮是否可以用
-    _inputTextView.placeHolder = @"说点什么吧...";
-    _inputTextView.delegate = self;
-    _inputTextView.backgroundColor = [UIColor clearColor];
-    _inputTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
-    _inputTextView.layer.borderWidth = 0.65f;
-    _inputTextView.layer.cornerRadius = 6.0f;
-    self.previousTextViewContentHeight = [self getTextViewContentH:_inputTextView];
+    self.inputTextView.scrollEnabled = YES;
+    self.inputTextView.returnKeyType = UIReturnKeySend;
+    self.inputTextView.enablesReturnKeyAutomatically = YES; // UITextView内部判断send按钮是否可以用
+    self.inputTextView.placeHolder = @"说点什么吧...";
+    self.inputTextView.delegate = self;
+    self.inputTextView.backgroundColor = [UIColor clearColor];
+    self.inputTextView.layer.borderColor = [UIColor colorWithWhite:0.8f alpha:1.0f].CGColor;
+    self.inputTextView.layer.borderWidth = 0.65f;
+    self.inputTextView.layer.cornerRadius = 6.0f;
+    self.previousTextViewContentHeight = [self getTextViewContentH:self.inputTextView];
     
     //录制
     self.recordButton = [[UIButton alloc] initWithFrame:CGRectMake(textViewLeftMargin, kVerticalPadding, width, kInputTextViewMinHeight)];
@@ -203,8 +204,8 @@
  */
 - (void)cancelTouchRecord
 {
-    //    self.recordButton.selected = NO;
-    //    self.recordButton.highlighted = NO;
+    self.recordButton.selected = NO;
+    self.recordButton.highlighted = NO;
 //    if ([_recordView isKindOfClass:[DXRecordView class]]) {
 //        [(DXRecordView *)_recordView recordButtonTouchUpInside];
 //        [_recordView removeFromSuperview];
@@ -249,10 +250,6 @@
             } completion:^(BOOL finished) {
                 
             }];
-            
-//            if ([self.delegate respondsToSelector:@selector(didStyleChangeToRecord:)]) {
-//                [self.delegate didStyleChangeToRecord:button.selected];
-//            }
         }
             break;
         case 1://表情
@@ -385,7 +382,15 @@
 //    }
 }
 
-#pragma mark - UIKeyboardNotification
+#pragma mark - Notification
+- (void)applicationDidEnterBackground
+{
+    [self cancelTouchRecord];
+    
+    //保存草稿
+//    [self saveToDraft:self.chatToolBar.inputTextView];
+}
+
 - (void)keyboardWillChangeFrame:(NSNotification *)notification
 {
     NSDictionary *userInfo = notification.userInfo;
@@ -408,7 +413,7 @@
 #pragma mark - input View
 - (void)willShowBottomView:(UIView *)bottomView;
 {
-       [self willShowBottomView:bottomView withDuration:0.25];
+    [self willShowBottomView:bottomView withDuration:0.25];
 }
 
 /*!
@@ -607,7 +612,7 @@
 {
     
     if ([text isEqualToString:@"\n"]) {
-        [BJSendMessageHelper sendTextMessage:textView.text conversation:self.conversation];
+        [BJSendMessageHelper sendTextMessage:textView.text chatInfo:self.chatInfo];
         self.inputTextView.text = @"";
         [self willShowInputTextViewToHeight:[self getTextViewContentH:self.inputTextView]];
         
@@ -629,16 +634,6 @@
         maxTextInputViewHeight = kInputTextViewMaxHeight;
     }
     _maxTextInputViewHeight = maxTextInputViewHeight;
-}
-
-- (UIView *)activityButtomView
-{
-    if (_activityButtomView == nil) {
-        _activityButtomView = [[UIView alloc] init];
-        _activityButtomView.backgroundColor = [UIColor clearColor];
-    }
-    
-    return _activityButtomView;
 }
 
 - (UIView *)toolbarView

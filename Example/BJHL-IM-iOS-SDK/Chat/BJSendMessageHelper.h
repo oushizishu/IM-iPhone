@@ -11,7 +11,9 @@
 
 #import <IMMessage.h>
 #import <BJIMManager.h>
+
+#import "BJChatInfo.h"
 @interface BJSendMessageHelper : NSObject
-+ (void)sendTextMessage:(NSString *)text conversation:(Conversation *)conversation;
++ (void)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
 
 @end

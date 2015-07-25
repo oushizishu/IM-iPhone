@@ -35,6 +35,8 @@
 		25DED9E81B63A47D00C09994 /* BJChatInputBarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DED9DF1B63A47D00C09994 /* BJChatInputBarViewController.m */; };
 		25DED9E91B63A47D00C09994 /* BJChatInputBaseViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DED9E11B63A47D00C09994 /* BJChatInputBaseViewController.m */; };
 		25DED9EA1B63A47D00C09994 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DED9E31B63A47D00C09994 /* XHMessageTextView.m */; };
+		25DED9EF1B63AD7100C09994 /* DXRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DED9EE1B63AD7100C09994 /* DXRecordView.m */; };
+		25DEDA231B63B66100C09994 /* BJChatInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DEDA221B63B66100C09994 /* BJChatInfo.m */; };
 		45619B6F7E7337F86342075F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B42517535184E74628C63F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -106,6 +108,10 @@
 		25DED9E21B63A47D00C09994 /* XHMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMessageTextView.h; sourceTree = "<group>"; };
 		25DED9E31B63A47D00C09994 /* XHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMessageTextView.m; sourceTree = "<group>"; };
 		25DED9EB1B63A49000C09994 /* BJChatViewCellProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatViewCellProtocol.h; sourceTree = "<group>"; };
+		25DED9ED1B63AD7100C09994 /* DXRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXRecordView.h; sourceTree = "<group>"; };
+		25DED9EE1B63AD7100C09994 /* DXRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXRecordView.m; sourceTree = "<group>"; };
+		25DEDA211B63B66100C09994 /* BJChatInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatInfo.h; sourceTree = "<group>"; };
+		25DEDA221B63B66100C09994 /* BJChatInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatInfo.m; sourceTree = "<group>"; };
 		31DE67A144DDD652919468A2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4C6E475EBFADD0326E2C4B93 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5D2ADCAE4E9F06C218C22E20 /* Pods-BJHL-IM-iOS-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.release.xcconfig"; sourceTree = "<group>"; };
@@ -232,6 +238,7 @@
 		25DED9DD1B63A47D00C09994 /* InputController */ = {
 			isa = PBXGroup;
 			children = (
+				25DED9EC1B63AD7100C09994 /* RecordView */,
 				25DED9DE1B63A47D00C09994 /* BJChatInputBarViewController.h */,
 				25DED9DF1B63A47D00C09994 /* BJChatInputBarViewController.m */,
 				25DED9E01B63A47D00C09994 /* BJChatInputBaseViewController.h */,
@@ -240,6 +247,24 @@
 				25DED9E31B63A47D00C09994 /* XHMessageTextView.m */,
 			);
 			path = InputController;
+			sourceTree = "<group>";
+		};
+		25DED9EC1B63AD7100C09994 /* RecordView */ = {
+			isa = PBXGroup;
+			children = (
+				25DED9ED1B63AD7100C09994 /* DXRecordView.h */,
+				25DED9EE1B63AD7100C09994 /* DXRecordView.m */,
+			);
+			path = RecordView;
+			sourceTree = "<group>";
+		};
+		25DEDA201B63B63900C09994 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				25DEDA211B63B66100C09994 /* BJChatInfo.h */,
+				25DEDA221B63B66100C09994 /* BJChatInfo.m */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		5872C8EACEE0B4B50E814DAA /* Pods */ = {
@@ -290,6 +315,7 @@
 		6003F593195388D20070C39A /* BJHL-IM-iOS-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				25DEDA201B63B63900C09994 /* Model */,
 				2549ABBA1B5E743000097AEE /* Chat */,
 				2552069F1B57AFC7007B34C4 /* Conversation */,
 				6003F59C195388D20070C39A /* BJIMAppDelegate.h */,
@@ -537,11 +563,13 @@
 				25DED9E91B63A47D00C09994 /* BJChatInputBaseViewController.m in Sources */,
 				6003F5A7195388D20070C39A /* BJIMViewController.m in Sources */,
 				25DED9E51B63A47D00C09994 /* BJChatCellFactory.m in Sources */,
+				25DEDA231B63B66100C09994 /* BJChatInfo.m in Sources */,
 				256AB89D1B60CA72006019D3 /* IMMessage+ViewModel.m in Sources */,
 				25DED9D31B63A0E600C09994 /* BJSendMessageHelper.m in Sources */,
 				255206A21B57AFC7007B34C4 /* BJConversationListViewController.m in Sources */,
 				25DED9E41B63A47D00C09994 /* BJChatBaseCell.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				25DED9EF1B63AD7100C09994 /* DXRecordView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -681,6 +709,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Prefix.pch";
 				INFOPLIST_FILE = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrnb",
+					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrwb",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -696,6 +729,11 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Prefix.pch";
 				INFOPLIST_FILE = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrnb",
+					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrwb",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

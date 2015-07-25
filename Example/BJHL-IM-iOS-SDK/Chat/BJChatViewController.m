@@ -17,6 +17,7 @@
 @interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJMessageToolBarDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
+@property (strong, nonatomic) BJChatInfo *chatInfo;
 @property (strong, nonatomic) Conversation *conversation;
 
 @property (strong, nonatomic) NSMutableDictionary *messageHeightDic;
@@ -34,18 +35,32 @@
     [self.view removeObserver:self forKeyPath:@"frame"];
 }
 
-- (instancetype)initWithConversation:(Conversation *)conversation
+- (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo;
 {
     self = [super init];
     if (self) {
-        _conversation = conversation;
+        _chatInfo = chatInfo;
     }
     return self;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+- (void)viewWillAppear:(BOOL)animated
 {
-    [self updateSubViewFrame];
+    [super viewWillAppear:animated];
+    if (self.chatInfo.chat_t == eChatType_GroupChat) {
+        [[BJIMManager shareInstance] startChatToGroup:self.chatInfo.getToId];
+    }
+    else
+    {
+        [[BJIMManager shareInstance] startChatToUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
+    }
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [[BJIMManager shareInstance] stopChat];
+
 }
 
 - (void)viewDidLoad {
@@ -91,6 +106,12 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+#pragma mark - observer
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    [self updateSubViewFrame];
+}
 
 #pragma mark - 视图更新
 - (void)updateSubViewFrame
@@ -197,6 +218,18 @@
 
 
 #pragma mark - set get
+- (Conversation *)conversation
+{
+    if (_conversation == nil) {
+        if (self.chatInfo.chat_t == eChatType_GroupChat) {
+            _conversation = [[BJIMManager shareInstance] getConversationGroupId:self.chatInfo.getToId];
+        }
+        else
+        _conversation = [[BJIMManager shareInstance] getConversationUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
+    }
+    return _conversation;
+}
+
 - (UITableView *)tableView
 {
     if (_tableView == nil) {
@@ -227,7 +260,7 @@
 - (BJChatInputBarViewController *)inputController
 {
     if (_inputController == nil) {
-        _inputController = [[BJChatInputBarViewController alloc] initWithConversation:self.conversation];
+        _inputController = [[BJChatInputBarViewController alloc] initWithChatInfo:self.chatInfo];
         _inputController.delegate = self;
     }
     return _inputController;

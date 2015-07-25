@@ -24,11 +24,12 @@
     return self;
 }
 
-- (instancetype)initWithConversation:(Conversation *)conversation
+- (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo;
+
 {
     self = [super init];
     if (self) {
-        _conversation = conversation;
+        _chatInfo = chatInfo;
     }
     return self;
 }
