@@ -8,6 +8,12 @@
 
 #import "IMBaseOperation.h"
 
+
+@class BJIMService;
+@class MyContactsModel;
 @interface HandleMyContactsOperation : IMBaseOperation
+
+@property (nonatomic, weak) BJIMService *imService;
+@property (nonatomic, strong) MyContactsModel *model;
 
 @end
