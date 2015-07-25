@@ -39,8 +39,6 @@
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     self.messageList = [[NSMutableArray alloc] initWithArray:array];
     
-    
-    
     [self.view addSubview:self.tableView];
 
 }
