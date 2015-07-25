@@ -13,6 +13,7 @@
 #import "IMEnvironment.h"
 #import "ContactFactory.h"
 #import "BJIMStorage.h"
+#import "SyncContactOperation.h"
 
 
 #import "SendMsgOperation.h"
@@ -182,6 +183,16 @@
 }
 
 #pragma mark syncContact 
+- (void)synContact:(NSDictionary *)dictionary
+{
+    if (nil ==  dictionary) {
+        return;
+    }
+    SyncContactOperation *operation = [[SyncContactOperation alloc]init];
+    operation.imService = self;
+    operation.contactDictionary = dictionary;
+    [self.operationQueue addOperation:operation];
+}
 - (void)didSyncContacts:(MyContactsModel *)model
 {
     
@@ -253,6 +264,7 @@
     if (_imEngine == nil)
     {
         _imEngine = [[BJIMEngine alloc] init];
+        _imEngine.synContactDelegate = self;
     }
     return _imEngine;
 }

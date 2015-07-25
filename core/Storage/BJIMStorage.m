@@ -14,6 +14,7 @@
 #import "IMMessage.h"
 #import "Contacts.h"
 #import "GroupMember.h"
+#import "ContactFactory.h"
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
 const NSString *const IMTeacherContactTableName  = @"techerContact";
 const NSString *const IMStudentContactTabaleName = @"studentContact";
@@ -273,6 +274,9 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 }
 
 #pragma mark contact
+
+
+
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact
 {
     NSString *queryString = [NSString stringWithFormat:@"userId = %lld AND contactRole = %ld", contact.userId, contact.userRole];
@@ -285,26 +289,12 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     if ([self hasContactOwner:owner contact:contact]) {
         return NO;
     }
-    NSString *sqlString = @"";
-    if (contact.userRole == eUserRole_Student) {
-        sqlString = @"studentContacts";
-    }else if(contact.userRole == eUserRole_Teacher)
-    {
-        sqlString = @"teacherContacts";
-    }else if (contact.userRole == eUserRole_Institution){
-        sqlString = @"institutionContacts";
-    }
-    NSString *tableName = sqlString;
-    sqlString = [NSString stringWithFormat:@"CREAT TABLE %@(userId INTEGER, contactId INTEGER, contactRole INTEGER,createTime INTEGER)",sqlString];
-    [self.dbHelper executeSQL:sqlString arguments:nil];
-    
-    Contacts *contacts = [[Contacts alloc]init];
+    Contacts *contacts = [ContactFactory createContactWithUserRole:contact.userRole];
     contacts.userId = owner.userId;
     contacts.contactId = contacts.userId;
     contacts.contactRole = contacts.contactRole;
     contacts.createTime = [[NSDate date] timeIntervalSince1970];
-    sqlString = [NSString stringWithFormat:@"INSERT INTO  %@ VALUES(%lld,%lld,%ld,%hd)",tableName,contacts.userId,contacts.contactId,(long)contacts.contactRole,contacts.createTime];
-    return [self.dbHelper executeSQL:sqlString arguments:nil];
+    return  [self.dbHelper insertToDB:contact];
 }
 
 - (Group*)queryGroupWithGroupId:(int64_t)groupId
@@ -417,8 +407,16 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (BOOL)deleteMyContactWithUser:(User*)user
 {
-    NSString *queryString = [NSString stringWithFormat:@"DELETE FROM CONTACTS WHERE userId=%lld",user.userId];
-   return  [self.dbHelper executeSQL:queryString arguments:nil];
+    Class class = nil;
+    if (user.userRole == eUserRole_Teacher){
+        class = NSClassFromString(@"TeacherContacts");
+    }else if (user.userRole == eUserRole_Student) {
+        class = NSClassFromString(@"StudentContacts");
+    }else if(user.userRole == eUserRole_Institution){
+        class = NSClassFromString(@"InstitutionContacts");
+    }
+    NSString *queryString = [NSString stringWithFormat:@"userId=%lld",user.userId];
+    return [self.dbHelper deleteWithClass:class where:queryString];
 }
 
 @end

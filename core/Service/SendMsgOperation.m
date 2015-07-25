@@ -9,7 +9,8 @@
 #import "SendMsgOperation.h"
 #import "Conversation.h"
 #import "IMEnvironment.h"
-
+#import "BJIMService.h"
+#import "IMMessage.h"
 @implementation SendMsgOperation
 
 - (void)doOperationOnBackground
