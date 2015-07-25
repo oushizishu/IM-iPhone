@@ -12,6 +12,7 @@
 #import "SyncConfigModel.h"
 #import "SendMsgModel.h"
 #import "PollingResultModel.h"
+#import "MyContactsModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -22,7 +23,7 @@
 
 @protocol IMEngineSynContactDelegate <NSObject>
 
-- (void)synContact:(NSDictionary*)dictionary;
+- (void)didSyncContacts:(MyContactsModel *)model;
 
 @end
 
@@ -55,6 +56,7 @@
 - (void)stop;
 
 - (void)syncConfig;
+- (void)syncContacts;
 
 - (void)postMessage:(IMMessage *)message;
 

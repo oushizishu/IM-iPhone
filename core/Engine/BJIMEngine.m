@@ -61,12 +61,6 @@ int ddLogLevel = DDLogLevelInfo;
         if (result.code == RESULT_CODE_SUCC)
         {
             weakSelf.im_polling_delta = result.data[@"polling_delta"];
-//            [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-//                if (self.synContactDelegate) {
-//                    [self.synContactDelegate synContact:response];
-//                }
-//            } failure:^(NSError *error, RequestParams *params) {
-//            }];
         }
         else
         {
@@ -75,6 +69,32 @@ int ddLogLevel = DDLogLevelInfo;
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Sync Config Fail [%@]", error.userInfo);
         
+    }];
+}
+
+- (void)syncContacts
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            NSError *error;
+            MyContactsModel *model = [MyContactsModel modelWithDictionary:result.data error:&error];
+            if (self.synContactDelegate)
+            {
+                [self.synContactDelegate didSyncContacts:model];
+            }
+        }
+        else
+        {
+            DDLogWarn(@"Sync Contacts Fail [url:%@][params:%@]", params.url, params.urlPostParams);
+        }
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        DDLogError(@"Sync Contact Fail [%@]", error.userInfo);
     }];
 }
 

@@ -44,9 +44,10 @@
 }
 
 - (void)loginClick:(id)sender {
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:@"http://hermes.genshuixue.com/hermes/getImToken" method:kHttpMethod_POST];
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:@"http://test-hermes.genshuixue.com/hermes/getImToken" method:kHttpMethod_POST];
     [requestParams appendPostParamValue:self.userIdText.text forKey:@"user_number"];
     [requestParams appendPostParamValue:@"0" forKey:@"user_role"];
+    [requestParams appendPostParamValue:@"1" forKey:@"app_type"];
     
     __WeakSelf__ weakSelf = self;
     [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
