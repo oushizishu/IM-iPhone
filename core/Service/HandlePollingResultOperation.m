@@ -164,8 +164,14 @@
                 conversation.lastMsgRowId = message.rowid;
                 conversation.unReadNum += 1;
                 
-                
-                // TODO 如果当前正处于这个聊天室， 消息数不增加
+                //如果当前正处于这个聊天室， 消息数不增加
+                if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
+                    if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
+                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole)
+                    {
+                        conversation.unReadNum -= 1;
+                    }
+                }
                 
                 [self.imService.imStorage updateMessage:message];
                 [self.imService.imStorage updateConversation:conversation];
