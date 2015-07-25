@@ -21,6 +21,12 @@
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure;
 
-+ (BJNetRequestOperation*)hermesGetContactSucc:(onSuccess)succ
++ (BJNetRequestOperation *)hermesGetContactSucc:(onSuccess)succ
                                        failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesPostPollingRequestUserLastMsgId:(int64_t)last_user_msg_id
+                                              group_last_msg_ids:(NSString *)group_last_msg_ids
+                                                    currentGroup:(int64_t)groupId
+                                                            succ:(onSuccess)succ
+                                                         failure:(onFailure)failure;
 @end

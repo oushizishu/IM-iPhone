@@ -14,7 +14,7 @@
  */
 @interface User : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) int16_t userId;
+@property (nonatomic, assign) int64_t userId;
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, strong) NSString *avatar;
 @property (nonatomic, assign) IMUserRole userRole;

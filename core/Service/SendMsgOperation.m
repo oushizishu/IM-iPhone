@@ -9,7 +9,8 @@
 #import "SendMsgOperation.h"
 #import "Conversation.h"
 #import "IMEnvironment.h"
-
+#import "BJIMService.h"
+#import "IMMessage.h"
 @implementation SendMsgOperation
 
 - (void)doOperationOnBackground
@@ -20,11 +21,12 @@
     
     [self.imService.imStorage insertMessage:self.message];
     
-    Conversation *conversation = self.message.conversation;
+    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.conversationId];
+    
     if (conversation == nil)
     {
-        //TODO query conversation
-        [self.imService.imStorage queryConversation:self.message.sender userRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
+        //query conversation
+        conversation = [self.imService.imStorage queryConversation:self.message.sender userRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     }
     
     if (conversation == nil)
@@ -38,8 +40,9 @@
     }
     
     conversation.lastMsgRowId = self.message.rowid;
-    self.message.conversation = conversation;
-    self.message.msgId = [self.imService.imStorage getConversationMaxMsgId:conversation.rowid] + 0.001;
+    self.message.conversationId = conversation.rowid;
+    
+    self.message.msgId = MAX([self.imService.imStorage getConversationMaxMsgId:conversation.rowid], 0) + 0.001;
     
     if (self.message.chat_t == eChatType_GroupChat)
     {

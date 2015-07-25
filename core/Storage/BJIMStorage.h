@@ -24,7 +24,8 @@
 - (Group*)queryGroup:(Group*)group;
 - (BOOL)insertOrUpdateGroup:(Group*)group;
 - (void)updateGroup:(Group*)group;
-- (Group*)queryGroupWithGroupId:(long)groupId;
+- (Group*)queryGroupWithGroupId:(int64_t)groupId;
+- (NSArray *)queryGroupsWithUser:(User *)user;
 
 //message
 - (BOOL)insertMessage:(IMMessage*)message;
@@ -34,8 +35,8 @@
 - (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId;
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId;
 
-- (double)queryChatLastMsgIdOwnerId:(long)ownerId  ownerRole:(IMUserRole)ownerRole;
-- (double)queryGroupChatLastMsgId:(long)groupId;
+- (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole;
+- (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
 
 //conversation
 - (BOOL)insertConversation:(NSObject *)conversation;
@@ -69,6 +70,6 @@
 -  (NSArray*)loadMoreMessageWithConversationId:(long)conversationId minMsgId:(double)minMsgId;
 
 
-- (double)getConversationMaxMsgId:(long)conversationId;
+- (double)getConversationMaxMsgId:(int64_t)conversationId;
 
 @end

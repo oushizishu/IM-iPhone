@@ -17,6 +17,9 @@
 #import <Mantle/Mantle.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 
+#pragma mark - 接口返回成功码
+#define RESULT_CODE_SUCC 0
+
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
 {
@@ -65,5 +68,48 @@ typedef NS_ENUM(NSInteger, IMChatType) {
 };
 static const int MESSAGE_PAGE_COUNT = 10;
 static const double UNAVALIABLE_MESSAGE_ID =  -1;
+
+#pragma mark - delegates
+@protocol IMConversationChangedDelegate <NSObject>
+
+- (void)didConversationDidChanged;
+
+@end
+
+@protocol IMReceiveNewMessageDelegate <NSObject>
+
+- (void) didReceiveNewMessages:(NSArray *)newMessages;
+
+@end
+
+@class IMMessage;
+@protocol IMDeliveredMessageDelegate <NSObject>
+
+- (void)didDeliveredMessage:(IMMessage *)message
+                       errorCode:(NSInteger)errorCode
+                      error:(NSString *)errorMessage;
+
+@end
+
+@protocol IMCmdMessageDelegate <NSObject>
+
+- (void)didReceiveCommand:(NSArray *)messages;
+
+@end
+
+@protocol  IMContactsChangedDelegate <NSObject>
+
+- (void)didMyContactsChanged;
+
+@end
+
+@class Conversation;
+@protocol IMLoadMessageDelegate <NSObject>
+
+- (void)didLoadMessages:(NSArray *)messages
+           conversation:(Conversation *)conversation
+                hasMore:(BOOL)hasMore;
+
+@end
 
 #endif
