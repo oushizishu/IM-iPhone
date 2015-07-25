@@ -18,11 +18,18 @@
 @property (nonatomic, strong, readonly) User *owner;
 @property (nonatomic, assign) IMSERVER_ENVIRONMENT debugMode;
 
+@property (nonatomic, assign) int64_t currentChatToUserId;
+@property (nonatomic, assign) IMUserRole currentChatToUserRole;
+@property (nonatomic, assign) int64_t currentChatToGroupId;
+
 - (void)loginWithOauthToken:(NSString *)oAuthToken
                       owner:(User *)owner;
 
 - (void)logout;
 
 - (BOOL)isLogin;
+
+- (BOOL)isCurrentChatToGroup;
+- (BOOL)isCurrentChatToUser;
 
 @end
