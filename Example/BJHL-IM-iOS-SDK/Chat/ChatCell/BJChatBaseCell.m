@@ -8,6 +8,8 @@
 
 #import "BJChatBaseCell.h"
 #import <UIImageView+Aliyun.h>
+
+
 @implementation BJChatBaseCell
 
 - (void)awakeFromNib {

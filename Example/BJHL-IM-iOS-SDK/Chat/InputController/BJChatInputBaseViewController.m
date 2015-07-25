@@ -1,18 +1,37 @@
 //
-//  ChatInputViewController.m
+//  ChatInputBaseViewController.m
 //  BJHL-IM-iOS-SDK
 //
-//  Created by Randy on 15/7/22.
+//  Created by Randy on 15/7/25.
 //  Copyright (c) 2015年 YangLei-bjhl. All rights reserved.
 //
 
-#import "BJChatInputViewController.h"
-
-@interface BJChatInputViewController ()
+#import "BJChatInputBaseViewController.h"
+#import <BJIMManager.h>
+#import <IMTxtMessageBody.h>
+@interface BJChatInputBaseViewController ()
 
 @end
 
-@implementation BJChatInputViewController
+@implementation BJChatInputBaseViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSAssert(0, @"不能使用此初始化方法");
+    }
+    return self;
+}
+
+- (instancetype)initWithConversation:(Conversation *)conversation
+{
+    self = [super init];
+    if (self) {
+        _conversation = conversation;
+    }
+    return self;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,5 +52,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
 
 @end

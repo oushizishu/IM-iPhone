@@ -27,11 +27,12 @@
     self.userIdText = [[UITextField alloc] initWithFrame:CGRectMake(50, 60, 200, 50) ];
 
     [self.userIdText setBackgroundColor:[UIColor grayColor]];
+    self.userIdText.text = @"877448518";
     [self.view addSubview:self.userIdText];
     self.userIdText.placeholder = @"userIdText";
     
     self.userNameText = [[UITextField alloc] initWithFrame:CGRectMake(50, 130, 200, 50)];
-
+    self.userNameText.text = @"测试";
     [self.view addSubview:self.userNameText];
     self.userNameText.placeholder = @"userNameText";
     

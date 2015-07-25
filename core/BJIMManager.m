@@ -141,6 +141,20 @@
  	return [self.imService getAllConversationWithOwner:[IMEnvironment shareInstance].owner];
 }
 
+- (Conversation *)getConversationGroupId:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return nil;
+    return [self.imService getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous owner:[IMEnvironment shareInstance].owner chat_t:eChatType_GroupChat];
+}
+
+- (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return nil;
+    return [self.imService getConversationUserOrGroupId:userId userRole:userRole owner:[IMEnvironment shareInstance].owner chat_t:eChatType_Chat];
+}
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {
