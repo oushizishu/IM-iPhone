@@ -237,6 +237,16 @@
     return group;
 }
 
+- (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
+                                      userRole:(IMUserRole)userRole
+                                         owner:(User *)owner
+                                        chat_t:(IMChatType)chat_t
+{
+    Conversation *conversation = [self.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:userOrGroupId userRole:userRole chatType:chat_t];
+    conversation.imService = self;
+    return conversation;
+}
+
 
 - (BJIMEngine *)imEngine
 {

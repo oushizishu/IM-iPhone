@@ -48,6 +48,8 @@
 
 #pragma mark - 会话 
 - (NSArray *)getAllConversation;
+- (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
+- (Conversation *)getConversationGroupId:(int64_t)groupId;
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;

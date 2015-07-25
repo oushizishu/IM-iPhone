@@ -29,6 +29,11 @@
 
 #pragma mark - getter 
 - (NSArray *)getAllConversationWithOwner:(User *)owner;
+- (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
+                                      userRole:(IMUserRole)userRole
+                                         owner:(User *)owner
+                                        chat_t:(IMChatType)chat_t;
+
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
 
