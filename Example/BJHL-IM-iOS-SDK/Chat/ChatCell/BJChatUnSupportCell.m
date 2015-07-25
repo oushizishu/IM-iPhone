@@ -39,9 +39,11 @@
  */
 - (instancetype)init;
 {
-    BJChatUnSupportCell *cell = [[BJChatUnSupportCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJChatUnSupportCell class])];
-    cell.textLabel.font = [UIFont systemFontOfSize:NAME_LABEL_FONT_SIZE];
-    return cell;
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJChatUnSupportCell class])];
+    if (self) {
+        self.textLabel.font = [UIFont systemFontOfSize:NAME_LABEL_FONT_SIZE];
+    }
+    return self;
 }
 
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath;

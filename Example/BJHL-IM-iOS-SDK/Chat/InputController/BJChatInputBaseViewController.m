@@ -7,12 +7,22 @@
 //
 
 #import "BJChatInputBaseViewController.h"
-
+#import <BJIMManager.h>
+#import <IMTxtMessageBody.h>
 @interface BJChatInputBaseViewController ()
-@property (strong, nonatomic) Conversation *conversation;
+
 @end
 
 @implementation BJChatInputBaseViewController
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        NSAssert(0, @"不能使用此初始化方法");
+    }
+    return self;
+}
 
 - (instancetype)initWithConversation:(Conversation *)conversation
 {
@@ -42,5 +52,7 @@
     // Pass the selected object to the new view controller.
 }
 */
+
+
 
 @end

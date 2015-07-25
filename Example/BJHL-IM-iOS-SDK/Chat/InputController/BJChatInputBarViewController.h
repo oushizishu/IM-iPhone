@@ -10,7 +10,7 @@
 #import "BJChatInputBaseViewController.h"
 #import "XHMessageTextView.h"
 
-@protocol DXMessageToolBarDelegate <NSObject>
+@protocol BJMessageToolBarDelegate <NSObject>
 
 @required
 /**
@@ -21,6 +21,15 @@
 @end
 
 @interface BJChatInputBarViewController : BJChatInputBaseViewController
-@property (nonatomic, weak) id <DXMessageToolBarDelegate> delegate;
+@property (nonatomic, weak) id <BJMessageToolBarDelegate> delegate;
+/**
+ *  停止编辑
+ */
+- (BOOL)endEditing:(BOOL)force;
+/**
+ *  取消触摸录音键
+ */
+- (void)cancelTouchRecord;
++ (CGFloat)defaultHeight;
 
 @end

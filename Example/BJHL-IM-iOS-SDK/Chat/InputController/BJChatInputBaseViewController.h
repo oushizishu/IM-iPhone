@@ -8,7 +8,9 @@
 
 #import <UIKit/UIKit.h>
 #import <Conversation.h>
-@interface BJChatInputBaseViewController : UIViewController
-- (instancetype)initWithConversation:(Conversation *)conversation;
+#import "BJSendMessageHelper.h"
 
+@interface BJChatInputBaseViewController : UIViewController
+@property (strong, readonly, nonatomic) Conversation *conversation;
+- (instancetype)initWithConversation:(Conversation *)conversation;
 @end

@@ -61,7 +61,11 @@
  */
 - (instancetype)init;
 {
-    return [[BJTextChatCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJTextChatCell class])];
+    self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJTextChatCell class])];
+    if (self) {
+        
+    }
+    return self;
 }
 
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath;

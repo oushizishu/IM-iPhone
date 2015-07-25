@@ -79,6 +79,7 @@
 {
     message.status = eMessageStatus_Sending;
     SendMsgOperation *operation = [[SendMsgOperation alloc] init];
+    operation.message = message;
     operation.imService = self;
     [self.operationQueue addOperation:operation];
 }
