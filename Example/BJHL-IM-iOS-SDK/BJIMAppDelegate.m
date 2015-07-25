@@ -9,7 +9,7 @@
 #import "BJIMAppDelegate.h"
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import "BJIMViewController.h"
-
+#import "BJChatViewController.h"
 @implementation BJIMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -17,6 +17,8 @@
     // Override point for customization after application launch.
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    [[BJIMManager shareInstance] setDebugMode:eIMServer_Environment_test];
     
     BJIMViewController *viewController = [[BJIMViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];

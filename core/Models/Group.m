@@ -15,6 +15,17 @@
     return @"IMGROUPS";
 }
 
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"groupId"])
+    {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            return @([value longLongValue]);
+        }];
+    }
+    return nil;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
@@ -27,7 +38,7 @@
              @"approval":@"approval",
              @"ownerId":@"owner_id",
              @"ownerRole":@"owner_role",
-             @"memberCount":@"member_count",
+             @"memberCount":@"membercount",
              @"status":@"status",
              @"createTime":@"create_time"
              };

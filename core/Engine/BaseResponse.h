@@ -14,5 +14,7 @@
 @property (nonatomic, assign) NSInteger code;
 @property (nonatomic, assign) NSString *msg;
 @property (nonatomic, strong) id data;
+@property (nonatomic, assign) NSInteger ts;
+
 
 @end

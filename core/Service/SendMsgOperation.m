@@ -26,7 +26,7 @@
     if (conversation == nil)
     {
         //query conversation
-        conversation = [self.imService.imStorage queryConversation:self.message.sender userRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
+        conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     }
     
     if (conversation == nil)

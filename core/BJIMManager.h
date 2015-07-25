@@ -51,6 +51,17 @@
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
+- (void)retryMessage:(IMMessage *)message;
+//- (void)loadMoreMessages:(Conversation *)conversation;
+// 初始化以及加载会话消息
+- (NSArray *)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation;
+
+#pragma mark - current chat
+//开始聊天
+- (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole;
+- (void)startChatToGroup:(int64_t)groupId;
+// 退出聊天
+- (void)stopChat;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;

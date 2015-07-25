@@ -8,6 +8,8 @@
 
 #import "IMMessage.h"
 
+
+
 @implementation IMMessage
 
 + (NSString *)getTableName
@@ -19,22 +21,33 @@
 {
     if ([key isEqualToString:@"messageBody"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-           if ([value isKindOfClass:[NSArray class]])
+           if ([value isKindOfClass:[NSDictionary class]])
            {
                IMMessageBody *messageBody = nil;
-//               NSString *body = value[0];
-//               NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-//               IMMessageType msg_t = [value[1] integerValue];
-//               switch (msg_t) {
-//                   case eMessageType_TXT:
-//                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:nil];
-//                       break;
-//                   case eMessageType_IMG:
-//                       break;
-//                       
-//                   default:
-//                       break;
-//               }
+               NSString *body = [value valueForKey:@"body"];
+               NSInteger msg_t = [[value valueForKey:@"msg_t"] integerValue];
+               NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+               
+               switch (msg_t) {
+                   case eMessageType_TXT:
+                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_IMG:
+                       messageBody = [IMImgMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_AUDIO:
+                       messageBody = [IMAudioMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_LOCATION:
+                       messageBody = [IMLocationMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_NOTIFICATION:
+//                       messageBody = [];
+                    
+                       
+                   default:
+                       break;
+               }
                return messageBody;
            }
             return nil;

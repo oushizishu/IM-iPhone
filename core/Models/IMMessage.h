@@ -11,6 +11,10 @@
 #import "Conversation.h"
 #import "IMMessageBody.h"
 #import "IMTxtMessageBody.h"
+#import "IMImgMessageBody.h"
+#import "IMAudioMessageBody.h"
+#import "IMEmojiMessageBody.h"
+#import "IMLocationMessageBody.h"
 
 @interface IMMessage : MTLModel<MTLJSONSerializing>
 

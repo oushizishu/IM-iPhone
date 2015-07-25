@@ -19,12 +19,15 @@
 #import "SendMsgOperation.h"
 #import "HandlePostMessageSuccOperation.h"
 #import "PrePollingOperation.h"
+#import "HandlePollingResultOperation.h"
+#import "LoadMoreMessagesOperation.h"
+#import "HandleGetMsgOperation.h"
 
-@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate>
+@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
+    IMEngineGetMessageDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
-@property (nonatomic ,strong) BJIMStorage *storage;
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
@@ -32,6 +35,9 @@
 @property (nonatomic, strong) NSHashTable *cmdMessageDelegates;
 @property (nonatomic, strong) NSHashTable *contactChangedDelegates;
 @property (nonatomic, strong) NSHashTable *loadMoreMessagesDelegates;
+
+@property (nonatomic, strong) NSMutableArray *usersCache;
+@property (nonatomic, strong) NSMutableArray *groupsCache;
 
 @end
 
@@ -41,15 +47,32 @@
 
 - (void)startServiceWithOwner:(User *)owner
 {
-    [self.imEngine syncConfig];
     self.bIsServiceActive = YES;
-    self.storage = [[BJIMStorage alloc]init];
+    self.imEngine.pollingDelegate = self;
+    self.imEngine.postMessageDelegate = self;
+    self.imEngine.getMsgDelegate = self;
+    self.imEngine.synContactDelegate = self;
+    
+    [self.imEngine start];
+    
+    [self.imEngine syncConfig];
 }
 
 - (void)stopService
 {
     [self.operationQueue cancelAllOperations];
     self.bIsServiceActive = NO;
+    
+    [self.imEngine stop];
+    
+    self.imEngine.pollingDelegate = nil;
+    self.imEngine.postMessageDelegate = nil;
+    self.imEngine.getMsgDelegate = nil;
+    self.imEngine.synContactDelegate = nil;
+    
+    [self.usersCache removeAllObjects];
+    [self.groupsCache removeAllObjects];
+    
 }
 
 #pragma mark - 消息操作
@@ -64,6 +87,33 @@
 - (void)retryMessage:(IMMessage *)message
 {
     
+}
+
+- (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
+{
+    if (minMsgId <= 0)
+    {
+    
+        if (conversation.chat_t == eChatType_Chat)
+        {
+            NSArray *array = [self.imStorage loadChatMessagesInConversation:conversation.rowid];
+            return array;
+        }
+        else
+        {
+            Group *_chatToGroup = [conversation chatToGroup];
+            NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
+            return array;
+        }
+    }
+    
+    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
+    
+    operation.minMsgId = minMsgId;
+    operation.imService = self;
+    operation.conversation = conversation;
+    [self.operationQueue addOperation:operation];
+    return nil;
 }
 
 #pragma mark - Post Message Delegate
@@ -98,6 +148,39 @@
     [self.operationQueue addOperation:operation];
 }
 
+- (void)onPollingFinish:(PollingResultModel *)model
+{
+    if (! self.bIsServiceActive) return;
+    
+    HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
+    operation.imService = self;
+    operation.model = model;
+    [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - get Msg Delegate
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId result:(PollingResultModel *)model
+{
+    if (!self.bIsServiceActive)return;
+    HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
+    operation.imService = self;
+    operation.conversationId = conversationId;
+    operation.model = model;
+    operation.minMsgId = minMsgId;
+    [self.operationQueue addOperation:operation];
+}
+
+- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId
+{
+    if (!self.bIsServiceActive)return;
+    HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
+    operation.imService = self;
+    operation.conversationId = conversationId;
+    operation.minMsgId = minMsgId;
+    
+    [self.operationQueue addOperation:operation];
+}
+
 #pragma mark syncContact 
 - (void)synContact:(NSDictionary *)dictionary
 {
@@ -109,6 +192,11 @@
     operation.contactDictionary = dictionary;
     [self.operationQueue addOperation:operation];
 }
+- (void)didSyncContacts:(MyContactsModel *)model
+{
+    
+}
+
 
 #pragma mark - Setter & Getter
 - (NSArray *)getAllConversationWithOwner:(User *)owner
@@ -121,6 +209,42 @@
         conversation.imService = weakSelf;
     }];
     return list;
+}
+
+- (User *)getUser:(int64_t)userId role:(IMUserRole)userRole
+{
+    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
+    {
+        User *user = [self.usersCache objectAtIndex:index];
+        if (user.userId == userId && user.userRole == userRole)
+        {
+            return user;
+        }
+    }
+    
+    User *user = [self.imStorage queryUser:userId userRole:userRole];
+    if (user) {
+        [self.usersCache addObject:user];
+    }
+    
+    return user;
+}
+
+- (Group *)getGroup:(int64_t)groupId
+{
+    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
+        Group *group = [self.groupsCache objectAtIndex:index];
+        if (group.groupId == groupId) {
+            return group;
+        }
+    }
+    
+    Group *group = [self.imStorage queryGroupWithGroupId:groupId];
+    if (group)
+    {
+        [self.groupsCache addObject:group];
+    }
+    return group;
 }
 
 
@@ -153,15 +277,29 @@
     return _operationQueue;
 }
 
-- (BOOL)bIsServiceActive
+- (NSMutableArray *)usersCache
 {
-    return _bIsServiceActive;
+    if (_usersCache == nil)
+    {
+        _usersCache = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    return _usersCache;
+}
+
+- (NSMutableArray *)groupsCache
+{
+    if (_groupsCache == nil)
+    {
+        _groupsCache = [[NSMutableArray alloc] initWithCapacity:10];
+    }
+    return _groupsCache;
 }
 
 #pragma mark - application call back
 - (void)applicationEnterForeground
 {
-    [self.imEngine start];
+    if (self.bIsServiceActive)
+        [self.imEngine start];
 }
 
 - (void)applicationEnterBackground

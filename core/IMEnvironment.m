@@ -44,4 +44,14 @@
 {
     return _oAuthToken != nil;
 }
+
+- (BOOL)isCurrentChatToGroup
+{
+    return self.currentChatToGroupId > 0;
+}
+
+- (BOOL)isCurrentChatToUser
+{
+    return self.currentChatToUserId > 0 && self.currentChatToUserRole > 0;
+}
 @end

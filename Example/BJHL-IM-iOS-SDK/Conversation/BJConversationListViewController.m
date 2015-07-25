@@ -6,18 +6,19 @@
 //  Copyright (c) 2015年 YangLei-bjhl. All rights reserved.
 //
 
-#import "ConversationListViewController.h"
+#import "BJConversationListViewController.h"
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
-#import "ConversationTableViewCell.h"
+#import "BJConversationTableViewCell.h"
+#import "BJChatViewController.h"
 
-@interface ConversationListViewController()<UITableViewDataSource, UITableViewDelegate>
+@interface BJConversationListViewController()<UITableViewDataSource, UITableViewDelegate, IMConversationChangedDelegate>
 
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) NSArray *allConversations;
 
 @end
 
-@implementation ConversationListViewController
+@implementation BJConversationListViewController
 
 - (void)viewDidLoad
 {
@@ -28,6 +29,12 @@
     [self.view addSubview:self.tableView];
     
     self.allConversations = [[BJIMManager shareInstance] getAllConversation];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [[BJIMManager shareInstance] addConversationChangedDelegate:self];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -44,15 +51,28 @@
 {
     static NSString *identity = @"ConversationTableViewCell";
     
-    ConversationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
+    BJConversationTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identity];
     if (cell == nil)
     {
-        cell = [[ConversationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identity];
+        cell = [[BJConversationTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identity];
     }
     
     cell.conversation = [self.allConversations objectAtIndex:indexPath.row];
     
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    BJChatViewController *vc = [[BJChatViewController alloc] initWithConversation:[self.allConversations objectAtIndex:indexPath.row]];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+#pragma mark - converstaion delegate
+- (void)didConversationDidChanged
+{
+    self.allConversations = [[BJIMManager shareInstance] getAllConversation];
+    [self.tableView reloadData];
 }
 
 

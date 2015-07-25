@@ -79,6 +79,55 @@
     [self.imService sendMessage:message];
 }
 
+- (void)retryMessage:(IMMessage *)message
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return;
+    }
+    [self.imService retryMessage:message];
+}
+
+//- (void)loadMoreMessages:(Conversation *)conversation
+//{
+//    if (! [[IMEnvironment shareInstance] isLogin])
+//    {
+//        return;
+//    }
+//    [self.imService loadMoreMessages:conversation];
+//}
+
+- (NSArray *)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return nil;
+    }
+    return [self.imService loadMessages:conversation minMsgId:minMsgId];
+}
+
+#pragma mark - current chat
+- (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
+{
+    [IMEnvironment shareInstance].currentChatToUserId = userId;
+    [IMEnvironment shareInstance].currentChatToUserRole = userRole;
+    [IMEnvironment shareInstance].currentChatToGroupId = -1;
+}
+
+- (void)startChatToGroup:(int64_t)groupId
+{
+    [IMEnvironment shareInstance].currentChatToUserId = -1;
+    [IMEnvironment shareInstance].currentChatToUserRole = -1;
+    [IMEnvironment shareInstance].currentChatToGroupId = groupId;
+}
+
+- (void)stopChat
+{
+    [IMEnvironment shareInstance].currentChatToUserId = -1;
+    [IMEnvironment shareInstance].currentChatToUserRole = -1;
+    [IMEnvironment shareInstance].currentChatToGroupId = -1;
+}
+
 #pragma mark - setter & getter
 - (void)setDebugMode:(IMSERVER_ENVIRONMENT)debugMode
 {

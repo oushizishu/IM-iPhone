@@ -21,9 +21,8 @@
 - (void)main
 {
     [self doOperationOnBackground];
-    __weak typeof(self) __weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        [__weakSelf doAfterOperationOnMain];
+        [self doAfterOperationOnMain];
     });
 }
 

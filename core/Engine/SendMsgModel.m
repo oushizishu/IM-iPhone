@@ -14,7 +14,9 @@
 {
     return @{
             @"msgId":@"msg_id",
-            @"createAt":@"create_at"
+            @"createAt":@"create_at",
+            @"body":@"body"
+            
              };
 }
 
