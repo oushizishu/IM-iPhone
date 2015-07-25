@@ -29,6 +29,7 @@
 {
     return @{
       @"userId":@"user_number",
+      @"userId":@"org_id",
       @"userRole":@"user_role",
       @"name":@"user_name",
       @"avatar":@"avatar",

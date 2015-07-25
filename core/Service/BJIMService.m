@@ -181,22 +181,11 @@
 }
 
 #pragma mark syncContact 
-- (void)synContact:(NSDictionary *)dictionary
+- (void)didSyncContacts:(MyContactsModel *)model
 {
-//    User *currentUser = [[IMEnvironment shareInstance] owner];
-//    if ([dictionary  isKindOfClass:[NSDictionary class]]) {
-//        NSArray *groupList = [dictionary  objectForKey:@"group_list"];
-//        NSArray *organizationList = [dictionary  objectForKey:@"organization_list"];
-//        NSArray *studentList = [dictionary  objectForKey:@"student_list"];
-//        for (NSDictionary *dict  in groupList) {
-//            Contacts *contacts = [MTLJSONAdapter modelOfClass:[Contacts class] fromJSONDictionary:dictionary error:nil];
-//            [self.storage insertOrUpdateContactOwner:currentUser contact:contacts];
-//        }
-//        
-//        
-//    }
-//    
+    
 }
+
 
 #pragma mark - Setter & Getter
 - (NSArray *)getAllConversationWithOwner:(User *)owner

@@ -12,6 +12,7 @@
 #import "SendMsgModel.h"
 #import "Group.h"
 
+#import "IMCardMessageBody.h"
 @implementation HandlePostMessageSuccOperation
 
 - (void)doOperationOnBackground
@@ -30,6 +31,13 @@
     
     self.message.msgId = self.model.msgId;
     self.message.createAt = self.model.createAt;
+    if ([self.model.body length] > 0)
+    {
+        self.message.msg_t = eMessageType_CARD;
+        NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[self.model.body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
+        NSError *error;
+        self.message.messageBody = [IMCardMessageBody modelWithDictionary:dictioanry error:&error];
+    }
     
     [self.imService.imStorage updateMessage:self.message];
 }
