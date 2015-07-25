@@ -48,20 +48,6 @@
                    default:
                        break;
                }
-               
-//               NSString *body = value[0];
-//               NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
-//               IMMessageType msg_t = [value[1] integerValue];
-//               switch (msg_t) {
-//                   case eMessageType_TXT:
-//                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:nil];
-//                       break;
-//                   case eMessageType_IMG:
-//                       break;
-//                       
-//                   default:
-//                       break;
-//               }
                return messageBody;
            }
             return nil;

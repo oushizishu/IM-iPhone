@@ -12,7 +12,7 @@
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import <Conversation+DB.h>
 
-@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate>
+@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (strong, nonatomic) Conversation *conversation;
@@ -35,6 +35,9 @@
     [super viewDidLoad];
     
     [[BJIMManager shareInstance] addReceiveNewMessageDelegate:self];
+    [[BJIMManager shareInstance] addLoadMoreMessagesDelegate:self];
+    NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
+    self.messageList = [[NSMutableArray alloc] initWithArray:array];
     
     [self.view addSubview:self.tableView];
 
@@ -125,7 +128,19 @@
 
 - (void)didReceiveNewMessages:(NSArray *)newMessages
 {
-    [self.messageList addObjectsFromArray:newMessages];
+    for (NSInteger index = 0; index < [newMessages count]; ++index)
+    {
+        IMMessage *msg = [newMessages objectAtIndex:index];
+        if (msg.conversationId == self.conversation.rowid)
+        {
+            [self.messageList addObject:msg];
+        }
+    }
+}
+
+- (void)didLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore
+{
+
 }
 
 @end

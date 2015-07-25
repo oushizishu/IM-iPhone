@@ -128,7 +128,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (BOOL)updateMessage:(IMMessage*)message
 {
-    NSString *queryString = [NSString stringWithFormat:@"msgId = %f",message.msgId];
+    NSString *queryString = [NSString stringWithFormat:@"rowid=%ld",message.rowid];
     return  [self.dbHelper  updateToDB:message where:queryString];
 }
 
