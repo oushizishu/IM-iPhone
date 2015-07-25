@@ -407,14 +407,16 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (BOOL)deleteMyContactWithUser:(User*)user
 {
-    NSString *queryString = nil;
-    if (user.userRole == eUserRole_Teacher)
-    {
-        queryString = [NSString stringWithFormat:@"delete from "];
+    Class class = nil;
+    if (user.userRole == eUserRole_Teacher){
+        class = NSClassFromString(@"TeacherContacts");
+    }else if (user.userRole == eUserRole_Student) {
+        class = NSClassFromString(@"StudentContacts");
+    }else if(user.userRole == eUserRole_Institution){
+        class = NSClassFromString(@"InstitutionContacts");
     }
-    
-    NSString *queryString = [NSString stringWithFormat:@"DELETE FROM CONTACTS WHERE userId=%lld",user.userId];
-   return  [self.dbHelper executeSQL:queryString arguments:nil];
+    NSString *queryString = [NSString stringWithFormat:@"userId=%lld",user.userId];
+    return [self.dbHelper deleteWithClass:class where:queryString];
 }
 
 @end
