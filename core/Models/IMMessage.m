@@ -63,6 +63,16 @@
     return nil;
 }
 
+- (NSString *)sign
+{
+    if (! _sign)
+    {
+        _sign = [NSString stringWithFormat:@"%lld%lld", self.sender, (int64_t)[[NSDate date] timeIntervalSince1970]];
+    }
+    
+    return _sign;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{

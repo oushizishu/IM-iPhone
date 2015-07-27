@@ -76,6 +76,7 @@
     
     [[BJIMManager shareInstance] addReceiveNewMessageDelegate:self];
     [[BJIMManager shareInstance] addLoadMoreMessagesDelegate:self];
+    
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     self.messageList = [[NSMutableArray alloc] initWithArray:array];
     

@@ -76,6 +76,8 @@
     {
         return;
     }
+    message.sender= [IMEnvironment shareInstance].owner.userId;
+    message.senderRole = [IMEnvironment shareInstance].owner.userRole;
     [self.imService sendMessage:message];
 }
 
