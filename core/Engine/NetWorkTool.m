@@ -83,7 +83,7 @@
     }
     
 
-    NSLog(@"post polling [url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
+//    NSLog(@"post polling [url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }

@@ -172,7 +172,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     NSString *queryString = [NSString stringWithFormat:@" receiver=%lld \
                              AND sender = %lld \
                              AND senderRole = %ld\
-                             ORDER  BY msgId LIMIT 1", groupId, ownerId, ownerRole];
+                             ORDER  BY msgId ", groupId, ownerId, ownerRole];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }
@@ -180,7 +180,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (double)queryMinMsgIdInConversation:(int64_t)conversationId
 {
     NSString *queryString = [NSString stringWithFormat:@" conversationId=%lld \
-                             ORDER BY msgId ASC LIMIT 1", conversationId];
+                             ORDER BY msgId ASC ", conversationId];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }
