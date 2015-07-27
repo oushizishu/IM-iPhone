@@ -101,10 +101,11 @@ int ddLogLevel = DDLogLevelInfo;
 - (void)postMessage:(IMMessage *)message
 {
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-        BaseResponse *result = [BaseResponse modelWithDictionary:responseHeaders error:nil];
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
-            SendMsgModel *model = [SendMsgModel modelWithDictionary:result.data error:nil];
+            NSError *error ;
+            SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
             [self.postMessageDelegate onPostMessageSucc:message result:model];
         }
         else

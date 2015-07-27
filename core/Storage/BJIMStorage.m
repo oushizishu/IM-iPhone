@@ -383,7 +383,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (GroupMember *)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole
 {
-    NSString *queryString = [NSString stringWithFormat:@"groupId=%lld AND userId=%lld and userRole=%ld",groupId, userId, userRole];
+    NSString *queryString = [NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupId, userId, userRole];
     return [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
 }
 
@@ -392,17 +392,11 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
    return [self.dbHelper insertToDB:groupMember];
 }
 
-- (double)getConversationMaxMsgId:(int64_t)conversationId {
-    NSString *queryString = [NSString stringWithFormat:@"conversationId = %lld ORDER BY msgId DESC LIMIT 1",conversationId];
-    NSArray *array = [self.dbHelper searchWithSQL:queryString toClass:[IMMessage class]];
-    if ([array count] == 0) {
-        return UNAVALIABLE_MESSAGE_ID;
-    }
-    IMMessage *message = [array lastObject];
-    if (message) {
-        return message.msgId;
-    }
-    return UNAVALIABLE_MESSAGE_ID;
+- (double)getConversationMaxMsgId:(NSInteger)conversationId {
+    
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC", conversationId];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return message.msgId;
 }
 
 - (BOOL)deleteMyContactWithUser:(User*)user

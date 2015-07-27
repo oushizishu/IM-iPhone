@@ -21,7 +21,7 @@
     
     [self.imService.imStorage insertMessage:self.message];
     
-    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.conversationId];
+    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     
     if (conversation == nil)
     {
