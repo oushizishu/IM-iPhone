@@ -26,6 +26,8 @@
  *  输入区域的控制
  */
 @property (strong, nonatomic) BJChatInputBarViewController *inputController;
+
+@property (nonatomic) BOOL isScrollToBottom;
 @end
 
 @implementation BJChatViewController
@@ -56,6 +58,17 @@
     }
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    if (self.isScrollToBottom) {
+        [self scrollViewToBottom:NO];
+    }
+    else{
+        self.isScrollToBottom = YES;
+    }
+}
+
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
@@ -65,6 +78,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.isScrollToBottom = YES;
     
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         [self setAutomaticallyAdjustsScrollViewInsets:NO];
@@ -191,6 +205,7 @@
     UITableViewCell<BJChatViewCellProtocol> *cell = [tableView dequeueReusableCellWithIdentifier:[[BJChatCellFactory sharedInstance] cellIdentifierWithMessageType:message.msg_t]];
     if (cell == nil) {
         cell = [[BJChatCellFactory sharedInstance] cellWithMessageType:message.msg_t];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     [cell setCellInfo:message indexPath:indexPath];
     return cell;

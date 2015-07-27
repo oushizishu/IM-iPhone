@@ -46,6 +46,13 @@
     return self;
 }
 
+#pragma mark - FacialViewDelegate
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    NSInteger page = scrollView.contentOffset.x/scrollView.frame.size.width;
+    self.pageCon.currentPage = page;
+}
+
 #pragma mark - MyFacialViewDelegate
 
 - (void)selectThenSendImage:(UIImage *)img emoji:(NSString *)emoji{

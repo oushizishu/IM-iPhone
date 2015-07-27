@@ -27,8 +27,9 @@
 {
     [super viewDidLoad];
     self.editList = [NSArray arrayWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"ChatInputMore" ofType:@"plist"]];
+    self.view.autoresizingMask = UIViewAutoresizingNone;
+    self.view.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200);
     [self.view addSubview:self.collectionView];
-    [self.collectionView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
     [self.collectionView registerNib:[UINib nibWithNibName:NSStringFromClass([BJActionCollectionViewCell class]) bundle:nil] forCellWithReuseIdentifier:NSStringFromClass([BJActionCollectionViewCell class])];
 }
 
@@ -86,8 +87,6 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
 {
-    NSString *mediaType = info[UIImagePickerControllerMediaType];
-
     UIImage *orgImage = info[UIImagePickerControllerOriginalImage];
     [picker dismissViewControllerAnimated:YES completion:nil];
     [self sendImageMessage:orgImage];
@@ -127,10 +126,12 @@
 {
     if (_collectionView == nil) {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(60, 60);
-        layout.scrollDirection = UICollectionViewScrollDirectionHorizontal;
+        layout.itemSize = CGSizeMake(60, 105);
+        layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.minimumLineSpacing = 5;
-        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+        _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
+        _collectionView.backgroundColor = [UIColor whiteColor];
         _collectionView.delegate = self;
         _collectionView.dataSource = self;
     }

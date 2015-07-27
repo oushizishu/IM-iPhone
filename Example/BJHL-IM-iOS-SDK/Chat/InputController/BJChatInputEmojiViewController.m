@@ -21,8 +21,10 @@
 {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
+    self.view.frame = CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, 200);
+    self.view.autoresizingMask = UIViewAutoresizingNone;
+
     [self.view addSubview:self.faceView];
-    [self.faceView autoPinEdgesToSuperviewEdgesWithInsets:UIEdgeInsetsZero];
 }
 
 #pragma mark - action
@@ -43,7 +45,7 @@
 - (DXFaceView *)faceView
 {
     if (_faceView == nil) {
-        _faceView = [[DXFaceView alloc] init];
+        _faceView = [[DXFaceView alloc] initWithFrame:self.view.bounds];
         _faceView.backgroundColor = [UIColor clearColor];
         _faceView.delegate = self;
     }

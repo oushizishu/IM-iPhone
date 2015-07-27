@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @protocol BJChatInputProtocol <NSObject>
+@optional
 /**
  *  高度变到toHeight
  */

@@ -14,12 +14,12 @@
 
 - (void)doOperationOnBackground
 {
-    Conversation *conversation = self.message.conversation;
-//    [conversation removeMessage:message];
-//  [conversation addMessage:message];
-    [conversation setLastMsgRowId:self.message.msgId];
-//    [conversation update];
-    int64_t conversationId = conversation.ownerId;
+//    Conversation *conversation = self.message.conversationId;
+////    [conversation removeMessage:message];
+////  [conversation addMessage:message];
+//    [conversation setLastMsgRowId:self.message.msgId];
+////    [conversation update];
+//    int64_t conversationId = conversation.ownerId;
 }
 
 - (void)doAfterOperationOnMain

@@ -68,7 +68,6 @@
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIKeyboardWillChangeFrameNotification object:nil];
     
-    _delegate = nil;
     _inputTextView.delegate = nil;
     _inputTextView = nil;
 }
@@ -593,20 +592,26 @@
 {
     if (_moreViewController == nil) {
         _moreViewController = [[BJChatInputMoreViewController alloc] initWithChatInfo:self.chatInfo];
-        _moreViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.view.frame.size.width, 200);
+        _moreViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), _moreViewController.view.frame.size.width, _moreViewController.view.frame.size.height);
         [self addChildViewController:_moreViewController];
         _moreViewController.delegate = self;
     }
     return _moreViewController;
 }
 
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    
+}
+
 - (BJChatInputEmojiViewController *)emojiViewController
 {
     if (_emojiViewController == nil) {
         _emojiViewController = [[BJChatInputEmojiViewController alloc] initWithChatInfo:self.chatInfo];
-        _emojiViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.view.frame.size.width, 200);
+        _emojiViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), _emojiViewController.view.frame.size.width, _emojiViewController.view.frame.size.height);
         [self addChildViewController:_emojiViewController];
         _emojiViewController.delegate = self;
+        [_emojiViewController.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     }
     return _emojiViewController;
 }
