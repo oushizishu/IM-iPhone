@@ -60,16 +60,13 @@
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
                               @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId],
                               @"exclude_msg_ids": excludeGroupMsgIds};
-        NSError *error;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
-        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-        [lastGroupMsgIds addObject:str];
+        [lastGroupMsgIds addObject:dic];
     }
     
     if ([lastGroupMsgIds count] > 0)
     {
         NSError *error ;
-        NSData *data = [NSJSONSerialization dataWithJSONObject:lastGroupMsgIds options:NSJSONWritingPrettyPrinted error:&error];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:lastGroupMsgIds options:0 error:&error];
         self.groups_last_msg_id = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
 }
