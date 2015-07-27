@@ -175,7 +175,7 @@ static void AQInputCallback (void                   * inUserData,
 
 - (void)timerAction
 {
-    if (self.recordTime >= self.duration) {
+    if (self.recordTime >= self.duration && self.duration>0) {
         [self stopRecord];
     }
     else if(self.remainingCallback){

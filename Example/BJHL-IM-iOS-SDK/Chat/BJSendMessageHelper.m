@@ -26,4 +26,45 @@
     message.receiverRole = chatInfo.getToRole;
     [[BJIMManager shareInstance] sendMessage:message];
 }
+
++ (void)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
+{
+    IMAudioMessageBody *messageBody = [[IMAudioMessageBody alloc] init];
+    
+    IMMessage *message = [[IMMessage alloc] init];
+    message.messageBody = messageBody;
+    message.chat_t = chatInfo.chat_t;
+    message.msg_t = eMessageType_AUDIO;
+    message.receiver = chatInfo.getToId;
+    message.receiverRole = chatInfo.getToRole;
+    [[BJIMManager shareInstance] sendMessage:message];
+    
+}
+
++ (void)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
+{
+    IMImgMessageBody *messageBody = [[IMImgMessageBody alloc] init];
+    
+    IMMessage *message = [[IMMessage alloc] init];
+    message.messageBody = messageBody;
+    message.chat_t = chatInfo.chat_t;
+    message.msg_t = eMessageType_IMG;
+    message.receiver = chatInfo.getToId;
+    message.receiverRole = chatInfo.getToRole;
+    [[BJIMManager shareInstance] sendMessage:message];
+}
+
++ (void)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
+{
+    IMEmojiMessageBody *messageBody = [[IMEmojiMessageBody alloc] init];
+    
+    IMMessage *message = [[IMMessage alloc] init];
+    message.messageBody = messageBody;
+    message.chat_t = chatInfo.chat_t;
+    message.msg_t = eMessageType_EMOJI;
+    message.receiver = chatInfo.getToId;
+    message.receiverRole = chatInfo.getToRole;
+    [[BJIMManager shareInstance] sendMessage:message];
+}
+
 @end

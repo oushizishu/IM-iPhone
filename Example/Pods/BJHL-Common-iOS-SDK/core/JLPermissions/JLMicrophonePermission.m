@@ -122,7 +122,7 @@
 - (void)actuallyAuthorize {
   AVAudioSession *session = [[AVAudioSession alloc] init];
   NSError *error;
-  [session setCategory:@"AVAudioSessionCategoryPlayAndRecord" error:&error];
+  [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
   [session requestRecordPermission:^(BOOL granted) {
       if (_completion) {
         dispatch_async(dispatch_get_main_queue(), ^{

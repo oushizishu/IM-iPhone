@@ -9,6 +9,5 @@
 #import "BJChatBaseCell.h"
 
 @interface BJTextChatCell : BJChatBaseCell
-@property (nonatomic, strong) UIImageView *backImageView;
-@property (nonatomic, strong) UILabel *contentLabel;
+
 @end

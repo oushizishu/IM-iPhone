@@ -2,7 +2,7 @@
   "name": "BJHL-IM-iOS-SDK",
   "version": "1.0.0",
   "summary": "BJHL-IM-iOS-SDK.",
-  "description": "                      百家互联 iOS IM SDK\n",
+  "description": "百家互联 iOS IM SDK",
   "homepage": "http://git.baijiahulian.com/app/im-iphone",
   "license": "MIT",
   "authors": {
@@ -42,6 +42,9 @@
     ],
     "LKDBHelper": [
       "~>2.1.3"
+    ],
+    "YLGIFImage": [
+      "~> 0.11"
     ]
   }
 }

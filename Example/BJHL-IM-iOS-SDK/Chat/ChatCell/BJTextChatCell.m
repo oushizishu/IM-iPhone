@@ -28,6 +28,11 @@
 
 #define TEXTLABEL_MAX_WIDTH 200 // textLaebl 最大宽度
 
+@interface BJTextChatCell ()
+@property (nonatomic, strong) UIImageView *backImageView;
+@property (nonatomic, strong) UILabel *contentLabel;
+@end
+
 @implementation BJTextChatCell
 
 + (void)load
