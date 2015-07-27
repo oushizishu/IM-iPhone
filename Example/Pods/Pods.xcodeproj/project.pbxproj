@@ -52,7 +52,6 @@
 		0DF0E3413B002C80DB5DF51F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1C7A92BEEF7FC2C29FF509 /* Foundation.framework */; };
 		0E295F3EB86B9097F7AADEB2 /* EXTScope.h in Headers */ = {isa = PBXBuildFile; fileRef = 1DBD762274AF52FE42FB84E3 /* EXTScope.h */; };
 		0EC1D07A0AB1FF8BB02F4D17 /* DDDispatchQueueLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = 6116CF9FE978D37AAC9B4828 /* DDDispatchQueueLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		105CC25D35E24E4BCCACC072 /* ContactFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 01B38C45313B742C93CB0167 /* ContactFactory.h */; };
 		10CE7DA34FFFE6D1194FBDF6 /* JLMicrophonePermission.h in Headers */ = {isa = PBXBuildFile; fileRef = 704F665216CDBA655F7C9975 /* JLMicrophonePermission.h */; };
 		113811C02AA4CD80FFA7279D /* SendMsgOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A2583AAA2C4AE55603E66A0 /* SendMsgOperation.m */; };
 		115E815B3CE1E9C8CF9ED652 /* User.h in Headers */ = {isa = PBXBuildFile; fileRef = 78792E43F8C5201710E9A459 /* User.h */; };
@@ -112,7 +111,6 @@
 		23FC080BB80957619BB66419 /* NSObject+Invocation.h in Headers */ = {isa = PBXBuildFile; fileRef = 2E4AE9BAD44D88C7ACE7F682 /* NSObject+Invocation.h */; };
 		2408F9D293B1C9E9293E1B4E /* SSKeychainQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = 0B7DA13F914F05D316A9ECC0 /* SSKeychainQuery.m */; };
 		240F7880E5CBB65AF3A12196 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 355FD71BE4BC3B6B852B4606 /* CoreGraphics.framework */; };
-		2411044A4220C79B75B5990E /* ContactFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6421C1DEBC4F024F6DACF45D /* ContactFactory.m */; };
 		24D2F84B11128B939A8E0E90 /* BJIMEngine.m in Sources */ = {isa = PBXBuildFile; fileRef = 55F4491218DABE2FAC9DD398 /* BJIMEngine.m */; };
 		2576E020AF8CE84C2FB10800 /* BJCaptionView.h in Headers */ = {isa = PBXBuildFile; fileRef = 0ABB15F13E7F06A1C91C263A /* BJCaptionView.h */; };
 		25A26FE82D3056D2E545E0CC /* UIAlertView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 27978EA10058D8CB03159224 /* UIAlertView+AFNetworking.m */; };
@@ -209,7 +207,6 @@
 		39DB05ED8CA1ED8F616D5F75 /* NSDate+Category.m in Sources */ = {isa = PBXBuildFile; fileRef = CC79405F8557C7E214C9D440 /* NSDate+Category.m */; };
 		3A27E744EA38312C5FBCF656 /* IMMessage.m in Sources */ = {isa = PBXBuildFile; fileRef = CCCB3789994A3B7424C124EA /* IMMessage.m */; };
 		3AFFF9BAD905B8ACE2C4B967 /* BJIMService.h in Headers */ = {isa = PBXBuildFile; fileRef = 3BC898F357B50700BDB12039 /* BJIMService.h */; };
-		3B01F36C9F4E715D5676E458 /* Contacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 89867301969DDFA51E49C5E8 /* Contacts.h */; };
 		3B63D57103EAFFF2E9A4E26C /* AFNetworkActivityIndicatorManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 6DBB8A5F316CB92FF204565C /* AFNetworkActivityIndicatorManager.h */; };
 		3BFC6213DBA1DB7DB9E5358B /* UIWebView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 51DAF134EF33696D7D169A1C /* UIWebView+AFNetworking.m */; };
 		3C2C020ED491D9A5C5C36C2D /* DDAbstractDatabaseLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = E826176F5D29F4259321FFB0 /* DDAbstractDatabaseLogger.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -233,7 +230,6 @@
 		3F4756491131B09B88624419 /* NSManagedObjectContext+MagicalSaves.m in Sources */ = {isa = PBXBuildFile; fileRef = 0D769EC50866352FF56D2826 /* NSManagedObjectContext+MagicalSaves.m */; };
 		3F69C08F3D7428C376FEB631 /* NSData+ImageContentType.h in Headers */ = {isa = PBXBuildFile; fileRef = 153237BB451DAAD7BB7E9729 /* NSData+ImageContentType.h */; };
 		401F590A06B774C0458F1C2F /* MagicalRecord+Setup.m in Sources */ = {isa = PBXBuildFile; fileRef = 0ADC98439A7390DB1669EC61 /* MagicalRecord+Setup.m */; };
-		404DA78FBC9010A7EE2D5E27 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = CC02DE9F9067FF15B3285449 /* Contacts.m */; };
 		40A2479AFE75F2D915B4E6EE /* BJNetworkUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E26D214692AFF0BA9BF0436 /* BJNetworkUtil.m */; };
 		40C5B9A1AA81CB5DD537BF7B /* NSEntityDescription+MagicalDataImport.m in Sources */ = {isa = PBXBuildFile; fileRef = ADF6EB4D83D14F5E7CB1BF0E /* NSEntityDescription+MagicalDataImport.m */; };
 		40D8D6CE8784C265B0313522 /* SyncConfigModel.h in Headers */ = {isa = PBXBuildFile; fileRef = BEB1EF7277134B03378D62E9 /* SyncConfigModel.h */; };
@@ -402,7 +398,6 @@
 		71975232DE4C8551616F6547 /* MTLModel+NSCoding.m in Sources */ = {isa = PBXBuildFile; fileRef = 227EDBF119633C22E20A79A3 /* MTLModel+NSCoding.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		7245540E74601577F7F0D953 /* Conversation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5B595BC3E16B34830422B048 /* Conversation.m */; };
 		72B4271C5AB2149BE5517959 /* SendMsgModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A77CE46ADDD4B1744973290 /* SendMsgModel.m */; };
-		72C7B20B25A6138F5B01223F /* ContactFactory.m in Sources */ = {isa = PBXBuildFile; fileRef = 6421C1DEBC4F024F6DACF45D /* ContactFactory.m */; };
 		72DD6E3FB0A85D67CF53E70C /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1C7A92BEEF7FC2C29FF509 /* Foundation.framework */; };
 		732A3AA44D205292165074E1 /* UIView+Borders.m in Sources */ = {isa = PBXBuildFile; fileRef = C3B2AE11B2B5FECFA6BAF4BD /* UIView+Borders.m */; };
 		736FF9A7E3C9F84B4B2C81FE /* MTLJSONAdapter.h in Headers */ = {isa = PBXBuildFile; fileRef = 5FF1FAAA8479019FD3A4E19A /* MTLJSONAdapter.h */; };
@@ -557,7 +552,9 @@
 		9547282C1B5FCFB300569902 /* HandleGetMsgOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9547282B1B5FCFB300569902 /* HandleGetMsgOperation.m */; };
 		9547282F1B620C4800569902 /* IMMessage+DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 9547282E1B620C4800569902 /* IMMessage+DB.m */; };
 		954728321B637F7800569902 /* MyContactsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728311B637F7800569902 /* MyContactsModel.m */; };
-		954728351B6384C700569902 /* HandleMyContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728341B6384C700569902 /* HandleMyContactsOperation.m */; };
+		954728381B6618D400569902 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728371B6618D400569902 /* TeacherContacts.m */; };
+		9547283B1B6618E100569902 /* StudentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9547283A1B6618E100569902 /* StudentContacts.m */; };
+		9547283E1B6618F200569902 /* InstitutionContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 9547283D1B6618F200569902 /* InstitutionContacts.m */; };
 		958CA56AC09179703F62A8F4 /* DACircularProgressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 2835A08CAC1E0E348EED8CF3 /* DACircularProgressView.m */; };
 		95B0011B703697A10DE08AAD /* IMEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = DE88270CC47A9F8289766891 /* IMEnvironment.h */; };
 		95E9F2935C0E80EF7673E674 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7B1C7A92BEEF7FC2C29FF509 /* Foundation.framework */; };
@@ -821,7 +818,6 @@
 		DB3F68D911243E522513BCA5 /* JLPhotosPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = BB28A811F081114548488670 /* JLPhotosPermission.h */; };
 		DB58DF836E42085C4B7897FE /* TKAlertViewController+Private.m in Sources */ = {isa = PBXBuildFile; fileRef = FABFF2B654A3160059BD484A /* TKAlertViewController+Private.m */; };
 		DB67B318F5DCA6E10B307FD6 /* JLContactsPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = 95CCFD5CC43DB2C7344147E8 /* JLContactsPermission.h */; };
-		DBC808D34674A32DEA006887 /* Contacts.h in Headers */ = {isa = PBXBuildFile; fileRef = 89867301969DDFA51E49C5E8 /* Contacts.h */; };
 		DBD45A3CB22A97E73C5B01F7 /* UIButton+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = CE88C69C173B7BE519739E48 /* UIButton+AFNetworking.m */; };
 		DC5E485A86786AF5820E4BD6 /* UIButton+AFNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 26623A1E446D6FEFC8729CE6 /* UIButton+AFNetworking.h */; };
 		DC7C74802532AB3E7BBE3833 /* MagicalRecord+ErrorHandling.h in Headers */ = {isa = PBXBuildFile; fileRef = 74A07B0A0EFAB2B3DBB094DA /* MagicalRecord+ErrorHandling.h */; };
@@ -895,7 +891,6 @@
 		F0D062C8356FEB41ED9D84A0 /* TKBlurView.h in Headers */ = {isa = PBXBuildFile; fileRef = 27CDCF6A66DE37F852BF26F0 /* TKBlurView.h */; };
 		F0D1F445920F0B43644142A5 /* SDWebImageDownloaderOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = AF315FA152167EA52A8E463D /* SDWebImageDownloaderOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F0E7795A679FACCF5B998320 /* BJCommonProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 394A821EFCD1FF306A403727 /* BJCommonProxy.m */; };
-		F1165746B21724E0F8196E28 /* Contacts.m in Sources */ = {isa = PBXBuildFile; fileRef = CC02DE9F9067FF15B3285449 /* Contacts.m */; };
 		F139A476EA15887B78B90A15 /* BJTimer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0E6633C72FF2A1C17F96BABE /* BJTimer.m */; };
 		F17E57766CBC751B7254AD68 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = A197ADFBB645F9EC1D4F155E /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F1B2F94ECBB16B3D3AD5A9CB /* AFHTTPSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9BCA2460ACE103ECDF6495B6 /* AFHTTPSessionManager.m */; };
@@ -911,7 +906,6 @@
 		F515B3A80C9520769D464569 /* UIView+WebCacheOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B969B174679FFF78A7A1A21 /* UIView+WebCacheOperation.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		F54AF4288E811CA8795BCE50 /* SyncConfigModel.m in Sources */ = {isa = PBXBuildFile; fileRef = ED4790B48F3B20ED0AF75B6B /* SyncConfigModel.m */; };
 		F54EC3A65588A2E78F22BEC9 /* GroupMember.m in Sources */ = {isa = PBXBuildFile; fileRef = A779AC4AA0811808F80BD5BE /* GroupMember.m */; };
-		F58176D1712BC0A7B26DCB8E /* ContactFactory.h in Headers */ = {isa = PBXBuildFile; fileRef = 01B38C45313B742C93CB0167 /* ContactFactory.h */; };
 		F5A934460474AC709ABDC034 /* SDImageCache.h in Headers */ = {isa = PBXBuildFile; fileRef = A6F878244D49FCF2AAB6E9A7 /* SDImageCache.h */; };
 		F5C6BC504F9C0D546F9F7EC6 /* MagicalRecordInternal.h in Headers */ = {isa = PBXBuildFile; fileRef = F8EE9E8E3F6C9087B885058D /* MagicalRecordInternal.h */; };
 		F622E64B27E839ED87277D5B /* UIDeviceAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 484E8426BA2BEB718D1EC5D6 /* UIDeviceAdditions.m */; };
@@ -1344,7 +1338,6 @@
 		0102A060AACF2970B9BD91FA /* SSKeychain.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SSKeychain.m; path = core/SSKeychain/SSKeychain.m; sourceTree = "<group>"; };
 		01355B4E8617AC8D89D74B0C /* UIDevice+IdentifierAddition.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIDevice+IdentifierAddition.m"; path = "core/utils/UIDevice+IdentifierAddition.m"; sourceTree = "<group>"; };
 		0198FEBB247F71A5DFBAC9BA /* NSManagedObjectModel+MagicalRecord.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectModel+MagicalRecord.h"; path = "MagicalRecord/Categories/NSManagedObjectModel+MagicalRecord.h"; sourceTree = "<group>"; };
-		01B38C45313B742C93CB0167 /* ContactFactory.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = ContactFactory.h; sourceTree = "<group>"; };
 		021641986E4C052EE9A11625 /* EXTRuntimeExtensions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = EXTRuntimeExtensions.h; path = Mantle/extobjc/EXTRuntimeExtensions.h; sourceTree = "<group>"; };
 		02506DEB4FA9047D32EBD813 /* BJCaptionView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJCaptionView.m; path = core/BJPhotoBrowser/Classes/BJCaptionView.m; sourceTree = "<group>"; };
 		0305A1D3497A50888220F213 /* AFSecurityPolicy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFSecurityPolicy.m; path = AFNetworking/AFSecurityPolicy.m; sourceTree = "<group>"; };
@@ -1582,7 +1575,6 @@
 		62817252F3FEB59695385705 /* PictureBrowserCollectionViewCell.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = PictureBrowserCollectionViewCell.m; path = core/BJPhotoBrowser/Classes/PictureBrowserCollectionViewCell.m; sourceTree = "<group>"; };
 		629E80C57EB87BC0EB1F25A2 /* Group.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		6370B807A98DE96B572ADF7C /* PureLayout.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = PureLayout.h; path = Source/PureLayout.h; sourceTree = "<group>"; };
-		6421C1DEBC4F024F6DACF45D /* ContactFactory.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = ContactFactory.m; sourceTree = "<group>"; };
 		65E8D2E13DDA8C29134C136B /* Pods-BJHL-IM-iOS-SDK-BJHL-IM-iOS-SDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-BJHL-IM-iOS-SDK-BJHL-IM-iOS-SDK-Private.xcconfig"; sourceTree = "<group>"; };
 		65F197B70BE898D94F99BD34 /* DDASLLogCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogCapture.m; path = Classes/DDASLLogCapture.m; sourceTree = "<group>"; };
 		65F69404CCA2045C276CDD91 /* AFURLResponseSerialization.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFURLResponseSerialization.m; path = AFNetworking/AFURLResponseSerialization.m; sourceTree = "<group>"; };
@@ -1649,7 +1641,6 @@
 		8703830E4C6CE7C733D1D824 /* Pods-Tests-BJHL-Common-iOS-SDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests-BJHL-Common-iOS-SDK-Private.xcconfig"; path = "../Pods-Tests-BJHL-Common-iOS-SDK/Pods-Tests-BJHL-Common-iOS-SDK-Private.xcconfig"; sourceTree = "<group>"; };
 		881D98930D8A1DC8A518A7E7 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
 		88E34F8BC16ACBE527EC98E4 /* NSURL+QueryDictionary.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSURL+QueryDictionary.m"; path = "core/utils/NSURL+QueryDictionary.m"; sourceTree = "<group>"; };
-		89867301969DDFA51E49C5E8 /* Contacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Contacts.h; sourceTree = "<group>"; };
 		8A74EE42052261BD3A83E3C2 /* SDWebImageDownloaderOperation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageDownloaderOperation.h; path = SDWebImage/SDWebImageDownloaderOperation.h; sourceTree = "<group>"; };
 		8B2F762B6663E134057834F3 /* SDWebImageCompat.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDWebImageCompat.h; path = SDWebImage/SDWebImageCompat.h; sourceTree = "<group>"; };
 		8B6D3A6A3B525BF07F16961F /* Pods-BJHL-IM-iOS-SDK-CocoaLumberjack-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BJHL-IM-iOS-SDK-CocoaLumberjack-prefix.pch"; sourceTree = "<group>"; };
@@ -1692,8 +1683,12 @@
 		9547282E1B620C4800569902 /* IMMessage+DB.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IMMessage+DB.m"; sourceTree = "<group>"; };
 		954728301B637F7800569902 /* MyContactsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyContactsModel.h; sourceTree = "<group>"; };
 		954728311B637F7800569902 /* MyContactsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyContactsModel.m; sourceTree = "<group>"; };
-		954728331B6384C700569902 /* HandleMyContactsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleMyContactsOperation.h; sourceTree = "<group>"; };
-		954728341B6384C700569902 /* HandleMyContactsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandleMyContactsOperation.m; sourceTree = "<group>"; };
+		954728361B6618D400569902 /* TeacherContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TeacherContacts.h; sourceTree = "<group>"; };
+		954728371B6618D400569902 /* TeacherContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TeacherContacts.m; sourceTree = "<group>"; };
+		954728391B6618E100569902 /* StudentContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StudentContacts.h; sourceTree = "<group>"; };
+		9547283A1B6618E100569902 /* StudentContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StudentContacts.m; sourceTree = "<group>"; };
+		9547283C1B6618F200569902 /* InstitutionContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InstitutionContacts.h; sourceTree = "<group>"; };
+		9547283D1B6618F200569902 /* InstitutionContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InstitutionContacts.m; sourceTree = "<group>"; };
 		95CCFD5CC43DB2C7344147E8 /* JLContactsPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLContactsPermission.h; path = core/JLPermissions/JLContactsPermission.h; sourceTree = "<group>"; };
 		964E6F71D82927308E9E0CDF /* NSManagedObject+MagicalFinders.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+MagicalFinders.m"; path = "MagicalRecord/Categories/NSManagedObject/NSManagedObject+MagicalFinders.m"; sourceTree = "<group>"; };
 		967D43C9052F92EB516ACA3C /* JLLocationPermission.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = JLLocationPermission.h; path = core/JLPermissions/JLLocationPermission.h; sourceTree = "<group>"; };
@@ -1815,7 +1810,6 @@
 		CADCBDACCF14E7A68FCE45BC /* UIImage+MultiFormat.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIImage+MultiFormat.m"; path = "SDWebImage/UIImage+MultiFormat.m"; sourceTree = "<group>"; };
 		CAFE0B78582E5706B662C5A9 /* JLTwitterPermission.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = JLTwitterPermission.m; path = core/JLPermissions/JLTwitterPermission.m; sourceTree = "<group>"; };
 		CB812683D283A5921BEDC0A5 /* Conversation+DB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Conversation+DB.h"; sourceTree = "<group>"; };
-		CC02DE9F9067FF15B3285449 /* Contacts.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = Contacts.m; sourceTree = "<group>"; };
 		CC102A4F74472592421B4052 /* NSArray+MTLManipulationAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+MTLManipulationAdditions.m"; path = "Mantle/NSArray+MTLManipulationAdditions.m"; sourceTree = "<group>"; };
 		CC370656F3302A5D60AD7B56 /* Pods-Tests-SDWebImage-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "Pods-Tests-SDWebImage-dummy.m"; path = "../Pods-Tests-SDWebImage/Pods-Tests-SDWebImage-dummy.m"; sourceTree = "<group>"; };
 		CC79405F8557C7E214C9D440 /* NSDate+Category.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSDate+Category.m"; path = "core/utils/NSDate+Category.m"; sourceTree = "<group>"; };
@@ -2432,10 +2426,6 @@
 		2F8E19FC1029B2663A22FC10 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				01B38C45313B742C93CB0167 /* ContactFactory.h */,
-				6421C1DEBC4F024F6DACF45D /* ContactFactory.m */,
-				89867301969DDFA51E49C5E8 /* Contacts.h */,
-				CC02DE9F9067FF15B3285449 /* Contacts.m */,
 				11E2A1F3115E0449970D49B2 /* Conversation.h */,
 				5B595BC3E16B34830422B048 /* Conversation.m */,
 				CB812683D283A5921BEDC0A5 /* Conversation+DB.h */,
@@ -2450,6 +2440,12 @@
 				F887DE4C5FCD3B7467C4C40F /* User.m */,
 				9547282D1B620C4800569902 /* IMMessage+DB.h */,
 				9547282E1B620C4800569902 /* IMMessage+DB.m */,
+				954728361B6618D400569902 /* TeacherContacts.h */,
+				954728371B6618D400569902 /* TeacherContacts.m */,
+				954728391B6618E100569902 /* StudentContacts.h */,
+				9547283A1B6618E100569902 /* StudentContacts.m */,
+				9547283C1B6618F200569902 /* InstitutionContacts.h */,
+				9547283D1B6618F200569902 /* InstitutionContacts.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2597,8 +2593,6 @@
 				954728281B5FB8F600569902 /* LoadMoreMessagesOperation.m */,
 				9547282A1B5FCFB300569902 /* HandleGetMsgOperation.h */,
 				9547282B1B5FCFB300569902 /* HandleGetMsgOperation.m */,
-				954728331B6384C700569902 /* HandleMyContactsOperation.h */,
-				954728341B6384C700569902 /* HandleMyContactsOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3593,8 +3587,6 @@
 				3AFFF9BAD905B8ACE2C4B967 /* BJIMService.h in Headers */,
 				92654D7654DDB748C1144B6E /* BJIMStorage.h in Headers */,
 				5E1FC95BBD8D8D49E078AFFC /* BaseResponse.h in Headers */,
-				105CC25D35E24E4BCCACC072 /* ContactFactory.h in Headers */,
-				3B01F36C9F4E715D5676E458 /* Contacts.h in Headers */,
 				3219264378FEF76561301C47 /* Conversation+DB.h in Headers */,
 				8F2798797577FC44BF06A767 /* Conversation.h in Headers */,
 				36A789EACD1BD446E349F79E /* Group.h in Headers */,
@@ -3750,8 +3742,6 @@
 				9AA1FB0E9DADCACF4DCE15A4 /* BJIMService.h in Headers */,
 				E623843480C09D4B504A80E3 /* BJIMStorage.h in Headers */,
 				1A758E4C1E81E2BE08D7DE72 /* BaseResponse.h in Headers */,
-				F58176D1712BC0A7B26DCB8E /* ContactFactory.h in Headers */,
-				DBC808D34674A32DEA006887 /* Contacts.h in Headers */,
 				CF396CEEF9E424BFE9254E1F /* Conversation+DB.h in Headers */,
 				E70F3D1DA09736FF0D61820B /* Conversation.h in Headers */,
 				3EC38E22D6595C5FA01239E9 /* Group.h in Headers */,
@@ -4800,13 +4790,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				954728351B6384C700569902 /* HandleMyContactsOperation.m in Sources */,
+				9547283E1B6618F200569902 /* InstitutionContacts.m in Sources */,
 				954728291B5FB8F600569902 /* LoadMoreMessagesOperation.m in Sources */,
 				954728261B5F781300569902 /* HandlePollingResultOperation.m in Sources */,
+				9547283B1B6618E100569902 /* StudentContacts.m in Sources */,
 				9547282C1B5FCFB300569902 /* HandleGetMsgOperation.m in Sources */,
 				954728231B5EA5BE00569902 /* PollingResultModel.m in Sources */,
 				954728321B637F7800569902 /* MyContactsModel.m in Sources */,
 				950E2D9E1B5E959400DC79F2 /* HandlePostMessageSuccOperation.m in Sources */,
+				954728381B6618D400569902 /* TeacherContacts.m in Sources */,
 				9547282F1B620C4800569902 /* IMMessage+DB.m in Sources */,
 				64BB60AC01CD301394D8F3D9 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
 				950E2DA41B5EA2F900DC79F2 /* PrePollingOperation.m in Sources */,
@@ -4824,8 +4816,6 @@
 				F9EDDD16E640B11DA0D5CD04 /* BJIMService.m in Sources */,
 				47D68C215C28213FFF352A16 /* BJIMStorage.m in Sources */,
 				5A9296BA066747A5CA40985E /* BaseResponse.m in Sources */,
-				72C7B20B25A6138F5B01223F /* ContactFactory.m in Sources */,
-				F1165746B21724E0F8196E28 /* Contacts.m in Sources */,
 				461C3440CAA1E5299C9C8B97 /* Conversation+DB.m in Sources */,
 				8E89518B649A0E3BF3716588 /* Conversation.m in Sources */,
 				C5A2C91B28481E568BC70DE3 /* Group.m in Sources */,
@@ -5173,8 +5163,6 @@
 				7DB42F9BE875EE0820D562B8 /* BJIMService.m in Sources */,
 				A367DA47E818312A6E1BC058 /* BJIMStorage.m in Sources */,
 				137853CF7C6B8669AEE5478D /* BaseResponse.m in Sources */,
-				2411044A4220C79B75B5990E /* ContactFactory.m in Sources */,
-				404DA78FBC9010A7EE2D5E27 /* Contacts.m in Sources */,
 				309AE7D6AE6F4567049AB533 /* Conversation+DB.m in Sources */,
 				7245540E74601577F7F0D953 /* Conversation.m in Sources */,
 				D497A25B27DC57E8E9C221EC /* Group.m in Sources */,

@@ -12,13 +12,15 @@
 #import "User.h"
 #import "Group.h"
 #import "IMMessage.h"
-#import "Contacts.h"
 #import "GroupMember.h"
-#import "ContactFactory.h"
+#import "TeacherContacts.h"
+#import "StudentContacts.h"
+#import "InstitutionContacts.h"
+
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
-const NSString *const IMTeacherContactTableName  = @"techerContact";
-const NSString *const IMStudentContactTabaleName = @"studentContact";
-const NSString *const IMInstitutionContactTableName     = @"institutionContact";
+const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
+const NSString *const IMStudentContactTabaleName = @"STUDENTCONTACTS";
+const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS";
 
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
 #define KEY_LOAD_MESSAGE_PAGE_COUNT 30
@@ -45,11 +47,9 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 #pragma mark User表
 - (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole
 {
-   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId = %lld  AND userRole = %ld",userId,userRole] orderBy:nil];
+   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId=%lld AND userRole=%ld",userId,userRole] orderBy:nil];
    return user;
 }
-
-
 
 - (BOOL)insertOrUpdateUser:(User *)user
 {
@@ -58,7 +58,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     if (!result) {
        value = [self.dbHelper  insertToDB:user];
     }else{
-       value =[self.dbHelper updateToDB:user where:[NSString stringWithFormat:@"userId = %lld",user.userId]];
+       value =[self.dbHelper updateToDB:user where:[NSString stringWithFormat:@"userId=%lld and userRole=%ld",user.userId, user.userRole]];
     }
     return value;
 }
@@ -142,13 +142,11 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return message.msgId;
 }
 
-
-
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole
 {
     NSString *queryString = [NSString stringWithFormat:@"receiver = %lld \
                              AND sender <> %lld \
-                             AND senderRole <> %ld ORDER BY msgId LIMIT 1",groupId, sender, senderRole];
+                             AND senderRole <> %ld ORDER BY msgId ",groupId, sender, senderRole];
     
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
@@ -257,7 +255,7 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 
 - (void)updateConversation:(Conversation *)conversation
 {
-    [self.dbHelper updateToDB:conversation where:[NSString stringWithFormat:@" rowid = %ld", conversation.rowid]];
+    [self.dbHelper updateToDB:conversation where:[NSString stringWithFormat:@" rowid=%ld", conversation.rowid]];
 }
 
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole
@@ -274,14 +272,20 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
 }
 
 #pragma mark contact
-
-
-
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact
 {
-    NSString *queryString = [NSString stringWithFormat:@"userId = %lld AND contactRole = %ld", contact.userId, contact.userRole];
-    Contacts *aContacts = [self.dbHelper searchSingle:[Contacts class] where:queryString orderBy:nil];
-    return aContacts==nil?NO:YES;
+    NSString *classString = nil;
+    if (owner.userRole == eUserRole_Institution) {
+        classString = @"InstitutionContacts";
+    } else if (owner.userRole == eUserRole_Student) {
+        classString = @"StudentContacts";
+    } else if (owner.userRole == eUserRole_Teacher) {
+        classString = @"TeacherContacts";
+    }
+    
+    NSString *queryString = [NSString stringWithFormat:@"userId=%lld and contactId=%lld AND contactRole=%ld", owner.userId, contact.userId, contact.userRole];
+    id relation  = [self.dbHelper searchSingle:NSClassFromString(classString) where:queryString orderBy:nil];
+    return relation != nil;
     
 }
 - (BOOL)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact
@@ -289,31 +293,73 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     if ([self hasContactOwner:owner contact:contact]) {
         return NO;
     }
-    Contacts *contacts = [ContactFactory createContactWithUserRole:contact.userRole];
-    contacts.userId = owner.userId;
-    contacts.contactId = contacts.userId;
-    contacts.contactRole = contacts.contactRole;
-    contacts.createTime = [[NSDate date] timeIntervalSince1970];
-    return  [self.dbHelper insertToDB:contact];
+    
+    if (owner.userRole == eUserRole_Teacher) {
+        TeacherContacts *relation = [[TeacherContacts alloc] init];
+        relation.userId = owner.userId;
+        relation.contactId = contact.userId;
+        relation.contactRole = contact.userRole;
+        relation.createTime = [[NSDate date] timeIntervalSince1970];
+        return [self.dbHelper insertToDB:relation];
+    } else if (owner.userRole == eUserRole_Student) {
+        StudentContacts *relation = [[StudentContacts alloc] init];
+        relation.userId = owner.userId;
+        relation.contactId = contact.userId;
+        relation.contactRole = contact.userRole;
+        relation.createTime = [[NSDate date] timeIntervalSince1970];
+        return [self.dbHelper insertToDB:relation];
+    } else if (owner.userRole == eUserRole_Institution) {
+        InstitutionContacts *relation = [[InstitutionContacts alloc] init];
+        relation.userId = owner.userId;
+        relation.contactId = contact.userId;
+        relation.contactRole = contact.userRole;
+        relation.createTime = [[NSDate date] timeIntervalSince1970];
+        return [self.dbHelper insertToDB:relation];
+    }
+    return NO;
 }
 
 - (Group*)queryGroupWithGroupId:(int64_t)groupId
 {
-    NSString *queryString = [NSString stringWithFormat:@"groupId = %lld",groupId];
+    NSString *queryString = [NSString stringWithFormat:@"groupId=%lld",groupId];
     return [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
 }
 
 
-- (NSArray*)queryStudentContactWithTableName:(NSString*)tableName UserId:(long)userId userRole:(IMUserRole)userRole
+- (NSArray*)queryContactsWithTableName:(NSString*)tableName
+                                UserId:(int64_t)userId
+                            contactRole:(IMUserRole)contactRole
 {
-    NSString *queryString  = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE  userId = %ld AND contactRole = %ld;",tableName,userId,userRole];
-    NSArray *array = [self.dbHelper  searchWithSQL:queryString toClass:[Contacts class]];
+    
+    NSString *classString = nil;
+    if ([IMStudentContactTabaleName isEqualToString:tableName]) {
+       classString = @"StudentContacts";
+    } else if ([IMTeacherContactTableName isEqualToString:tableName]) {
+        classString = @"TeacherContacts";
+    } else if ([IMInstitutionContactTableName isEqualToString:tableName]) {
+        classString = @"InstitutionContacts";
+    }
+   
+    NSString *queryString  = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE  userId=%lld AND contactRole=%ld;",tableName,userId, contactRole];
+    NSArray *array = [self.dbHelper searchWithSQL:queryString toClass:NSClassFromString(classString)];
     if ([array count] == 0) {
         return nil;
     }
     NSMutableArray *users = [NSMutableArray array];
-    for (Contacts *contact  in array) {
-        User *user = [self queryUser:contact.contactId userRole:user.userRole];
+    for (id relation  in array) {
+        User *user = nil;
+        if ([relation isKindOfClass:[TeacherContacts class]])
+        {
+            user = [self queryUser:((TeacherContacts *)relation).contactId userRole:((TeacherContacts *)relation).contactRole];
+        }
+        else if ([relation isKindOfClass:[StudentContacts class]])
+        {
+            user = [self queryUser:((StudentContacts*)relation).contactId userRole:((StudentContacts *)relation).contactRole];
+        }
+        else if ([relation isKindOfClass:[InstitutionContacts class]])
+        {
+            user = [self queryUser:((InstitutionContacts*)relation).contactId userRole:((InstitutionContacts*)relation).contactRole];
+        }
         if (user) {
             [users addObject:user];
         }
@@ -321,49 +367,37 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     return users;
 }
 
-- (NSArray*)queryTeacherContactWithUserId:(long)userId userRole:(IMUserRole)userRole
+- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
 {
     NSString *tableName = nil;
-    if (userRole == eUserRole_Student){
-        tableName = (NSString*)IMStudentContactTabaleName;
-    }else if(userRole == eUserRole_Institution){
-        tableName = (NSString*)IMInstitutionContactTableName;
-    }
-    if (!tableName) {
-        return nil;
-    }
-    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];
+    if (userRole == eUserRole_Teacher) return nil;
+    if (userRole == eUserRole_Student) tableName = [NSString stringWithFormat:@"%@", IMStudentContactTabaleName];
+    else if (userRole == eUserRole_Institution) tableName = [NSString stringWithFormat:@"%@", IMInstitutionContactTableName];
+
+    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Teacher];
 }
 
-- (NSArray*)queryStudentContactWithUserId:(long)userId userRole:(IMUserRole)userRole
+- (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
 {
     NSString *tableName = nil;
-    if (userRole == eUserRole_Institution){
-        tableName = (NSString*)IMInstitutionContactTableName;
-    }else if(userRole == eUserRole_Teacher){
-        tableName = (NSString*)IMTeacherContactTableName;
-    }
-    if (!tableName) {
-        return nil;
-    }
-    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];
+    if (userRole == eUserRole_Student) return nil;
+    if (userRole == eUserRole_Teacher) tableName = [NSString stringWithFormat:@"%@", IMTeacherContactTableName];
+    else if (userRole == eUserRole_Institution) tableName = [NSString stringWithFormat:@"%@", IMInstitutionContactTableName];
+    
+ 
+    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Student];
 }
 
 
 
-- (NSArray*)queryInstitutionContactWithUserId:(long)userId userRole:(IMUserRole)userRole
+- (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
 {
     NSString *tableName = nil;
-    if (userRole == eUserRole_Student){
-        tableName = (NSString*)IMStudentContactTabaleName;
-    }else if(userRole == eUserRole_Teacher)
-    {
-        tableName = (NSString*)IMTeacherContactTableName;
-    }
-    if (!tableName) {
-        return nil;
-    }
-    return [self queryStudentContactWithTableName:tableName UserId:userId userRole:userRole];}
+    if (userRole == eUserRole_Institution) return nil;
+    if (userRole == eUserRole_Teacher) tableName = [NSString stringWithFormat:@"%@", IMTeacherContactTableName];
+    else if (userRole == eUserRole_Student) tableName = [NSString stringWithFormat:@"%@", IMStudentContactTabaleName];
+    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Institution];
+}
 
 - ( BOOL)checkMessageStatus{
     NSString *queryString = [NSString stringWithFormat:@"UPDATE IMMESSAGE SET status = %ld WHERE status = %ld",eMessageStatus_Send_Fail,eMessageStatus_Sending];
@@ -411,6 +445,12 @@ const NSString *const IMInstitutionContactTableName     = @"institutionContact";
     }
     NSString *queryString = [NSString stringWithFormat:@"userId=%lld",user.userId];
     return [self.dbHelper deleteWithClass:class where:queryString];
+}
+
+- (BOOL)deleteMyGroups:(User *)user
+{
+    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, user.userRole];
+    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
 }
 
 @end

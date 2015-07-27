@@ -11,9 +11,8 @@
 #import "Conversation+DB.h"
 #import  "NSDictionary+MTLMappingAdditions.h"
 #import "IMEnvironment.h"
-#import "ContactFactory.h"
 #import "BJIMStorage.h"
-#import "SyncContactOperation.h"
+#import "IMMessage+DB.h"
 
 
 #import "SendMsgOperation.h"
@@ -22,6 +21,7 @@
 #import "HandlePollingResultOperation.h"
 #import "LoadMoreMessagesOperation.h"
 #import "HandleGetMsgOperation.h"
+#import "SyncContactOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate>
@@ -56,6 +56,7 @@
     [self.imEngine start];
     
     [self.imEngine syncConfig];
+    [self.imEngine syncContacts];
 }
 
 - (void)stopService
@@ -79,6 +80,7 @@
 - (void)sendMessage:(IMMessage *)message
 {
     message.status = eMessageStatus_Sending;
+    message.imService = self;
     SendMsgOperation *operation = [[SendMsgOperation alloc] init];
     operation.message = message;
     operation.imService = self;
@@ -183,19 +185,15 @@
 }
 
 #pragma mark syncContact 
-- (void)synContact:(NSDictionary *)dictionary
-{
-    if (nil ==  dictionary) {
-        return;
-    }
-    SyncContactOperation *operation = [[SyncContactOperation alloc]init];
-    operation.imService = self;
-    operation.contactDictionary = dictionary;
-    [self.operationQueue addOperation:operation];
-}
 - (void)didSyncContacts:(MyContactsModel *)model
 {
     
+    if (! self.bIsServiceActive) return;
+
+    SyncContactOperation *operation = [[SyncContactOperation alloc]init];
+    operation.imService = self;
+    operation.model = model;
+    [self.operationQueue addOperation:operation];
 }
 
 
