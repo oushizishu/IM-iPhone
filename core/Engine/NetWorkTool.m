@@ -70,7 +70,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
     if ([excludeUserMsgIds length] > 0)
     {
-        [requestParams appendPostParamValue:excludeUserMsgIds forKey:@"exclue_user_msg_ids"];
+        [requestParams appendPostParamValue:excludeUserMsgIds forKey:@"exclude_user_msg_ids"];
     }
     if ([group_last_msg_ids length] > 0)
     {
