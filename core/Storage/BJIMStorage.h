@@ -64,11 +64,12 @@
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact;
 - (BOOL)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
 - (BOOL)deleteMyContactWithUser:(User*)user;
+- (BOOL)deleteMyGroups:(User *)user;
 
 
-- (NSArray*)queryTeacherContactWithUserId:(long)userId userRole:(IMUserRole)userRole;;
-- (NSArray*)queryStudentContactWithUserId:(long)userId userRole:(IMUserRole)userRole;
-- (NSArray*)queryInstitutionContactWithUserId:(long)userId userRole:(IMUserRole)userRole;
+- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;;
+- (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
+- (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 
 //groupMember
 - (GroupMember*)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole;

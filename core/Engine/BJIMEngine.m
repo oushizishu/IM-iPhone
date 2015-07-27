@@ -10,7 +10,6 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 #import "BJIMStorage.h"
-#import "Contacts.h"
 #import "BJTimer.h"
 
 int ddLogLevel = DDLogLevelInfo;
@@ -82,10 +81,10 @@ int ddLogLevel = DDLogLevelInfo;
         if (result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            MyContactsModel *model = [MyContactsModel modelWithDictionary:result.data error:&error];
-            if (self.synContactDelegate)
+            MyContactsModel *model = [MTLJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.data error:&error];
+            if (weakSelf.synContactDelegate)
             {
-                [self.synContactDelegate didSyncContacts:model];
+                [weakSelf.synContactDelegate didSyncContacts:model];
             }
         }
         else
