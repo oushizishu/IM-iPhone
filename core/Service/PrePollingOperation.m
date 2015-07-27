@@ -39,10 +39,18 @@
         
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
                               @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId]};
-        [lastGroupMsgIds addObject:dic];
+        NSError *error;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:dic options:NSJSONWritingPrettyPrinted error:&error];
+        NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        [lastGroupMsgIds addObject:str];
     }
     
-    self.groups_last_msg_id = [lastGroupMsgIds count] > 0 ? [lastGroupMsgIds description] : nil;
+    if ([lastGroupMsgIds count] > 0)
+    {
+        NSError *error ;
+        NSData *data = [NSJSONSerialization dataWithJSONObject:lastGroupMsgIds options:NSJSONWritingPrettyPrinted error:&error];
+        self.groups_last_msg_id = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    }
 }
 
 - (void)doAfterOperationOnMain
