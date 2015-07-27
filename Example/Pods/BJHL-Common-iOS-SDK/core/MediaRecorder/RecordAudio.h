@@ -18,6 +18,10 @@
 typedef void(^RecordAudioFinish)(NSString *message,NSInteger timeLength,BOOL isSuc,BOOL isFinish);
 typedef void (^RecordRemainingTime)(CGFloat time);
 @interface RecordAudio : NSObject <AVAudioRecorderDelegate>
+
+/**
+ *  duration==0,则不限制录制时间
+ */
 @property (assign, nonatomic)NSTimeInterval duration;
 @property (copy, nonatomic)RecordRemainingTime remainingCallback;
 @property (copy, nonatomic)RecordAudioFinish finishCallback;

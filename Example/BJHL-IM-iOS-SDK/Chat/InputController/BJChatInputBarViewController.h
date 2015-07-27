@@ -10,18 +10,8 @@
 #import "BJChatInputBaseViewController.h"
 #import "XHMessageTextView.h"
 
-@protocol BJMessageToolBarDelegate <NSObject>
-
-@required
-/**
- *  高度变到toHeight
- */
-- (void)didChangeFrameToHeight:(CGFloat)toHeight;
-
-@end
-
 @interface BJChatInputBarViewController : BJChatInputBaseViewController
-@property (nonatomic, weak) id <BJMessageToolBarDelegate> delegate;
+@property (nonatomic, weak) id <BJChatInputProtocol> delegate;
 /**
  *  停止编辑
  */

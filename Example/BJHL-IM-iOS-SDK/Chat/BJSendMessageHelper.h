@@ -15,5 +15,8 @@
 #import "BJChatInfo.h"
 @interface BJSendMessageHelper : NSObject
 + (void)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
++ (void)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
++ (void)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
 
++ (void)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
 @end

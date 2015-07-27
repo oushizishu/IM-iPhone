@@ -7,7 +7,9 @@
 //
 
 #import "BJChatInputBarViewController.h"
-
+#import "BJChatInputBarViewController+BJRecordView.h"
+#import "BJChatInputMoreViewController.h"
+#import "BJChatInputEmojiViewController.h"
 #define kInputTextViewMinHeight 36
 #define kInputTextViewMaxHeight 84
 #define kHorizontalPadding 4
@@ -16,7 +18,7 @@
 #define kTouchToRecord @"按住说话"
 #define kTouchToFinish @"松开发送"
 
-@interface BJChatInputBarViewController ()<UITextViewDelegate>
+@interface BJChatInputBarViewController ()<UITextViewDelegate,BJChatInputProtocol>
 /**
  *  用于输入文本消息的输入框
  */
@@ -44,6 +46,11 @@
 @property (nonatomic) BOOL isShowButtomView;
 @property (strong, nonatomic) UIView *activityButtomView;
 
+/**
+ *  子视图控制器
+ */
+@property (strong, nonatomic) BJChatInputEmojiViewController *emojiViewController;
+@property (strong, nonatomic) BJChatInputMoreViewController *moreViewController;
 @end
 
 @implementation BJChatInputBarViewController
@@ -170,12 +177,7 @@
     [self.recordButton setTitle:kTouchToRecord forState:UIControlStateNormal];
     [self.recordButton setTitle:kTouchToFinish forState:UIControlStateHighlighted];
     self.recordButton.hidden = YES;
-    [self.recordButton addTarget:self action:@selector(recordButtonTouchDown) forControlEvents:UIControlEventTouchDown];
-    [self.recordButton addTarget:self action:@selector(recordButtonTouchUpOutside) forControlEvents:UIControlEventTouchUpOutside];
-    [self.recordButton addTarget:self action:@selector(recordButtonTouchUpInside) forControlEvents:UIControlEventTouchUpInside];
-    [self.recordButton addTarget:self action:@selector(recordDragOutside) forControlEvents:UIControlEventTouchDragExit];
-    [self.recordButton addTarget:self action:@selector(recordDragInside) forControlEvents:UIControlEventTouchDragEnter];
-    self.recordButton.hidden = YES;
+    [self bjrv_setupRecordView:self.recordButton];
     
     [self.toolbarView addSubview:self.styleChangeButton];
     [self.toolbarView addSubview:self.moreButton];
@@ -206,10 +208,7 @@
 {
     self.recordButton.selected = NO;
     self.recordButton.highlighted = NO;
-//    if ([_recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)_recordView recordButtonTouchUpInside];
-//        [_recordView removeFromSuperview];
-//    }
+    [self bjrv_cancelTouchRecordView];
 }
 
 + (CGFloat)defaultHeight
@@ -264,7 +263,8 @@
                     [self.inputTextView resignFirstResponder];
                 }
                 
-//                [self willShowBottomView:self.faceView];
+                [self willShowBottomView:self.emojiViewController.view];
+                [self.emojiViewController didMoveToParentViewController:self];
                 [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                     self.recordButton.hidden = button.selected;
                     self.inputTextView.hidden = !button.selected;
@@ -293,7 +293,8 @@
                     [self.inputTextView resignFirstResponder];
                 }
                 
-//                [self willShowBottomView:self.moreView];
+                [self willShowBottomView:self.moreViewController.view];
+                [self.emojiViewController didMoveToParentViewController:self];
                 [UIView animateWithDuration:0.2 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
                     self.recordButton.hidden = button.selected;
                     self.inputTextView.hidden = !button.selected;
@@ -317,69 +318,6 @@
         default:
             break;
     }
-}
-
-- (void)recordButtonTouchDown
-{
-//    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)self.recordView recordButtonTouchDown];
-//    }
-//    
-//    if (_delegate && [_delegate respondsToSelector:@selector(didStartRecordingVoiceAction:)]) {
-//        [_delegate didStartRecordingVoiceAction:self.recordView];
-//    }
-}
-
-- (void)recordButtonTouchUpOutside
-{
-//    if (_delegate && [_delegate respondsToSelector:@selector(didCancelRecordingVoiceAction:)])
-//    {
-//        [_delegate didCancelRecordingVoiceAction:self.recordView];
-//    }
-//    
-//    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)self.recordView recordButtonTouchUpOutside];
-//    }
-//    
-//    [self.recordView removeFromSuperview];
-}
-
-- (void)recordButtonTouchUpInside
-{
-//    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)self.recordView recordButtonTouchUpInside];
-//    }
-//    
-//    if ([self.delegate respondsToSelector:@selector(didFinishRecoingVoiceAction:)])
-//    {
-//        [self.delegate didFinishRecoingVoiceAction:self.recordView];
-//    }
-//    
-//    [self.recordView removeFromSuperview];
-}
-
-- (void)recordDragOutside
-{
-//    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)self.recordView recordButtonDragOutside];
-//    }
-//    
-//    if ([self.delegate respondsToSelector:@selector(didDragOutsideAction:)])
-//    {
-//        [self.delegate didDragOutsideAction:self.recordView];
-//    }
-}
-
-- (void)recordDragInside
-{
-//    if ([self.recordView isKindOfClass:[DXRecordView class]]) {
-//        [(DXRecordView *)self.recordView recordButtonDragInside];
-//    }
-//    
-//    if ([self.delegate respondsToSelector:@selector(didDragInsideAction:)])
-//    {
-//        [self.delegate didDragInsideAction:self.recordView];
-//    }
 }
 
 #pragma mark - Notification
@@ -411,6 +349,20 @@
 }
 
 #pragma mark - input View
+- (void)removeBottomView
+{
+    if (self.activityButtomView) {
+        if (self.moreViewController.view == self.activityButtomView) {
+            [self.moreViewController willMoveToParentViewController:nil];
+        }
+        else if (self.emojiViewController.view == self.activityButtomView)
+        {
+            [self.emojiViewController willMoveToParentViewController:nil];
+        }
+        [self.activityButtomView removeFromSuperview];
+    }
+}
+
 - (void)willShowBottomView:(UIView *)bottomView;
 {
     [self willShowBottomView:bottomView withDuration:0.25];
@@ -437,9 +389,7 @@
             [self.view addSubview:bottomView];
         }
         
-        if (self.activityButtomView) {
-            [self.activityButtomView removeFromSuperview];
-        }
+        [self removeBottomView];
         self.activityButtomView = bottomView;
     }
 }
@@ -462,9 +412,7 @@
         [self willShowBottomHeight:toFrame.size.height withDuration:duration withAnimationOption:animationCurve completion:^(BOOL finished) {
             
         }];
-        if (self.activityButtomView) {
-            [self.activityButtomView removeFromSuperview];
-        }
+        [self removeBottomView];
         self.activityButtomView = nil;
     }
     else if (toFrame.origin.y == [[UIScreen mainScreen] bounds].size.height)
@@ -571,20 +519,22 @@
             [self.inputTextView setContentOffset:self.inputTextView.contentOffset animated:YES];
         _previousTextViewContentHeight = toHeight;
         
-        if (_delegate && [_delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
-            [_delegate didChangeFrameToHeight:self.view.frame.size.height];
+        if (self.delegate && [self.delegate respondsToSelector:@selector(didChangeFrameToHeight:)]) {
+            [self.delegate didChangeFrameToHeight:self.view.frame.size.height];
         }
     }
+}
+
+#pragma mark - BJChatInputProtocol
+- (void)chatInputDidEndEdit;
+{
+    [self endEditing:YES];
 }
 
 #pragma mark - UITextViewDelegate
 
 - (BOOL)textViewShouldBeginEditing:(UITextView *)textView
 {
-//    if ([self.delegate respondsToSelector:@selector(inputTextViewWillBeginEditing:)]) {
-//        [self.delegate inputTextViewWillBeginEditing:self.inputTextView];
-//    }
-    
     self.faceButton.selected = NO;
     self.styleChangeButton.selected = NO;
     self.moreButton.selected = NO;
@@ -594,18 +544,11 @@
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     [textView becomeFirstResponder];
-    
-//    if ([self.delegate respondsToSelector:@selector(inputTextViewDidBeginEditing:)]) {
-//        [self.delegate inputTextViewDidBeginEditing:self.inputTextView];
-//    }
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
 {
     [textView resignFirstResponder];
-//    if ([self.delegate respondsToSelector:@selector(inputTextViewDidEndEditing:)]){
-//        [self.delegate inputTextViewDidEndEditing:self.inputTextView];
-//    }
 }
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
@@ -644,6 +587,28 @@
     }
     
     return _toolbarView;
+}
+
+- (BJChatInputMoreViewController *)moreViewController
+{
+    if (_moreViewController == nil) {
+        _moreViewController = [[BJChatInputMoreViewController alloc] initWithChatInfo:self.chatInfo];
+        _moreViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.view.frame.size.width, 200);
+        [self addChildViewController:_moreViewController];
+        _moreViewController.delegate = self;
+    }
+    return _moreViewController;
+}
+
+- (BJChatInputEmojiViewController *)emojiViewController
+{
+    if (_emojiViewController == nil) {
+        _emojiViewController = [[BJChatInputEmojiViewController alloc] initWithChatInfo:self.chatInfo];
+        _emojiViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), self.view.frame.size.width, 200);
+        [self addChildViewController:_emojiViewController];
+        _emojiViewController.delegate = self;
+    }
+    return _emojiViewController;
 }
 
 @end

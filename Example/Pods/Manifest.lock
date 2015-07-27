@@ -161,6 +161,7 @@ PODS:
     - LKDBHelper (~> 2.1.3)
     - MagicalRecord (~> 2.2)
     - Mantle (~> 2.0)
+    - YLGIFImage (~> 0.11)
   - CocoaLumberjack (2.0.1):
     - CocoaLumberjack/Default (= 2.0.1)
     - CocoaLumberjack/Extensions (= 2.0.1)
@@ -188,6 +189,7 @@ PODS:
   - TKAlert&TKActionSheet (1.0.10)
   - TMCache (1.2.4)
   - UMengAnalytics-NO-IDFA (3.4.7)
+  - YLGIFImage (0.11)
 
 DEPENDENCIES:
   - BJHL-IM-iOS-SDK (from `../`)
@@ -199,7 +201,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
   BJHL-Common-iOS-SDK: b5dd14114f4f1c94ea0411e4e7615b214e87e7ca
-  BJHL-IM-iOS-SDK: f6262817b3c02badf8a00530cc26fcc99dc9410b
+  BJHL-IM-iOS-SDK: 7299bf738bafee8d3c093501fb3599d012cb279f
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   LKDBHelper: 64b2c85c6783d453d6db4635a8cfa6c5cc6783ed
@@ -211,5 +213,6 @@ SPEC CHECKSUMS:
   TKAlert&TKActionSheet: 8e9966d2210416e6bbecb7aca1571d7f95d92df4
   TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
   UMengAnalytics-NO-IDFA: 68a71671c10067315339fc3fd1283be416f02a8b
+  YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
 
-COCOAPODS: 0.37.2
+COCOAPODS: 0.38.0.beta.2

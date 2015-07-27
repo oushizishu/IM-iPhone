@@ -14,7 +14,7 @@
 
 #import "BJChatInputBarViewController.h"
 
-@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJMessageToolBarDelegate>
+@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (strong, nonatomic) BJChatInfo *chatInfo;
@@ -163,7 +163,7 @@
     
 }
 
-#pragma mark - BJMessageToolBarDelegate
+#pragma mark - BJChatInputProtocol
 /**
  *  高度变到toHeight
  */

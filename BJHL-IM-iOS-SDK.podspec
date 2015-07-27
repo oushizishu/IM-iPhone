@@ -37,5 +37,6 @@ Pod::Spec.new do |s|
   s.dependency 'CocoaLumberjack', '~> 2.0.1'
   s.dependency 'BJHL-Common-iOS-SDK', '0.4.2'
   s.dependency 'LKDBHelper', '~>2.1.3'
+  s.dependency 'YLGIFImage', '~> 0.11'
 
 end
