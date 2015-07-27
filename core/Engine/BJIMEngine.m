@@ -121,12 +121,13 @@ int ddLogLevel = DDLogLevelInfo;
 }
 
 - (void)postPollingRequest:(int64_t)max_user_msg_id
+           excludeUserMsgs:(NSString *)excludeUserMsgs
           groupsLastMsgIds:(NSString *)group_last_msg_ids
               currentGroup:(int64_t)groupId
 {
     _bIsPollingRequesting = YES;
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         _bIsPollingRequesting = NO;
         
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];

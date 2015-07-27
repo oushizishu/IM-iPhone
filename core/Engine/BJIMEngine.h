@@ -61,6 +61,7 @@
 - (void)postMessage:(IMMessage *)message;
 
 - (void)postPollingRequest:(int64_t)max_user_msg_id
+           excludeUserMsgs:(NSString *)excludeUserMsgs
           groupsLastMsgIds:(NSString *)group_last_msg_ids
               currentGroup:(int64_t)groupId;
 

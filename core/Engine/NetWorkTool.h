@@ -25,6 +25,7 @@
                                        failure:(onFailure)failure;
 
 + (BJNetRequestOperation *)hermesPostPollingRequestUserLastMsgId:(int64_t)last_user_msg_id
+                                               excludeUserMsgIds:(NSString *)excludeUserMsgIds
                                               group_last_msg_ids:(NSString *)group_last_msg_ids
                                                     currentGroup:(int64_t)groupId
                                                             succ:(onSuccess)succ

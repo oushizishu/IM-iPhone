@@ -144,12 +144,19 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole
 {
-    NSString *queryString = [NSString stringWithFormat:@"receiver = %lld \
+    NSString *queryString = [NSString stringWithFormat:@"receiver=%lld \
                              AND sender <> %lld \
                              AND senderRole <> %ld ORDER BY msgId ",groupId, sender, senderRole];
     
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
+}
+
+- (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(double_t)maxMsgId
+{
+    NSString *queryString = [NSString stringWithFormat:@"receiver=%lld and msgId>%lf", groupId, maxMsgId];
+    NSArray *array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
+    return array;
 }
 
 

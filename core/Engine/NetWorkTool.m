@@ -59,6 +59,7 @@
 }
 
 + (BJNetRequestOperation *)hermesPostPollingRequestUserLastMsgId:(int64_t)last_user_msg_id
+                                               excludeUserMsgIds:(NSString *)excludeUserMsgIds
                                               group_last_msg_ids:(NSString *)group_last_msg_ids
                                                     currentGroup:(int64_t)groupId
                                                             succ:(onSuccess)succ
@@ -67,6 +68,10 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_POLLING method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
+    if ([excludeUserMsgIds length] > 0)
+    {
+        [requestParams appendPostParamValue:excludeUserMsgIds forKey:@"exclue_user_msg_ids"];
+    }
     if ([group_last_msg_ids length] > 0)
     {
         [requestParams appendPostParamValue:group_last_msg_ids forKey:@"groups_last_msg_id"];
