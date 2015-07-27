@@ -152,6 +152,14 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return message.msgId;
 }
 
+
+- (NSArray *)queryChatExludeMessagesMaxMsgId:(double_t)maxMsgId
+{
+    NSString *queryString = [NSString stringWithFormat:@" chat_t=0 and msgId>%lf", maxMsgId];
+    NSArray *messages = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
+    return messages;
+}
+
 - (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole
 {
     NSString *queryString = [NSString stringWithFormat:@" receiver=%lld \
