@@ -49,14 +49,17 @@
         int64_t groupLastMsgId = (int64_t)[self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userRole sendRole:owner.userRole];
         
         NSArray *excludeGroupMsgs = [self.imService.imStorage queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
-        
+       
         for (IMMessage *msg in excludeGroupMsgs) {
             [__excludeUserMsgIds appendFormat:@"%lld,", (int64_t)msg.msgId];
         }
         
+        if (groupLastMsgId == 0) continue;
+        
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
                               @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId]
                               };
+
         [lastGroupMsgIds addObject:dic];
     }
     
