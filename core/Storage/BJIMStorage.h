@@ -32,8 +32,8 @@
 - (IMMessage*)queryMessage:(NSInteger)messageRowid;
 - (IMMessage*)queryMessageWithMessageId:(int64_t)messageId;
 - (BOOL)updateMessage:(IMMessage*)message;
-- (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId;
-- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId;
+- (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
+- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
 
 - (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole;
 - (NSArray *)queryChatExludeMessagesMaxMsgId:(double_t)maxMsgId;

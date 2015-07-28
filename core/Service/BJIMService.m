@@ -106,7 +106,7 @@
         }
         else
         {
-            Group *_chatToGroup = [conversation chatToGroup];
+            Group *_chatToGroup = [self.imStorage queryGroupWithGroupId:conversation.toId];
             NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
             return array;
         }

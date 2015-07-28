@@ -201,24 +201,24 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return _array;
 }
 
-- (NSArray *)loadChatMessagesInConversation:(int64_t)conversationId
+- (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@" conversationId = %lld \
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld \
                               ORDER BY msgId DESC LIMIT %d ", conversationId, KEY_LOAD_MESSAGE_PAGE_COUNT];
     NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     NSArray *__array = [[_array reverseObjectEnumerator] allObjects];
     return __array;
 }
 
-- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId
+- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@" conversationId = %lld \
-                             AND msgId >= %lf \
-                             AND msgId <= %lf \
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld \
+                             AND msgId>=%@ \
+                             AND msgId<=%@ \
                              ORDER BY msgId DESC LIMIT %d ",
                              conversationId,
-                             group.endMessageId,
-                             group.lastMessageId,
+                             @(group.endMessageId),
+                             @(group.lastMessageId),
                              KEY_LOAD_MESSAGE_PAGE_COUNT];
     NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     NSArray *__array = [[_array reverseObjectEnumerator] allObjects];

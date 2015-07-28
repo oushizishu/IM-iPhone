@@ -39,7 +39,6 @@
         [__excludeUserMsgIds appendFormat:@"%lld,", (int64_t)__message.msgId];
     }
     
-    self.excludeUserMsgIds = __excludeUserMsgIds;
     
     NSArray *groups = [self.imService.imStorage queryGroupsWithUser:owner];
     
@@ -51,15 +50,13 @@
         
         NSArray *excludeGroupMsgs = [self.imService.imStorage queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
         
-        NSMutableString *excludeGroupMsgIds = [[NSMutableString alloc] init];
         for (IMMessage *msg in excludeGroupMsgs) {
-            [excludeGroupMsgIds appendFormat:@"%lld,", (int64_t)msg.msgId];
+            [__excludeUserMsgIds appendFormat:@"%lld,", (int64_t)msg.msgId];
         }
         
-        
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
-                              @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId],
-                              @"exclude_msg_ids": excludeGroupMsgIds};
+                              @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId]
+                              };
         [lastGroupMsgIds addObject:dic];
     }
     
@@ -69,6 +66,8 @@
         NSData *data = [NSJSONSerialization dataWithJSONObject:lastGroupMsgIds options:0 error:&error];
         self.groups_last_msg_id = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
     }
+    
+    self.excludeUserMsgIds = __excludeUserMsgIds;
 }
 
 - (void)doAfterOperationOnMain

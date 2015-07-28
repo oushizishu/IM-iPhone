@@ -16,9 +16,12 @@
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
+#import <CocoaLumberjack/DDLegacyMacros.h>
 
 #pragma mark - 接口返回成功码
 #define RESULT_CODE_SUCC 0
+
+static int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)
