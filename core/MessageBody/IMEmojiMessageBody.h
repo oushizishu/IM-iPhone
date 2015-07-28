@@ -15,7 +15,7 @@ typedef NS_ENUM(NSInteger, EmojiContentType)
 };
 
 @interface IMEmojiMessageBody : IMMessageBody
-@property (assign ,nonatomic) EmojiContentType contentType;
+@property (assign ,nonatomic) EmojiContentType type;
 @property (copy, nonatomic) NSString *content;
 @property (copy, nonatomic) NSString *name;
 @end

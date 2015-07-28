@@ -52,11 +52,13 @@
         [self.imService.imStorage updateGroup:group];
     }
     
+    [self.imService.imStorage updateConversation:conversation];
     [self.imService.imStorage updateMessage:self.message];
 }
 
 - (void)doAfterOperationOnMain
 {
+    [self.imService notifyConversationChanged];
     if (self.message.msg_t == eMessageType_IMG || self.message.msg_t == eMessageType_AUDIO)
     {
         [self.imService.imEngine postMessageAchive:self.message];

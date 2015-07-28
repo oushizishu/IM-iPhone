@@ -10,4 +10,13 @@
 
 @implementation IMAudioMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"file":@"file",
+            @"url":@"url",
+             @"length":@"length"
+             };
+}
+
 @end
