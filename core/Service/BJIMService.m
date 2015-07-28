@@ -102,12 +102,20 @@
         if (conversation.chat_t == eChatType_Chat)
         {
             NSArray *array = [self.imStorage loadChatMessagesInConversation:conversation.rowid];
+            [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                IMMessage *message = (IMMessage *)obj;
+                message.imService = self;
+            }];
             return array;
         }
         else
         {
             Group *_chatToGroup = [self.imStorage queryGroupWithGroupId:conversation.toId];
             NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
+            [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                IMMessage *message = (IMMessage *)obj;
+                message.imService = self;
+            }];
             return array;
         }
     }
