@@ -40,6 +40,7 @@
     _engineActive = YES;
     [self resetPollingIndex];
     [self nextPollingAt];
+    [self.pollingTimer.timer fire];
 }
 
 - (void)stop
@@ -229,12 +230,10 @@
 {
     _heatBeatIndex = 0;
     _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
-    [self.pollingTimer.timer fire];
 }
 
 - (void)handlePollingEvent
 {
-    
     if (! [self isEngineActive]) {
         return;
     }
@@ -245,9 +244,6 @@
     _heatBeatIndex = MAX(0, MIN(_heatBeatIndex, [self.im_polling_delta[_pollingIndex] integerValue]));
     if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
         return;
-    
-    [self.pollingTimer invalidate];
-    self.pollingTimer = nil;
     
     if (self.postMessageDelegate == nil)
     {

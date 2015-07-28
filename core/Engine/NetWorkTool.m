@@ -84,9 +84,7 @@
         [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"current_group_id"];
     }
     
-
-//    NSLog(@"post polling [url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
-    
+ 
     DDLogInfo(@"[Post Polling][url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }

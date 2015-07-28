@@ -10,6 +10,7 @@
 #import "Conversation+DB.h"
 #import "BJIMService.h"
 #import "Group.h"
+#import "IMMessage+DB.h"
 
 @interface HandleGetMsgOperation()
 
@@ -81,6 +82,11 @@
             self.hasMore = YES;
         }
     }
+    
+    [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        IMMessage *__message = (IMMessage *)obj;
+        __message.imService = self.imService;
+    }];
 
 }
 
