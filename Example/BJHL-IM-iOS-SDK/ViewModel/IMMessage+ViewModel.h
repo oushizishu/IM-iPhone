@@ -23,14 +23,15 @@
 
 //image
 - (CGSize)size;
-- (NSURL *)imageRemoteURL;
+- (NSURL *)imageURL;
 
 //EMOJI
 - (NSString *)emojiName;
 
 //audio
-- (NSURL *)audioRemoteURL;
+- (NSURL *)audioURL;
 - (NSInteger)time;
 - (BOOL)isPlayed;
+- (BOOL)isPlaying;
 
 @end

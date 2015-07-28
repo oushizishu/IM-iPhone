@@ -13,6 +13,7 @@
 #import <UIKit/UIKit.h>
 
 NSString *const kRouterEventImageBubbleTapEventName;
+NSString *const kRouterEventAudioBubbleTapEventName;
 NSString *const kRouterEventUserInfoObject;
 NSString *const kRouterEventChatCellBubbleTapEventName;
 NSString *const kResendButtonTapEventName;

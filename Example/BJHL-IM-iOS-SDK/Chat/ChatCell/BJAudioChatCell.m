@@ -10,7 +10,7 @@
 #import "BJChatCellFactory.h"
 #import <BJIMConstants.h>
 #import <PureLayout/PureLayout.h>
-#import "BJAudioPlayerWithCache.h"
+#import <BJAudioPlayer.h>
 
 @interface BJAudioChatCell ()
 @property (strong, nonatomic) UIImageView *animationImageView; // 动画的ImageView
@@ -76,9 +76,7 @@
 
 - (void)bubbleViewPressed:(id)sender
 {
-    if ([BJAudioPlayerWithCache ]) {
-        <#statements#>
-    }
+    [super routerEventWithName:kRouterEventImageBubbleTapEventName userInfo:@{kRouterEventUserInfoObject:self.message}];
 }
 
 #pragma mark - Protocol
@@ -115,6 +113,13 @@
         
         _animationImageView.image = [UIImage imageNamed:RECEIVER_ANIMATION_IMAGEVIEW_IMAGE_DEFAULT];
         _animationImageView.animationImages = _recevierAnimationImages;
+    }
+    
+    if (self.message.isPlaying)
+    {
+        [self startAudioAnimation];
+    }else {
+        [self stopAudioAnimation];
     }
 }
 

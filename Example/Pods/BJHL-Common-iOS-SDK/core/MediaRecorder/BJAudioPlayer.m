@@ -14,6 +14,8 @@
 @property (nonatomic) BOOL playStatu; // 0 : 停止 ， 1: 正在播放
 @property (strong, nonatomic)BJTimer *timer;
 @property (assign, nonatomic)BOOL isActive;
+
+@property (nonatomic, strong) NSString * originAudioCategory;
 @end
 
 @implementation BJAudioPlayer
@@ -41,9 +43,9 @@
     if (!url) {
         return NO;
     }
+    self.originAudioCategory = [[AVAudioSession sharedInstance] category];
     [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error:NULL];
-    UInt32 audioRouteOverride = kAudioSessionOverrideAudioRoute_Speaker;
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(audioRouteOverride), &audioRouteOverride);
+    [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
     self.isActive = YES;
@@ -56,6 +58,7 @@
     NSError *error;
     self.avPlayer = [[AVAudioPlayer alloc] initWithContentsOfURL:url error:&error];
     if (error) {
+        [self stopPlay];
         return NO;
     }
     self.avPlayer.delegate = self;
@@ -98,8 +101,11 @@
     if (self.isActive) {
         [[AVAudioSession sharedInstance] setActive:NO error: nil];
         self.isActive = NO;
+        AVAudioSession * audioSession = [AVAudioSession sharedInstance];
+        [audioSession setCategory:self.originAudioCategory error: nil];
+        [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     }
-    
+
     [self.timer invalidate];
     self.timer = nil;
 }

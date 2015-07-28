@@ -75,7 +75,7 @@
     [super setCellInfo:info indexPath:indexPath];
     CGSize size = [self calculateCellHeight];
     @TODO("设置默认图片");
-    [self.chatImageView setAliyunImageWithURL:self.message.imageRemoteURL placeholderImage:nil size:size];
+    [self.chatImageView setAliyunImageWithURL:self.message.imageURL placeholderImage:nil size:size];
     CGRect rect = self.chatImageView.frame;
     rect.size = size;
     self.chatImageView.frame = rect;

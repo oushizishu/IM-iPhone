@@ -31,7 +31,7 @@
 		2539BCBA1B665D1300333A00 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 2539BCB91B665D1300333A00 /* UIResponder+Router.m */; };
 		2539BCBD1B665D2D00333A00 /* BJSendMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2539BCBC1B665D2D00333A00 /* BJSendMessageHelper.m */; };
 		2539BCC01B665D3900333A00 /* IMMessage+ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 2539BCBF1B665D3900333A00 /* IMMessage+ViewModel.m */; };
-		2539BCC31B665DC900333A00 /* BJAudioPlayerWithCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 2539BCC21B665DC900333A00 /* BJAudioPlayerWithCache.m */; };
+		2539BCC31B665DC900333A00 /* BJChatAudioPlayerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 2539BCC21B665DC900333A00 /* BJChatAudioPlayerHelper.m */; };
 		255206A21B57AFC7007B34C4 /* BJConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255206A11B57AFC7007B34C4 /* BJConversationListViewController.m */; };
 		256AB8A31B60E1A5006019D3 /* bg_speech_gre_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB89F1B60E1A5006019D3 /* bg_speech_gre_nor@2x.png */; };
 		256AB8A41B60E1A5006019D3 /* bg_speech_gre_pr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 256AB8A01B60E1A5006019D3 /* bg_speech_gre_pr@2x.png */; };
@@ -152,8 +152,8 @@
 		2539BCBC1B665D2D00333A00 /* BJSendMessageHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJSendMessageHelper.m; sourceTree = "<group>"; };
 		2539BCBE1B665D3900333A00 /* IMMessage+ViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "IMMessage+ViewModel.h"; sourceTree = "<group>"; };
 		2539BCBF1B665D3900333A00 /* IMMessage+ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IMMessage+ViewModel.m"; sourceTree = "<group>"; };
-		2539BCC11B665DC900333A00 /* BJAudioPlayerWithCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJAudioPlayerWithCache.h; sourceTree = "<group>"; };
-		2539BCC21B665DC900333A00 /* BJAudioPlayerWithCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJAudioPlayerWithCache.m; sourceTree = "<group>"; };
+		2539BCC11B665DC900333A00 /* BJChatAudioPlayerHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatAudioPlayerHelper.h; sourceTree = "<group>"; };
+		2539BCC21B665DC900333A00 /* BJChatAudioPlayerHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatAudioPlayerHelper.m; sourceTree = "<group>"; };
 		255206A01B57AFC7007B34C4 /* BJConversationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJConversationListViewController.h; sourceTree = "<group>"; };
 		255206A11B57AFC7007B34C4 /* BJConversationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJConversationListViewController.m; sourceTree = "<group>"; };
 		256AB89F1B60E1A5006019D3 /* bg_speech_gre_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_gre_nor@2x.png"; sourceTree = "<group>"; };
@@ -306,8 +306,8 @@
 				2539BCBC1B665D2D00333A00 /* BJSendMessageHelper.m */,
 				2539BCBE1B665D3900333A00 /* IMMessage+ViewModel.h */,
 				2539BCBF1B665D3900333A00 /* IMMessage+ViewModel.m */,
-				2539BCC11B665DC900333A00 /* BJAudioPlayerWithCache.h */,
-				2539BCC21B665DC900333A00 /* BJAudioPlayerWithCache.m */,
+				2539BCC11B665DC900333A00 /* BJChatAudioPlayerHelper.h */,
+				2539BCC21B665DC900333A00 /* BJChatAudioPlayerHelper.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -831,7 +831,7 @@
 				25DED9EA1B63A47D00C09994 /* XHMessageTextView.m in Sources */,
 				6003F59E195388D20070C39A /* BJIMAppDelegate.m in Sources */,
 				25DED9E81B63A47D00C09994 /* BJChatInputBarViewController.m in Sources */,
-				2539BCC31B665DC900333A00 /* BJAudioPlayerWithCache.m in Sources */,
+				2539BCC31B665DC900333A00 /* BJChatAudioPlayerHelper.m in Sources */,
 				950E2D9B1B5D1A7D00DC79F2 /* BJConversationTableViewCell.m in Sources */,
 				25DEDA761B66341700C09994 /* BJEmojiChatCell.m in Sources */,
 				25DBA9CE1B5F6B4C00C907FD /* BJChatViewController.m in Sources */,

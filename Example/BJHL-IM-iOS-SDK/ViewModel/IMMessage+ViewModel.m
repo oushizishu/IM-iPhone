@@ -12,6 +12,8 @@
 #import <IMImgMessageBody.h>
 #import <IMAudioMessageBody.h>
 #import <IMEmojiMessageBody.h>
+
+#import "BJChatAudioPlayerHelper.h"
 @implementation IMMessage (ViewModel)
 
 - (BOOL)isMySend;    //是否是自己发送的
@@ -60,7 +62,7 @@
     return CGSizeZero;
 }
 
-- (NSURL *)imageRemoteURL
+- (NSURL *)imageURL
 {
     @TODO("返回图片路径");
     return nil;
@@ -75,7 +77,7 @@
 
 #pragma mark - Audio
 //audio
-- (NSURL *)audioRemoteURL;
+- (NSURL *)audioURL;
 {
     @TODO("返回音频地址");
     return nil;
@@ -90,6 +92,11 @@
 {
     @TODO("返回正确的状态");
     return NO;
+}
+
+- (BOOL)isPlaying
+{
+    return [[BJChatAudioPlayerHelper sharedInstance] isPlayerWithMessage:self];
 }
 
 @end

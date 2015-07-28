@@ -14,6 +14,8 @@
 
 #import "BJChatInputBarViewController.h"
 #import "BJSendMessageHelper.h"
+#import "BJChatAudioPlayerHelper.h"
+#import "IMMessage+ViewModel.h"
 
 @interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol,BJSendMessageProtocol>
 @property (strong, nonatomic) UITableView *tableView;
@@ -207,7 +209,29 @@
     [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
-#pragma mark - GestureRecognizer
+
+- (void)showBigImageWithMessage:(IMMessage *)message
+{
+    @TODO("显示大图");
+}
+
+- (void)audioCellTapWithMessage:(IMMessage *)message
+{
+    __weak typeof(self) weakSelf = self;
+    if (message.isPlaying) {
+        [[BJChatAudioPlayerHelper sharedInstance] stopPlayerWithMessage:message];
+    }
+    else
+    {
+        [[BJChatAudioPlayerHelper sharedInstance] startPlayerWithMessage:message callback:^(NSError *error) {
+            @TODO("提示错误消息");
+            [weakSelf.tableView reloadData];
+        }];
+    }
+    [self.tableView reloadData];
+}
+
+#pragma mark - 键盘相关
 
 // 点击背景隐藏
 -(void)keyBoardHidden
@@ -271,10 +295,6 @@
 
 #pragma mark - UIResponder actions
 
-- (void)showBigImageWithMessage:(IMMessage *)message
-{
-    @TODO("显示大图");
-}
 
 - (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
 {
@@ -288,7 +308,7 @@
     }
     else if ([eventName isEqualToString:kRouterEventChatCellBubbleTapEventName])
     {
-        
+        [self audioCellTapWithMessage:message];
     }
 }
 

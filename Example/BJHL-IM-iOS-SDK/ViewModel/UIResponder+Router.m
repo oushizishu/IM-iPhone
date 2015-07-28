@@ -12,6 +12,7 @@
 
 #import "UIResponder+Router.h"
 NSString *const kRouterEventImageBubbleTapEventName = @"kRouterEventImageBubbleTapEventName";
+NSString *const kRouterEventAudioBubbleTapEventName = @"kRouterEventAudioBubbleTapEventName";
 
 NSString *const kRouterEventUserInfoObject = @"kRouterEventUserInfoObject";
 NSString *const kRouterEventChatCellBubbleTapEventName = @"kRouterEventChatCellBubbleTapEventName";
