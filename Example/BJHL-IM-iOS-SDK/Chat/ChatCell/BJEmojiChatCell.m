@@ -70,7 +70,7 @@
 {
     [super setCellInfo:info indexPath:indexPath];
     CGSize size = [self calculateCellHeight];
-    self.emojiImageView.image = [YLGIFImage imageNamed:self.message.emojiName];
+    self.emojiImageView.image = [YLGIFImage imageWithContentsOfFile:[self.message.emojiImageURL absoluteString]];
     CGRect rect = self.emojiImageView.frame;
     rect.size = size;
     self.emojiImageView.frame = rect;

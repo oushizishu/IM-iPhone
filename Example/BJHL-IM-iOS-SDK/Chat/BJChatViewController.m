@@ -47,6 +47,7 @@
 
 - (void)dealloc
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
     [self.view removeObserver:self forKeyPath:@"frame"];
     [BJSendMessageHelper sharedInstance].deledate = nil;
     _slimeView.delegate = nil;
@@ -74,6 +75,10 @@
     {
         [[BJIMManager shareInstance] startChatToUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
     }
+    
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan = NO;
+    }
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -93,11 +98,18 @@
     [super viewWillDisappear:animated];
     [[BJIMManager shareInstance] stopChat];
 
+    if ([self.navigationController respondsToSelector:@selector(interactivePopGestureRecognizer)]) {
+        self.navigationController.interactivePopGestureRecognizer.delaysTouchesBegan = YES;
+    }
 }
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.isScrollToBottom = YES;
+   
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidEnterBackgroud) name:UIApplicationDidEnterBackgroundNotification
+                                               object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidBecomeActive) name:UIApplicationDidBecomeActiveNotification object:nil];
     
     if ([self respondsToSelector:@selector(setAutomaticallyAdjustsScrollViewInsets:)]) {
         [self setAutomaticallyAdjustsScrollViewInsets:NO];
@@ -200,10 +212,26 @@
     }
 }
 
-#pragma mark - observer
+#pragma mark - observer 通知 进入前台，后台等
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     [self updateSubViewFrame];
+}
+
+- (void)applicationDidEnterBackgroud
+{
+    [[BJIMManager shareInstance] stopChat];
+}
+
+- (void)applicationDidBecomeActive
+{
+    if (self.chatInfo.chat_t == eChatType_GroupChat) {
+        [[BJIMManager shareInstance] startChatToGroup:self.chatInfo.getToId];
+    }
+    else
+    {
+        [[BJIMManager shareInstance] startChatToUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
+    }
 }
 
 #pragma mark - 视图更新
@@ -252,7 +280,7 @@
 - (void)reloadWithMessage:(IMMessage *)message
 {
     NSInteger index = [self.messageList indexOfObject:message];
-    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationNone];
 }
 
 
@@ -363,15 +391,15 @@
 - (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
 {
     [self loadMoreMessages];
-    [_slimeView endRefresh];
+    [self.slimeView endRefresh];
 }
 
 #pragma mark - scrollView delegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if (_slimeView) {
-        [_slimeView scrollViewDidScroll];
+    if (self.slimeView) {
+        [self.slimeView scrollViewDidScroll];
     }
 }
 
@@ -381,8 +409,8 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (_slimeView) {
-        [_slimeView scrollViewDidEndDraging];
+    if (self.slimeView) {
+        [self.slimeView scrollViewDidEndDraging];
     }
 }
 
