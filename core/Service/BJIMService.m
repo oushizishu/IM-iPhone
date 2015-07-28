@@ -237,6 +237,7 @@
     return list;
 }
 
+#pragma mark - cache
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole
 {
     for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
