@@ -21,4 +21,6 @@ typedef void (^AudioPlayerProressCallback)(CGFloat currentTime,CGFloat totalTime
 
 - (BOOL)startPlayWithUrl:(NSURL *)url;
 - (void)stopPlay;
+- (BOOL)isPlayerWithUrl:(NSURL *)url;
+
 @end

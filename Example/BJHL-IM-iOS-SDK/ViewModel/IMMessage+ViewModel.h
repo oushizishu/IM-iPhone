@@ -20,4 +20,17 @@
 
 //text
 - (NSString *)content;
+
+//image
+- (CGSize)size;
+- (NSURL *)imageRemoteURL;
+
+//EMOJI
+- (NSString *)emojiName;
+
+//audio
+- (NSURL *)audioRemoteURL;
+- (NSInteger)time;
+- (BOOL)isPlayed;
+
 @end

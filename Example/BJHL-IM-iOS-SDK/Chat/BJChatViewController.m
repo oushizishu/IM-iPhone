@@ -13,8 +13,9 @@
 #import <Conversation+DB.h>
 
 #import "BJChatInputBarViewController.h"
+#import "BJSendMessageHelper.h"
 
-@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol>
+@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol,BJSendMessageProtocol>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (strong, nonatomic) BJChatInfo *chatInfo;
@@ -35,6 +36,7 @@
 - (void)dealloc
 {
     [self.view removeObserver:self forKeyPath:@"frame"];
+    [BJSendMessageHelper sharedInstance].deledate = nil;
 }
 
 - (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo;
@@ -42,6 +44,8 @@
     self = [super init];
     if (self) {
         _chatInfo = chatInfo;
+        _isScrollToBottom = YES;
+        [BJSendMessageHelper sharedInstance].deledate = self;
     }
     return self;
 }
@@ -62,7 +66,8 @@
 {
     [super viewDidAppear:animated];
     if (self.isScrollToBottom) {
-        [self scrollViewToBottom:NO];
+        [self scrollViewToBottom:YES];
+
     }
     else{
         self.isScrollToBottom = YES;
@@ -122,6 +127,31 @@
 }
 */
 
+#pragma mark - 消息操作方法
+- (void)addNewMessages:(NSArray *)messages isForward:(BOOL)forward;
+{
+    if (messages.count <= 0) {
+        return;
+    }
+    
+    @TODO("添加时间显示");
+    if (forward) {
+        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
+        [self.messageList insertObjects:messages atIndexes:set];
+        [self.tableView reloadData];
+    }
+    else
+    {
+        [self.messageList addObjectsFromArray:messages];
+        BOOL should = [self analyzeScrollViewShouldToBottom];
+        [self.tableView reloadData];
+        if (should) {
+            [self scrollViewToBottom:YES];
+        }
+    }
+
+}
+
 #pragma mark - observer
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -140,15 +170,41 @@
     self.tableView.frame = rect;
 }
 
+/**
+ *  分析是否要滑动到最下面规则 如果偏移量距下不超过15，则 YES
+ *
+ *  @return
+ */
+- (BOOL)analyzeScrollViewShouldToBottom
+{
+    CGFloat canOffsetY = self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom + self.tableView.contentInset.top;
+    if (canOffsetY>0)
+    {
+        if (self.tableView.contentOffset.y > canOffsetY-15) {
+            return YES;
+        }
+        else
+            return NO;
+    }
+    return NO;
+}
+
 - (void)scrollViewToBottom:(BOOL)animated
 {
-    if (self.tableView.contentSize.height > self.tableView.frame.size.height - self.tableView.contentInset.bottom)
+    CGFloat canOffsetY = self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom + self.tableView.contentInset.top;
+
+    if (canOffsetY>0)
     {
-        //CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height );
         CGPoint offset = CGPointMake(0, self.tableView.contentSize.height - self.tableView.frame.size.height + self.tableView.contentInset.bottom);
         [self.tableView setContentOffset:offset animated:animated];
         
     }
+}
+
+- (void)reloadWithMessage:(IMMessage *)message
+{
+    NSInteger index = [self.messageList indexOfObject:message];
+    [self.tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:index inSection:0]] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
 
 #pragma mark - GestureRecognizer
@@ -168,14 +224,33 @@
         IMMessage *msg = [newMessages objectAtIndex:index];
         if (msg.conversationId == self.conversation.rowid)
         {
-            [self.messageList addObject:msg];
+            [self addNewMessages:@[msg] isForward:NO];
         }
     }
 }
 
 - (void)didLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore
 {
-    
+    if (conversation.rowid == self.conversation.rowid) {
+        [self addNewMessages:messages isForward:YES];
+    }
+}
+
+- (void)willDeliveryMessage:(IMMessage *)message;
+{
+    [self reloadWithMessage:message];
+}
+
+- (void)didDeliveredMessage:(IMMessage *)message
+                  errorCode:(NSInteger)errorCode
+                      error:(NSString *)errorMessage;
+{
+    [self reloadWithMessage:message];
+}
+
+- (void)willSendMessage:(IMMessage *)message;
+{
+    [self addNewMessages:@[message] isForward:NO];
 }
 
 #pragma mark - BJChatInputProtocol
@@ -190,6 +265,30 @@
     
     if(toHeight > [BJChatInputBarViewController defaultHeight]+10){
         [self scrollViewToBottom:NO];
+
+    }
+}
+
+#pragma mark - UIResponder actions
+
+- (void)showBigImageWithMessage:(IMMessage *)message
+{
+    @TODO("显示大图");
+}
+
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    IMMessage *message = [userInfo objectForKey:kRouterEventUserInfoObject];
+    if ([eventName isEqualToString:kRouterEventImageBubbleTapEventName]){
+        [self showBigImageWithMessage:message];
+    }
+    else if ([eventName isEqualToString:kResendButtonTapEventName])
+    {
+        [[BJIMManager shareInstance] retryMessage:message];
+    }
+    else if ([eventName isEqualToString:kRouterEventChatCellBubbleTapEventName])
+    {
+        
     }
 }
 

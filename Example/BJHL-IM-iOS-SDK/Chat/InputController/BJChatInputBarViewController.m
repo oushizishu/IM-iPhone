@@ -599,11 +599,6 @@
     return _moreViewController;
 }
 
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-    
-}
-
 - (BJChatInputEmojiViewController *)emojiViewController
 {
     if (_emojiViewController == nil) {
@@ -611,7 +606,6 @@
         _emojiViewController.view.frame = CGRectMake(0, (kVerticalPadding * 2 + kInputTextViewMinHeight), _emojiViewController.view.frame.size.width, _emojiViewController.view.frame.size.height);
         [self addChildViewController:_emojiViewController];
         _emojiViewController.delegate = self;
-        [_emojiViewController.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
     }
     return _emojiViewController;
 }

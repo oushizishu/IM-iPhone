@@ -7,7 +7,7 @@
 //
 
 #import "BJChatBaseCell.h"
-
+#define EMOJI_MAX_SIZE 80
 @interface BJEmojiChatCell : BJChatBaseCell
 
 @end

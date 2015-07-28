@@ -10,6 +10,13 @@
 #import "BJChatCellFactory.h"
 #import <BJIMConstants.h>
 #import <PureLayout/PureLayout.h>
+#import <SDWebImage/UIImageView+WebCache.h>
+#import <UIImageView+Aliyun.h>
+
+@interface BJImageChatCell ()
+@property (strong, nonatomic) UIImageView *chatImageView;
+@end
+
 @implementation BJImageChatCell
 
 + (void)load
@@ -20,6 +27,32 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    CGRect frame = self.bubbleContainerView.bounds;
+    [self.chatImageView setFrame:frame];
+}
+
+#pragma mark - 内部方法
+- (CGSize)calculateCellHeight
+{
+    CGSize retSize = self.message.size;
+    if (retSize.width == 0 || retSize.height == 0) {
+        retSize.width = MAX_SIZE;
+        retSize.height = MAX_SIZE;
+    }else if (retSize.width > retSize.height) {
+        CGFloat height =  MAX_SIZE / retSize.width  *  retSize.height;
+        retSize.height = height;
+        retSize.width = MAX_SIZE;
+    }else {
+        CGFloat width = MAX_SIZE / retSize.height * retSize.width;
+        retSize.width = width;
+        retSize.height = MAX_SIZE;
+    }
+    return retSize;
+}
+
+- (void)bubbleViewPressed:(id)sender
+{
+    [super routerEventWithName:kRouterEventImageBubbleTapEventName userInfo:@{kRouterEventUserInfoObject:self.message}];
 }
 
 #pragma mark - Protocol
@@ -40,6 +73,32 @@
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath;
 {
     [super setCellInfo:info indexPath:indexPath];
+    CGSize size = [self calculateCellHeight];
+    @TODO("设置默认图片");
+    [self.chatImageView setAliyunImageWithURL:self.message.imageRemoteURL placeholderImage:nil size:size];
+    CGRect rect = self.chatImageView.frame;
+    rect.size = size;
+    self.chatImageView.frame = rect;
+    UIImage *image = [self bubbleImage];
+    CALayer *layer = [[CALayer alloc] init];
+    layer.contents = (id)image.CGImage;
+    self.chatImageView.layer.mask = layer;
+    
+    rect = self.bubbleContainerView.frame;
+    rect.size = size;
+    self.bubbleContainerView.frame = rect;
+}
+
+#pragma mark - set get
+- (UIImageView *)chatImageView
+{
+    if (_chatImageView == nil) {
+        _chatImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _chatImageView.userInteractionEnabled = YES;
+        _chatImageView.multipleTouchEnabled = YES;
+        [self.bubbleContainerView addSubview:_chatImageView];
+    }
+    return _chatImageView;
 }
 
 @end

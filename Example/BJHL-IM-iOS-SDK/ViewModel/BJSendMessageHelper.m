@@ -13,8 +13,27 @@
 #import <IMEmojiMessageBody.h>
 #import "BJChatInfo.h"
 @implementation BJSendMessageHelper
+
++ (instancetype)sharedInstance
+{
+    static BJSendMessageHelper *_sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _sharedInstance = [[self alloc] init];
+    });
+    return _sharedInstance;
+}
+
++ (void)sendMessage:(IMMessage *)message
+{
+    if ([[BJSendMessageHelper sharedInstance].deledate respondsToSelector:@selector(willSendMessage:)]) {
+        [[BJSendMessageHelper sharedInstance].deledate willSendMessage:message];
+    }
+    [[BJIMManager shareInstance] sendMessage:message];
+}
+
 #pragma mark - 消息发送
-+ (void)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
 {
     IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
     messageBody.content = text;
@@ -24,10 +43,11 @@
     message.msg_t = eMessageType_TXT;
     message.receiver = chatInfo.getToId;
     message.receiverRole = chatInfo.getToRole;
-    [[BJIMManager shareInstance] sendMessage:message];
+    [BJSendMessageHelper sendMessage:message];
+    return message;
 }
 
-+ (void)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
 {
     IMAudioMessageBody *messageBody = [[IMAudioMessageBody alloc] init];
     
@@ -37,11 +57,11 @@
     message.msg_t = eMessageType_AUDIO;
     message.receiver = chatInfo.getToId;
     message.receiverRole = chatInfo.getToRole;
-    [[BJIMManager shareInstance] sendMessage:message];
-    
+    [BJSendMessageHelper sendMessage:message];
+    return message;
 }
 
-+ (void)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
 {
     IMImgMessageBody *messageBody = [[IMImgMessageBody alloc] init];
     
@@ -51,10 +71,11 @@
     message.msg_t = eMessageType_IMG;
     message.receiver = chatInfo.getToId;
     message.receiverRole = chatInfo.getToRole;
-    [[BJIMManager shareInstance] sendMessage:message];
+    [BJSendMessageHelper sendMessage:message];
+    return message;
 }
 
-+ (void)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
 {
     IMEmojiMessageBody *messageBody = [[IMEmojiMessageBody alloc] init];
     
@@ -64,7 +85,8 @@
     message.msg_t = eMessageType_EMOJI;
     message.receiver = chatInfo.getToId;
     message.receiverRole = chatInfo.getToRole;
-    [[BJIMManager shareInstance] sendMessage:message];
+    [BJSendMessageHelper sendMessage:message];
+    return message;
 }
 
 @end

@@ -10,6 +10,14 @@
 #import "BJChatCellFactory.h"
 #import <BJIMConstants.h>
 #import <PureLayout/PureLayout.h>
+
+#import "YLGIFImage.h"
+#import "YLImageView.h"
+
+@interface BJEmojiChatCell ()
+@property (strong, nonatomic) YLImageView *emojiImageView;
+@end
+
 @implementation BJEmojiChatCell
 
 + (void)load
@@ -20,6 +28,27 @@
 -(void)layoutSubviews
 {
     [super layoutSubviews];
+    CGRect frame = self.bubbleContainerView.bounds;
+    [self.emojiImageView setFrame:frame];
+}
+
+#pragma mark - 内部方法
+- (CGSize)calculateCellHeight
+{
+    CGSize retSize = self.message.size;
+    if (retSize.width == 0 || retSize.height == 0) {
+        retSize.width = EMOJI_MAX_SIZE;
+        retSize.height = EMOJI_MAX_SIZE;
+    }else if (retSize.width > retSize.height) {
+        CGFloat height =  EMOJI_MAX_SIZE / retSize.width  *  retSize.height;
+        retSize.height = height;
+        retSize.width = EMOJI_MAX_SIZE;
+    }else {
+        CGFloat width = EMOJI_MAX_SIZE / retSize.height * retSize.width;
+        retSize.width = width;
+        retSize.height = EMOJI_MAX_SIZE;
+    }
+    return retSize;
 }
 
 #pragma mark - Protocol
@@ -40,6 +69,24 @@
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath;
 {
     [super setCellInfo:info indexPath:indexPath];
+    CGSize size = [self calculateCellHeight];
+    self.emojiImageView.image = [YLGIFImage imageNamed:self.message.emojiName];
+    CGRect rect = self.emojiImageView.frame;
+    rect.size = size;
+    self.emojiImageView.frame = rect;
+    
+    rect = self.bubbleContainerView.frame;
+    rect.size = size;
+    self.bubbleContainerView.frame = rect;
+}
+
+#pragma mark - set get
+- (YLImageView *)emojiImageView
+{
+    if (_emojiImageView == nil) {
+        _emojiImageView = [[YLImageView alloc] initWithFrame:CGRectMake(0, 0, EMOJI_MAX_SIZE, EMOJI_MAX_SIZE)];
+    }
+    return _emojiImageView;
 }
 
 @end
