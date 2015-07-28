@@ -57,7 +57,14 @@
 
 - (void)doAfterOperationOnMain
 {
-    [self.imService.imEngine postMessage:self.message];
+    if (self.message.msg_t == eMessageType_IMG || self.message.msg_t == eMessageType_AUDIO)
+    {
+        [self.imService.imEngine postMessageAchive:self.message];
+    }
+    else
+    {
+        [self.imService.imEngine postMessage:self.message];
+    }
 }
 
 @end

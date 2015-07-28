@@ -85,11 +85,13 @@
     operation.message = message;
     operation.imService = self;
     [self.operationQueue addOperation:operation];
+    
+    [self notifyWillDeliveryMessage:message];
 }
 
 - (void)retryMessage:(IMMessage *)message
 {
-    
+    [self notifyWillDeliveryMessage:message];
 }
 
 - (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
@@ -130,6 +132,23 @@
     operation.model = model;
     
     [self.operationQueue addOperation:operation];
+}
+
+- (void)onPostMessageAchiveSucc:(IMMessage *)message result:(PostAchiveModel *)model
+{
+    if (!self.bIsServiceActive) return;
+    if (message.msg_t == eMessageType_AUDIO)
+    {
+        IMAudioMessageBody *messageBody = (IMAudioMessageBody *)message.messageBody;
+        messageBody.url = model.url;
+    }
+    else if (message.msg_t == eMessageType_IMG)
+    {
+        IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
+        messageBody.url = model.url;
+    }
+    [self.imStorage updateMessage:message];
+    [self.imEngine postMessage:message];
 }
 
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error
@@ -364,6 +383,17 @@
     
     [self.deliveredMessageDelegates addObject:delegate];
 }
+
+- (void)notifyWillDeliveryMessage:(IMMessage *)message
+{
+    NSEnumerator *enumerator = [self.deliveredMessageDelegates objectEnumerator];
+    id<IMDeliveredMessageDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate willDeliveryMessage:message];
+    }
+}
+
 - (void)notifyDeliverMessage:(IMMessage *)message
                    errorCode:(NSInteger)errorCode
                        error:(NSString *)errorMsg

@@ -36,7 +36,9 @@
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(int64_t)conversationId;
 
 - (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole;
+- (NSArray *)queryChatExludeMessagesMaxMsgId:(double_t)maxMsgId;
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
+- (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(double_t)maxMsgId;
 // 群组会话最大的消息id 
 - (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
 // 查询会话的最小 msgId

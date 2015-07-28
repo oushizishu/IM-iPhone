@@ -85,6 +85,8 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 @class IMMessage;
 @protocol IMDeliveredMessageDelegate <NSObject>
 
+- (void)willDeliveryMessage:(IMMessage *)message;
+
 - (void)didDeliveredMessage:(IMMessage *)message
                        errorCode:(NSInteger)errorCode
                       error:(NSString *)errorMessage;
