@@ -312,6 +312,8 @@
 		9487AD0BBA4CCAE3C30BFED88B101224 /* TeacherContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 7D760DA90027CF22DF0C3F8DAAC8EE3D /* TeacherContacts.m */; };
 		94BC3EC244FE467EB3433C231D25C3AD /* JLFacebookPermission.m in Sources */ = {isa = PBXBuildFile; fileRef = 3118DD0C1A4780117CE8759223986967 /* JLFacebookPermission.m */; };
 		951690CD4A6F7793830CA718F802B752 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = B592C044C6998473E076FDC62EC4118D /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		954728441B668D0700569902 /* PostAchiveModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 954728421B668D0700569902 /* PostAchiveModel.h */; };
+		954728451B668D0700569902 /* PostAchiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 954728431B668D0700569902 /* PostAchiveModel.m */; };
 		954C9D0580C53C9B67961EB3C02F3087 /* DDContextFilterLogFormatter.h in Headers */ = {isa = PBXBuildFile; fileRef = 31597F0D1ED6BFB86AF94A7733B636C7 /* DDContextFilterLogFormatter.h */; };
 		963B5A470741270D101D1E6E25E1078A /* BJIMStorage.m in Sources */ = {isa = PBXBuildFile; fileRef = 66314DA2CBDCDE4B1C75217185E176BA /* BJIMStorage.m */; };
 		963E1D45EF790DCC6651E1D64B937571 /* NSRelationshipDescription+MagicalDataImport.h in Headers */ = {isa = PBXBuildFile; fileRef = 90CC5AE9E58205830A084864936BC470 /* NSRelationshipDescription+MagicalDataImport.h */; };
@@ -1119,6 +1121,8 @@
 		93A5C6E786706787B06609625C86B37D /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
 		943400245419F245A8636CE6DFF1EF5F /* Pods-BJHL-IM-iOS-SDK-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-BJHL-IM-iOS-SDK-dummy.m"; sourceTree = "<group>"; };
 		94C98A036DD91A13DFC36CD428E50D06 /* TMMemoryCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TMMemoryCache.h; path = TMCache/TMMemoryCache.h; sourceTree = "<group>"; };
+		954728421B668D0700569902 /* PostAchiveModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostAchiveModel.h; sourceTree = "<group>"; };
+		954728431B668D0700569902 /* PostAchiveModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostAchiveModel.m; sourceTree = "<group>"; };
 		96BA59AC8C530607BC19FB8C118FB874 /* MagicalRecord+ShorthandMethods.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "MagicalRecord+ShorthandMethods.h"; path = "MagicalRecord/Core/MagicalRecord+ShorthandMethods.h"; sourceTree = "<group>"; };
 		96F3ABF2E2C220169931DED1C7997855 /* RecordAudio.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RecordAudio.h; path = core/MediaRecorder/RecordAudio.h; sourceTree = "<group>"; };
 		972BE48A115768471F8A4C0CD0AEA7FA /* TKTextFieldAlertViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKTextFieldAlertViewController.m; path = "TKAlert&TKActionSheet/TKAlert/TKTextFieldAlertViewController.m"; sourceTree = "<group>"; };
@@ -2034,6 +2038,8 @@
 				F3F656A716F15F465C609D0F04513BE4 /* SendMsgModel.m */,
 				32BCD0E56BCAFFCA7E92594A597C9410 /* SyncConfigModel.h */,
 				7BB419005BB581DBAEF436D63035FBB5 /* SyncConfigModel.m */,
+				954728421B668D0700569902 /* PostAchiveModel.h */,
+				954728431B668D0700569902 /* PostAchiveModel.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -2696,6 +2702,7 @@
 			files = (
 				E8CD3D36B3BCAC156886E332E6F7A287 /* AFHTTPRequestOperation.h in Headers */,
 				4B98AC7ED6711A69DC48D20931913084 /* AFHTTPRequestOperationManager.h in Headers */,
+				954728441B668D0700569902 /* PostAchiveModel.h in Headers */,
 				18C4BB1D73A8A26CD7882BC3DF54EB5A /* AFHTTPSessionManager.h in Headers */,
 				C403D59D17DC93FB4294F8F8F086B4C6 /* AFNetworkActivityIndicatorManager.h in Headers */,
 				DB52E52A3B5B83932F77F9811A843E74 /* AFNetworkReachabilityManager.h in Headers */,
@@ -3705,6 +3712,7 @@
 				2F13C930DB1AE96D0BC257B43498E674 /* UIAlertView+AFNetworking.m in Sources */,
 				595EF0A03FD37B568387DBBD89760E1D /* UIButton+AFNetworking.m in Sources */,
 				296713E948B92801CA07F36DD5B25105 /* UIImageView+AFNetworking.m in Sources */,
+				954728451B668D0700569902 /* PostAchiveModel.m in Sources */,
 				97F6B0ED7DBD36837424FAB5C7FD1BEF /* UIProgressView+AFNetworking.m in Sources */,
 				14EC0C04081FBBB7A172D5E95C369545 /* UIRefreshControl+AFNetworking.m in Sources */,
 				B515FB2AE2F040100C8C20E2A860F266 /* UIWebView+AFNetworking.m in Sources */,

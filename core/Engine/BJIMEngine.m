@@ -120,6 +120,52 @@ int ddLogLevel = DDLogLevelInfo;
     }];
 }
 
+- (void)postMessageAchive:(IMMessage *)message
+{
+    if (message.msg_t == eMessageType_IMG)
+    {
+        [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+            NSError *error;
+            BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+            if (result.code == RESULT_CODE_SUCC)
+            {
+                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
+                [self.postMessageDelegate onPostMessageAchiveSucc:message result:model];
+            }
+            else
+            {
+                NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
+                [self.postMessageDelegate onPostMessageFail:message error:error];
+                DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
+            }
+        } failure:^(NSError *error, RequestParams *params) {
+            NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
+            [self.postMessageDelegate onPostMessageFail:message error:_error];
+        }];
+    }
+    else if (message.msg_t == eMessageType_AUDIO)
+    {
+        [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+            NSError *error;
+            BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+            if (result.code == RESULT_CODE_SUCC)
+            {
+                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
+                [self.postMessageDelegate onPostMessageAchiveSucc:message result:model];
+            }
+            else
+            {
+                NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
+                [self.postMessageDelegate onPostMessageFail:message error:error];
+                DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
+            }
+        } failure:^(NSError *error, RequestParams *params) {
+            NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
+            [self.postMessageDelegate onPostMessageFail:message error:_error];
+        }];
+    }
+}
+
 - (void)postPollingRequest:(int64_t)max_user_msg_id
            excludeUserMsgs:(NSString *)excludeUserMsgs
           groupsLastMsgIds:(NSString *)group_last_msg_ids

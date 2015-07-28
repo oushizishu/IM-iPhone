@@ -13,11 +13,13 @@
 #import "SendMsgModel.h"
 #import "PollingResultModel.h"
 #import "MyContactsModel.h"
+#import "PostAchiveModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
 - (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model;
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error;
+- (void)onPostMessageAchiveSucc:(IMMessage *)message result:(PostAchiveModel *)model;
 
 @end
 
@@ -59,6 +61,8 @@
 - (void)syncContacts;
 
 - (void)postMessage:(IMMessage *)message;
+
+- (void)postMessageAchive:(IMMessage *)message;
 
 - (void)postPollingRequest:(int64_t)max_user_msg_id
            excludeUserMsgs:(NSString *)excludeUserMsgs

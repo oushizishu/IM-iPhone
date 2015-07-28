@@ -10,4 +10,8 @@
 
 @interface IMAudioMessageBody : IMMessageBody
 
+@property (nonatomic, copy) NSString *file;
+@property (nonatomic, copy) NSString *url;
+@property (nonatomic, assign) NSInteger length;
+
 @end

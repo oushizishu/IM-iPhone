@@ -38,4 +38,11 @@
                                    succ:(onSuccess)succ
                                 failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesStorageUploadImage:(IMMessage *)message
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesStorageUploadAudio:(IMMessage *)message
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure;
 @end

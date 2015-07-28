@@ -132,6 +132,23 @@
     [self.operationQueue addOperation:operation];
 }
 
+- (void)onPostMessageAchiveSucc:(IMMessage *)message result:(PostAchiveModel *)model
+{
+    if (!self.bIsServiceActive) return;
+    if (message.msg_t == eMessageType_AUDIO)
+    {
+        IMAudioMessageBody *messageBody = (IMAudioMessageBody *)message.messageBody;
+        messageBody.url = model.url;
+    }
+    else if (message.msg_t == eMessageType_IMG)
+    {
+        IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
+        messageBody.url = model.url;
+    }
+    [self.imStorage updateMessage:message];
+    [self.imEngine postMessage:message];
+}
+
 - (void)onPostMessageFail:(IMMessage *)message error:(NSError *)error
 {
     if (! self.bIsServiceActive) return;

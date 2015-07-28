@@ -17,6 +17,8 @@
 #define HERMES_API_SEND_MESSAGE [NSString stringWithFormat:@"%@/hermes/sendMsg", HOST_API]
 #define HERMES_API_POLLING [NSString stringWithFormat:@"%@/hermes/polling", HOST_API]
 #define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
+#define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
+#define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
 
 @implementation NetWorkTool
 
@@ -104,6 +106,30 @@
     {
         [requestParams appendPostParamValue:excludeMsgIds forKey:@"exclude_msgs"];
     }
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesStorageUploadImage:(IMMessage *)message
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure
+{
+    IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendFile:messageBody.file mimeType:@"image/*" forKey:@"attachment"];
+    
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesStorageUploadAudio:(IMMessage *)message
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure
+{
+    IMAudioMessageBody *messageBody = (IMAudioMessageBody *)message.messageBody;
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_AUDIO method:kHttpMethod_POST];
+    [requestParams  appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
+    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" forKey:@"attachment"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
