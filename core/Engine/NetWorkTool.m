@@ -8,7 +8,6 @@
 
 #import "NetWorkTool.h"
 
-
 #define HOST_APIS @[@"http://test-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
@@ -19,6 +18,7 @@
 #define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
 #define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
 #define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
+
 
 @implementation NetWorkTool
 
@@ -72,7 +72,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
     if ([excludeUserMsgIds length] > 0)
     {
-        [requestParams appendPostParamValue:excludeUserMsgIds forKey:@"exclude_user_msg_ids"];
+        [requestParams appendPostParamValue:excludeUserMsgIds forKey:@"exclude_msg_ids"];
     }
     if ([group_last_msg_ids length] > 0)
     {
@@ -87,6 +87,7 @@
 
 //    NSLog(@"post polling [url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     
+    DDLogInfo(@"[Post Polling][url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

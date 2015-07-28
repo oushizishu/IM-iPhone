@@ -48,7 +48,7 @@
     }
     else
     {
-        Group *group = [self.conversation chatToGroup];
+        Group *group = [self.imService.imStorage queryGroupWithGroupId:self.conversation.toId];
         
         if ([self.messages count] > 0)
         {

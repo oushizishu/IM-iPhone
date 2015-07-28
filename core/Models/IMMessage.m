@@ -60,6 +60,11 @@
             return dic; // dictionary
         }];
     }
+    else if ([key isEqualToString:@"msgId"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            return @([value doubleValue]);
+        }];
+    }
     return nil;
 }
 

@@ -12,8 +12,6 @@
 #import "BJIMStorage.h"
 #import "BJTimer.h"
 
-int ddLogLevel = DDLogLevelInfo;
-
 @interface BJIMEngine()
 {
     NSInteger _pollingIndex;
@@ -42,7 +40,6 @@ int ddLogLevel = DDLogLevelInfo;
     _engineActive = YES;
     [self resetPollingIndex];
     [self nextPollingAt];
-    [self.pollingTimer.timer fire];
 }
 
 - (void)stop
@@ -190,20 +187,17 @@ int ddLogLevel = DDLogLevelInfo;
             }
             
             [self nextPollingAt];
-            [self.pollingTimer.timer fire];
         }
         else
         {
             DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
             [self nextPollingAt];
-            [self.pollingTimer.timer fire];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         _bIsPollingRequesting = NO;
         DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
         [self nextPollingAt];
-        [self.pollingTimer.timer fire];
     }];
 
 }

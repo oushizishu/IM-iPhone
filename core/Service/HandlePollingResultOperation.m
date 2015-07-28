@@ -62,6 +62,10 @@
             group.approval = _group.approval;
             group.maxusers = _group.maxusers;
             group.status = _group.status;
+            
+            group.lastMessageId = _group.lastMessageId;
+            group.endMessageId = _group.endMessageId;
+            group.startMessageId = _group.startMessageId;
         }
         [self.imService.imStorage insertOrUpdateGroup:group];
         
@@ -180,7 +184,7 @@
             { // 群聊
                 conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
                 
-                Group *chatToGroup = [self.imService.imStorage queryGroupWithGroupId:conversation.toId];
+                Group *chatToGroup = [self.imService.imStorage queryGroupWithGroupId:message.receiver];
                 if (conversation == nil)
                 {
                     conversation = [[Conversation alloc] init];
