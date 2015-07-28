@@ -17,6 +17,7 @@
 #import <IMMessage+DB.h>
 
 #import "BJChatAudioPlayerHelper.h"
+#import "MyFacialView.h"
 
 
 @implementation IMMessage (ViewModel)
@@ -104,9 +105,17 @@
     return CGSizeMake(60, 60);
 }
 
-- (NSString *)emojiName;
+- (NSURL *)emojiImageURL;
 {
-    return [self emojiMessageBody].name;
+    NSString *gifLocal = [MyFacialView imageNamedWithEmoji:[self emojiMessageBody].name];
+    NSURL *gifURL = nil;
+    if (gifLocal.length>0) {
+        gifURL = [NSURL fileURLWithPath:[[NSBundle mainBundle] pathForResource:[gifLocal substringToIndex:gifLocal.length - gifLocal.pathExtension.length - 1] ofType:gifLocal.pathExtension]];
+    }else
+    {
+        @TODO("远程图片下载");
+    }
+    return gifURL;
 }
 
 #pragma mark - Audio

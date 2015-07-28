@@ -26,7 +26,7 @@
 - (NSURL *)imageURL;
 
 //EMOJI
-- (NSString *)emojiName;
+- (NSURL *)emojiImageURL;
 - (CGSize)emojiSize;
 
 //audio

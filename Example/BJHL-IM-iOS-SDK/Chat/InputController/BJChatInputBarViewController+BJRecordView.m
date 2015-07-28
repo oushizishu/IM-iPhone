@@ -47,12 +47,16 @@ static char BJRecordView_Recorder;
         [weakSelf.parentViewController.view addSubview:weakSelf.recordView];
         [weakSelf.parentViewController.view bringSubviewToFront:weakSelf.recordView];
         [weakSelf.recordView recordButtonTouchDown];
-    }
-    else
-    {
         [self.recorder startRecord:^(BOOL isStart) {
             
         }];
+    }
+    else
+    {
+        [[JLMicrophonePermission sharedInstance] authorize:^(bool granted, NSError *error) {
+            
+        }];
+
     }
 }
 
@@ -69,15 +73,15 @@ static char BJRecordView_Recorder;
     [self.recordView removeFromSuperview];
     __weak typeof(self) weakSelf = self;
     self.recorder.finishCallback = ^(NSString *message,NSInteger timeLength,BOOL isSuc,BOOL isFinish){
-        if (isSuc) {
-            @TODO("添加录音成功提示。");
-        }
-        else if (isFinish) {
+        if (isFinish) {
             [BJSendMessageHelper sendAudioMessage:message duration:timeLength chatInfo:weakSelf.chatInfo];
+        }
+        else if (isSuc) {
+            @TODO("添加录音成功提示。");
         }
         else
         {
-            @TODO("添加提示按钮。");
+            @TODO("添加提示。");
         }
     };
     [self.recorder stopRecord];
