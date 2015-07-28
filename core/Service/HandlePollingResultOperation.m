@@ -45,6 +45,8 @@
             owner.name = user.name;
             owner.avatar = user.avatar;
         }
+        
+        [self.imService updateCacheUser:user];
     }
     
     NSArray *groups = self.model.groups;
@@ -52,22 +54,22 @@
     {
         Group *group = [groups objectAtIndex:index];
         
-        Group *_group = [self.imService.imStorage queryGroupWithGroupId:group.groupId];
+        Group *_group = [self.imService getGroup:group.groupId];
         
         if (_group != nil)
-        {
-            group.descript = _group.descript;
-            group.isPublic = _group.isPublic;
-            group.createTime = _group.createTime;
-            group.approval = _group.approval;
-            group.maxusers = _group.maxusers;
-            group.status = _group.status;
-            
-            group.lastMessageId = _group.lastMessageId;
-            group.endMessageId = _group.endMessageId;
-            group.startMessageId = _group.startMessageId;
+        { //目的是为了更新 cache 中的 Group
+            _group.descript = group.descript;
+            _group.isPublic = group.isPublic;
+            _group.createTime = group.createTime;
+            _group.maxusers = group.maxusers;
+            _group.status = group.status;
+           
+            [self.imService.imStorage updateGroup:_group];
         }
-        [self.imService.imStorage insertOrUpdateGroup:group];
+        else
+        {
+            [self.imService.imStorage insertOrUpdateGroup:group];
+        }
         
         GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:owner.userId userRole:owner.userRole];
         if (member == nil)
@@ -184,7 +186,7 @@
             { // 群聊
                 conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
                 
-                Group *chatToGroup = [self.imService.imStorage queryGroupWithGroupId:message.receiver];
+                Group *chatToGroup = [self.imService getGroup:message.receiver];
                 if (conversation == nil)
                 {
                     conversation = [[Conversation alloc] init];
@@ -270,7 +272,7 @@
     //处理群组 eid
     [self.groupMinMessage enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
         int64_t group_id = [key longLongValue];
-        Group *group = [self.imService.imStorage queryGroupWithGroupId:group_id];
+        Group *group = [self.imService getGroup:group_id];
         if (group == nil) return ;
         
         group.endMessageId = [obj doubleValue];

@@ -22,7 +22,7 @@
     self.message.status = eMessageStatus_Send_Succ;
     if (self.message.chat_t == eChatType_GroupChat)
     {
-        Group *group = [self.imService.imStorage queryGroupWithGroupId:self.message.receiver];
+        Group *group = [self.imService getGroup:self.message.receiver];
         group.lastMessageId = self.model.msgId;
         group.endMessageId = self.model.msgId;
         

@@ -16,7 +16,6 @@
 
 static char BJIMConversationChatToUser;
 static char BJIMConversationChatToGroup;
-static char BJIMConversationMessages;
 static char BJIMConversationLastMessage;
 static char BJIMConversationIMService;
 
@@ -33,7 +32,7 @@ static char BJIMConversationIMService;
     
     if (self.imService == nil) return nil;
     _chatToUser = [self.imService getUser:self.toId role:self.toRole];
-    objc_setAssociatedObject(self, &BJIMConversationChatToUser, _chatToUser, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &BJIMConversationChatToUser, _chatToUser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return _chatToUser;
 }
 
@@ -48,7 +47,7 @@ static char BJIMConversationIMService;
     
     if(self.imService == nil) return nil;
     _chatToGroup = [self.imService getGroup:self.toId];
-    objc_setAssociatedObject(self, &BJIMConversationChatToGroup, _chatToGroup, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &BJIMConversationChatToGroup, _chatToGroup, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return _chatToGroup;
 }
 
@@ -91,13 +90,13 @@ static char BJIMConversationIMService;
     if (self.imService == nil) return nil;
     
     _lastMessage = [self.imService.imStorage queryMessage:self.lastMsgRowId];
-    objc_setAssociatedObject(self, &BJIMConversationLastMessage, _lastMessage, OBJC_ASSOCIATION_RETAIN);
+    objc_setAssociatedObject(self, &BJIMConversationLastMessage, _lastMessage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return _lastMessage;
 }
 
 - (void)setImService:(BJIMService *)imService
 {
-    objc_setAssociatedObject(self, &BJIMConversationIMService, imService, OBJC_ASSOCIATION_ASSIGN);
+    objc_setAssociatedObject(self, &BJIMConversationIMService, imService, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
 - (BJIMService *)imService

@@ -37,6 +37,10 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
 
+//cache 相关
+- (void)updateCacheUser:(User *)user;
+- (void)updateCacheGroup:(Group *)group;
+
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
 
