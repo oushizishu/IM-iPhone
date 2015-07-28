@@ -16,8 +16,15 @@
 #import "BJSendMessageHelper.h"
 #import "BJChatAudioPlayerHelper.h"
 #import "IMMessage+ViewModel.h"
+#import <BJIMManager.h>
 
-@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol,BJSendMessageProtocol>
+#import "BJChatTimeCell.h"
+
+#import "SRRefreshView.h"
+
+#import <NSDate+Category.h>
+
+@interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol,BJSendMessageProtocol,IMDeliveredMessageDelegate>
 @property (strong, nonatomic) UITableView *tableView;
 @property (strong, nonatomic) NSMutableArray *messageList;
 @property (strong, nonatomic) BJChatInfo *chatInfo;
@@ -31,6 +38,9 @@
 @property (strong, nonatomic) BJChatInputBarViewController *inputController;
 
 @property (nonatomic) BOOL isScrollToBottom;
+
+@property (strong, nonatomic) SRRefreshView *slimeView;
+
 @end
 
 @implementation BJChatViewController
@@ -39,6 +49,8 @@
 {
     [self.view removeObserver:self forKeyPath:@"frame"];
     [BJSendMessageHelper sharedInstance].deledate = nil;
+    _slimeView.delegate = nil;
+    _slimeView = nil;
 }
 
 - (instancetype)initWithChatInfo:(BJChatInfo *)chatInfo;
@@ -97,11 +109,13 @@
     
     [[BJIMManager shareInstance] addReceiveNewMessageDelegate:self];
     [[BJIMManager shareInstance] addLoadMoreMessagesDelegate:self];
+    [[BJIMManager shareInstance] addDeliveryMessageDelegate:self];
     
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     self.messageList = [[NSMutableArray alloc] initWithArray:array];
     
     [self.view addSubview:self.tableView];
+    [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.inputController.view];
     [self addChildViewController:self.inputController];
     [self.inputController didMoveToParentViewController:self];
@@ -136,8 +150,26 @@
         return;
     }
     
-    @TODO("添加时间显示");
+    NSMutableArray *mutMessages = [[NSMutableArray alloc] initWithArray:messages];
+    IMMessage *lastMessage = nil;
+    if (!forward && self.messageList.count>0) {
+        lastMessage = self.messageList.lastObject;
+    }
+    
+    for (IMMessage *oneMessage in messages) {
+        if (lastMessage) {
+            int minute = ([NSDate dateWithTimeIntervalSince1970:oneMessage.createAt].minute - [NSDate dateWithTimeIntervalSince1970:lastMessage.createAt].minute );//两条消息的时间分单位间隔超过1，则加一个时间显示
+            if (minute > 1) {
+                [mutMessages insertObject:[[NSDate dateWithTimeIntervalSince1970:oneMessage.createAt] formattedTime] atIndex:[mutMessages indexOfObject:oneMessage]];
+            }
+        }
+        else
+            lastMessage = oneMessage;
+    }
+
     if (forward) {
+
+        
         NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
         [self.messageList insertObjects:messages atIndexes:set];
         [self.tableView reloadData];
@@ -152,6 +184,20 @@
         }
     }
 
+}
+
+- (void)loadMoreMessages
+{
+    double_t msgId = 0;
+    if (self.messageList.count>0) {
+        IMMessage *message = [self.messageList objectAtIndex:0];
+        msgId = message.msgId;
+    }
+    NSArray *messageList = [[BJIMManager shareInstance] loadMessageFromMinMsgId:msgId inConversation:self.conversation];
+    [self addNewMessages:messageList isForward:YES];
+    if (msgId != 0) {
+        [self.tableView scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:[messageList count] inSection:0] atScrollPosition:UITableViewScrollPositionTop animated:NO];
+    }
 }
 
 #pragma mark - observer
@@ -312,6 +358,34 @@
     }
 }
 
+#pragma mark - slimeRefresh delegate
+//加载更多
+- (void)slimeRefreshStartRefresh:(SRRefreshView *)refreshView
+{
+    [self loadMoreMessages];
+    [_slimeView endRefresh];
+}
+
+#pragma mark - scrollView delegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (_slimeView) {
+        [_slimeView scrollViewDidScroll];
+    }
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView{
+    [self keyBoardHidden];
+}
+
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (_slimeView) {
+        [_slimeView scrollViewDidEndDraging];
+    }
+}
+
 #pragma mark - UITableView delegate
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -321,6 +395,20 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     IMMessage *message = [self.messageList objectAtIndex:indexPath.row];
+    
+    if ([message isKindOfClass:[NSString class]]) {
+        BJChatTimeCell *timeCell = (BJChatTimeCell *)[tableView dequeueReusableCellWithIdentifier:@"MessageCellTime"];
+        if (timeCell == nil) {
+            timeCell = [[BJChatTimeCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"MessageCellTime"];
+            timeCell.backgroundColor = [UIColor clearColor];
+            timeCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        }
+        
+        timeCell.textLabel.text = (NSString *)message;
+        
+        return timeCell;
+    }
+    
     UITableViewCell<BJChatViewCellProtocol> *cell = [tableView dequeueReusableCellWithIdentifier:[[BJChatCellFactory sharedInstance] cellIdentifierWithMessageType:message.msg_t]];
     if (cell == nil) {
         cell = [[BJChatCellFactory sharedInstance] cellWithMessageType:message.msg_t];
@@ -374,6 +462,23 @@
         _tableView.dataSource = self;
     }
     return _tableView;
+}
+
+- (SRRefreshView *)slimeView
+{
+    if (_slimeView == nil) {
+        _slimeView = [[SRRefreshView alloc] init];
+        _slimeView.delegate = self;
+        _slimeView.upInset = 0;
+        _slimeView.slimeMissWhenGoingBack = YES;
+        _slimeView.slime.bodyColor = [UIColor grayColor];
+        _slimeView.slime.skinColor = [UIColor grayColor];
+        _slimeView.slime.lineWith = 1;
+        _slimeView.slime.shadowBlur = 4;
+        _slimeView.slime.shadowColor = [UIColor grayColor];
+    }
+    
+    return _slimeView;
 }
 
 - (NSMutableArray *)messageList

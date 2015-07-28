@@ -45,6 +45,9 @@
     ],
     "YLGIFImage": [
       "~> 0.11"
+    ],
+    "SlimeRefresh": [
+      "~> 0.0.1"
     ]
   }
 }
