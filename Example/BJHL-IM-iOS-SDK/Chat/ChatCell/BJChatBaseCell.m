@@ -9,8 +9,32 @@
 #import "BJChatBaseCell.h"
 #import <UIImageView+Aliyun.h>
 
-
 @implementation BJChatBaseCell
+
+- (instancetype)initWithFrame:(CGRect)frame
+{
+    self = [super initWithFrame:frame];
+    if (self) {
+        [self setupConfigure];
+    }
+    return self;
+}
+
+- (instancetype)initWithCoder:(NSCoder *)coder
+{
+    self = [super initWithCoder:coder];
+    if (self) {
+        [self setupConfigure];
+    }
+    return self;
+}
+
+- (void)setupConfigure
+{
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(bubbleViewPressed:)];
+    [self addGestureRecognizer:tap];
+    self.backgroundColor = [UIColor clearColor];
+}
 
 - (void)awakeFromNib {
     // Initialization code
@@ -79,10 +103,24 @@
     }
 }
 
+#pragma mark public
+- (void)bubbleViewPressed:(id)sender
+{
+    [self routerEventWithName:kRouterEventChatCellBubbleTapEventName userInfo:@{kRouterEventUserInfoObject:self.message}];
+}
+
+- (UIImage *)bubbleImage
+{
+    NSString *imageName = !self.message.isMySend ? BUBBLE_LEFT_IMAGE_NAME : BUBBLE_RIGHT_IMAGE_NAME;
+    NSInteger leftCapWidth = !self.message.isMySend?BUBBLE_LEFT_LEFT_CAP_WIDTH:BUBBLE_RIGHT_LEFT_CAP_WIDTH;
+    NSInteger topCapHeight =  !self.message.isMySend?BUBBLE_LEFT_TOP_CAP_HEIGHT:BUBBLE_RIGHT_TOP_CAP_HEIGHT;
+    return [[UIImage imageNamed:imageName] stretchableImageWithLeftCapWidth:leftCapWidth topCapHeight:topCapHeight];
+}
+
 #pragma mark - action
 - (void)retryButtonPressed
 {
-    
+    [super routerEventWithName:kResendButtonTapEventName userInfo:@{kRouterEventUserInfoObject:self.message}];
 }
 
 #pragma mark - Protocol

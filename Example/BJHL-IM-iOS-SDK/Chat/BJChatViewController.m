@@ -13,6 +13,7 @@
 #import <Conversation+DB.h>
 
 #import "BJChatInputBarViewController.h"
+#import "BJSendMessageHelper.h"
 
 @interface BJChatViewController ()<UITableViewDataSource,UITableViewDelegate, IMReceiveNewMessageDelegate, IMLoadMessageDelegate,BJChatInputProtocol>
 @property (strong, nonatomic) UITableView *tableView;
@@ -190,6 +191,29 @@
     
     if(toHeight > [BJChatInputBarViewController defaultHeight]+10){
         [self scrollViewToBottom:NO];
+    }
+}
+
+#pragma mark - UIResponder actions
+
+- (void)showBigImageWithMessage:(IMMessage *)message
+{
+    @TODO("显示大图");
+}
+
+- (void)routerEventWithName:(NSString *)eventName userInfo:(NSDictionary *)userInfo
+{
+    IMMessage *message = [userInfo objectForKey:kRouterEventUserInfoObject];
+    if ([eventName isEqualToString:kRouterEventImageBubbleTapEventName]){
+        [self showBigImageWithMessage:message];
+    }
+    else if ([eventName isEqualToString:kResendButtonTapEventName])
+    {
+        [[BJIMManager shareInstance] retryMessage:message];
+    }
+    else if ([eventName isEqualToString:kRouterEventChatCellBubbleTapEventName])
+    {
+        
     }
 }
 

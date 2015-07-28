@@ -53,5 +53,43 @@
     return nil;
 }
 
+#pragma mark - image
+- (CGSize)size
+{
+    @TODO("计算size");
+    return CGSizeZero;
+}
+
+- (NSURL *)imageRemoteURL
+{
+    @TODO("返回图片路径");
+    return nil;
+}
+
+#pragma mark - EMOJI
+- (NSString *)emojiName;
+{
+    @TODO("返回emoji的名字");
+    return nil;
+}
+
+#pragma mark - Audio
+//audio
+- (NSURL *)audioRemoteURL;
+{
+    @TODO("返回音频地址");
+    return nil;
+}
+
+- (NSInteger)time;
+{
+    @TODO("返回正确的时间");
+    return 20;
+}
+- (BOOL)isPlayed;
+{
+    @TODO("返回正确的状态");
+    return NO;
+}
 
 @end

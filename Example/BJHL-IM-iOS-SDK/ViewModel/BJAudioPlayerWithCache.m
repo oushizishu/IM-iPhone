@@ -1,13 +1,13 @@
 //
-//  BJEmojiChatCell.h
+//  BJAudioPlayerWithCache.m
 //  BJHL-IM-iOS-SDK
 //
 //  Created by Randy on 15/7/27.
 //  Copyright (c) 2015年 YangLei-bjhl. All rights reserved.
 //
 
-#import "BJChatBaseCell.h"
-#define EMOJI_MAX_SIZE 80
-@interface BJEmojiChatCell : BJChatBaseCell
+#import "BJAudioPlayerWithCache.h"
+
+@implementation BJAudioPlayerWithCache
 
 @end

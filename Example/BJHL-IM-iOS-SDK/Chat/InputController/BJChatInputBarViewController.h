@@ -11,7 +11,6 @@
 #import "XHMessageTextView.h"
 
 @interface BJChatInputBarViewController : BJChatInputBaseViewController
-@property (nonatomic, weak) id <BJChatInputProtocol> delegate;
 /**
  *  停止编辑
  */
