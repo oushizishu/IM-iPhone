@@ -110,7 +110,7 @@
         }
         else
         {
-            Group *_chatToGroup = [self.imStorage queryGroupWithGroupId:conversation.toId];
+            Group *_chatToGroup = [self getGroup:conversation.toId];
             NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
             [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 IMMessage *message = (IMMessage *)obj;

@@ -103,4 +103,10 @@ static char BJIMConversationIMService;
 {
     return objc_getAssociatedObject(self, &BJIMConversationIMService);
 }
+
+- (void)resetUnReadNum
+{
+    self.unReadNum = 0;
+    [self.imService.imStorage updateConversation:self];
+}
 @end

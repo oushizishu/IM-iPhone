@@ -10,4 +10,9 @@
 
 @interface IMLocationMessageBody : IMMessageBody
 
+@property (nonatomic, assign) double_t lat;
+@property (nonatomic, assign) double_t lng;
+@property (nonatomic, copy) NSString *address;
+
+
 @end

@@ -10,4 +10,12 @@
 
 @implementation IMEmojiMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+            @"type":@"type",
+            @"content":@"content",
+            @"name":@"name",
+             };
+}
 @end

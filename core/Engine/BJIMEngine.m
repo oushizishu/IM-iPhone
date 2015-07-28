@@ -143,7 +143,7 @@
     }
     else if (message.msg_t == eMessageType_AUDIO)
     {
-        [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        [NetWorkTool hermesStorageUploadAudio:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
             NSError *error;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result.code == RESULT_CODE_SUCC)

@@ -10,5 +10,14 @@
 
 @implementation IMCardMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"title":@"title",
+             @"content":@"content",
+             @"url":@"url",
+             @"thumb":@"thubm",
+             };
+}
 
 @end

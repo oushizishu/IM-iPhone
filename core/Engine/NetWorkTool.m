@@ -128,7 +128,7 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_AUDIO method:kHttpMethod_POST];
     [requestParams  appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
-    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" forKey:@"attachment"];
+    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" filename:@"hermes.mp3" forKey:@"attachment"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

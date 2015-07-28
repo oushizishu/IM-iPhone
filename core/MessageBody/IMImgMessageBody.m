@@ -10,4 +10,14 @@
 
 @implementation IMImgMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"file":@"file",
+             @"url":@"url",
+             @"width":@"width",
+             @"height":@"height"
+             };
+}
+
 @end

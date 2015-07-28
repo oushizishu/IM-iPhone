@@ -10,4 +10,13 @@
 
 @implementation IMLocationMessageBody
 
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+                @"lat":@"lat",
+                @"lng":@"lng",
+                @"address":@"address"
+             };
+}
+
 @end
