@@ -85,11 +85,13 @@
     operation.message = message;
     operation.imService = self;
     [self.operationQueue addOperation:operation];
+    
+    [self notifyWillDeliveryMessage:message];
 }
 
 - (void)retryMessage:(IMMessage *)message
 {
-    
+    [self notifyWillDeliveryMessage:message];
 }
 
 - (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
@@ -381,6 +383,17 @@
     
     [self.deliveredMessageDelegates addObject:delegate];
 }
+
+- (void)notifyWillDeliveryMessage:(IMMessage *)message
+{
+    NSEnumerator *enumerator = [self.deliveredMessageDelegates objectEnumerator];
+    id<IMDeliveredMessageDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate willDeliveryMessage:message];
+    }
+}
+
 - (void)notifyDeliverMessage:(IMMessage *)message
                    errorCode:(NSInteger)errorCode
                        error:(NSString *)errorMsg
