@@ -46,7 +46,7 @@
     
     if (self.message.chat_t == eChatType_GroupChat)
     {
-        Group *group = [self.imService.imStorage queryGroupWithGroupId:self.message.receiver];
+        Group *group = [self.imService getGroup:self.message.receiver];
         group.lastMessageId = self.message.msgId;
         group.endMessageId = self.message.msgId;
         [self.imService.imStorage updateGroup:group];

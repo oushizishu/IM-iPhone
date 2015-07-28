@@ -21,17 +21,21 @@
     
     NSArray *groupList = self.model.groupList;
     for (Group *group  in groupList) {
-        Group *__group = [self.imService.imStorage queryGroupWithGroupId:group.groupId];
+        Group *__group = [self.imService getGroup:group.groupId];
         if (__group)
         {
-            group.isPublic = __group.isPublic;
-            group.createTime = __group.createTime;
-            group.maxusers = __group.maxusers;
-            group.approval = __group.approval;
-            group.status   = __group.status;
-            group.descript = __group.descript;
+            __group.isPublic = group.isPublic ;
+            __group.createTime = group.createTime;
+            __group.maxusers = group.maxusers;
+            __group.approval = group.approval;
+            __group.status = group.status;
+            __group.descript = group.descript;
+            [self.imService.imStorage updateGroup:__group];
         }
-        [self.imService.imStorage insertOrUpdateGroup:group];
+        else
+        {
+            [self.imService.imStorage insertOrUpdateGroup:group];
+        }
         
         GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:currentUser.userId userRole:currentUser.userRole];
         if (!member) {
@@ -48,18 +52,22 @@
         [self.imService.imStorage insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
         
+        [self.imService updateCacheUser:user];
+        
     }
     
     NSArray *studentList = self.model.studentList;
     for (User *user in studentList) {
         [self.imService.imStorage insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
+        [self.imService updateCacheUser:user];
     }
     
     NSArray *teacherList = self.model.teacherList;
     for (User *user in teacherList) {
         [self.imService.imStorage insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
+        [self.imService updateCacheUser:user];
     }
 }
 

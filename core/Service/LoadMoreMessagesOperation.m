@@ -48,7 +48,7 @@
     }
     else
     {
-        Group *group = [self.imService.imStorage queryGroupWithGroupId:self.conversation.toId];
+        Group *group = [self.imService getGroup:self.conversation.toId];
         
         if ([self.messages count] > 0)
         {

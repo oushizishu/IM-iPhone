@@ -256,6 +256,33 @@
     return user;
 }
 
+- (void)updateCacheUser:(User *)user
+{
+    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
+    {
+        User *_user = [self.usersCache objectAtIndex:index];
+        if (_user.userId == user.userId && _user.userRole == user.userRole)
+        {
+            _user.name = user.name;
+            _user.avatar = user.avatar;
+            return;
+        }
+    }
+}
+
+- (void)updateCacheGroup:(Group *)group
+{
+    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
+        Group *_group = [self.groupsCache objectAtIndex:index];
+        if (_group.groupId == group.groupId) {
+           
+            [_group mergeValuesForKeysFromModel:group];
+            
+            return;
+        }
+    }
+}
+
 - (Group *)getGroup:(int64_t)groupId
 {
     for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
