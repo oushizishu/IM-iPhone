@@ -10,6 +10,7 @@
 #import "BJChatCellFactory.h"
 #import <BJIMConstants.h>
 #import <PureLayout/PureLayout.h>
+#import "BJAudioPlayerWithCache.h"
 
 @interface BJAudioChatCell ()
 @property (strong, nonatomic) UIImageView *animationImageView; // 动画的ImageView
@@ -75,7 +76,9 @@
 
 - (void)bubbleViewPressed:(id)sender
 {
-    
+    if ([BJAudioPlayerWithCache ]) {
+        <#statements#>
+    }
 }
 
 #pragma mark - Protocol

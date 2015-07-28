@@ -13,10 +13,27 @@
 #import <BJIMManager.h>
 
 #import "BJChatInfo.h"
-@interface BJSendMessageHelper : NSObject
-+ (void)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
-+ (void)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
-+ (void)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
 
-+ (void)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
+@protocol BJSendMessageProtocol <NSObject>
+
+- (void)willSendMessage:(IMMessage *)message;
+
+@end
+
+@interface BJSendMessageHelper : NSObject
+@property (weak, nonatomic) id<BJSendMessageProtocol>deledate;
++ (instancetype)sharedInstance;
+
+/**
+ *  发送消息业务层调用请都用这个方法，会有一些处理。
+ *
+ *  @param message 
+ */
++ (void)sendMessage:(IMMessage *)message;
+
++ (IMMessage *)sendTextMessage:(NSString *)text chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendAudioMessage:(NSString *)filePath duration:(NSInteger)duration chatInfo:(BJChatInfo *)chatInfo;
++ (IMMessage *)sendImageMessage:(NSString *)filePath chatInfo:(BJChatInfo *)chatInfo;
+
++ (IMMessage *)sendEmojiMessage:(NSString *)emoji chatInfo:(BJChatInfo *)chatInfo;
 @end

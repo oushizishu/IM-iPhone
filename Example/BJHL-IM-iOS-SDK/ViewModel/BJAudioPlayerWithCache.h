@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <BJAudioPlayer.h>
 
-@interface BJAudioPlayerWithCache : NSObject
-- (void)startPlayer:(NSURL *)url;
-- (void)stopPlayer;
-- (void)isPlayerWithUrl:(NSURL *)url;
+@interface BJAudioPlayerWithCache : BJAudioPlayer
+
 @end

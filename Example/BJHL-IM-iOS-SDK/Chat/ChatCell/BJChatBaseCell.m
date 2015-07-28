@@ -145,9 +145,15 @@
 
 + (CGFloat)cellHeightWithInfo:(id)dic indexPath:(NSIndexPath *)indexPath;
 {
-    static BJChatBaseCell *cell = nil;
+    static NSMutableDictionary *cellDic = nil;
+    if (cellDic == nil) {
+        cellDic = [[NSMutableDictionary alloc] initWithCapacity:0];
+    }
+    IMMessage *message = dic;
+    BJChatBaseCell *cell = [cellDic objectForKey:@(message.msg_t)];
     if (cell == nil) {
         cell = [[self alloc] init];
+        [cellDic setObject:cell forKey:@(message.msg_t)];
     }
     
     [cell setCellInfo:dic indexPath:indexPath];
