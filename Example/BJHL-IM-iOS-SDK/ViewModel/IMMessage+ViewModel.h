@@ -22,16 +22,23 @@
 - (NSString *)content;
 
 //image
-- (CGSize)size;
+- (CGSize)imageSize;
 - (NSURL *)imageURL;
 
 //EMOJI
 - (NSString *)emojiName;
+- (CGSize)emojiSize;
 
 //audio
 - (NSURL *)audioURL;
 - (NSInteger)time;
 - (BOOL)isPlayed;
 - (BOOL)isPlaying;
+
+//card
+- (NSString *)cardTitle;
+- (NSString *)cardContent;
+- (NSString *)cardUrl;
+- (NSString *)cardThumb;
 
 @end

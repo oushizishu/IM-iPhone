@@ -9,6 +9,7 @@
 #import "BJChatInputBarViewController+BJRecordView.h"
 #import "DXRecordView.h"
 #import <BJAudioBufferRecorder.h>
+#import <JLMicrophonePermission.h>
 
 static char BJRecordView_View;
 static char BJRecordView_Recorder;
@@ -39,18 +40,20 @@ static char BJRecordView_Recorder;
 
 - (void)recordButtonTouchDown
 {
-    [self.recordView recordButtonTouchDown];
-
-    self.recordView.center = self.parentViewController.view.center;
-    [self.parentViewController.view addSubview:self.recordView];
-    [self.parentViewController.view bringSubviewToFront:self.recordView];
-    
     __weak typeof(self) weakSelf = self;
-    [self.recorder startRecord:^(BOOL isStart) {
-        if (!isStart) {
-            [weakSelf cancelTouchRecord];
-        }
-    }];
+    //如果还没有获取授权，则按住效果会被打断
+    if ([[JLMicrophonePermission sharedInstance] authorizationStatus] == JLPermissionAuthorized) {
+        weakSelf.recordView.center = weakSelf.parentViewController.view.center;
+        [weakSelf.parentViewController.view addSubview:weakSelf.recordView];
+        [weakSelf.parentViewController.view bringSubviewToFront:weakSelf.recordView];
+        [weakSelf.recordView recordButtonTouchDown];
+    }
+    else
+    {
+        [self.recorder startRecord:^(BOOL isStart) {
+            
+        }];
+    }
 }
 
 - (void)recordButtonTouchUpOutside

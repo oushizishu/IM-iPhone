@@ -10,4 +10,5 @@
 
 @implementation IMCardMessageBody
 
+
 @end

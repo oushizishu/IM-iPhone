@@ -40,7 +40,7 @@
 {
     NSString *filePath = nil;
     @TODO("保存图片到本地，获取路径");
-    [BJSendMessageHelper sendImageMessage:filePath chatInfo:self.chatInfo];
+    [BJSendMessageHelper sendImageMessage:filePath imageSize:image.size chatInfo:self.chatInfo];
 }
 
 - (void)showCameraView

@@ -34,7 +34,7 @@
 #pragma mark - 内部方法
 - (CGSize)calculateCellHeight
 {
-    CGSize retSize = self.message.size;
+    CGSize retSize = self.message.imageSize;
     if (retSize.width == 0 || retSize.height == 0) {
         retSize.width = MAX_SIZE;
         retSize.height = MAX_SIZE;

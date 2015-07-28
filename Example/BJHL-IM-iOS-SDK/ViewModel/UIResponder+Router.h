@@ -14,6 +14,7 @@
 
 NSString *const kRouterEventImageBubbleTapEventName;
 NSString *const kRouterEventAudioBubbleTapEventName;
+NSString *const kRouterEventCardEventName;
 NSString *const kRouterEventUserInfoObject;
 NSString *const kRouterEventChatCellBubbleTapEventName;
 NSString *const kResendButtonTapEventName;
