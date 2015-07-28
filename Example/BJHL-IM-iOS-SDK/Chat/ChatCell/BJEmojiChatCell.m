@@ -35,7 +35,7 @@
 #pragma mark - 内部方法
 - (CGSize)calculateCellHeight
 {
-    CGSize retSize = self.message.size;
+    CGSize retSize = self.message.emojiSize;
     if (retSize.width == 0 || retSize.height == 0) {
         retSize.width = EMOJI_MAX_SIZE;
         retSize.height = EMOJI_MAX_SIZE;

@@ -8,6 +8,14 @@
 
 #import "IMMessageBody.h"
 
-@interface IMEmojiMessageBody : IMMessageBody
+typedef NS_ENUM(NSInteger, EmojiContentType)
+{
+    EmojiContent_IMG = 0,
+    EmojiContent_GIF = 1,
+};
 
+@interface IMEmojiMessageBody : IMMessageBody
+@property (assign ,nonatomic) EmojiContentType contentType;
+@property (copy, nonatomic) NSString *content;
+@property (copy, nonatomic) NSString *name;
 @end

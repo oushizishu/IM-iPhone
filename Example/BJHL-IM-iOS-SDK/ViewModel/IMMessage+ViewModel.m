@@ -12,8 +12,13 @@
 #import <IMImgMessageBody.h>
 #import <IMAudioMessageBody.h>
 #import <IMEmojiMessageBody.h>
+#import <IMCardMessageBody.h>
+#import <BJFileManagerTool.h>
+#import <IMMessage+DB.h>
 
 #import "BJChatAudioPlayerHelper.h"
+
+
 @implementation IMMessage (ViewModel)
 
 - (BOOL)isMySend;    //是否是自己发送的
@@ -37,12 +42,14 @@
 
 - (NSURL *)headImageURL;
 {
-    return nil;
+    User *senderUser = [self getSenderUser];
+    return [NSURL URLWithString:senderUser.avatar];
 }
 
 - (NSString *)nickName;
 {
-    return nil;
+    User *senderUser = [self getSenderUser];
+    return senderUser.name;
 }
 
 - (NSString *)content;//text
@@ -56,47 +63,117 @@
 }
 
 #pragma mark - image
-- (CGSize)size
+- (IMImgMessageBody*)imgMessageBody;
 {
-    @TODO("计算size");
-    return CGSizeZero;
+    if ([self.messageBody isKindOfClass:[IMImgMessageBody class]]) {
+        IMImgMessageBody *body = (IMImgMessageBody *)self.messageBody;
+        return body;
+    }
+    NSAssert(0, @"类型不是IMImgMessageBody，请检查");
+    return nil;
+}
+- (CGSize)imageSize
+{
+    return CGSizeMake([self imgMessageBody].width, [self imgMessageBody].height);
 }
 
 - (NSURL *)imageURL
 {
-    @TODO("返回图片路径");
-    return nil;
+    IMImgMessageBody *imgMessage = [self imgMessageBody];
+    if (imgMessage.file.length>0) {
+        if ([BJFileManagerTool isFileExisted:nil path:imgMessage.file]) {
+            return [NSURL fileURLWithPath:imgMessage.file];
+        }
+    }
+    return [NSURL URLWithString:[self imgMessageBody].url];
 }
 
 #pragma mark - EMOJI
-- (NSString *)emojiName;
+- (IMEmojiMessageBody*)emojiMessageBody;
 {
-    @TODO("返回emoji的名字");
+    if ([self.messageBody isKindOfClass:[IMEmojiMessageBody class]]) {
+        IMEmojiMessageBody *body = (IMEmojiMessageBody *)self.messageBody;
+        return body;
+    }
+    NSAssert(0, @"类型不是IMEmojiMessageBody，请检查");
     return nil;
 }
 
+- (CGSize)emojiSize
+{
+    return CGSizeMake(60, 60);
+}
+
+- (NSString *)emojiName;
+{
+    return [self emojiMessageBody].name;
+}
+
 #pragma mark - Audio
+- (IMAudioMessageBody*)audioMessageBody;
+{
+    if ([self.messageBody isKindOfClass:[IMAudioMessageBody class]]) {
+        IMAudioMessageBody *body = (IMAudioMessageBody *)self.messageBody;
+        return body;
+    }
+    NSAssert(0, @"类型不是IMAudioMessageBody，请检查");
+    return nil;
+}
 //audio
 - (NSURL *)audioURL;
 {
-    @TODO("返回音频地址");
-    return nil;
+    IMAudioMessageBody *audioMessage = [self audioMessageBody];
+    if (audioMessage.file.length>0) {
+        if ([BJFileManagerTool isFileExisted:nil path:audioMessage.file]) {
+            return [NSURL fileURLWithPath:audioMessage.file];
+        }
+    }
+    return [NSURL URLWithString:[self audioMessageBody].url];
 }
 
 - (NSInteger)time;
 {
-    @TODO("返回正确的时间");
-    return 20;
+    return [self audioMessageBody].length;
 }
 - (BOOL)isPlayed;
 {
-    @TODO("返回正确的状态");
-    return NO;
+    return self.played;
 }
 
 - (BOOL)isPlaying
 {
     return [[BJChatAudioPlayerHelper sharedInstance] isPlayerWithMessage:self];
 }
+
+#pragma mark - card
+- (IMCardMessageBody *)cardMessageBody;
+{
+    if ([self.messageBody isKindOfClass:[IMCardMessageBody class]]) {
+        IMCardMessageBody *body = (IMCardMessageBody *)self.messageBody;
+        return body;
+    }
+    NSAssert(0, @"类型不是IMCardMessageBody，请检查");
+    return nil;
+}
+- (NSString *)cardTitle;
+{
+    return [self cardMessageBody].title;
+}
+
+- (NSString *)cardContent;
+{
+    return [self cardMessageBody].content;
+}
+
+- (NSString *)cardUrl;
+{
+    return [self cardMessageBody].url;
+}
+
+- (NSString *)cardThumb;
+{
+    return [self cardMessageBody].thumb;
+}
+
 
 @end

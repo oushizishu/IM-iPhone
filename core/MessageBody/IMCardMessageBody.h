@@ -9,5 +9,8 @@
 #import "IMMessageBody.h"
 
 @interface IMCardMessageBody : IMMessageBody
-
+@property (copy, nonatomic) NSString *title;
+@property (copy, nonatomic) NSString *content;
+@property (copy, nonatomic) NSString *url;
+@property (copy, nonatomic) NSString *thumb;
 @end
