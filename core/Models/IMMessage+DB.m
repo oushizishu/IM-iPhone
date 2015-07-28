@@ -67,4 +67,18 @@ static char BJIMMessageIMReceiverGroup;
     return objc_getAssociatedObject(self, &BJIMMessageIMService);
 }
 
+- (void)markRead
+{
+    if (self.read == 1) return;
+    self.read = 1;
+    [self.imService.imStorage updateMessage:self];
+}
+
+- (void)markPlayed
+{
+    if (self.played == 1) return;
+    self.played = 1;
+    [self.imService.imStorage updateMessage:self];
+}
+
 @end

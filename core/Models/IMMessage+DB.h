@@ -18,4 +18,7 @@
 - (User *)getReceiverUser;
 - (Group *)getReceiverGroup;
 
+- (void)markRead;
+- (void)markPlayed;
+
 @end
