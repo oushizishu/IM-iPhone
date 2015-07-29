@@ -78,6 +78,7 @@
     }
     message.sender= [IMEnvironment shareInstance].owner.userId;
     message.senderRole = [IMEnvironment shareInstance].owner.userRole;
+    message.createAt = [[NSDate date] timeIntervalSince1970];
     [self.imService sendMessage:message];
 }
 

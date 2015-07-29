@@ -1,1 +1,0 @@
-TMCACHE_OTHER_LDFLAGS = -framework "Foundation" -weak_framework "UIKit"

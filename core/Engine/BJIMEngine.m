@@ -211,7 +211,8 @@
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if(result.code == RESULT_CODE_SUCC)
         {
-            PollingResultModel *model = [PollingResultModel modelWithDictionary:result.data error:nil];
+            NSError *error;
+            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
             [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid result:model];
         }
         else

@@ -28,15 +28,16 @@
                NSInteger msg_t = [[value valueForKey:@"msg_t"] integerValue];
                NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
                
+               NSError *error;
                switch (msg_t) {
                    case eMessageType_TXT:
-                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:nil];
+                       messageBody = [IMTxtMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
                    case eMessageType_IMG:
-                       messageBody = [IMImgMessageBody modelWithDictionary:dictioanry error:nil];
+                       messageBody = [IMImgMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
                    case eMessageType_AUDIO:
-                       messageBody = [IMAudioMessageBody modelWithDictionary:dictioanry error:nil];
+                       messageBody = [IMAudioMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
                    case eMessageType_CARD:
                        messageBody = [IMCardMessageBody modelWithDictionary:dictioanry error:nil];
@@ -45,12 +46,11 @@
                        messageBody = [IMEmojiMessageBody modelWithDictionary:dictioanry error:nil];
                        break;
                    case eMessageType_LOCATION:
-                       messageBody = [IMLocationMessageBody modelWithDictionary:dictioanry error:nil];
+                       messageBody = [IMLocationMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
                    case eMessageType_NOTIFICATION:
-//                       messageBody = [];
-                    
-                       
+                       messageBody = [IMNotificationMessageBody modelWithDictionary:dictioanry error:&error];
+                       break;
                    default:
                        break;
                }

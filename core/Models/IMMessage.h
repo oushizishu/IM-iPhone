@@ -15,7 +15,10 @@
 #import "IMAudioMessageBody.h"
 #import "IMEmojiMessageBody.h"
 #import "IMLocationMessageBody.h"
+#import "IMNotificationMessageBody.h"
 #import "IMCardMessageBody.h"
+#import "IMCmdMessageBody.h"
+
 @interface IMMessage : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, assign) double_t msgId;

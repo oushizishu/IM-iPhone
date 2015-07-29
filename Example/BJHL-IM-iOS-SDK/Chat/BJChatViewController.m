@@ -128,6 +128,11 @@
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     [self addNewMessages:array isForward:NO];
     
+    if ([array count] > 0 && self.conversation)
+    {
+        [[BJIMManager shareInstance] loadMessageFromMinMsgId:[[array objectAtIndex:0] msgId] inConversation:self.conversation];
+    }
+    
     [self.view addSubview:self.tableView];
     [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.inputController.view];
@@ -196,7 +201,7 @@
     }
 
     if (forward) {
-        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
+        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, mutMessages.count)];
         [self.messageList insertObjects:mutMessages atIndexes:set];
         [self.tableView reloadData];
     }

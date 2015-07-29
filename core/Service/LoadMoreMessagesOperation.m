@@ -18,7 +18,7 @@
 @property (nonatomic, strong) NSArray *messages;
 
 @property (nonatomic, assign) BOOL hasMore;
-@property (nonatomic, copy) NSMutableString *excludeIds;
+@property (nonatomic, copy) NSString *excludeIds;
 
 @end
 
@@ -79,13 +79,18 @@
         }
         else
         {
-            self.excludeIds = [[NSMutableString alloc] init];
+            self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来
             [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 IMMessage *_message = (IMMessage *)obj;
                 if (_message.status != eMessageStatus_Send_Fail)
                 {
-                    [self.excludeIds appendFormat:@"%lld,", (int64_t)_message.msgId];
+                    if ([_excludeIds length] == 0) {
+                        _excludeIds = [NSString stringWithFormat:@"%lld", (int64_t)_message.msgId];
+                    } else {
+                        _excludeIds = [NSString stringWithFormat:@"%@,%lld", _excludeIds, (int64_t)_message.msgId];
+                    }
+                    
                 }
             }];
         
