@@ -144,11 +144,9 @@
     {
         IMMessage *cardMessage = [[IMMessage alloc] init];
         cardMessage.chat_t = eChatType_GroupChat;
-        cardMessage.msg_t = eMessageType_CMD;
-        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
-        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
-        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
-        card.thumb = @"dsd";
+        cardMessage.msg_t = eMessageType_TXT;
+        IMTxtMessageBody*card = [[IMTxtMessageBody alloc] init];
+        card.content = @"http://www.baidu.com";
         cardMessage.messageBody = card;
         [self addNewMessages:@[cardMessage] isForward:NO];
     }
@@ -316,6 +314,11 @@
     @TODO("点击跳转代码");
 }
 
+- (void)linkCellTapWithMessage:(NSString *)str
+{
+    @TODO("点击链接跳转代码");
+}
+
 - (void)audioCellTapWithMessage:(IMMessage *)message
 {
     __weak typeof(self) weakSelf = self;
@@ -415,6 +418,10 @@
     else if ([eventName isEqualToString:kRouterEventCardEventName])
     {
         [self cardCellTapWithMessage:message];
+    }
+    else if ([eventName isEqualToString:kRouterEventLinkName])
+    {
+        [self linkCellTapWithMessage:[userInfo objectForKey:kRouterEventUserInfoObject]];
     }
 }
 

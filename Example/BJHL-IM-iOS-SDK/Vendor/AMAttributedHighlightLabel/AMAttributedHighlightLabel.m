@@ -350,6 +350,9 @@
 
 - (void)handleTouchEnded:(CGPoint)touchLocation
 {
+    if (currentSelectedString == nil) {
+        [self handleTouchBegan:touchLocation];
+    }
     if(currentSelectedString != nil)
     {
         NSMutableAttributedString *newAttrString = [self.attributedText mutableCopy];
