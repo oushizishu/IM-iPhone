@@ -152,6 +152,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return message.msgId;
 }
 
+- (double_t)queryMaxMsgIdGroupChat:(int64_t)groupId
+{
+    NSString *queryString = [NSString stringWithFormat:@" receiver=%lld order by msgId desc", groupId];
+    IMMessage *msg = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return msg.msgId;
+}
+
 - (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(double_t)maxMsgId
 {
     NSString *queryString = [NSString stringWithFormat:@"receiver=%lld and msgId>%lf", groupId, maxMsgId];
@@ -244,7 +251,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (Conversation*)queryConversation:(int64_t)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@"conversationId = %lld",conversationId];
+    NSString *queryString = [NSString stringWithFormat:@"rowid=%lld",conversationId];
     return  [self.dbHelper  searchSingle:[Conversation class] where:queryString orderBy:nil];
 }
 
@@ -256,7 +263,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     NSString *query = @"";
     if (chatType ==  eChatType_Chat) {
-        query = [NSString stringWithFormat:@" AND toRole = %ld" ,otherRserRole];
+        query = [NSString stringWithFormat:@" AND toRole=%ld" ,otherRserRole];
     }else{
         query = @"";
     }

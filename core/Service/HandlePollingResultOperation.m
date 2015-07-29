@@ -231,7 +231,7 @@
                 self.receiveNewMessages = [[NSMutableArray alloc] init];
             }
             
-            if (! isConversationInit)
+//            if (! isConversationInit)
             {
                 // 如果 conversation 是第一次创建，不需要加载 receiver 里面，
                 // conversation 的 messages 初始化时会自动从数据库中加载出来。
@@ -277,7 +277,7 @@
         if (group == nil) return ;
         
         group.endMessageId = [obj doubleValue];
-        group.lastMessageId = [self.imService.imStorage queryGroupConversationMaxMsgId:group_id owner:owner.userId role:owner.userRole];
+        group.lastMessageId = [self.imService.imStorage queryMaxMsgIdGroupChat:group_id];
         
         if (group.endMessageId <= group.startMessageId)
         {
