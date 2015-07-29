@@ -13,6 +13,7 @@
 #import "User.h"
 #import "Group.h"
 #import "GroupMember.h"
+#import "IMMessage+DB.h"
 
 #import "IMEnvironment.h"
 
@@ -285,6 +286,11 @@
         }
         
         [self.imService.imStorage updateGroup:group];
+    }];
+    
+    [self.receiveNewMessages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        IMMessage *__message = (IMMessage *)obj;
+        __message.imService = _imService;
     }];
 
 }
