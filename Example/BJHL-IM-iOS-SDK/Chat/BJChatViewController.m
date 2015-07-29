@@ -134,12 +134,12 @@
     }
     
     [self.view addSubview:self.tableView];
-    [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.inputController.view];
     [self addChildViewController:self.inputController];
     [self.inputController didMoveToParentViewController:self];
     [self updateSubViewFrame];
-    
+    [self.tableView addSubview:self.slimeView];
+ 
     [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
 //    {
 //        IMMessage *cardMessage = [[IMMessage alloc] init];
