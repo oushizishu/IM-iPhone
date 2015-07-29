@@ -19,6 +19,7 @@ NSString *const kRouterEventChatCellBubbleTapEventName = @"kRouterEventChatCellB
 NSString *const kResendButtonTapEventName = @"kResendButtonTapEventName";
 
 NSString *const kSendNewMessageEventName = @"kSendNewMessageEventName";
+NSString *const kRouterEventLinkName = @"kRouterEventLinkName";
 
 @implementation UIResponder (Router)
 

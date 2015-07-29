@@ -21,7 +21,6 @@
 @property (strong, nonatomic) NSMutableArray *recevierAnimationImages;
 @property (strong, nonatomic) UIImageView    *isReadView;
 
-@property (nonatomic, strong) UIImageView *backImageView;
 @end
 
 @implementation BJAudioChatCell
@@ -64,7 +63,6 @@
         self.isReadView.frame = frame;
     }
     
-    self.backImageView.frame = self.bubbleContainerView.bounds;
 }
 
 #pragma mark - 方法
@@ -138,17 +136,6 @@
 }
 
 #pragma mark - set get
-
-- (UIImageView *)backImageView
-{
-    if (_backImageView == nil) {
-        _backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        _backImageView.userInteractionEnabled = YES;
-        _backImageView.multipleTouchEnabled = YES;
-        [self.bubbleContainerView addSubview:_backImageView];
-    }
-    return _backImageView;
-}
 
 - (UIImageView *)animationImageView
 {

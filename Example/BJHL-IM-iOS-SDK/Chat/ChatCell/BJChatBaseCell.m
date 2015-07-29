@@ -57,7 +57,7 @@
 
 - (BOOL)shouldShowName
 {
-    if (self.message.chat_t == eChatType_GroupChat || self.message.isMySend) {
+    if (self.message.chat_t == eChatType_GroupChat && !self.message.isMySend) {
         return YES;
     }
     return NO;
@@ -123,6 +123,7 @@
         bubbleFrame.origin.x = HEAD_PADDING * 2 + HEAD_SIZE;
         self.bubbleContainerView.frame = bubbleFrame;
     }
+    self.backImageView.frame = self.bubbleContainerView.bounds;
 }
 
 #pragma mark public
@@ -164,6 +165,12 @@
     [self.headImageView setAliyunImageWithURL:self.message.headImageURL placeholderImage:placeholderImage size:CGSizeMake(HEAD_SIZE, HEAD_SIZE)];
     if ([self shouldShowName]) {
         self.nameLabel.attributedText = self.message.nickNameAttri;
+        self.nameLabel.hidden = NO;
+    }
+    else
+    {
+        self.nameLabel.attributedText = nil;
+        self.nameLabel.hidden = YES;
     }
 }
 
@@ -191,6 +198,19 @@
 }
 
 #pragma mark - set get
+
+- (UIImageView *)backImageView
+{
+    if (_backImageView == nil) {
+        _backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _backImageView.userInteractionEnabled = YES;
+        _backImageView.multipleTouchEnabled = YES;
+        [self.bubbleContainerView addSubview:_backImageView];
+        [self.bubbleContainerView sendSubviewToBack:_backImageView];
+    }
+    return _backImageView;
+}
+
 - (UIImageView *)headImageView
 {
     if (_headImageView == nil) {

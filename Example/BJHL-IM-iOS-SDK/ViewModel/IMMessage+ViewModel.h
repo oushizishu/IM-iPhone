@@ -42,4 +42,7 @@
 - (NSString *)cardUrl;
 - (NSString *)cardThumb;
 
+//gossip 通知和cmd显示消息
+- (NSString *)gossipText;
+
 @end

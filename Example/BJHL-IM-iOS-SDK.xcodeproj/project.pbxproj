@@ -11,6 +11,8 @@
 		252C27181B68825700ACA199 /* BJChatFileCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27171B68825700ACA199 /* BJChatFileCacheManager.m */; };
 		252C271C1B68A1C100ACA199 /* UIImage+compressionSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C271B1B68A1C100ACA199 /* UIImage+compressionSize.m */; };
 		252C27241B68C28100ACA199 /* BJChatLimitMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27231B68C28100ACA199 /* BJChatLimitMacro.m */; };
+		252C27281B68EF0800ACA199 /* BJGossipTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */; };
+		252C27321B69047600ACA199 /* AMAttributedHighlightLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */; };
 		2539BCA31B66585D00333A00 /* ic_volume_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC8F1B66585D00333A00 /* ic_volume_1@2x.png */; };
 		2539BCA41B66585D00333A00 /* ic_volume_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC901B66585D00333A00 /* ic_volume_2@2x.png */; };
 		2539BCA51B66585D00333A00 /* ic_volume_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC911B66585D00333A00 /* ic_volume_3@2x.png */; };
@@ -136,6 +138,11 @@
 		252C271B1B68A1C100ACA199 /* UIImage+compressionSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+compressionSize.m"; sourceTree = "<group>"; };
 		252C27221B68C28100ACA199 /* BJChatLimitMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatLimitMacro.h; sourceTree = "<group>"; };
 		252C27231B68C28100ACA199 /* BJChatLimitMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatLimitMacro.m; sourceTree = "<group>"; };
+		252C27251B68EF0800ACA199 /* BJGossipTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJGossipTableViewCell.h; sourceTree = "<group>"; };
+		252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJGossipTableViewCell.m; sourceTree = "<group>"; };
+		252C272A1B68F82E00ACA199 /* BJChatUtilsMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatUtilsMacro.h; sourceTree = "<group>"; };
+		252C27301B69047600ACA199 /* AMAttributedHighlightLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAttributedHighlightLabel.h; sourceTree = "<group>"; };
+		252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAttributedHighlightLabel.m; sourceTree = "<group>"; };
 		2539BC8F1B66585D00333A00 /* ic_volume_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_1@2x.png"; sourceTree = "<group>"; };
 		2539BC901B66585D00333A00 /* ic_volume_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_2@2x.png"; sourceTree = "<group>"; };
 		2539BC911B66585D00333A00 /* ic_volume_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_3@2x.png"; sourceTree = "<group>"; };
@@ -325,6 +332,15 @@
 			path = NSURL;
 			sourceTree = "<group>";
 		};
+		252C272F1B69047600ACA199 /* AMAttributedHighlightLabel */ = {
+			isa = PBXGroup;
+			children = (
+				252C27301B69047600ACA199 /* AMAttributedHighlightLabel.h */,
+				252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */,
+			);
+			path = AMAttributedHighlightLabel;
+			sourceTree = "<group>";
+		};
 		2539BCB71B665D0600333A00 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -421,6 +437,7 @@
 		25CF15711B677D5F00666FEF /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				252C272F1B69047600ACA199 /* AMAttributedHighlightLabel */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -447,6 +464,8 @@
 				25DEDA7B1B66343600C09994 /* BJAudioChatCell.m */,
 				25DEDA7D1B66349900C09994 /* BJCardChatCell.h */,
 				25DEDA7E1B66349900C09994 /* BJCardChatCell.m */,
+				252C27251B68EF0800ACA199 /* BJGossipTableViewCell.h */,
+				252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -585,6 +604,7 @@
 		6003F593195388D20070C39A /* BJHL-IM-iOS-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				252C272A1B68F82E00ACA199 /* BJChatUtilsMacro.h */,
 				25CF15711B677D5F00666FEF /* Vendor */,
 				2539BCB71B665D0600333A00 /* ViewModel */,
 				25DEDA4A1B660BCA00C09994 /* View */,
@@ -889,7 +909,9 @@
 				25DEDA7C1B66343600C09994 /* BJAudioChatCell.m in Sources */,
 				6003F5A7195388D20070C39A /* BJIMViewController.m in Sources */,
 				25DEDA4E1B660BFC00C09994 /* BJActionCollectionViewCell.m in Sources */,
+				252C27321B69047600ACA199 /* AMAttributedHighlightLabel.m in Sources */,
 				252C271C1B68A1C100ACA199 /* UIImage+compressionSize.m in Sources */,
+				252C27281B68EF0800ACA199 /* BJGossipTableViewCell.m in Sources */,
 				25DED9E51B63A47D00C09994 /* BJChatCellFactory.m in Sources */,
 				25DEDA231B63B66100C09994 /* BJChatInfo.m in Sources */,
 				25DEDA791B66342700C09994 /* BJImageChatCell.m in Sources */,

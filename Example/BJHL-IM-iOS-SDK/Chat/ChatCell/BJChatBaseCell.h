@@ -42,11 +42,13 @@
 @property (nonatomic, strong) UIImageView *headImageView;       //头像
 @property (nonatomic, strong) UILabel *nameLabel;               //姓名
 @property (nonatomic, strong) UIView *bubbleContainerView;   //内容区域
+@property (nonatomic, strong) UIImageView *backImageView; //背景图片
 
 //sender
 @property (nonatomic, strong) UIActivityIndicatorView *activity;
 @property (nonatomic, strong) UIView *activityView;
 @property (nonatomic, strong) UIButton *retryButton;
+
 
 -(void)setCellInfo:(id)info indexPath:(NSIndexPath *)indexPath NS_REQUIRES_SUPER;
 - (void)bubbleViewPressed:(id)sender;

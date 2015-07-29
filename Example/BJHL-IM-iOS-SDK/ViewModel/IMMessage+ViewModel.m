@@ -26,7 +26,7 @@
 {
     if (self.sender == [IMEnvironment shareInstance].owner.userId &&
         self.senderRole == [IMEnvironment shareInstance].owner.userRole) {
-        return NO;
+        return YES;
     }
     return NO;
 }
@@ -95,6 +95,7 @@
         IMTxtMessageBody *body = (IMTxtMessageBody *)self.messageBody;
         return body.content;
     }
+    
     NSAssert(0, @"类型不是IMTxtMessageBody，请检查");
     return nil;
 }
@@ -220,5 +221,12 @@
     return [self cardMessageBody].thumb;
 }
 
+#pragma mark - gossip 通知和cmd显示消息
+- (NSString *)gossipText;
+{
+    IMMessageBody *body = self.messageBody;
+    @TODO("请添加这块的小道消息代码");
+    return @"请添加这块的小道消息代码";
+}
 
 @end

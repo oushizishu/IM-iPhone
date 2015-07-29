@@ -10,14 +10,14 @@
 #import "BJChatCellFactory.h"
 #import <BJIMConstants.h>
 #import <PureLayout/PureLayout.h>
+#import "AMAttributedHighlightLabel.h"
 
 #define BUBBLE_PROGRESSVIEW_HEIGHT 10 // progressView 高度
 
 #define TEXTLABEL_MAX_WIDTH 200 // textLaebl 最大宽度
 
-@interface BJTextChatCell ()
-@property (nonatomic, strong) UIImageView *backImageView;
-@property (nonatomic, strong) UILabel *contentLabel;
+@interface BJTextChatCell ()<AMAttributedHighlightLabelDelegate>
+@property (nonatomic, strong) AMAttributedHighlightLabel *contentLabel;
 @end
 
 @implementation BJTextChatCell
@@ -43,7 +43,6 @@
     
     frame.origin.y = BUBBLE_VIEW_PADDING;
     [self.contentLabel setFrame:frame];
-    self.backImageView.frame = self.bubbleContainerView.bounds;
 }
 
 #pragma mark - Protocol
@@ -66,9 +65,9 @@
     [super setCellInfo:info indexPath:indexPath];
     
     self.backImageView.image = [self bubbleImage];
-   
+  
     @TODO("文字超链接情况");
-    self.contentLabel.text = self.message.msg_t==eMessageType_TXT?self.message.content:@"当前版本暂不支持查看此消息,请升级新版本";
+    [self.contentLabel setString:self.message.msg_t==eMessageType_TXT?self.message.content:@"当前版本暂不支持查看此消息,请升级新版本"];
     CGRect contentRect = self.contentLabel.frame;
     contentRect.size.width = TEXTLABEL_MAX_WIDTH;
     self.contentLabel.frame = contentRect;
@@ -81,29 +80,26 @@
     [self layoutIfNeeded];
 }
 
+#pragma mark - 
+- (void)selectedLink:(NSString *)string;
+{
+    [super routerEventWithName:kRouterEventLinkName userInfo:@{kRouterEventUserInfoObject:string}];
+}
 
 #pragma mark - set get
-- (UIImageView *)backImageView
-{
-    if (_backImageView == nil) {
-        _backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
-        _backImageView.userInteractionEnabled = YES;
-        _backImageView.multipleTouchEnabled = YES;
-        [self.bubbleContainerView addSubview:_backImageView];
-    }
-    return _backImageView;
-}
 
 - (UILabel *)contentLabel
 {
     if (_contentLabel == nil) {
-        _contentLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+        _contentLabel = [[AMAttributedHighlightLabel alloc] initWithFrame:CGRectZero];
+        _contentLabel.linkTextColor = [UIColor blueColor];
+        _contentLabel.selectedLinkTextColor = [UIColor grayColor];
+        _contentLabel.delegate = self;
         _contentLabel.numberOfLines = 0;
         _contentLabel.lineBreakMode = NSLineBreakByCharWrapping;
         _contentLabel.font = [UIFont systemFontOfSize:NAME_LABEL_FONT_SIZE];
+        _contentLabel.userInteractionEnabled = YES;
         _contentLabel.backgroundColor = [UIColor clearColor];
-        _contentLabel.userInteractionEnabled = NO;
-        _contentLabel.multipleTouchEnabled = NO;
         [self.bubbleContainerView addSubview:_contentLabel];
     }
     return _contentLabel;

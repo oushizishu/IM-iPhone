@@ -19,7 +19,6 @@
 #define ContentWidth 130
 
 @interface BJCardChatCell ()
-@property (nonatomic, strong) UIImageView *backImageView;
 @property (strong, nonatomic) UIImageView *cardImageView;
 @property (strong, nonatomic) UILabel *titleLabel;
 @property (strong, nonatomic) UILabel *contentLabel;
@@ -41,7 +40,7 @@
     frame.origin.y = 10;
     self.titleLabel.frame = frame;
     
-    if (self.message.cardThumb.length>0) {
+    if (self.message.cardThumb.length<=0) {
         [self.cardImageView setHidden:YES];
         frame = self.contentLabel.frame;
         frame.origin.y = self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height+5;
@@ -77,7 +76,7 @@
     {
         CGRect frame = self.cardImageView.frame;
         frame.origin.x = Interval;
-        frame.origin.y = frame.origin.y = self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height+5;
+        frame.origin.y = self.titleLabel.frame.origin.y+self.titleLabel.frame.size.height+5;
         self.cardImageView.frame = frame;
         
         frame = self.titleLabel.frame;
@@ -89,7 +88,7 @@
         frame.origin.x = Interval+ImageWH+5;
         self.contentLabel.frame = frame;
     }
-    self.backImageView.frame = self.bubbleContainerView.bounds;
+
 }
 
 #pragma mark - Protocol
@@ -114,22 +113,21 @@
 {
     [super setCellInfo:info indexPath:indexPath];
     self.titleLabel.text = self.message.cardTitle;
-    self.contentLabel.text = self.message.content;
+    self.contentLabel.text = self.message.cardContent;
     [self.imageView setAliyunImageWithURL:[NSURL URLWithString:self.message.cardThumb] placeholderImage:nil size:self.imageView.frame.size];
     
     self.backImageView.image = [self bubbleImage];
+    CGSize titleSize = [self.titleLabel sizeThatFits:CGSizeMake(CardWidth-Interval*2, 40)];
+    CGSize contentSize = [self.contentLabel sizeThatFits:CGSizeMake(ContentWidth, CardHeight-55)];
+    [self.contentLabel sizeToFit];
+    CGRect rect = self.bubbleContainerView.frame;
+    rect.size.height = titleSize.height + contentSize.height + Interval*2;
+    self.bubbleContainerView.frame = rect;
     [self setNeedsLayout];
     [self layoutIfNeeded];
 }
 
 #pragma mark - set get
-- (UIImageView *)imageView
-{
-    if (!_cardImageView) {
-        _cardImageView = [[UIImageView alloc] initWithFrame:CGRectMake(Interval, 55, ImageWH, ImageWH)];
-    }
-    return _cardImageView;
-}
 
 - (UILabel *)titleLabel
 {
@@ -137,6 +135,7 @@
         _titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(Interval, Interval, CardWidth-Interval*2, 40)];
         [_titleLabel setFont:[UIFont systemFontOfSize:16]];
         _titleLabel.numberOfLines = 2;
+        [self.bubbleContainerView addSubview:_titleLabel];
     }
     return _titleLabel;
 }
@@ -148,6 +147,7 @@
         [_contentLabel setFont:[UIFont systemFontOfSize:14]];
         _contentLabel.numberOfLines = 4;
         [_contentLabel setTextColor:[UIColor darkGrayColor]];
+        [self.bubbleContainerView addSubview:_contentLabel];
     }
     return _contentLabel;
 }

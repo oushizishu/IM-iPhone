@@ -136,9 +136,29 @@
     [self updateSubViewFrame];
     
     [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.tableView addGestureRecognizer:tap];
+    {
+        IMMessage *cardMessage = [[IMMessage alloc] init];
+        cardMessage.chat_t = eChatType_GroupChat;
+        cardMessage.msg_t = eMessageType_CMD;
+        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
+        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
+        card.thumb = @"dsd";
+        cardMessage.messageBody = card;
+        [self addNewMessages:@[cardMessage] isForward:NO];
+    }
+//
+//    {
+//        IMMessage *cardMessage = [[IMMessage alloc] init];
+//        cardMessage.chat_t = eChatType_GroupChat;
+//        cardMessage.msg_t = eMessageType_NOTIFICATION;
+//        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
+//        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+//        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
+//        card.thumb = @"dsd";
+//        cardMessage.messageBody = card;
+//        [self addNewMessages:@[cardMessage] isForward:NO];
+//    }
 }
 
 
@@ -238,6 +258,12 @@
 }
 
 #pragma mark - 视图更新
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self keyBoardHidden];
+}
+
 - (void)updateSubViewFrame
 {
     CGRect rect = self.inputController.view.frame;
@@ -290,6 +316,11 @@
 - (void)showBigImageWithMessage:(IMMessage *)message
 {
     @TODO("显示大图");
+}
+
+- (void)cardCellTapWithMessage:(IMMessage *)message
+{
+    @TODO("点击跳转代码");
 }
 
 - (void)audioCellTapWithMessage:(IMMessage *)message
@@ -387,6 +418,10 @@
     else if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName])
     {
         [self audioCellTapWithMessage:message];
+    }
+    else if ([eventName isEqualToString:kRouterEventCardEventName])
+    {
+        [self cardCellTapWithMessage:message];
     }
 }
 
@@ -489,14 +524,14 @@
         if (self.chatInfo.chat_t == eChatType_GroupChat) {
             _conversation = [[BJIMManager shareInstance] getConversationGroupId:self.chatInfo.getToId];
             if (_conversation) {
-                self.title = _conversation.chatToUser.name;
+                self.title = _conversation.chatToGroup.groupName;
             }
         }
         else
         {
         _conversation = [[BJIMManager shareInstance] getConversationUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
             if (_conversation) {
-                self.title = _conversation.chatToGroup.groupName;
+                self.title = _conversation.chatToUser.name;
             }
         }
     }
