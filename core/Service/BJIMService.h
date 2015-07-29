@@ -37,6 +37,11 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
 
+- (NSArray *)getGroupsWithUser:(User *)user;
+- (NSArray *)getTeacherContactsWithUser:(User *)user;
+- (NSArray *)getStudentContactsWithUser:(User *)user;
+- (NSArray *)getInstitutionContactsWithUser:(User *)user;
+
 //cache 相关
 - (void)updateCacheUser:(User *)user;
 - (void)updateCacheGroup:(Group *)group;

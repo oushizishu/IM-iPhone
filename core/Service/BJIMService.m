@@ -311,6 +311,25 @@
     return conversation;
 }
 
+- (NSArray *)getGroupsWithUser:(User *)user
+{
+    return [self.imStorage queryGroupsWithUser:user];
+}
+
+- (NSArray *)getTeacherContactsWithUser:(User *)user
+{
+    return [self.imStorage queryTeacherContactWithUserId:user.userId userRole:user.userRole];
+}
+
+- (NSArray *)getStudentContactsWithUser:(User *)user
+{
+    return [self.imStorage queryStudentContactWithUserId:user.userId userRole:user.userRole];
+}
+
+- (NSArray *)getInstitutionContactsWithUser:(User *)user
+{
+    return [self.imStorage queryInstitutionContactWithUserId:user.userId userRole:user.userRole];
+}
 
 - (BJIMEngine *)imEngine
 {
