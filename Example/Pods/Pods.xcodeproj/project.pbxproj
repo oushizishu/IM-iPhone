@@ -318,6 +318,10 @@
 		93266C695923EE6846D25061778EEDE2 /* Pods-Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE876DFAF06DB10378BC790A004D6B25 /* Pods-Tests-dummy.m */; };
 		936CC59307252360CC57E564AF291F08 /* NSObject+LKDBHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E86B6D8DCFB660825EF89FA44F6782E /* NSObject+LKDBHelper.h */; };
 		94046CC027A3774A4E211D0C6100DE89 /* SDWebImage-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 874D3FE150BC698D98C89C668DB995E4 /* SDWebImage-dummy.m */; };
+		953835261B68F7C700808033 /* IMNotificationMessageBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 953835241B68F7C600808033 /* IMNotificationMessageBody.h */; };
+		953835271B68F7C700808033 /* IMNotificationMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 953835251B68F7C700808033 /* IMNotificationMessageBody.m */; };
+		9538352A1B68FAA000808033 /* IMCmdMessageBody.h in Headers */ = {isa = PBXBuildFile; fileRef = 953835281B68FAA000808033 /* IMCmdMessageBody.h */; };
+		9538352B1B68FAA000808033 /* IMCmdMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 953835291B68FAA000808033 /* IMCmdMessageBody.m */; };
 		95E78C4E1BA80A92CB991BDA52C9C319 /* DDContextFilterLogFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = B3AB3F1F381590A961F7B069A9298B35 /* DDContextFilterLogFormatter.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		97734A0D9409F41C60905C4D279CECD0 /* HandlePollingResultOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = CFCC2857525324C135886A0918477F05 /* HandlePollingResultOperation.m */; };
 		9A28A0BD98D1EF28548C8F692EC871D9 /* UIImageView+Aliyun.h in Headers */ = {isa = PBXBuildFile; fileRef = 8BC0766E5760D2B05A09A7685431AA43 /* UIImageView+Aliyun.h */; };
@@ -1202,6 +1206,10 @@
 		947D5E3EDC81EECE3FF7B0E26B7AA482 /* DDTTYLogger.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDTTYLogger.h; path = Classes/DDTTYLogger.h; sourceTree = "<group>"; };
 		94A55F32340C4FE567B4DD966C2924C7 /* BJFileManagerTool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJFileManagerTool.m; path = core/FileCache/BJFileManagerTool.m; sourceTree = "<group>"; };
 		94C98A036DD91A13DFC36CD428E50D06 /* TMMemoryCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = TMMemoryCache.h; path = TMCache/TMMemoryCache.h; sourceTree = "<group>"; };
+		953835241B68F7C600808033 /* IMNotificationMessageBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMNotificationMessageBody.h; sourceTree = "<group>"; };
+		953835251B68F7C700808033 /* IMNotificationMessageBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMNotificationMessageBody.m; sourceTree = "<group>"; };
+		953835281B68FAA000808033 /* IMCmdMessageBody.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IMCmdMessageBody.h; sourceTree = "<group>"; };
+		953835291B68FAA000808033 /* IMCmdMessageBody.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IMCmdMessageBody.m; sourceTree = "<group>"; };
 		95EAF049A74494703C749F41D7DA6F48 /* MagicalRecordLogging.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MagicalRecordLogging.h; path = MagicalRecord/Core/MagicalRecordLogging.h; sourceTree = "<group>"; };
 		960FAED44A93FEE97F2ADEC502A917EF /* NSManagedObjectContext+MagicalChainSave.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSManagedObjectContext+MagicalChainSave.h"; path = "MagicalRecord/Categories/NSManagedObjectContext/NSManagedObjectContext+MagicalChainSave.h"; sourceTree = "<group>"; };
 		967BC179CB026BAE23377A8D97859526 /* BJFileManagerTool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BJFileManagerTool.h; path = core/FileCache/BJFileManagerTool.h; sourceTree = "<group>"; };
@@ -1976,6 +1984,10 @@
 				90FCF3528F4EB263CAECB1B0C67E1093 /* IMMessageBody.m */,
 				F5A951060C0E30317C06EE0F91BBE82B /* IMTxtMessageBody.h */,
 				3B64761C28A7F5C5353CD9EF312D61F5 /* IMTxtMessageBody.m */,
+				953835241B68F7C600808033 /* IMNotificationMessageBody.h */,
+				953835251B68F7C700808033 /* IMNotificationMessageBody.m */,
+				953835281B68FAA000808033 /* IMCmdMessageBody.h */,
+				953835291B68FAA000808033 /* IMCmdMessageBody.m */,
 			);
 			path = MessageBody;
 			sourceTree = "<group>";
@@ -2802,6 +2814,8 @@
 				14CCE2511699596EB1B6812F99C1F516 /* UIImageView+AFNetworking.h in Headers */,
 				AB5702AC29B665686A37CFC3DA91A0F0 /* UIKit+AFNetworking.h in Headers */,
 				F095E235C290809376FE28E3416BB83B /* UIProgressView+AFNetworking.h in Headers */,
+				9538352A1B68FAA000808033 /* IMCmdMessageBody.h in Headers */,
+				953835261B68F7C700808033 /* IMNotificationMessageBody.h in Headers */,
 				B48515460A9DDBB4B88C441E927578D2 /* UIRefreshControl+AFNetworking.h in Headers */,
 				51F511992F9A1098833557780662C378 /* UIWebView+AFNetworking.h in Headers */,
 			);
@@ -3768,8 +3782,10 @@
 				553F1B5CC7C6DBB3E613C153FB17F767 /* AFURLConnectionOperation.m in Sources */,
 				1F04AF0ECB7658F91917608BFF433C84 /* AFURLRequestSerialization.m in Sources */,
 				6304407D4CD03B1917DCA94EE67F2B23 /* AFURLResponseSerialization.m in Sources */,
+				9538352B1B68FAA000808033 /* IMCmdMessageBody.m in Sources */,
 				FF01FE9D6012B5ABDEFD296076C73BC5 /* AFURLSessionManager.m in Sources */,
 				B422DFEA5DDCF8B0B765414D9D6B0651 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				953835271B68F7C700808033 /* IMNotificationMessageBody.m in Sources */,
 				59E0006AE3EEE61192B5A90C3312C3F4 /* UIAlertView+AFNetworking.m in Sources */,
 				C900A61A2FAC4052F6F92CBCC5371E5D /* UIButton+AFNetworking.m in Sources */,
 				5EB7C8EB40AAE116F99B5A4C1A6310E3 /* UIImageView+AFNetworking.m in Sources */,

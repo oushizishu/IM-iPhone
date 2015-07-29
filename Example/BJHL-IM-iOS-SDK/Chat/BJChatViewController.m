@@ -128,6 +128,11 @@
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     self.messageList = [[NSMutableArray alloc] initWithArray:array];
     
+    if ([array count] > 0 && self.conversation)
+    {
+        [[BJIMManager shareInstance] loadMessageFromMinMsgId:[[array objectAtIndex:0] msgId] inConversation:self.conversation];
+    }
+    
     [self.view addSubview:self.tableView];
     [self.tableView addSubview:self.slimeView];
     [self.view addSubview:self.inputController.view];

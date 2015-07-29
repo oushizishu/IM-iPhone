@@ -10,12 +10,22 @@
 
 @implementation BaseResponse
 
-//+ (NSDictionary *)JSONKeyPathsByPropertyKey
-//{
-//    return @{
-//             @"code":@"code",
-//             @"msg":@"msg",
-//             @"data":@"data"
-//             };
-//}
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"code":@"code",
+             @"msg":@"msg",
+             @"data":@"data",
+             @"ts":@"ts"
+             };
+}
+
+- (id)data
+{
+    if ([_data isKindOfClass:[NSDictionary class]]) {
+        return _data;
+    }
+    
+    return nil;
+}
 @end

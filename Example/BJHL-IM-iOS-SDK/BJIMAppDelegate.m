@@ -18,7 +18,7 @@
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     
-    [[BJIMManager shareInstance] setDebugMode:eIMServer_Environment_www];
+    [[BJIMManager shareInstance] setDebugMode:eIMServer_Environment_test];
     
     BJIMViewController *viewController = [[BJIMViewController alloc] init];
     UINavigationController *navi = [[UINavigationController alloc] initWithRootViewController:viewController];
