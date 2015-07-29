@@ -65,7 +65,8 @@
     [super setCellInfo:info indexPath:indexPath];
     
     self.backImageView.image = [self bubbleImage];
-    
+   
+    @TODO("文字超链接情况");
     self.contentLabel.text = self.message.content;
     CGRect contentRect = self.contentLabel.frame;
     contentRect.size.width = TEXTLABEL_MAX_WIDTH;
