@@ -147,18 +147,6 @@
         cardMessage.messageBody = card;
         [self addNewMessages:@[cardMessage] isForward:NO];
     }
-//
-//    {
-//        IMMessage *cardMessage = [[IMMessage alloc] init];
-//        cardMessage.chat_t = eChatType_GroupChat;
-//        cardMessage.msg_t = eMessageType_NOTIFICATION;
-//        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
-//        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
-//        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
-//        card.thumb = @"dsd";
-//        cardMessage.messageBody = card;
-//        [self addNewMessages:@[cardMessage] isForward:NO];
-//    }
 }
 
 
