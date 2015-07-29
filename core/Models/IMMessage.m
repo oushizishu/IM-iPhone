@@ -51,15 +51,6 @@
                    case eMessageType_NOTIFICATION:
                        messageBody = [IMNotificationMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
-                   case eMessageType_CARD:
-                       messageBody = [IMCardMessageBody modelWithDictionary:dictioanry error:&error];
-                       break;
-                   case eMessageType_EMOJI:
-                       messageBody = [IMEmojiMessageBody modelWithDictionary:dictioanry error:&error];
-                       break;
-                   case eMessageType_CMD:
-                       messageBody = [IMCmdMessageBody modelWithDictionary:dictioanry error:&error];
-                       break;
                    default:
                        break;
                }

@@ -213,7 +213,7 @@
     }
 
     if (forward) {
-        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
+        NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, mutMessages.count)];
         [self.messageList insertObjects:mutMessages atIndexes:set];
         [self.tableView reloadData];
     }
