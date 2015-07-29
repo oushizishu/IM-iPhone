@@ -72,7 +72,7 @@
     self.contentLabel.frame = contentRect;
     [self.contentLabel sizeToFit];
     contentRect = self.contentLabel.frame;
-    contentRect.size.width = contentRect.size.width + BUBBLE_VIEW_PADDING*2;
+    contentRect.size.width = contentRect.size.width + BUBBLE_VIEW_PADDING*2 + BUBBLE_ARROW_WIDTH;
     contentRect.size.height = contentRect.size.height + BUBBLE_VIEW_PADDING*2;
     self.bubbleContainerView.frame = contentRect;
 }

@@ -84,7 +84,7 @@
 {
     IMEmojiMessageBody *messageBody = [[IMEmojiMessageBody alloc] init];
     messageBody.name = emoji;
-    messageBody.contentType = EmojiContent_GIF;
+    messageBody.type = EmojiContent_GIF;
     
     IMMessage *message = [[IMMessage alloc] init];
     message.messageBody = messageBody;

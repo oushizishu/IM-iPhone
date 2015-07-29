@@ -17,6 +17,7 @@
 #import "BJChatAudioPlayerHelper.h"
 #import "IMMessage+ViewModel.h"
 #import <BJIMManager.h>
+#import <IMMessage+DB.h>
 
 #import "BJChatTimeCell.h"
 
@@ -122,6 +123,7 @@
     [[BJIMManager shareInstance] addReceiveNewMessageDelegate:self];
     [[BJIMManager shareInstance] addLoadMoreMessagesDelegate:self];
     [[BJIMManager shareInstance] addDeliveryMessageDelegate:self];
+    [self.conversation resetUnReadNum];
     
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
     self.messageList = [[NSMutableArray alloc] initWithArray:array];
@@ -169,8 +171,9 @@
     }
     
     for (IMMessage *oneMessage in messages) {
+        [oneMessage markRead];
         if (lastMessage) {
-            int minute = ([NSDate dateWithTimeIntervalSince1970:oneMessage.createAt].minute - [NSDate dateWithTimeIntervalSince1970:lastMessage.createAt].minute );//两条消息的时间分单位间隔超过1，则加一个时间显示
+            long long minute = ([NSDate dateWithTimeIntervalSince1970:oneMessage.createAt].minute - [NSDate dateWithTimeIntervalSince1970:lastMessage.createAt].minute );//两条消息的时间分单位间隔超过1，则加一个时间显示
             if (minute > 1) {
                 [mutMessages insertObject:[[NSDate dateWithTimeIntervalSince1970:oneMessage.createAt] formattedTime] atIndex:[mutMessages indexOfObject:oneMessage]];
             }
@@ -180,8 +183,6 @@
     }
 
     if (forward) {
-
-        
         NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
         [self.messageList insertObjects:messages atIndexes:set];
         [self.tableView reloadData];
@@ -297,6 +298,7 @@
     }
     else
     {
+        [message markPlayed];
         [[BJChatAudioPlayerHelper sharedInstance] startPlayerWithMessage:message callback:^(NSError *error) {
             @TODO("提示错误消息");
             [weakSelf.tableView reloadData];

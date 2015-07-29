@@ -70,7 +70,7 @@
 {
     [super setCellInfo:info indexPath:indexPath];
     CGSize size = [self calculateCellHeight];
-    self.emojiImageView.image = [YLGIFImage imageWithContentsOfFile:[self.message.emojiImageURL absoluteString]];
+    self.emojiImageView.image = [YLGIFImage imageWithContentsOfFile:[self.message.emojiImageURL relativePath]];
     CGRect rect = self.emojiImageView.frame;
     rect.size = size;
     self.emojiImageView.frame = rect;
@@ -85,6 +85,8 @@
 {
     if (_emojiImageView == nil) {
         _emojiImageView = [[YLImageView alloc] initWithFrame:CGRectMake(0, 0, EMOJI_MAX_SIZE, EMOJI_MAX_SIZE)];
+        [self.bubbleContainerView addSubview:_emojiImageView];
+
     }
     return _emojiImageView;
 }
