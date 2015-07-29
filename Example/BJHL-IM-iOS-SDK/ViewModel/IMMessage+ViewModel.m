@@ -26,7 +26,7 @@
 {
     if (self.sender == [IMEnvironment shareInstance].owner.userId &&
         self.senderRole == [IMEnvironment shareInstance].owner.userRole) {
-        return YES;
+        return NO;
     }
     return NO;
 }
@@ -45,6 +45,42 @@
 {
     User *senderUser = [self getSenderUser];
     return [NSURL URLWithString:senderUser.avatar];
+}
+
+- (NSAttributedString *)nickNameAttri
+{
+    NSString *typeName = @"";
+    UIColor *typeColor = [UIColor clearColor];
+    switch (self.senderRole) {
+        case eUserRole_Teacher: {
+            typeColor = BJChatColorFromRGB(0xffb545);
+            typeName = @"老师";
+            break;
+        }
+        case eUserRole_Student: {
+            typeColor = BJChatColorFromRGB(0x94ace4);
+            typeName = @"学生";
+            break;
+        }
+        case eUserRole_Institution: {
+            typeColor = BJChatColorFromRGB(0x94c678);
+            typeName = @"机构客服";
+            break;
+        }
+        case eUserRole_Kefu: {
+            typeColor = BJChatColorFromRGB(0x94c678);
+            typeName = @"学生";
+            break;
+        }
+        case eUserRole_Anonymous: {
+            typeColor = BJChatColorFromRGB(0x94ace4);
+            typeName = @"访客";
+            break;
+        }
+    }
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",typeName,self.nickName]];
+    [attStr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSBackgroundColorAttributeName:typeColor} range:NSMakeRange(0, typeName.length)];
+    return [attStr copy];
 }
 
 - (NSString *)nickName;

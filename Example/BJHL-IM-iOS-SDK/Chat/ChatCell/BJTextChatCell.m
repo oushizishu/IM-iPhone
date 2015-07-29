@@ -25,6 +25,7 @@
 + (void)load
 {
     [ChatCellFactoryInstance registerClass:[self class] forMessageType:eMessageType_TXT];
+    [ChatCellFactoryInstance registerClass:[self class] forMessageType:unKownChatMessageType];
 }
 
 -(void)layoutSubviews
@@ -67,7 +68,7 @@
     self.backImageView.image = [self bubbleImage];
    
     @TODO("文字超链接情况");
-    self.contentLabel.text = self.message.content;
+    self.contentLabel.text = self.message.msg_t==eMessageType_TXT?self.message.content:@"当前版本暂不支持查看此消息,请升级新版本";
     CGRect contentRect = self.contentLabel.frame;
     contentRect.size.width = TEXTLABEL_MAX_WIDTH;
     self.contentLabel.frame = contentRect;
@@ -76,6 +77,8 @@
     contentRect.size.width = contentRect.size.width + BUBBLE_VIEW_PADDING*2 + BUBBLE_ARROW_WIDTH;
     contentRect.size.height = contentRect.size.height + BUBBLE_VIEW_PADDING*2;
     self.bubbleContainerView.frame = contentRect;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 

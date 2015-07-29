@@ -235,6 +235,25 @@ static void AQInputCallback (void                   * inUserData,
 //    DDLogDebug(@"kAudioQueueProperty_EnableLevelMetering ret:%d", (int)rc);
 }
 
+- (float) averagePower
+{
+    AudioQueueLevelMeterState state[1];
+    UInt32  statesize = sizeof(state);
+    OSStatus status;
+    status = AudioQueueGetProperty(_aqc.queue, kAudioQueueProperty_CurrentLevelMeter, &state, &statesize);
+    if (status) {printf("Error retrieving meter data\n"); return 0.0f;}
+    return state[0].mAveragePower;
+}
+- (float) peakPower
+{
+    AudioQueueLevelMeterState state[1];
+    UInt32  statesize = sizeof(state);
+    OSStatus status;
+    status = AudioQueueGetProperty(_aqc.queue, kAudioQueueProperty_CurrentLevelMeter, &state, &statesize);
+    if (status) {printf("Error retrieving meter data\n"); return 0.0f;}
+    return state[0].mPeakPower;
+}
+
 - (double)audioMeter
 {
     UInt32 dataSize = sizeof(AudioQueueLevelMeterState) * _aqc.mDataFormat.mChannelsPerFrame;

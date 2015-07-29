@@ -12,6 +12,7 @@
 #import "BJSendMessageHelper.h"
 #import "BJChatFileCacheManager.h"
 #import "UIImage+compressionSize.h"
+#import "BJChatLimitMacro.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -44,7 +45,7 @@
         NSString *filePath = [BJChatFileCacheManager imageCachePathWithName:[BJChatFileCacheManager generateJpgImageName]];
         NSAssert(filePath.length>0, @"文件路径不能为空");
         //JEPG格式
-        NSData *data = [image bj_jpgDataWithCompressionSize:2];
+        NSData *data = [image bj_jpgDataWithCompressionSize:BJChat_Image_Max_SizeM];
         [data writeToFile:filePath atomically:YES];
         [BJSendMessageHelper sendImageMessage:filePath imageSize:image.size chatInfo:self.chatInfo];
     }
@@ -59,7 +60,7 @@
     @TODO("模拟器不支持拍照");
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
-    self.imagePicker.allowsEditing = YES;
+//    self.imagePicker.allowsEditing = YES;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self.navigationController presentViewController:self.imagePicker animated:YES completion:NULL];
 #endif
@@ -70,7 +71,7 @@
     if ([self.delegate respondsToSelector:@selector(chatInputDidEndEdit)]) {
         [self.delegate chatInputDidEndEdit];
     }
-    self.imagePicker.allowsEditing = YES;
+//    self.imagePicker.allowsEditing = YES;
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self.navigationController presentViewController:self.imagePicker animated:YES completion:NULL];
@@ -133,7 +134,7 @@
         layout.itemSize = CGSizeMake(60, 105);
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.minimumLineSpacing = 5;
-        layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+        layout.sectionInset = UIEdgeInsetsMake(5, 15, 5, 15);
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor whiteColor];
         _collectionView.delegate = self;

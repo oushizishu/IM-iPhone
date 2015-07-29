@@ -67,6 +67,7 @@
 #pragma mark - 生成名称
 + (NSString *)generateJpgImageName;
 {
+    @TODO("可以优化，data一样的话生成一样的名称");
     return [NSString stringWithFormat:@"image_%.f.jpg",[NSDate timeIntervalSinceReferenceDate]];
 }
 

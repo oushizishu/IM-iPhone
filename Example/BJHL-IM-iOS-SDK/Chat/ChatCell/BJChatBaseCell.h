@@ -40,7 +40,7 @@
 @property (strong, nonatomic)NSIndexPath *indexPath;
 
 @property (nonatomic, strong) UIImageView *headImageView;       //头像
-//@property (nonatomic, strong) UILabel *nameLabel;               //姓名
+@property (nonatomic, strong) UILabel *nameLabel;               //姓名
 @property (nonatomic, strong) UIView *bubbleContainerView;   //内容区域
 
 //sender

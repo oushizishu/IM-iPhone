@@ -102,7 +102,10 @@
 {
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJCardChatCell class])];
     if (self) {
-        
+        CGRect rect = self.bubbleContainerView.frame;
+        rect.size.width = CardWidth;
+        rect.size.height = CardHeight;
+        self.bubbleContainerView.frame = rect;
     }
     return self;
 }
@@ -115,11 +118,8 @@
     [self.imageView setAliyunImageWithURL:[NSURL URLWithString:self.message.cardThumb] placeholderImage:nil size:self.imageView.frame.size];
     
     self.backImageView.image = [self bubbleImage];
-}
-
-+ (CGFloat)cellHeightWithInfo:(id)dic indexPath:(NSIndexPath *)indexPath;
-{
-    return 100;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - set get

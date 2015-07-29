@@ -17,6 +17,7 @@
 
 - (NSURL *)headImageURL;
 - (NSString *)nickName;
+- (NSAttributedString *)nickNameAttri;
 
 //text
 - (NSString *)content;

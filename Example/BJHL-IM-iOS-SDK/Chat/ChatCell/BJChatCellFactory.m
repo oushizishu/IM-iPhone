@@ -9,7 +9,8 @@
 #import "BJChatCellFactory.h"
 #import <IMMessage.h>
 
-const NSInteger unKownMessageType = -100;
+const NSInteger unKownChatMessageType = -100;
+const NSInteger unKownSysMessageType = -100;
 
 static BJChatCellFactory *sharedInstance = nil;
 
@@ -36,7 +37,11 @@ static BJChatCellFactory *sharedInstance = nil;
     id key = @(type);
     if (![self canHandleMessageType:type]) {
 //        NSAssert1(0, @"%ld 此类型没有支持的cell显示，请实现此cell并调用 BJChatCellFactory 的注册方法 registerClass:forMessageType", type);
-        key = @(unKownMessageType);
+        if (type == eMessageType_NOTIFICATION) {
+            key = @(unKownSysMessageType);
+        }
+        else
+            key = @(unKownChatMessageType);
     }
     
     Class cellClass = [self.registerCellDic objectForKey:key];

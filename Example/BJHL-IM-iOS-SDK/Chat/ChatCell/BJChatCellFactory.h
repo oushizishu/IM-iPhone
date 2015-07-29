@@ -12,7 +12,8 @@
 
 #define ChatCellFactoryInstance [BJChatCellFactory sharedInstance]
 
-extern const NSInteger unKownMessageType;
+extern const NSInteger unKownChatMessageType;
+extern const NSInteger unKownSysMessageType;
 
 @interface BJChatCellFactory : NSObject
 
