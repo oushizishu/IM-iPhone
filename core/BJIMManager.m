@@ -157,6 +157,40 @@
     return [self.imService getConversationUserOrGroupId:userId userRole:userRole owner:[IMEnvironment shareInstance].owner chat_t:eChatType_Chat];
 }
 
+#pragma makr - 联系人
+- (NSArray *)getMyGroups
+{
+    if ([[IMEnvironment shareInstance] isLogin])
+    {
+        return nil;
+    }
+    return [self.imService getGroupsWithUser:[IMEnvironment shareInstance].owner];
+}
+
+- (NSArray *)getMyTeacherContacts
+{
+    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Teacher) return nil;
+    
+    return [self.imService getTeacherContactsWithUser:[IMEnvironment shareInstance].owner];
+}
+
+- (NSArray *)getMyStudentContacts
+{
+    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Student) return nil;
+    
+    return [self.imService getStudentContactsWithUser:[IMEnvironment shareInstance].owner];
+}
+
+- (NSArray *)getMyInstitutionContacts
+{
+    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Institution) return nil;
+    return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
+}
+
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {

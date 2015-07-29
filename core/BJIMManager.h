@@ -65,6 +65,12 @@
 // 退出聊天
 - (void)stopChat;
 
+#pragma mark - 联系人
+- (NSArray *)getMyGroups;
+- (NSArray *)getMyTeacherContacts;
+- (NSArray *)getMyStudentContacts;
+- (NSArray *)getMyInstitutionContacts;
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
 - (void)applicationDidBecomeActive;
