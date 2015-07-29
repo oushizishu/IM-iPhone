@@ -217,7 +217,17 @@
     double_t msgId = 0;
     if (self.messageList.count>0) {
         IMMessage *message = [self.messageList objectAtIndex:0];
-        msgId = message.msgId;
+        if ([message isKindOfClass:[IMMessage class]])
+        {
+            msgId = message.msgId;
+        }
+        else
+        {
+            if (self.messageList.count>1) {
+                message = [self.messageList objectAtIndex:1];
+                msgId = message.msgId;
+            }
+        }
     }
     NSArray *messageList = [[BJIMManager shareInstance] loadMessageFromMinMsgId:msgId inConversation:self.conversation];
     [self addNewMessages:messageList isForward:YES];
