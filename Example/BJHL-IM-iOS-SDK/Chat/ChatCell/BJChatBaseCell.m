@@ -20,6 +20,15 @@
     return self;
 }
 
+- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        [self setupConfigure];
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -46,6 +55,14 @@
     // Configure the view for the selected state
 }
 
+- (BOOL)shouldShowName
+{
+    if (self.message.chat_t == eChatType_GroupChat && !self.message.isMySend) {
+        return YES;
+    }
+    return NO;
+}
+
 -(void)layoutSubviews
 {
     [super layoutSubviews];
@@ -54,11 +71,16 @@
     frame.origin.x = self.message.isMySend ? (self.bounds.size.width - self.headImageView.frame.size.width - HEAD_PADDING) : HEAD_PADDING;
     self.headImageView.frame = frame;
     
-//    self.nameLabel.frame = CGRectMake(CGRectGetMaxX(self.headImageView.frame)+5, CGRectGetMinY(self.headImageView.frame), (self.bounds.size.width - (CGRectGetMaxX(self.headImageView.frame)+5)*2), NAME_LABEL_HEIGHT);
+    self.nameLabel.frame = CGRectMake(CGRectGetMaxX(self.headImageView.frame)+5, CGRectGetMinY(self.headImageView.frame), (self.bounds.size.width - (CGRectGetMaxX(self.headImageView.frame)+5)*2), NAME_LABEL_HEIGHT);
     
     CGRect bubbleFrame = self.bubbleContainerView.frame;
-    bubbleFrame.origin.y = CGRectGetMinY(self.headImageView.frame);
-    
+    if ([self shouldShowName]) {
+        bubbleFrame.origin.y = CGRectGetMaxY(self.nameLabel.frame);
+    }
+    else
+    {
+        bubbleFrame.origin.y = CGRectGetMinY(self.headImageView.frame);
+    }
     if (self.message.isMySend) {
         // 菊花状态 （因不确定菊花具体位置，要在子类中实现位置的修改）
         switch (self.message.deliveryStatus) {
@@ -101,6 +123,7 @@
         bubbleFrame.origin.x = HEAD_PADDING * 2 + HEAD_SIZE;
         self.bubbleContainerView.frame = bubbleFrame;
     }
+    self.backImageView.frame = self.bubbleContainerView.bounds;
 }
 
 #pragma mark public
@@ -140,7 +163,15 @@
     self.indexPath = indexPath;
     UIImage *placeholderImage = [UIImage imageNamed:@"img_head_default"];
     [self.headImageView setAliyunImageWithURL:self.message.headImageURL placeholderImage:placeholderImage size:CGSizeMake(HEAD_SIZE, HEAD_SIZE)];
-//    self.nameLabel.text = self.message.nickName;
+    if ([self shouldShowName]) {
+        self.nameLabel.attributedText = self.message.nickNameAttri;
+        self.nameLabel.hidden = NO;
+    }
+    else
+    {
+        self.nameLabel.attributedText = nil;
+        self.nameLabel.hidden = YES;
+    }
 }
 
 + (CGFloat)cellHeightWithInfo:(id)dic indexPath:(NSIndexPath *)indexPath;
@@ -157,14 +188,29 @@
     }
     
     [cell setCellInfo:dic indexPath:indexPath];
-    CGFloat height = cell.bubbleContainerView.frame.size.height;
+    CGFloat height = CGRectGetMaxY(cell.bubbleContainerView.frame);
+    height -= CELLPADDING;
     if (height < cell.headImageView.frame.size.height) {
         height = cell.headImageView.frame.size.height;
     }
+    NSLog(@"cellHeightWithInfo %f contaner:%@",height,NSStringFromCGRect(cell.bubbleContainerView.frame));
     return height + CELLPADDING*2;
 }
 
 #pragma mark - set get
+
+- (UIImageView *)backImageView
+{
+    if (_backImageView == nil) {
+        _backImageView = [[UIImageView alloc] initWithFrame:self.bounds];
+        _backImageView.userInteractionEnabled = YES;
+        _backImageView.multipleTouchEnabled = YES;
+        [self.bubbleContainerView addSubview:_backImageView];
+        [self.bubbleContainerView sendSubviewToBack:_backImageView];
+    }
+    return _backImageView;
+}
+
 - (UIImageView *)headImageView
 {
     if (_headImageView == nil) {
@@ -178,18 +224,18 @@
     return _headImageView;
 }
 
-//- (UILabel *)nameLabel
-//{
-//    if (_nameLabel == nil) {
-//        _nameLabel = [[UILabel alloc] init];
-//        _nameLabel.backgroundColor = [UIColor clearColor];
-//        _nameLabel.textColor = [UIColor grayColor];
-//        _nameLabel.textAlignment = NSTextAlignmentLeft;
-//        _nameLabel.font = [UIFont systemFontOfSize:12];
-//        [self.contentView addSubview:_nameLabel];
-//    }
-//    return _nameLabel;
-//}
+- (UILabel *)nameLabel
+{
+    if (_nameLabel == nil) {
+        _nameLabel = [[UILabel alloc] init];
+        _nameLabel.backgroundColor = [UIColor clearColor];
+        _nameLabel.textColor = [UIColor grayColor];
+        _nameLabel.textAlignment = NSTextAlignmentLeft;
+        _nameLabel.font = [UIFont systemFontOfSize:12];
+        [self.contentView addSubview:_nameLabel];
+    }
+    return _nameLabel;
+}
 
 - (UIView *)bubbleContainerView
 {

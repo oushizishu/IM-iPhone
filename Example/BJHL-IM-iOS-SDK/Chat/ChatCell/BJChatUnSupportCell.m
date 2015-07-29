@@ -18,7 +18,7 @@
 
 + (void)load
 {
-    [ChatCellFactoryInstance registerClass:[self class] forMessageType:unKownMessageType];
+    [ChatCellFactoryInstance registerClass:[self class] forMessageType:unKownSysMessageType];
 }
 
 - (void)awakeFromNib {
@@ -42,6 +42,7 @@
     self = [super initWithStyle:UITableViewCellStyleDefault reuseIdentifier:NSStringFromClass([BJChatUnSupportCell class])];
     if (self) {
         self.textLabel.font = [UIFont systemFontOfSize:NAME_LABEL_FONT_SIZE];
+        self.selectionStyle = UITableViewCellSelectionStyleNone;
     }
     return self;
 }
@@ -51,6 +52,8 @@
     self.message = info;
     self.indexPath = indexPath;
     self.textLabel.text = @"当前版本暂不支持查看此消息";
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 + (CGFloat)cellHeightWithInfo:(id)dic indexPath:(NSIndexPath *)indexPath;

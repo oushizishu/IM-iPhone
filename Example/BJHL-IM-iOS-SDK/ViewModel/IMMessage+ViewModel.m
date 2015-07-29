@@ -47,6 +47,42 @@
     return [NSURL URLWithString:senderUser.avatar];
 }
 
+- (NSAttributedString *)nickNameAttri
+{
+    NSString *typeName = @"";
+    UIColor *typeColor = [UIColor clearColor];
+    switch (self.senderRole) {
+        case eUserRole_Teacher: {
+            typeColor = BJChatColorFromRGB(0xffb545);
+            typeName = @"老师";
+            break;
+        }
+        case eUserRole_Student: {
+            typeColor = BJChatColorFromRGB(0x94ace4);
+            typeName = @"学生";
+            break;
+        }
+        case eUserRole_Institution: {
+            typeColor = BJChatColorFromRGB(0x94c678);
+            typeName = @"机构客服";
+            break;
+        }
+        case eUserRole_Kefu: {
+            typeColor = BJChatColorFromRGB(0x94c678);
+            typeName = @"学生";
+            break;
+        }
+        case eUserRole_Anonymous: {
+            typeColor = BJChatColorFromRGB(0x94ace4);
+            typeName = @"访客";
+            break;
+        }
+    }
+    NSMutableAttributedString *attStr = [[NSMutableAttributedString alloc] initWithString:[NSString stringWithFormat:@"%@ %@",typeName,self.nickName]];
+    [attStr addAttributes:@{NSForegroundColorAttributeName:[UIColor whiteColor],NSBackgroundColorAttributeName:typeColor} range:NSMakeRange(0, typeName.length)];
+    return [attStr copy];
+}
+
 - (NSString *)nickName;
 {
     User *senderUser = [self getSenderUser];
@@ -59,6 +95,7 @@
         IMTxtMessageBody *body = (IMTxtMessageBody *)self.messageBody;
         return body.content;
     }
+    
     NSAssert(0, @"类型不是IMTxtMessageBody，请检查");
     return nil;
 }
@@ -184,5 +221,12 @@
     return [self cardMessageBody].thumb;
 }
 
+#pragma mark - gossip 通知和cmd显示消息
+- (NSString *)gossipText;
+{
+    IMMessageBody *body = self.messageBody;
+    @TODO("请添加这块的小道消息代码");
+    return @"请添加这块的小道消息代码";
+}
 
 @end

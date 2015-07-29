@@ -12,8 +12,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface DXRecordView : UIView
+@protocol DXRecordViewDelegate <NSObject>
+@required
+- (float)getAudioMeter;
 
+@end
+
+@interface DXRecordView : UIView
+@property (weak, nonatomic) id<DXRecordViewDelegate>delegate;
 // 显示动画的ImageView
 @property (nonatomic, strong) UIImageView *recordAnimationView;
 // 提示文字

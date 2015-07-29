@@ -10,6 +10,9 @@
 #import <PureLayout.h>
 #import "BJActionCollectionViewCell.h"
 #import "BJSendMessageHelper.h"
+#import "BJChatFileCacheManager.h"
+#import "UIImage+compressionSize.h"
+#import "BJChatLimitMacro.h"
 
 #import <MobileCoreServices/MobileCoreServices.h>
 
@@ -38,9 +41,14 @@
 
 - (void)sendImageMessage:(UIImage *)image
 {
-    NSString *filePath = nil;
-    @TODO("保存图片到本地，获取路径");
-    [BJSendMessageHelper sendImageMessage:filePath imageSize:image.size chatInfo:self.chatInfo];
+    if (image) {
+        NSString *filePath = [BJChatFileCacheManager imageCachePathWithName:[BJChatFileCacheManager generateJpgImageName]];
+        NSAssert(filePath.length>0, @"文件路径不能为空");
+        //JEPG格式
+        NSData *data = [image bj_jpgDataWithCompressionSize:BJChat_Image_Max_SizeM];
+        [data writeToFile:filePath atomically:YES];
+        [BJSendMessageHelper sendImageMessage:filePath imageSize:image.size chatInfo:self.chatInfo];
+    }
 }
 
 - (void)showCameraView
@@ -52,6 +60,7 @@
     @TODO("模拟器不支持拍照");
 #elif TARGET_OS_IPHONE
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypeCamera;
+//    self.imagePicker.allowsEditing = YES;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self.navigationController presentViewController:self.imagePicker animated:YES completion:NULL];
 #endif
@@ -62,14 +71,10 @@
     if ([self.delegate respondsToSelector:@selector(chatInputDidEndEdit)]) {
         [self.delegate chatInputDidEndEdit];
     }
-    
-#if TARGET_IPHONE_SIMULATOR
-    @TODO("模拟器不支持拍照");
-#elif TARGET_OS_IPHONE
+//    self.imagePicker.allowsEditing = YES;
     self.imagePicker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
     self.imagePicker.mediaTypes = @[(NSString *)kUTTypeImage];
     [self.navigationController presentViewController:self.imagePicker animated:YES completion:NULL];
-#endif
 }
 
 - (void)didSelectWithKey:(NSString *)key;
@@ -129,7 +134,7 @@
         layout.itemSize = CGSizeMake(60, 105);
         layout.scrollDirection = UICollectionViewScrollDirectionVertical;
         layout.minimumLineSpacing = 5;
-        layout.sectionInset = UIEdgeInsetsMake(5, 5, 5, 5);
+        layout.sectionInset = UIEdgeInsetsMake(5, 15, 5, 15);
         _collectionView = [[UICollectionView alloc] initWithFrame:self.view.bounds collectionViewLayout:layout];
         _collectionView.backgroundColor = [UIColor whiteColor];
         _collectionView.delegate = self;

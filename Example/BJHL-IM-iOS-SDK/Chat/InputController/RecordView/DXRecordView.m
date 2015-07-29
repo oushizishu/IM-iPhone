@@ -11,8 +11,6 @@
   */
 
 #import "DXRecordView.h"
-#import <BJAudioBufferRecorder.h>
-
 @interface DXRecordView ()
 {
     NSTimer *_timer;
@@ -98,8 +96,9 @@
 
 -(void)setVoiceImage {
     _recordAnimationView.image = [UIImage imageNamed:@"VoiceSearchFeedback001"];
-    double voiceSound = 0;
-//    voiceSound = [[BJAudioBufferRecorder ] audioMeter];
+    float voiceSound = 0;
+    voiceSound = [self.delegate getAudioMeter];
+    NSLog(@"setVoiceImage %f",voiceSound);
     if (0 < voiceSound <= 0.05) {
         [_recordAnimationView setImage:[UIImage imageNamed:@"ic_volume_1"]];
     }else if (0.05<voiceSound<=0.33) {

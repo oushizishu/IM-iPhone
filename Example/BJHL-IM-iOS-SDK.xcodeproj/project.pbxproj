@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		1C1C79E7D3E2A7ECC23D7EAF /* libPods-BJHL-IM-iOS-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF511DA1B396C8FD68E20F39 /* libPods-BJHL-IM-iOS-SDK.a */; };
+		252C27181B68825700ACA199 /* BJChatFileCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27171B68825700ACA199 /* BJChatFileCacheManager.m */; };
+		252C271C1B68A1C100ACA199 /* UIImage+compressionSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C271B1B68A1C100ACA199 /* UIImage+compressionSize.m */; };
+		252C27241B68C28100ACA199 /* BJChatLimitMacro.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27231B68C28100ACA199 /* BJChatLimitMacro.m */; };
+		252C27281B68EF0800ACA199 /* BJGossipTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */; };
+		252C27321B69047600ACA199 /* AMAttributedHighlightLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */; };
 		2539BCA31B66585D00333A00 /* ic_volume_1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC8F1B66585D00333A00 /* ic_volume_1@2x.png */; };
 		2539BCA41B66585D00333A00 /* ic_volume_2@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC901B66585D00333A00 /* ic_volume_2@2x.png */; };
 		2539BCA51B66585D00333A00 /* ic_volume_3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 2539BC911B66585D00333A00 /* ic_volume_3@2x.png */; };
@@ -127,6 +132,17 @@
 /* Begin PBXFileReference section */
 		0DF388E93CF84D319664775D /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1D279237435A9B5BE6A39168 /* Pods-BJHL-IM-iOS-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; sourceTree = "<group>"; };
+		252C27161B68825700ACA199 /* BJChatFileCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatFileCacheManager.h; sourceTree = "<group>"; };
+		252C27171B68825700ACA199 /* BJChatFileCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatFileCacheManager.m; sourceTree = "<group>"; };
+		252C271A1B68A1C100ACA199 /* UIImage+compressionSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+compressionSize.h"; sourceTree = "<group>"; };
+		252C271B1B68A1C100ACA199 /* UIImage+compressionSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+compressionSize.m"; sourceTree = "<group>"; };
+		252C27221B68C28100ACA199 /* BJChatLimitMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatLimitMacro.h; sourceTree = "<group>"; };
+		252C27231B68C28100ACA199 /* BJChatLimitMacro.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatLimitMacro.m; sourceTree = "<group>"; };
+		252C27251B68EF0800ACA199 /* BJGossipTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJGossipTableViewCell.h; sourceTree = "<group>"; };
+		252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJGossipTableViewCell.m; sourceTree = "<group>"; };
+		252C272A1B68F82E00ACA199 /* BJChatUtilsMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatUtilsMacro.h; sourceTree = "<group>"; };
+		252C27301B69047600ACA199 /* AMAttributedHighlightLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAttributedHighlightLabel.h; sourceTree = "<group>"; };
+		252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAttributedHighlightLabel.m; sourceTree = "<group>"; };
 		2539BC8F1B66585D00333A00 /* ic_volume_1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_1@2x.png"; sourceTree = "<group>"; };
 		2539BC901B66585D00333A00 /* ic_volume_2@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_2@2x.png"; sourceTree = "<group>"; };
 		2539BC911B66585D00333A00 /* ic_volume_3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ic_volume_3@2x.png"; sourceTree = "<group>"; };
@@ -300,9 +316,36 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		252C27191B68A19000ACA199 /* UIimage */ = {
+			isa = PBXGroup;
+			children = (
+				252C271A1B68A1C100ACA199 /* UIImage+compressionSize.h */,
+				252C271B1B68A1C100ACA199 /* UIImage+compressionSize.m */,
+			);
+			path = UIimage;
+			sourceTree = "<group>";
+		};
+		252C271D1B68A8A700ACA199 /* NSURL */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = NSURL;
+			sourceTree = "<group>";
+		};
+		252C272F1B69047600ACA199 /* AMAttributedHighlightLabel */ = {
+			isa = PBXGroup;
+			children = (
+				252C27301B69047600ACA199 /* AMAttributedHighlightLabel.h */,
+				252C27311B69047600ACA199 /* AMAttributedHighlightLabel.m */,
+			);
+			path = AMAttributedHighlightLabel;
+			sourceTree = "<group>";
+		};
 		2539BCB71B665D0600333A00 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				252C271D1B68A8A700ACA199 /* NSURL */,
+				252C27191B68A19000ACA199 /* UIimage */,
 				2539BCB81B665D1300333A00 /* UIResponder+Router.h */,
 				2539BCB91B665D1300333A00 /* UIResponder+Router.m */,
 				2539BCBB1B665D2D00333A00 /* BJSendMessageHelper.h */,
@@ -311,6 +354,10 @@
 				2539BCBF1B665D3900333A00 /* IMMessage+ViewModel.m */,
 				2539BCC11B665DC900333A00 /* BJChatAudioPlayerHelper.h */,
 				2539BCC21B665DC900333A00 /* BJChatAudioPlayerHelper.m */,
+				252C27161B68825700ACA199 /* BJChatFileCacheManager.h */,
+				252C27171B68825700ACA199 /* BJChatFileCacheManager.m */,
+				252C27221B68C28100ACA199 /* BJChatLimitMacro.h */,
+				252C27231B68C28100ACA199 /* BJChatLimitMacro.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -390,6 +437,7 @@
 		25CF15711B677D5F00666FEF /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
+				252C272F1B69047600ACA199 /* AMAttributedHighlightLabel */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -416,6 +464,8 @@
 				25DEDA7B1B66343600C09994 /* BJAudioChatCell.m */,
 				25DEDA7D1B66349900C09994 /* BJCardChatCell.h */,
 				25DEDA7E1B66349900C09994 /* BJCardChatCell.m */,
+				252C27251B68EF0800ACA199 /* BJGossipTableViewCell.h */,
+				252C27261B68EF0800ACA199 /* BJGossipTableViewCell.m */,
 			);
 			path = ChatCell;
 			sourceTree = "<group>";
@@ -554,6 +604,7 @@
 		6003F593195388D20070C39A /* BJHL-IM-iOS-SDK */ = {
 			isa = PBXGroup;
 			children = (
+				252C272A1B68F82E00ACA199 /* BJChatUtilsMacro.h */,
 				25CF15711B677D5F00666FEF /* Vendor */,
 				2539BCB71B665D0600333A00 /* ViewModel */,
 				25DEDA4A1B660BCA00C09994 /* View */,
@@ -842,6 +893,7 @@
 			files = (
 				25DEDA7F1B66349900C09994 /* BJCardChatCell.m in Sources */,
 				25DED9EA1B63A47D00C09994 /* XHMessageTextView.m in Sources */,
+				252C27181B68825700ACA199 /* BJChatFileCacheManager.m in Sources */,
 				25CF15801B678A8F00666FEF /* BJChatTimeCell.m in Sources */,
 				6003F59E195388D20070C39A /* BJIMAppDelegate.m in Sources */,
 				25DED9E81B63A47D00C09994 /* BJChatInputBarViewController.m in Sources */,
@@ -857,6 +909,9 @@
 				25DEDA7C1B66343600C09994 /* BJAudioChatCell.m in Sources */,
 				6003F5A7195388D20070C39A /* BJIMViewController.m in Sources */,
 				25DEDA4E1B660BFC00C09994 /* BJActionCollectionViewCell.m in Sources */,
+				252C27321B69047600ACA199 /* AMAttributedHighlightLabel.m in Sources */,
+				252C271C1B68A1C100ACA199 /* UIImage+compressionSize.m in Sources */,
+				252C27281B68EF0800ACA199 /* BJGossipTableViewCell.m in Sources */,
 				25DED9E51B63A47D00C09994 /* BJChatCellFactory.m in Sources */,
 				25DEDA231B63B66100C09994 /* BJChatInfo.m in Sources */,
 				25DEDA791B66342700C09994 /* BJImageChatCell.m in Sources */,
@@ -866,6 +921,7 @@
 				25DEDA3A1B66079200C09994 /* DXFaceView.m in Sources */,
 				255206A21B57AFC7007B34C4 /* BJConversationListViewController.m in Sources */,
 				25DED9E41B63A47D00C09994 /* BJChatBaseCell.m in Sources */,
+				252C27241B68C28100ACA199 /* BJChatLimitMacro.m in Sources */,
 				25DEDA3E1B66079200C09994 /* MyFacialView.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				2539BCBA1B665D1300333A00 /* UIResponder+Router.m in Sources */,

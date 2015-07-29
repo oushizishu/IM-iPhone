@@ -35,6 +35,7 @@
 - (CGSize)calculateCellHeight
 {
     CGSize retSize = self.message.imageSize;
+    NSLog(@"calculateCellHeight,%@",NSStringFromCGSize(retSize));
     if (retSize.width == 0 || retSize.height == 0) {
         retSize.width = MAX_SIZE;
         retSize.height = MAX_SIZE;
@@ -80,13 +81,15 @@
     rect.size = size;
     self.chatImageView.frame = rect;
     UIImage *image = [self bubbleImage];
-    CALayer *layer = [[CALayer alloc] init];
-    layer.contents = (id)image.CGImage;
-    self.chatImageView.layer.mask = layer;
+    UIImageView *imageViewMask = [[UIImageView alloc] initWithImage:image];
+    imageViewMask.frame = CGRectInset(self.chatImageView.frame, 2.0f, 2.0f);
+    self.chatImageView.layer.mask = imageViewMask.layer;
     
     rect = self.bubbleContainerView.frame;
     rect.size = size;
     self.bubbleContainerView.frame = rect;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - set get

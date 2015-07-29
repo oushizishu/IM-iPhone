@@ -78,6 +78,8 @@
     rect = self.bubbleContainerView.frame;
     rect.size = size;
     self.bubbleContainerView.frame = rect;
+    [self setNeedsLayout];
+    [self layoutIfNeeded];
 }
 
 #pragma mark - set get

@@ -10,11 +10,12 @@
 #import "DXRecordView.h"
 #import <BJAudioBufferRecorder.h>
 #import <JLMicrophonePermission.h>
+#import "BJChatLimitMacro.h"
 
 static char BJRecordView_View;
 static char BJRecordView_Recorder;
 
-@interface BJChatInputBaseViewController ()
+@interface BJChatInputBaseViewController ()<DXRecordViewDelegate>
 /**
  *  RecordView
  */
@@ -73,16 +74,23 @@ static char BJRecordView_Recorder;
     [self.recordView removeFromSuperview];
     __weak typeof(self) weakSelf = self;
     self.recorder.finishCallback = ^(NSString *message,NSInteger timeLength,BOOL isSuc,BOOL isFinish){
-        if (isFinish) {
+        if (isFinish && timeLength>BJChat_Audio_Min_Time) {//录制并转码成功，并且大于2秒
             [BJSendMessageHelper sendAudioMessage:message duration:timeLength chatInfo:weakSelf.chatInfo];
         }
-        else if (isSuc) {
+        else if (timeLength<=BJChat_Audio_Min_Time)//录制时间不够
+        {
+            @TODO("错误提示");
+        }
+        else if (isSuc) {//录制成功，正在转mp3
             @TODO("添加录音成功提示。");
         }
-        else
+        else//失败，失败原因在message
         {
             @TODO("添加提示。");
         }
+    };
+    self.recorder.remainingCallback = ^(CGFloat time){
+        
     };
     [self.recorder stopRecord];
 }
@@ -97,12 +105,21 @@ static char BJRecordView_Recorder;
     [self.recordView recordButtonDragInside];
 }
 
+#pragma mark - DXRecordViewDelegate
+- (float)getAudioMeter;
+{
+    return self.recorder.peakPower;
+}
+
 #pragma mark - set get
 - (DXRecordView *)recordView
 {
     if (objc_getAssociatedObject(self, &BJRecordView_View) == nil) {
-        [self setRecordView:[[DXRecordView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width-140)/2, 130, 140, 140)]];
+        DXRecordView *view = [[DXRecordView alloc] initWithFrame:CGRectMake(([UIScreen mainScreen].bounds.size.width-140)/2, 130, 140, 140)];
+        view.delegate = self;
+        [self setRecordView:view];
     }
+    
     return objc_getAssociatedObject(self, &BJRecordView_View);
 }
 
@@ -116,7 +133,8 @@ static char BJRecordView_Recorder;
     if (objc_getAssociatedObject(self, &BJRecordView_Recorder) == nil) {
         BJAudioBufferRecorder *recorder = [[BJAudioBufferRecorder alloc] init];
         recorder.duration = 0;
-        [self setRecorder:recorder ];
+        [recorder enableLevelMetering:YES];
+        [self setRecorder:recorder];
     }
     return objc_getAssociatedObject(self, &BJRecordView_Recorder);
 }

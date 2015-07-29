@@ -39,6 +39,12 @@
                    case eMessageType_AUDIO:
                        messageBody = [IMAudioMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
+                   case eMessageType_CARD:
+                       messageBody = [IMCardMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
+                   case eMessageType_EMOJI:
+                       messageBody = [IMEmojiMessageBody modelWithDictionary:dictioanry error:nil];
+                       break;
                    case eMessageType_LOCATION:
                        messageBody = [IMLocationMessageBody modelWithDictionary:dictioanry error:&error];
                        break;

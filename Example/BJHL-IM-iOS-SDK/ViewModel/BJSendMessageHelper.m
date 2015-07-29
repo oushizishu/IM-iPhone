@@ -39,6 +39,7 @@
     messageBody.content = text;
     IMMessage *message = [[IMMessage alloc] init];
     message.messageBody = messageBody;
+    message.createAt = [NSDate date].timeIntervalSince1970;
     message.chat_t = chatInfo.chat_t;
     message.msg_t = eMessageType_TXT;
     message.receiver = chatInfo.getToId;
@@ -54,6 +55,7 @@
     messageBody.length = duration;
     
     IMMessage *message = [[IMMessage alloc] init];
+    message.createAt = [NSDate date].timeIntervalSince1970;
     message.messageBody = messageBody;
     message.chat_t = chatInfo.chat_t;
     message.msg_t = eMessageType_AUDIO;
@@ -72,6 +74,7 @@
     
     IMMessage *message = [[IMMessage alloc] init];
     message.messageBody = messageBody;
+    message.createAt = [NSDate date].timeIntervalSince1970;
     message.chat_t = chatInfo.chat_t;
     message.msg_t = eMessageType_IMG;
     message.receiver = chatInfo.getToId;
@@ -88,6 +91,7 @@
     
     IMMessage *message = [[IMMessage alloc] init];
     message.messageBody = messageBody;
+    message.createAt = [NSDate date].timeIntervalSince1970;
     message.chat_t = chatInfo.chat_t;
     message.msg_t = eMessageType_EMOJI;
     message.receiver = chatInfo.getToId;

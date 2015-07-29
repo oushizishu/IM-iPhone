@@ -126,7 +126,7 @@
     [self.conversation resetUnReadNum];
     
     NSArray *array = [[BJIMManager shareInstance] loadMessageFromMinMsgId:0 inConversation:self.conversation];
-    self.messageList = [[NSMutableArray alloc] initWithArray:array];
+    [self addNewMessages:array isForward:NO];
     
     if ([array count] > 0 && self.conversation)
     {
@@ -141,9 +141,29 @@
     [self updateSubViewFrame];
     
     [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
-    
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(keyBoardHidden)];
-    [self.tableView addGestureRecognizer:tap];
+    {
+        IMMessage *cardMessage = [[IMMessage alloc] init];
+        cardMessage.chat_t = eChatType_GroupChat;
+        cardMessage.msg_t = eMessageType_CMD;
+        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
+        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
+        card.thumb = @"dsd";
+        cardMessage.messageBody = card;
+        [self addNewMessages:@[cardMessage] isForward:NO];
+    }
+//
+//    {
+//        IMMessage *cardMessage = [[IMMessage alloc] init];
+//        cardMessage.chat_t = eChatType_GroupChat;
+//        cardMessage.msg_t = eMessageType_NOTIFICATION;
+//        IMCardMessageBody *card = [[IMCardMessageBody alloc] init];
+//        card.title = @"测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试测试";
+//        card.content = @"内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工内容你日工";
+//        card.thumb = @"dsd";
+//        cardMessage.messageBody = card;
+//        [self addNewMessages:@[cardMessage] isForward:NO];
+//    }
 }
 
 
@@ -174,6 +194,11 @@
     if (!forward && self.messageList.count>0) {
         lastMessage = self.messageList.lastObject;
     }
+    else if (forward || self.messageList.count<=0)
+    {
+        IMMessage *firstMessage = messages.firstObject;
+        [mutMessages insertObject:[[NSDate dateWithTimeIntervalSince1970:firstMessage.createAt] formattedTime] atIndex:0];
+    }
     
     for (IMMessage *oneMessage in messages) {
         [oneMessage markRead];
@@ -189,17 +214,14 @@
 
     if (forward) {
         NSIndexSet *set = [NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, messages.count)];
-        [self.messageList insertObjects:messages atIndexes:set];
+        [self.messageList insertObjects:mutMessages atIndexes:set];
         [self.tableView reloadData];
     }
     else
     {
-        [self.messageList addObjectsFromArray:messages];
-        BOOL should = [self analyzeScrollViewShouldToBottom];
+        [self.messageList addObjectsFromArray:mutMessages];
         [self.tableView reloadData];
-        if (should) {
-            [self scrollViewToBottom:YES];
-        }
+        [self scrollViewToBottom:YES];
     }
 
 }
@@ -241,6 +263,12 @@
 }
 
 #pragma mark - 视图更新
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    [super touchesBegan:touches withEvent:event];
+    [self keyBoardHidden];
+}
+
 - (void)updateSubViewFrame
 {
     CGRect rect = self.inputController.view.frame;
@@ -293,6 +321,11 @@
 - (void)showBigImageWithMessage:(IMMessage *)message
 {
     @TODO("显示大图");
+}
+
+- (void)cardCellTapWithMessage:(IMMessage *)message
+{
+    @TODO("点击跳转代码");
 }
 
 - (void)audioCellTapWithMessage:(IMMessage *)message
@@ -387,9 +420,13 @@
     {
         [[BJIMManager shareInstance] retryMessage:message];
     }
-    else if ([eventName isEqualToString:kRouterEventChatCellBubbleTapEventName])
+    else if ([eventName isEqualToString:kRouterEventAudioBubbleTapEventName])
     {
         [self audioCellTapWithMessage:message];
+    }
+    else if ([eventName isEqualToString:kRouterEventCardEventName])
+    {
+        [self cardCellTapWithMessage:message];
     }
 }
 
@@ -456,16 +493,26 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     IMMessage *message = [self.messageList objectAtIndex:indexPath.row];
-    CGFloat Height = 0;
-    if ([self.messageHeightDic objectForKey:@(message.msgId)]) {
-        Height = [[self.messageHeightDic objectForKey:@(message.msgId)] floatValue];
+
+    if ([message isKindOfClass:[NSString class]]) {
+        return 40;
     }
     else
     {
+        CGFloat Height = 0;
+        
+        //message的id自己发的不一定已经创建 需要以其他值为键
+        //    if ([self.messageHeightDic objectForKey:@(message.msgId)]) {
+        //        Height = [[self.messageHeightDic objectForKey:@(message.msgId)] floatValue];
+        //    }
+        //    else
+        //    {
         Height = [[BJChatCellFactory sharedInstance] cellHeightWithMessage:message indexPath:indexPath];
         [self.messageHeightDic setObject:@(Height) forKeyedSubscript:@(message.msgId)];
+        //    }
+        return Height;
     }
-    return Height;
+
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -481,9 +528,17 @@
     if (_conversation == nil) {
         if (self.chatInfo.chat_t == eChatType_GroupChat) {
             _conversation = [[BJIMManager shareInstance] getConversationGroupId:self.chatInfo.getToId];
+            if (_conversation) {
+                self.title = _conversation.chatToGroup.groupName;
+            }
         }
         else
+        {
         _conversation = [[BJIMManager shareInstance] getConversationUserId:self.chatInfo.getToId role:self.chatInfo.getToRole];
+            if (_conversation) {
+                self.title = _conversation.chatToUser.name;
+            }
+        }
     }
     return _conversation;
 }
