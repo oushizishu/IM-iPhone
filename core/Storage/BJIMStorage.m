@@ -226,7 +226,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 }
 
 #pragma mark conversation
-
 - (BOOL)insertConversation:(NSObject *)conversation
 {
     NSAssert([conversation isKindOfClass:[Conversation class]], @"类型错误");

@@ -115,7 +115,8 @@
     IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    [requestParams appendFile:messageBody.file mimeType:@"image/*" forKey:@"attachment"];
+    NSString *filename = [NSString stringWithFormat:@"hermes-%lf.jpg", [[NSDate date] timeIntervalSince1970]];
+    [requestParams appendFile:messageBody.file mimeType:@"image/*" filename:filename forKey:@"attachment"];
     
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
@@ -128,7 +129,8 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_AUDIO method:kHttpMethod_POST];
     [requestParams  appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
-    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" filename:@"hermes.mp3" forKey:@"attachment"];
+    NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
+    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
