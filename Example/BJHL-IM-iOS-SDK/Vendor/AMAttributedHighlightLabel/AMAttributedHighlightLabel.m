@@ -350,6 +350,11 @@
 
 - (void)handleTouchEnded:(CGPoint)touchLocation
 {
+    
+    @TODO("Tap手势 began不调用，后期优化");
+    if (currentSelectedString == nil) {
+        [self handleTouchBegan:touchLocation];
+    }
     if(currentSelectedString != nil)
     {
         NSMutableAttributedString *newAttrString = [self.attributedText mutableCopy];
