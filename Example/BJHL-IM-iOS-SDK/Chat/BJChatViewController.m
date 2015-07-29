@@ -141,15 +141,15 @@
     [self updateSubViewFrame];
     
     [self.view addObserver:self forKeyPath:@"frame" options:NSKeyValueObservingOptionNew context:nil];
-    {
-        IMMessage *cardMessage = [[IMMessage alloc] init];
-        cardMessage.chat_t = eChatType_GroupChat;
-        cardMessage.msg_t = eMessageType_TXT;
-        IMTxtMessageBody*card = [[IMTxtMessageBody alloc] init];
-        card.content = @"http://www.baidu.com";
-        cardMessage.messageBody = card;
-        [self addNewMessages:@[cardMessage] isForward:NO];
-    }
+//    {
+//        IMMessage *cardMessage = [[IMMessage alloc] init];
+//        cardMessage.chat_t = eChatType_GroupChat;
+//        cardMessage.msg_t = eMessageType_TXT;
+//        IMTxtMessageBody*card = [[IMTxtMessageBody alloc] init];
+//        card.content = @"http://www.baidu.com";
+//        cardMessage.messageBody = card;
+//        [self addNewMessages:@[cardMessage] isForward:NO];
+//    }
 }
 
 
