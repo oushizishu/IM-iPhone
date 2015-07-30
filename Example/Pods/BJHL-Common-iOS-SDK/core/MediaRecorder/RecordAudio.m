@@ -81,9 +81,7 @@
 
         [self.recorder setDelegate:self];
         self.recorder.meteringEnabled=YES;
-        if (self.duration>0) {
-            [self.recorder recordForDuration:self.duration];
-        }
+        [self.recorder recordForDuration:self.duration];
         
         if (self.remainingCallback) {
             self.timer = [BJTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(remainingTimerAction) forMode:NSRunLoopCommonModes];

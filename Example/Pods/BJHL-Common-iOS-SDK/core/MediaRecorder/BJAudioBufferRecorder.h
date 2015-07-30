@@ -48,7 +48,6 @@ typedef struct AQCallbackStruct
 - (void)startRecord:(AudioBufferRecoderCallback)callback;
 - (void)enableLevelMetering:(BOOL)enable;
 - (double)audioMeter;
-- (float) peakPower;
 
 @property (nonatomic, assign) AQCallbackStruct aqc;
 
