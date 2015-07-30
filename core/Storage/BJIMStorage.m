@@ -184,10 +184,17 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return message.msgId;
 }
 
-- (double)queryMinMsgIdInConversation:(int64_t)conversationId
+- (double)queryMinMsgIdInConversation:(NSInteger)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@" conversationId=%lld \
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld \
                              ORDER BY msgId ASC ", conversationId];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return message.msgId;
+}
+
+- (double)queryMaxMsgIdInConversation:(NSInteger)conversationId
+{
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC"];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }

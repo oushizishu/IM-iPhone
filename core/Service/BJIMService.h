@@ -25,7 +25,7 @@
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
 - (void)retryMessage:(IMMessage *)message;
-- (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId;
+- (void)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId;
 
 #pragma mark - getter 
 - (NSArray *)getAllConversationWithOwner:(User *)owner;

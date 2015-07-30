@@ -100,13 +100,13 @@
 //    [self.imService loadMoreMessages:conversation];
 //}
 
-- (NSArray *)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation
+- (void)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
-        return nil;
+        return ;
     }
-    return [self.imService loadMessages:conversation minMsgId:minMsgId];
+    [self.imService loadMessages:conversation minMsgId:minMsgId];
 }
 
 #pragma mark - current chat

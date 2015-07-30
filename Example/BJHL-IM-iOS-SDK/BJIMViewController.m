@@ -51,11 +51,14 @@
     
     __WeakSelf__ weakSelf = self;
     [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-        NSString *authToken = [[response objectForKey:@"data"] valueForKey:@"im_token"];
-        [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Teacher];
-        
-        BJConversationListViewController *conversatinList = [[BJConversationListViewController alloc] init];
-        [weakSelf.navigationController pushViewController:conversatinList animated:YES];
+        if ([[response valueForKey:@"code"] integerValue] == 0)
+        {
+            NSString *authToken = [[response objectForKey:@"data"] valueForKey:@"im_token"];
+            [[BJIMManager shareInstance] loginWithOauthToken:authToken UserId:[weakSelf.userIdText.text longLongValue]  userName:weakSelf.userNameText.text userAvatar:@"http://img.genshuixue.com/23.jpg" userRole:eUserRole_Teacher];
+            
+            BJConversationListViewController *conversatinList = [[BJConversationListViewController alloc] init];
+            [weakSelf.navigationController pushViewController:conversatinList animated:YES];
+        }
         
     } failure:^(NSError *error, RequestParams *params) {
         

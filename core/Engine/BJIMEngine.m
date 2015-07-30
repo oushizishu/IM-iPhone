@@ -205,7 +205,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 }
 
-- (void)getMsgConversation:(NSInteger)conversationId minMsgId:(int64_t)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds
+- (void)getMsgConversation:(NSInteger)conversationId minMsgId:(int64_t)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds startMessageId:(double_t)startMessageId
 {
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesGetMsg:eid groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
@@ -215,7 +215,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         {
             NSError *error;
             PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
-            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid result:model];
+            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid newEndMessageId:startMessageId result:model];
         }
         else
         {

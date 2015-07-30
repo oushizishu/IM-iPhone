@@ -43,7 +43,9 @@
 // 群组会话最大的消息id 
 - (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
 // 查询会话的最小 msgId
-- (double)queryMinMsgIdInConversation:(int64_t)conversationId;
+- (double)queryMinMsgIdInConversation:(NSInteger)conversationId;
+// 查询会话最大的 msgId
+- (double)queryMaxMsgIdInConversation:(NSInteger)conversationId;
 // 根据 id 区间查询 messages
 - (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
                                  minMsgId:(double_t)minMsgId

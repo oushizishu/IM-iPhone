@@ -94,39 +94,14 @@
     [self notifyWillDeliveryMessage:message];
 }
 
-- (NSArray *)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
+- (void)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
 {
-    if (minMsgId <= 0)
-    {
-    
-        if (conversation.chat_t == eChatType_Chat)
-        {
-            NSArray *array = [self.imStorage loadChatMessagesInConversation:conversation.rowid];
-            [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                IMMessage *message = (IMMessage *)obj;
-                message.imService = self;
-            }];
-            return array;
-        }
-        else
-        {
-            Group *_chatToGroup = [self getGroup:conversation.toId];
-            NSArray *array = [self.imStorage loadGroupChatMessages:_chatToGroup inConversation:conversation.rowid];
-            [array enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-                IMMessage *message = (IMMessage *)obj;
-                message.imService = self;
-            }];
-            return array;
-        }
-    }
-    
     LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
     
     operation.minMsgId = minMsgId;
     operation.imService = self;
     operation.conversation = conversation;
     [self.operationQueue addOperation:operation];
-    return nil;
 }
 
 #pragma mark - Post Message Delegate
@@ -189,7 +164,7 @@
 }
 
 #pragma mark - get Msg Delegate
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId result:(PollingResultModel *)model
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId newEndMessageId:(double_t)newEndMessageId result:(PollingResultModel *)model
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
@@ -197,6 +172,7 @@
     operation.conversationId = conversationId;
     operation.model = model;
     operation.minMsgId = minMsgId;
+    operation.newEndMessageId = newEndMessageId;
     [self.operationQueue addOperation:operation];
 }
 

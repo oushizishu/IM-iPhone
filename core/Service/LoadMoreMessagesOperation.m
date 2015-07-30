@@ -19,6 +19,7 @@
 
 @property (nonatomic, assign) BOOL hasMore;
 @property (nonatomic, copy) NSString *excludeIds;
+@property (nonatomic, assign) double_t newEndMessageId;
 
 @end
 
@@ -30,55 +31,48 @@
     self.conversation.imService = self.imService;
     
     double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversation.rowid];
+    double maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:self.conversation.rowid];
+    if (self.minMsgId == 0) self.minMsgId = maxConversationMsgId;
+    
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
         self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
         
-        if ([self.messages count] == 0) {
-            self.hasMore = NO;
-        }
-        else
+        if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
         {
-            if ([[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
+            self.hasMore = YES;
+        }
+        
+        [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            IMMessage *_message = (IMMessage *)obj;
+            _message.imService = _imService;
+        }];
+    }
+    else
+    { // 群消息必须走一次 getMsg
+        Group *group = [self.imService getGroup:self.conversation.toId];
+        
+        group.lastMessageId = maxConversationMsgId;
+        
+        if (self.minMsgId < group.lastMessageId && group.endMessageId <= group.startMessageId)
+        {
+            // 不是第一次加载，并且本地没有空洞
+            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
+            
+            if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
             {
                 self.hasMore = YES;
             }
-        }
-    }
-    else
-    {
-        Group *group = [self.imService getGroup:self.conversation.toId];
-        
-        if ([self.messages count] > 0)
-        {
-            self.minMsgId = [[self.messages objectAtIndex:0] msgId];
-        }
-        
-        NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
-        if (group.endMessageId <= group.startMessageId && group.endMessageId != 0)
-        {
-            //不需要走网络， 本地已有完整的消息数据
-            group.endMessageId = group.lastMessageId;
-            group.startMessageId = group.lastMessageId;
-            
-            self.messages = list;
-            [self.imService.imStorage updateGroup:group];
-            
-            if ([self.messages count] == 0)
-            {
-                self.hasMore = NO;
-            }
-            else
-            {
-                if([[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
-                {
-                    self.hasMore = YES;
-                }
-            }
+            [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+                IMMessage *_message = (IMMessage *)obj;
+                _message.imService = _imService;
+            }];
         }
         else
         {
+            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
+            
             self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来
             [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -93,9 +87,13 @@
                     
                 }
             }];
-        
+            
+            if ([list count] > 0) {
+                self.newEndMessageId = [[list objectAtIndex:0] msgId];
+            }
         }
         
+        [self.imService.imStorage updateGroup:group];
     }
 }
 
@@ -103,16 +101,11 @@
 {
     if (self.messages)
     {
-        [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-            IMMessage *_message = (IMMessage *)obj;
-            _message.imService = _imService;
-        }];
-        
         [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
     }
     else
     {
-        [self.imService.imEngine getMsgConversation:self.conversation.rowid minMsgId:self.minMsgId groupId:self.conversation.toId userId:0 excludeIds:self.excludeIds];
+        [self.imService.imEngine getMsgConversation:self.conversation.rowid minMsgId:self.minMsgId groupId:self.conversation.toId userId:0 excludeIds:self.excludeIds startMessageId:self.newEndMessageId];
     }
 }
 

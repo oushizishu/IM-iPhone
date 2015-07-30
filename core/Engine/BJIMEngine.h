@@ -39,7 +39,7 @@
 
 @protocol  IMEngineGetMessageDelegate <NSObject>
 
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId result:(PollingResultModel *)model;
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId newEndMessageId:(double_t)newEndMessageId result:(PollingResultModel *)model;
 - (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId;
 
 
@@ -73,6 +73,7 @@
                   minMsgId:(int64_t)eid
                    groupId:(int64_t)groupId
                     userId:(int64_t)userId
-                excludeIds:(NSString *)excludeIds;
+                excludeIds:(NSString *)excludeIds
+            startMessageId:(double_t)startMessageId;
 
 @end

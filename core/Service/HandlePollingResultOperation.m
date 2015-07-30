@@ -146,8 +146,6 @@
                 continue;
             }
             
-            //标记 conversation 是否为第一次创建
-            BOOL isConversationInit = NO;
             [self.imService.imStorage insertMessage:message];
         
             if (message.chat_t == eChatType_Chat)
@@ -164,7 +162,6 @@
                     conversation.chat_t = message.chat_t;
                     
                     [self.imService.imStorage insertConversation:conversation];
-                    isConversationInit = YES;
                 }
                 
                 message.conversationId = conversation.rowid;
@@ -202,7 +199,6 @@
                     chatToGroup.startMessageId = message.msgId;
                     chatToGroup.endMessageId = message.msgId;
                     
-                    isConversationInit = YES;
                 }
                 else
                 {
@@ -230,13 +226,8 @@
             {
                 self.receiveNewMessages = [[NSMutableArray alloc] init];
             }
-            
-//            if (! isConversationInit)
-            {
-                // 如果 conversation 是第一次创建，不需要加载 receiver 里面，
-                // conversation 的 messages 初始化时会自动从数据库中加载出来。
-                [self.receiveNewMessages addObject:message];
-            }
+           
+            [self.receiveNewMessages addObject:message];
         }
         
         if (message.chat_t == eChatType_GroupChat)
@@ -254,21 +245,20 @@
             
             [self.groupMinMessage setValue:[NSString stringWithFormat:@"%lf", endMsgId] forKey:[NSString stringWithFormat:@"%lld", conversation.toId]];
         }
-        
-        NSArray *unread_number = self.model.unread_number;
-        for (NSInteger index = 0; index < [unread_number count]; ++ index)
-        {
-            UnReadNum *num = [unread_number objectAtIndex:index];
-            Conversation *conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:num.group_id userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
-            
-            if (conversation)
-            {
-                conversation.unReadNum = num.num;
-                [self.imService.imStorage updateConversation:conversation];
-            }
-        }
     }
     
+    NSArray *unread_number = self.model.unread_number;
+    for (NSInteger index = 0; index < [unread_number count]; ++ index)
+    {
+        UnReadNum *num = [unread_number objectAtIndex:index];
+        Conversation *conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:num.group_id userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
+        
+        if (conversation)
+        {
+            conversation.unReadNum = num.num;
+            [self.imService.imStorage updateConversation:conversation];
+        }
+    }
     
     //处理群组 eid
     [self.groupMinMessage enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
