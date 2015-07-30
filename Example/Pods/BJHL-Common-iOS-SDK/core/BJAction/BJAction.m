@@ -75,6 +75,7 @@
                 
                 NSDictionary *param = [decodeString uq_URLQueryDictionary];
                 [self triggerEventToTarget:target withData:param];
+                
             }
             else
             {

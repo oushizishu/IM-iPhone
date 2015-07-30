@@ -39,9 +39,16 @@ static NSString *const kFragmentBegin   = @"#";
   if (newQuery.length) {
     NSArray *queryComponents = [self.absoluteString componentsSeparatedByString:kQueryBegin];
     if (queryComponents.count) {
+    //fix:queryComponents[0] contain fragment bugs
+    NSString *eurl = queryComponents[0];
+    NSRange frameRang= [eurl rangeOfString:[NSString stringWithFormat:@"%@%@",kFragmentBegin,self.fragment]];
+     if (frameRang.length>0) {
+         eurl = [eurl stringByReplacingCharactersInRange:frameRang withString:@""];
+     }
+     //end fix
       return [NSURL URLWithString:
               [NSString stringWithFormat:@"%@%@%@%@%@",
-               queryComponents[0],                      // existing url
+               eurl,                      // existing url
                kQueryBegin,
                newQuery,
                self.fragment.length ? kFragmentBegin : @"",

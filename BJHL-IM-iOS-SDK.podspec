@@ -35,7 +35,7 @@ Pod::Spec.new do |s|
   s.dependency 'Mantle', '~> 2.0'
   s.dependency 'MagicalRecord', '~> 2.2'
   s.dependency 'CocoaLumberjack', '~> 2.0.1'
-  s.dependency 'BJHL-Common-iOS-SDK', '0.4.2'
+  s.dependency 'BJHL-Common-iOS-SDK', '0.4.4'
   s.dependency 'LKDBHelper', '~>2.1.3'
   s.dependency 'YLGIFImage', '~> 0.11'
   s.dependency 'SlimeRefresh', '~> 0.0.1'

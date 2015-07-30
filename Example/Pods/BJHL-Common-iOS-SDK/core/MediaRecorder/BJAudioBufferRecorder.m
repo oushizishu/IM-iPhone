@@ -218,7 +218,7 @@ static void AQInputCallback (void                   * inUserData,
 - (void)_stopRecord
 {
     _aqc.run = 0;
-
+    
     AudioQueueStop(_aqc.queue, true);
     AudioQueueDispose(_aqc.queue, true);
     AVAudioSession * audioSession = [AVAudioSession sharedInstance];
@@ -232,26 +232,7 @@ static void AQInputCallback (void                   * inUserData,
 {
     int32_t on = enable;
     OSStatus rc = AudioQueueSetProperty(_aqc.queue, kAudioQueueProperty_EnableLevelMetering, &on, sizeof(on));
-//    DDLogDebug(@"kAudioQueueProperty_EnableLevelMetering ret:%d", (int)rc);
-}
-
-- (float) averagePower
-{
-    AudioQueueLevelMeterState state[1];
-    UInt32  statesize = sizeof(state);
-    OSStatus status;
-    status = AudioQueueGetProperty(_aqc.queue, kAudioQueueProperty_CurrentLevelMeter, &state, &statesize);
-    if (status) {printf("Error retrieving meter data\n"); return 0.0f;}
-    return state[0].mAveragePower;
-}
-- (float) peakPower
-{
-    AudioQueueLevelMeterState state[1];
-    UInt32  statesize = sizeof(state);
-    OSStatus status;
-    status = AudioQueueGetProperty(_aqc.queue, kAudioQueueProperty_CurrentLevelMeter, &state, &statesize);
-    if (status) {printf("Error retrieving meter data\n"); return 0.0f;}
-    return state[0].mPeakPower;
+    //    DDLogDebug(@"kAudioQueueProperty_EnableLevelMetering ret:%d", (int)rc);
 }
 
 - (double)audioMeter
@@ -261,7 +242,7 @@ static void AQInputCallback (void                   * inUserData,
     
     OSStatus rc = AudioQueueGetProperty(_aqc.queue, kAudioQueueProperty_CurrentLevelMeter, levels, &dataSize);
     if (rc) {
-            free(levels);    // This works since in this sole box one channel always has an mAveragePower of 0.   relapse channelAvg;
+        free(levels);    // This works since in this sole box one channel always has an mAveragePower of 0.   relapse channelAvg;
         NSLog(@"NoiseLeveMeter>>takeSample - AudioQueueGetProperty(CurrentLevelMeter) returned %d", rc);
         return 0;
     }
@@ -299,8 +280,8 @@ static void AQInputCallback (void                   * inUserData,
         }
         @catch (NSException *exception) {
             dispatch_async(dispatch_get_main_queue(), ^{
-//                DDLogError(@"%@",[exception description]);
-
+                //                DDLogError(@"%@",[exception description]);
+                
                 [theModel _stopRecord];
                 [theModel _stopLame];
                 theModel.finishCallback([NSString stringWithFormat:@"转码失败 原因：%@",[exception description]],0,NO,NO);
@@ -311,8 +292,8 @@ static void AQInputCallback (void                   * inUserData,
         }
         free(copyData);
     });
-
-
+    
+    
     //NSLog(@"processAudioData :%ld", buffer->mAudioDataByteSize);
     
     //处理data
@@ -320,3 +301,4 @@ static void AQInputCallback (void                   * inUserData,
 
 
 @end
+

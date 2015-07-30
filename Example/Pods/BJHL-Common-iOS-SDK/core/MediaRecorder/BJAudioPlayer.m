@@ -27,7 +27,7 @@
 -(id)init{
     self=[super init];
     if (self) {
-
+        
     }
     return self;
 }
@@ -70,15 +70,6 @@
     return YES;
 }
 
-- (BOOL)isPlayerWithUrl:(NSURL *)url;
-{
-    if ([self.avPlayer.url isEqual:url] && self.avPlayer.isPlaying) {
-        return YES;
-    }
-    else
-        return NO;
-}
-
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     if (self.callback) {
         self.callback(nil,YES);
@@ -105,7 +96,7 @@
         [audioSession setCategory:self.originAudioCategory error: nil];
         [audioSession overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:nil];
     }
-
+    
     [self.timer invalidate];
     self.timer = nil;
 }

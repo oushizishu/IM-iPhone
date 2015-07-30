@@ -22,7 +22,7 @@
 }
 
 -(void)setAliyunImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder size:(CGSize)size cut:(BOOL)cut{
-    if (url && ![url isFileURL]){
+    if (url){
         NSInteger w = (NSInteger)size.width;
         NSInteger h = (NSInteger)size.height;
         NSString *param = [NSString stringWithFormat:@"@%ldw_%ldh", (long)w, (long)h];

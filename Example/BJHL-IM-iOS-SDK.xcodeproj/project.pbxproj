@@ -26,10 +26,10 @@
 		25DB7B101B69D96E00AA4AE4 /* BJChatInputEmojiViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7A9B1B69D96E00AA4AE4 /* BJChatInputEmojiViewController.m */; };
 		25DB7B111B69D96E00AA4AE4 /* BJChatInputMoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7A9D1B69D96E00AA4AE4 /* BJChatInputMoreViewController.m */; };
 		25DB7B121B69D96E00AA4AE4 /* ChatInputMore.plist in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7A9F1B69D96E00AA4AE4 /* ChatInputMore.plist */; };
-		25DB7B131B69D96E00AA4AE4 /* DXFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA21B69D96E00AA4AE4 /* DXFaceView.m */; };
-		25DB7B141B69D96E00AA4AE4 /* MyFacialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA41B69D96E00AA4AE4 /* MyFacialView.m */; };
-		25DB7B151B69D96E00AA4AE4 /* DXRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA71B69D96E00AA4AE4 /* DXRecordView.m */; };
-		25DB7B161B69D96E00AA4AE4 /* XHMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA91B69D96E00AA4AE4 /* XHMessageTextView.m */; };
+		25DB7B131B69D96E00AA4AE4 /* BJFaceView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA21B69D96E00AA4AE4 /* BJFaceView.m */; };
+		25DB7B141B69D96E00AA4AE4 /* BJFacialView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA41B69D96E00AA4AE4 /* BJFacialView.m */; };
+		25DB7B151B69D96E00AA4AE4 /* BJRecordView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA71B69D96E00AA4AE4 /* BJRecordView.m */; };
+		25DB7B161B69D96E00AA4AE4 /* BJMessageTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AA91B69D96E00AA4AE4 /* BJMessageTextView.m */; };
 		25DB7B171B69D96E00AA4AE4 /* bg_speech_gre_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AAB1B69D96E00AA4AE4 /* bg_speech_gre_nor@2x.png */; };
 		25DB7B181B69D96E00AA4AE4 /* bg_speech_gre_pr@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AAC1B69D96E00AA4AE4 /* bg_speech_gre_pr@2x.png */; };
 		25DB7B191B69D96E00AA4AE4 /* bg_speech_nor@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AAD1B69D96E00AA4AE4 /* bg_speech_nor@2x.png */; };
@@ -90,7 +90,6 @@
 		25DB7B501B69D96E00AA4AE4 /* img_head_default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AE51B69D96E00AA4AE4 /* img_head_default@2x.png */; };
 		25DB7B511B69D96E00AA4AE4 /* messageToolbarBg@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AE61B69D96E00AA4AE4 /* messageToolbarBg@2x.png */; };
 		25DB7B521B69D96E00AA4AE4 /* BJChatInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AE91B69D96E00AA4AE4 /* BJChatInfo.m */; };
-		25DB7B531B69D96E00AA4AE4 /* AMAttributedHighlightLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AED1B69D96E00AA4AE4 /* AMAttributedHighlightLabel.m */; };
 		25DB7B541B69D96E00AA4AE4 /* BJActionCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AF01B69D96E00AA4AE4 /* BJActionCollectionViewCell.m */; };
 		25DB7B551B69D96E00AA4AE4 /* BJActionCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 25DB7AF11B69D96E00AA4AE4 /* BJActionCollectionViewCell.xib */; };
 		25DB7B561B69D96E00AA4AE4 /* BJChatAudioPlayerHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AF41B69D96E00AA4AE4 /* BJChatAudioPlayerHelper.m */; };
@@ -99,7 +98,8 @@
 		25DB7B591B69D96E00AA4AE4 /* BJSendMessageHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AFA1B69D96E00AA4AE4 /* BJSendMessageHelper.m */; };
 		25DB7B5A1B69D96E00AA4AE4 /* IMMessage+ViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AFC1B69D96E00AA4AE4 /* IMMessage+ViewModel.m */; };
 		25DB7B5B1B69D96E00AA4AE4 /* UIImage+compressionSize.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7AFF1B69D96E00AA4AE4 /* UIImage+compressionSize.m */; };
-		25DB7B5C1B69D96E00AA4AE4 /* UIResponder+Router.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7B011B69D96E00AA4AE4 /* UIResponder+Router.m */; };
+		25DB7B5C1B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7B011B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.m */; };
+		25DB7B5F1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 25DB7B5E1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.m */; };
 		45619B6F7E7337F86342075F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B42517535184E74628C63F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
@@ -170,14 +170,14 @@
 		25DB7A9D1B69D96E00AA4AE4 /* BJChatInputMoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatInputMoreViewController.m; sourceTree = "<group>"; };
 		25DB7A9E1B69D96E00AA4AE4 /* BJChatInputProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatInputProtocol.h; sourceTree = "<group>"; };
 		25DB7A9F1B69D96E00AA4AE4 /* ChatInputMore.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = ChatInputMore.plist; sourceTree = "<group>"; };
-		25DB7AA11B69D96E00AA4AE4 /* DXFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXFaceView.h; sourceTree = "<group>"; };
-		25DB7AA21B69D96E00AA4AE4 /* DXFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXFaceView.m; sourceTree = "<group>"; };
-		25DB7AA31B69D96E00AA4AE4 /* MyFacialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyFacialView.h; sourceTree = "<group>"; };
-		25DB7AA41B69D96E00AA4AE4 /* MyFacialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyFacialView.m; sourceTree = "<group>"; };
-		25DB7AA61B69D96E00AA4AE4 /* DXRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DXRecordView.h; sourceTree = "<group>"; };
-		25DB7AA71B69D96E00AA4AE4 /* DXRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DXRecordView.m; sourceTree = "<group>"; };
-		25DB7AA81B69D96E00AA4AE4 /* XHMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHMessageTextView.h; sourceTree = "<group>"; };
-		25DB7AA91B69D96E00AA4AE4 /* XHMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHMessageTextView.m; sourceTree = "<group>"; };
+		25DB7AA11B69D96E00AA4AE4 /* BJFaceView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJFaceView.h; sourceTree = "<group>"; };
+		25DB7AA21B69D96E00AA4AE4 /* BJFaceView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJFaceView.m; sourceTree = "<group>"; };
+		25DB7AA31B69D96E00AA4AE4 /* BJFacialView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJFacialView.h; sourceTree = "<group>"; };
+		25DB7AA41B69D96E00AA4AE4 /* BJFacialView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJFacialView.m; sourceTree = "<group>"; };
+		25DB7AA61B69D96E00AA4AE4 /* BJRecordView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJRecordView.h; sourceTree = "<group>"; };
+		25DB7AA71B69D96E00AA4AE4 /* BJRecordView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJRecordView.m; sourceTree = "<group>"; };
+		25DB7AA81B69D96E00AA4AE4 /* BJMessageTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJMessageTextView.h; sourceTree = "<group>"; };
+		25DB7AA91B69D96E00AA4AE4 /* BJMessageTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJMessageTextView.m; sourceTree = "<group>"; };
 		25DB7AAB1B69D96E00AA4AE4 /* bg_speech_gre_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_gre_nor@2x.png"; sourceTree = "<group>"; };
 		25DB7AAC1B69D96E00AA4AE4 /* bg_speech_gre_pr@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_gre_pr@2x.png"; sourceTree = "<group>"; };
 		25DB7AAD1B69D96E00AA4AE4 /* bg_speech_nor@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bg_speech_nor@2x.png"; sourceTree = "<group>"; };
@@ -239,8 +239,6 @@
 		25DB7AE61B69D96E00AA4AE4 /* messageToolbarBg@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "messageToolbarBg@2x.png"; sourceTree = "<group>"; };
 		25DB7AE81B69D96E00AA4AE4 /* BJChatInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatInfo.h; sourceTree = "<group>"; };
 		25DB7AE91B69D96E00AA4AE4 /* BJChatInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatInfo.m; sourceTree = "<group>"; };
-		25DB7AEC1B69D96E00AA4AE4 /* AMAttributedHighlightLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AMAttributedHighlightLabel.h; sourceTree = "<group>"; };
-		25DB7AED1B69D96E00AA4AE4 /* AMAttributedHighlightLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AMAttributedHighlightLabel.m; sourceTree = "<group>"; };
 		25DB7AEF1B69D96E00AA4AE4 /* BJActionCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJActionCollectionViewCell.h; sourceTree = "<group>"; };
 		25DB7AF01B69D96E00AA4AE4 /* BJActionCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJActionCollectionViewCell.m; sourceTree = "<group>"; };
 		25DB7AF11B69D96E00AA4AE4 /* BJActionCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BJActionCollectionViewCell.xib; sourceTree = "<group>"; };
@@ -256,8 +254,10 @@
 		25DB7AFC1B69D96E00AA4AE4 /* IMMessage+ViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "IMMessage+ViewModel.m"; sourceTree = "<group>"; };
 		25DB7AFE1B69D96E00AA4AE4 /* UIImage+compressionSize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+compressionSize.h"; sourceTree = "<group>"; };
 		25DB7AFF1B69D96E00AA4AE4 /* UIImage+compressionSize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+compressionSize.m"; sourceTree = "<group>"; };
-		25DB7B001B69D96E00AA4AE4 /* UIResponder+Router.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+Router.h"; sourceTree = "<group>"; };
-		25DB7B011B69D96E00AA4AE4 /* UIResponder+Router.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+Router.m"; sourceTree = "<group>"; };
+		25DB7B001B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIResponder+BJIMChatRouter.h"; sourceTree = "<group>"; };
+		25DB7B011B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIResponder+BJIMChatRouter.m"; sourceTree = "<group>"; };
+		25DB7B5D1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJAttributedHighlightLabel.h; sourceTree = "<group>"; };
+		25DB7B5E1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJAttributedHighlightLabel.m; sourceTree = "<group>"; };
 		31DE67A144DDD652919468A2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		4C6E475EBFADD0326E2C4B93 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		5D2ADCAE4E9F06C218C22E20 /* Pods-BJHL-IM-iOS-SDK.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.release.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.release.xcconfig"; sourceTree = "<group>"; };
@@ -397,8 +397,8 @@
 				25DB7A9F1B69D96E00AA4AE4 /* ChatInputMore.plist */,
 				25DB7AA01B69D96E00AA4AE4 /* FaceView */,
 				25DB7AA51B69D96E00AA4AE4 /* RecordView */,
-				25DB7AA81B69D96E00AA4AE4 /* XHMessageTextView.h */,
-				25DB7AA91B69D96E00AA4AE4 /* XHMessageTextView.m */,
+				25DB7AA81B69D96E00AA4AE4 /* BJMessageTextView.h */,
+				25DB7AA91B69D96E00AA4AE4 /* BJMessageTextView.m */,
 			);
 			path = InputController;
 			sourceTree = "<group>";
@@ -406,10 +406,10 @@
 		25DB7AA01B69D96E00AA4AE4 /* FaceView */ = {
 			isa = PBXGroup;
 			children = (
-				25DB7AA11B69D96E00AA4AE4 /* DXFaceView.h */,
-				25DB7AA21B69D96E00AA4AE4 /* DXFaceView.m */,
-				25DB7AA31B69D96E00AA4AE4 /* MyFacialView.h */,
-				25DB7AA41B69D96E00AA4AE4 /* MyFacialView.m */,
+				25DB7AA11B69D96E00AA4AE4 /* BJFaceView.h */,
+				25DB7AA21B69D96E00AA4AE4 /* BJFaceView.m */,
+				25DB7AA31B69D96E00AA4AE4 /* BJFacialView.h */,
+				25DB7AA41B69D96E00AA4AE4 /* BJFacialView.m */,
 			);
 			path = FaceView;
 			sourceTree = "<group>";
@@ -417,8 +417,8 @@
 		25DB7AA51B69D96E00AA4AE4 /* RecordView */ = {
 			isa = PBXGroup;
 			children = (
-				25DB7AA61B69D96E00AA4AE4 /* DXRecordView.h */,
-				25DB7AA71B69D96E00AA4AE4 /* DXRecordView.m */,
+				25DB7AA61B69D96E00AA4AE4 /* BJRecordView.h */,
+				25DB7AA71B69D96E00AA4AE4 /* BJRecordView.m */,
 			);
 			path = RecordView;
 			sourceTree = "<group>";
@@ -509,23 +509,15 @@
 		25DB7AEA1B69D96E00AA4AE4 /* Vendor */ = {
 			isa = PBXGroup;
 			children = (
-				25DB7AEB1B69D96E00AA4AE4 /* AMAttributedHighlightLabel */,
 			);
 			path = Vendor;
-			sourceTree = "<group>";
-		};
-		25DB7AEB1B69D96E00AA4AE4 /* AMAttributedHighlightLabel */ = {
-			isa = PBXGroup;
-			children = (
-				25DB7AEC1B69D96E00AA4AE4 /* AMAttributedHighlightLabel.h */,
-				25DB7AED1B69D96E00AA4AE4 /* AMAttributedHighlightLabel.m */,
-			);
-			path = AMAttributedHighlightLabel;
 			sourceTree = "<group>";
 		};
 		25DB7AEE1B69D96E00AA4AE4 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				25DB7B5D1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.h */,
+				25DB7B5E1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.m */,
 				25DB7AEF1B69D96E00AA4AE4 /* BJActionCollectionViewCell.h */,
 				25DB7AF01B69D96E00AA4AE4 /* BJActionCollectionViewCell.m */,
 				25DB7AF11B69D96E00AA4AE4 /* BJActionCollectionViewCell.xib */,
@@ -547,8 +539,8 @@
 				25DB7AFB1B69D96E00AA4AE4 /* IMMessage+ViewModel.h */,
 				25DB7AFC1B69D96E00AA4AE4 /* IMMessage+ViewModel.m */,
 				25DB7AFD1B69D96E00AA4AE4 /* UIimage */,
-				25DB7B001B69D96E00AA4AE4 /* UIResponder+Router.h */,
-				25DB7B011B69D96E00AA4AE4 /* UIResponder+Router.m */,
+				25DB7B001B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.h */,
+				25DB7B011B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.m */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -902,7 +894,7 @@
 				25DB7B521B69D96E00AA4AE4 /* BJChatInfo.m in Sources */,
 				25DB7B071B69D96E00AA4AE4 /* BJChatTimeCell.m in Sources */,
 				25DB7B081B69D96E00AA4AE4 /* BJChatUnSupportCell.m in Sources */,
-				25DB7B5C1B69D96E00AA4AE4 /* UIResponder+Router.m in Sources */,
+				25DB7B5C1B69D96E00AA4AE4 /* UIResponder+BJIMChatRouter.m in Sources */,
 				25DB7B021B69D96E00AA4AE4 /* BJChatViewController.m in Sources */,
 				25DB7B591B69D96E00AA4AE4 /* BJSendMessageHelper.m in Sources */,
 				25DB7B061B69D96E00AA4AE4 /* BJChatCellFactory.m in Sources */,
@@ -910,20 +902,20 @@
 				25DB7B0D1B69D96E00AA4AE4 /* BJChatInputBarViewController+BJRecordView.m in Sources */,
 				25DB7B571B69D96E00AA4AE4 /* BJChatFileCacheManager.m in Sources */,
 				25DB7B581B69D96E00AA4AE4 /* BJChatLimitMacro.m in Sources */,
-				25DB7B131B69D96E00AA4AE4 /* DXFaceView.m in Sources */,
+				25DB7B131B69D96E00AA4AE4 /* BJFaceView.m in Sources */,
 				6003F5A7195388D20070C39A /* BJIMViewController.m in Sources */,
-				25DB7B161B69D96E00AA4AE4 /* XHMessageTextView.m in Sources */,
-				25DB7B151B69D96E00AA4AE4 /* DXRecordView.m in Sources */,
+				25DB7B161B69D96E00AA4AE4 /* BJMessageTextView.m in Sources */,
+				25DB7B151B69D96E00AA4AE4 /* BJRecordView.m in Sources */,
 				25DB7B561B69D96E00AA4AE4 /* BJChatAudioPlayerHelper.m in Sources */,
 				25DB7B5B1B69D96E00AA4AE4 /* UIImage+compressionSize.m in Sources */,
 				255206A21B57AFC7007B34C4 /* BJConversationListViewController.m in Sources */,
 				25DB7B0E1B69D96E00AA4AE4 /* BJChatInputBarViewController.m in Sources */,
+				25DB7B5F1B69F1FB00AA4AE4 /* BJAttributedHighlightLabel.m in Sources */,
 				25DB7B0C1B69D96E00AA4AE4 /* BJTextChatCell.m in Sources */,
 				25DB7B111B69D96E00AA4AE4 /* BJChatInputMoreViewController.m in Sources */,
-				25DB7B531B69D96E00AA4AE4 /* AMAttributedHighlightLabel.m in Sources */,
 				25DB7B091B69D96E00AA4AE4 /* BJEmojiChatCell.m in Sources */,
 				25DB7B541B69D96E00AA4AE4 /* BJActionCollectionViewCell.m in Sources */,
-				25DB7B141B69D96E00AA4AE4 /* MyFacialView.m in Sources */,
+				25DB7B141B69D96E00AA4AE4 /* BJFacialView.m in Sources */,
 				25DB7B051B69D96E00AA4AE4 /* BJChatBaseCell.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 			);
