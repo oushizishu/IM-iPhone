@@ -428,7 +428,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 -  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(double)minMsgId
 {
     
-    NSString *queryString = [NSString stringWithFormat:@"SELECT * FROM IMMESSAGE WHERE conversationId = %ld AND msgId < %f ORDER BY msgId DESC LIMIT %d", conversationId, minMsgId, MESSAGE_PAGE_COUNT];
+    NSString *queryString = [NSString stringWithFormat:@"SELECT * FROM IMMESSAGE WHERE conversationId = %ld AND msgId<%@ ORDER BY msgId DESC LIMIT %d", conversationId, @(minMsgId), MESSAGE_PAGE_COUNT];
     NSArray *array = [self.dbHelper  searchWithSQL:queryString toClass:[IMMessage class]];
     
     NSArray *_array = [[array reverseObjectEnumerator] allObjects];
