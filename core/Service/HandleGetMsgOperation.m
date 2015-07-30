@@ -37,7 +37,7 @@
     if (self.conversation.chat_t == eChatType_GroupChat)
     {
         Group *group = [self.imService getGroup:self.conversation.toId];
-        if (self.model && [self.model.msgs count] > 0)
+        if (self.model && [self.model.msgs count] == 0)
         {
             NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId];
             if ([list count] > 0)
