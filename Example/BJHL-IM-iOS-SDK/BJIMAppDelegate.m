@@ -10,6 +10,8 @@
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import "BJIMViewController.h"
 #import "BJChatViewController.h"
+
+
 @implementation BJIMAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

@@ -12,6 +12,8 @@
 #import "BJIMStorage.h"
 #import "BJTimer.h"
 
+static int ddLogLevel = DDLogLevelVerbose;
+
 @interface BJIMEngine()
 {
     NSInteger _pollingIndex;

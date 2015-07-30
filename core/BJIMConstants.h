@@ -21,7 +21,6 @@
 #pragma mark - 接口返回成功码
 #define RESULT_CODE_SUCC 0
 
-static int ddLogLevel = LOG_LEVEL_VERBOSE;
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)

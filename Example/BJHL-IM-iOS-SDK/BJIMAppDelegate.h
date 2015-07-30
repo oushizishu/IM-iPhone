@@ -7,6 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CocoaLumberjack/DDLegacyMacros.h>
+
 
 @interface BJIMAppDelegate : UIResponder <UIApplicationDelegate>
 
