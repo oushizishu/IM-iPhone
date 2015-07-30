@@ -1,6 +1,3 @@
-[submodule "Example/im-iphone-kit"]
-	path = Example/im-iphone-kit
-	url = git@git.baijiahulian.com:yanglei/im-iphone-kit.git
 [submodule "im-iphone-kit"]
 	path = im-iphone-kit
 	url = git@git.baijiahulian.com:yanglei/im-iphone-kit.git
