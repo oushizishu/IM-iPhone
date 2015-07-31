@@ -61,6 +61,7 @@
                 group.endMessageId = group.lastMessageId;
                 group.startMessageId = group.lastMessageId;
                 self.hasMore = NO;
+                [self.imService.imStorage updateGroup:group];
             }
             else
             { // 还存在空洞
