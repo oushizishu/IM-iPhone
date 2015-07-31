@@ -58,6 +58,9 @@
 // 初始化以及加载会话消息
 - (void)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation;
 
+- (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
+- (Group *)getGroup:(int64_t)groupId;
+
 #pragma mark - current chat
 //开始聊天
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole;

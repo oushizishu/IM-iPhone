@@ -109,6 +109,16 @@
     [self.imService loadMessages:conversation minMsgId:minMsgId];
 }
 
+- (User *)getUser:(int64_t)userId role:(IMUserRole)userRole
+{
+    return [self.imService getUser:userId role:userRole];
+}
+
+- (Group *)getGroup:(int64_t)groupId
+{
+    return [self.imService getGroup:groupId];
+}
+
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {
