@@ -37,7 +37,14 @@
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
+        if (self.minMsgId == maxConversationMsgId)
+        {
+            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId + 0.0001];
+        }
+        else
+        {
         self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
+        }
         
         if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
         {

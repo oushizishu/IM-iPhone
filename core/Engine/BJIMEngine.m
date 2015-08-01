@@ -189,6 +189,11 @@ static int ddLogLevel = DDLogLevelVerbose;
                 [self resetPollingIndex];
             }
             
+            if ([[IMEnvironment shareInstance] isCurrentChatToGroup] || [[IMEnvironment shareInstance] isCurrentChatToUser])
+            {
+                [self resetPollingIndex];
+            }
+            
             [self nextPollingAt];
         }
         else
