@@ -171,7 +171,7 @@
 #pragma makr - 联系人
 - (NSArray *)getMyGroups
 {
-    if ([[IMEnvironment shareInstance] isLogin])
+    if (! [[IMEnvironment shareInstance] isLogin])
     {
         return nil;
     }
@@ -180,7 +180,7 @@
 
 - (NSArray *)getMyTeacherContacts
 {
-    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Teacher) return nil;
     
     return [self.imService getTeacherContactsWithUser:[IMEnvironment shareInstance].owner];
@@ -188,7 +188,7 @@
 
 - (NSArray *)getMyStudentContacts
 {
-    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Student) return nil;
     
     return [self.imService getStudentContactsWithUser:[IMEnvironment shareInstance].owner];
@@ -196,7 +196,7 @@
 
 - (NSArray *)getMyInstitutionContacts
 {
-    if ([[IMEnvironment shareInstance] isLogin]) return nil;
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Institution) return nil;
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }

@@ -2,7 +2,7 @@
   "name": "BJHL-IM-iOS-SDK",
   "version": "1.0.0",
   "summary": "BJHL-IM-iOS-SDK.",
-  "description": "百家互联 iOS IM SDK",
+  "description": "                      百家互联 iOS IM SDK\n",
   "homepage": "http://git.baijiahulian.com/app/im-iphone",
   "license": "MIT",
   "authors": {
@@ -29,10 +29,7 @@
       "~> 2.5"
     ],
     "Mantle": [
-      "~> 2.0"
-    ],
-    "MagicalRecord": [
-      "~> 2.2"
+      "~>2.0.2"
     ],
     "CocoaLumberjack": [
       "~> 2.0.1"

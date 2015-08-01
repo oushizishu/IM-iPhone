@@ -9,7 +9,6 @@
 #import "BJIMService.h"
 #import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import "Conversation+DB.h"
-#import  "NSDictionary+MTLMappingAdditions.h"
 #import "IMEnvironment.h"
 #import "BJIMStorage.h"
 #import "IMMessage+DB.h"
