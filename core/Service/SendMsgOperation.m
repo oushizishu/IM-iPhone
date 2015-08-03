@@ -37,6 +37,8 @@
         conversation.toId = self.message.receiver;
         conversation.toRole = self.message.receiverRole;
         conversation.chat_t = self.message.chat_t;
+        
+        [self.imService.imStorage insertConversation:conversation];
     }
     
     conversation.lastMsgRowId = self.message.rowid;
