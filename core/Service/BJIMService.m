@@ -54,6 +54,8 @@
     self.imEngine.getMsgDelegate = self;
     self.imEngine.synContactDelegate = self;
     
+    [self.imStorage insertOrUpdateUser:owner];
+    
     [self.imEngine start];
     
     [self.imEngine syncConfig];

@@ -126,6 +126,7 @@
                 conversation.toId = message.receiver;
                 conversation.toRole = message.receiverRole;
                 conversation.chat_t = message.chat_t;
+                conversation.lastMsgRowId = message.rowid;
                 [self.imService.imStorage insertConversation:conversation];
             }
             
@@ -160,6 +161,7 @@
                     conversation.toId = message.sender;
                     conversation.toRole = message.senderRole;
                     conversation.chat_t = message.chat_t;
+                    conversation.lastMsgRowId = message.rowid;
                     
                     [self.imService.imStorage insertConversation:conversation];
                 }
@@ -199,8 +201,7 @@
                     chatToGroup.endMessageId = message.msgId;
                     [self.imService.imStorage insertConversation:conversation];
                 }
-                
-                
+                else
                 {
                     IMMessage *_lastMsg = [self.imService.imStorage queryMessage:conversation.lastMsgRowId];
                     if (_lastMsg.msgId < message.msgId)

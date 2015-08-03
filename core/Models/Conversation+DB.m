@@ -108,7 +108,10 @@ static char BJIMConversationIMService;
 
 - (void)resetUnReadNum
 {
+    if (self.unReadNum == 0) return;
+    
     self.unReadNum = 0;
     [self.imService.imStorage updateConversation:self];
+    [self.imService notifyConversationChanged];
 }
 @end
