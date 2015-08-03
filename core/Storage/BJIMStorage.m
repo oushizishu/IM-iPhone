@@ -195,7 +195,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (double)queryMaxMsgIdInConversation:(NSInteger)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC"];
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC", conversationId];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }
@@ -497,6 +497,17 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, user.userRole];
     return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
+}
+
+- (void)insertRecentContact:(User *)contact owner:(User *)owner
+{
+    RecentContacts *recent= [[RecentContacts alloc] init];
+    recent.userId = owner.userId;
+    recent.userRole = owner.userRole;
+    recent.contactId = contact.userId;
+    recent.contactRole = contact.userRole;
+    
+    [self.dbHelper insertWhenNotExists:recent];
 }
 
 @end

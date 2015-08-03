@@ -201,7 +201,7 @@
 }
 
 #pragma  mark - getRecentDelegate
-- (void)onGetRecentContacts:(RecentContactsModel *)model
+- (void)onGetRecentContacts:(NSArray *)users
 {
 
 }

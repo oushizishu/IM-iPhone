@@ -242,8 +242,9 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result.code == RESULT_CODE_SUCC)
         {
-            RecentContactsModel *model = [MTLJSONAdapter modelOfClass:[RecentContactsModel class] fromJSONDictionary:result.data error:&error];
-            [weakSelf.getRecentContactsDelegate onGetRecentContacts:model];
+            NSArray *users = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:result.data error:&error];
+
+            [weakSelf.getRecentContactsDelegate onGetRecentContacts:users];
         }
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Get RECENT CONTACTS FAIL [url:%@][%@]", params.url, error.userInfo);

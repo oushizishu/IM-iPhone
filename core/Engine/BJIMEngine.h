@@ -14,7 +14,6 @@
 #import "PollingResultModel.h"
 #import "MyContactsModel.h"
 #import "PostAchiveModel.h"
-#import "RecentContactsModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -47,7 +46,7 @@
 
 @protocol IMEngineGetRecentsDelegate <NSObject>
 
-- (void)onGetRecentContacts:(RecentContactsModel *)model;
+- (void)onGetRecentContacts:(NSArray *)users;
 
 @end
 

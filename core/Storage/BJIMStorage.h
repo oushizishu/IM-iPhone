@@ -87,5 +87,6 @@
 
 
 - (double)getConversationMaxMsgId:(NSInteger)conversationId;
+- (void)insertRecentContact:(User *)contact owner:(User *)owner;
 
 @end
