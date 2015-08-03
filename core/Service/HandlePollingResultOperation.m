@@ -193,12 +193,11 @@
                     conversation.toId = message.receiver;
                     conversation.toRole = message.receiverRole;
                     conversation.chat_t = message.chat_t;
-                    
-                    [self.imService.imStorage insertConversation:conversation];
+                    conversation.lastMsgRowId = message.rowid;
                     
                     chatToGroup.startMessageId = message.msgId;
                     chatToGroup.endMessageId = message.msgId;
-                    
+                    [self.imService.imStorage insertConversation:conversation];
                 }
                 
                 

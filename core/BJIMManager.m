@@ -251,7 +251,7 @@
 
 - (void)addRecentContactsDelegate:(id)delegate
 {
-
+    [self.imService addRecentContactsDelegate:delegate];
 }
 
 @end;
