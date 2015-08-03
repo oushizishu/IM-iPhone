@@ -38,7 +38,7 @@
     {
         Group *group = [self.imService getGroup:self.conversation.toId];
         
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId];
+        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId == group.lastMessageId ? self.minMsgId+0.0001 : self.minMsgId];
         
         double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
         if (self.model == nil)
