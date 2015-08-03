@@ -234,6 +234,22 @@ static int ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)getRecentContacts
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesGetRecentContactsSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            RecentContactsModel *model = [MTLJSONAdapter modelOfClass:[RecentContactsModel class] fromJSONDictionary:result.data error:&error];
+            [weakSelf.getRecentContactsDelegate onGetRecentContacts:model];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        DDLogError(@"Get RECENT CONTACTS FAIL [url:%@][%@]", params.url, error.userInfo);
+    }];
+}
+
 - (void)nextPollingAt
 {
     _heatBeatIndex = 0;

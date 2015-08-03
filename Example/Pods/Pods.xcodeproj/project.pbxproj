@@ -526,6 +526,9 @@
 		950AD879DAC1F97AF1EFABCF /* lame.h in Headers */ = {isa = PBXBuildFile; fileRef = 117E1A550CB68809102C0AB9 /* lame.h */; };
 		953C1DD6D630295E919467A5 /* LKDBUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 60CE2F397960ED1421CC0D64 /* LKDBUtils.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		95A321458EB8A3425AD31256 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = DB712A2406269922319C2595 /* FMDatabaseAdditions.h */; };
+		95AF3DEF1B6EF49700359B4B /* RecentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AF3DEE1B6EF49700359B4B /* RecentContacts.m */; };
+		95AF3DF21B6EFB0000359B4B /* LoadRecentContactsOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AF3DF11B6EFB0000359B4B /* LoadRecentContactsOperation.m */; };
+		95AF3DF51B6F015500359B4B /* RecentContactsModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AF3DF41B6F015500359B4B /* RecentContactsModel.m */; };
 		96729D29AC95C8DC5FAE8606 /* DDAssertMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = F1A9F20CF553F5107F94BFAF /* DDAssertMacros.h */; };
 		9682BED4B1DE727B4BDD2853 /* Conversation+DB.m in Sources */ = {isa = PBXBuildFile; fileRef = D7430B67278D69B0A0DEF0FD /* Conversation+DB.m */; };
 		96D9FEDF77A8A21F6B5F4055 /* LKDBHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = CCE1B6E728A0B28690226976 /* LKDBHelper.h */; };
@@ -1658,6 +1661,12 @@
 		938D180ED18E6676D3198C4F /* Pods-BJHL-IM-iOS-SDK-SlimeRefresh-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BJHL-IM-iOS-SDK-SlimeRefresh-prefix.pch"; sourceTree = "<group>"; };
 		93927424CB9DDDCF621A09AF /* Pods-BJHL-IM-iOS-SDK-MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-BJHL-IM-iOS-SDK-MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
 		94A7EE984DE51D0800A87299 /* IMEmojiMessageBody.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = IMEmojiMessageBody.m; sourceTree = "<group>"; };
+		95AF3DED1B6EF49700359B4B /* RecentContacts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentContacts.h; sourceTree = "<group>"; };
+		95AF3DEE1B6EF49700359B4B /* RecentContacts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentContacts.m; sourceTree = "<group>"; };
+		95AF3DF01B6EFB0000359B4B /* LoadRecentContactsOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoadRecentContactsOperation.h; sourceTree = "<group>"; };
+		95AF3DF11B6EFB0000359B4B /* LoadRecentContactsOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoadRecentContactsOperation.m; sourceTree = "<group>"; };
+		95AF3DF31B6F015500359B4B /* RecentContactsModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentContactsModel.h; sourceTree = "<group>"; };
+		95AF3DF41B6F015500359B4B /* RecentContactsModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentContactsModel.m; sourceTree = "<group>"; };
 		95DAB4D69DCF261F399D1B73 /* DACircularProgressView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DACircularProgressView.h; path = core/BJPhotoBrowser/Libraries/DACircularProgress/DACircularProgressView.h; sourceTree = "<group>"; };
 		95F698F4A6BA9E94626E00E6 /* NSError+MTLModelException.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSError+MTLModelException.m"; path = "Mantle/NSError+MTLModelException.m"; sourceTree = "<group>"; };
 		9621676AC8FC85488A05CA0C /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
@@ -2655,6 +2664,8 @@
 				C91B4AB237E516C3FD83B87C /* SendMsgOperation.m */,
 				F9277919FCFF7E83FA840B91 /* SyncContactOperation.h */,
 				D2370E874834596F64124A92 /* SyncContactOperation.m */,
+				95AF3DF01B6EFB0000359B4B /* LoadRecentContactsOperation.h */,
+				95AF3DF11B6EFB0000359B4B /* LoadRecentContactsOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3056,6 +3067,8 @@
 				CBF2426263F0936075DF9C66 /* TeacherContacts.m */,
 				13F03C472A9F3D1658A2FA36 /* User.h */,
 				88D9CF38AECFE4B2F48E5157 /* User.m */,
+				95AF3DED1B6EF49700359B4B /* RecentContacts.h */,
+				95AF3DEE1B6EF49700359B4B /* RecentContacts.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -3329,6 +3342,8 @@
 				0DC197168A1F17A6C816F345 /* SendMsgModel.m */,
 				A1E30A7CC64928279C9D8447 /* SyncConfigModel.h */,
 				42A6790F14FED9207426C566 /* SyncConfigModel.m */,
+				95AF3DF31B6F015500359B4B /* RecentContactsModel.h */,
+				95AF3DF41B6F015500359B4B /* RecentContactsModel.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -4850,6 +4865,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				AE97EB78E484AB91640B1563 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
+				95AF3DF51B6F015500359B4B /* RecentContactsModel.m in Sources */,
+				95AF3DF21B6EFB0000359B4B /* LoadRecentContactsOperation.m in Sources */,
+				95AF3DEF1B6EF49700359B4B /* RecentContacts.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -116,4 +116,10 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@protocol IMRecentContactsDelegate <NSObject>
+
+- (void)didLoadRecentContacts:(NSArray *)contacts;
+
+@end
+
 #endif

@@ -41,6 +41,7 @@
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
 - (NSArray *)getStudentContactsWithUser:(User *)user;
 - (NSArray *)getInstitutionContactsWithUser:(User *)user;
+- (void)getRecentContactsWithUser:(User *)user;
 
 //cache 相关
 - (void)updateCacheUser:(User *)user;
@@ -67,4 +68,7 @@
 
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
 - (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore;
+
+- (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
+- (void)notifyRecentContactsChanged:(NSArray *)contacts;
 @end

@@ -45,4 +45,6 @@
 + (BJNetRequestOperation *)hermesStorageUploadAudio:(IMMessage *)message
                                                succ:(onSuccess)succ
                                             failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesGetRecentContactsSucc:(onSuccess)succ failure:(onFailure)failure;
 @end

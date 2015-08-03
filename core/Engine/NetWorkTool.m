@@ -18,6 +18,7 @@
 #define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
 #define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
 #define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
+#define HERMES_API_GET_RECENT_CONTACTS [NSString stringWithFormat:@"%@/hermes/getRecentContacts", HOST_API]
 
 
 @implementation NetWorkTool
@@ -134,4 +135,12 @@
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
++ (BJNetRequestOperation *)hermesGetRecentContactsSucc:(onSuccess)succ failure:(onFailure)failure
+{
+
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_RECENT_CONTACTS method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
 @end

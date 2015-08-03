@@ -75,6 +75,7 @@
 - (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;;
 - (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
+- (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 
 //groupMember
 - (GroupMember*)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole;

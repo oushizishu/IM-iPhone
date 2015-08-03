@@ -16,6 +16,7 @@
 #import "TeacherContacts.h"
 #import "StudentContacts.h"
 #import "InstitutionContacts.h"
+#import "RecentContacts.h"
 
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
 const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
@@ -427,7 +428,24 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Institution];
 }
 
-- ( BOOL)checkMessageStatus{
+- (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
+{
+    NSString *queryString = [NSString stringWithFormat:@" userId=%lld and userRole=%ld ", userId, userRole];
+    NSArray *array = [self.dbHelper search:[RecentContacts class] where:queryString orderBy:nil offset:0 count:0];
+    
+    if ([array count] == 0)return nil;
+    
+    NSMutableArray *contacts = [[NSMutableArray alloc] init];
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        RecentContacts *contact = [array objectAtIndex:index];
+        User *user = [self queryUser:contact.contactId userRole:contact.contactRole];
+        [contacts addObject:user];
+    }
+    return contacts;
+}
+
+- (BOOL)checkMessageStatus{
     NSString *queryString = [NSString stringWithFormat:@"UPDATE IMMESSAGE SET status = %ld WHERE status = %ld",eMessageStatus_Send_Fail,eMessageStatus_Sending];
     return [self.dbHelper executeSQL:queryString arguments:nil];
 }

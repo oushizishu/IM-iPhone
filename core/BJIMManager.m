@@ -201,6 +201,12 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+- (void *)getMyRecentContacts
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
+}
+
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
@@ -241,6 +247,11 @@
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate
 {
     [self.imService addLoadMoreMessagesDelegate:delegate];
+}
+
+- (void)addRecentContactsDelegate:(id)delegate
+{
+
 }
 
 @end;

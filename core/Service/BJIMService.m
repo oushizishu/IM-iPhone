@@ -21,9 +21,10 @@
 #import "LoadMoreMessagesOperation.h"
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
+#import "LoadRecentContactsOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
-    IMEngineGetMessageDelegate>
+    IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -34,6 +35,7 @@
 @property (nonatomic, strong) NSHashTable *cmdMessageDelegates;
 @property (nonatomic, strong) NSHashTable *contactChangedDelegates;
 @property (nonatomic, strong) NSHashTable *loadMoreMessagesDelegates;
+@property (nonatomic, strong) NSHashTable *recentContactsDelegates;
 
 @property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
@@ -198,6 +200,12 @@
     [self.operationQueue addOperation:operation];
 }
 
+#pragma  mark - getRecentDelegate
+- (void)onGetRecentContacts:(RecentContactsModel *)model
+{
+
+}
+
 
 #pragma mark - Setter & Getter
 - (NSArray *)getAllConversationWithOwner:(User *)owner
@@ -304,6 +312,16 @@
 - (NSArray *)getInstitutionContactsWithUser:(User *)user
 {
     return [self.imStorage queryInstitutionContactWithUserId:user.userId userRole:user.userRole];
+}
+
+- (void)getRecentContactsWithUser:(User *)user
+{
+    LoadRecentContactsOperation *operation = [[LoadRecentContactsOperation alloc] init];
+    operation.imService = self;
+    [self.operationQueue addOperation:operation];
+    
+    self.imEngine.getRecentContactsDelegate = self;
+    [self.imEngine getRecentContacts];
 }
 
 - (BJIMEngine *)imEngine
@@ -493,4 +511,25 @@
         [delegate didLoadMessages:messages conversation:conversation hasMore:hasMore];
     }
 }
+
+- (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate
+{
+    if (self.recentContactsDelegates == nil)
+    {
+        self.recentContactsDelegates = [[NSHashTable alloc] init];
+    }
+    
+    [self.recentContactsDelegates addObject:delegate];
+}
+
+- (void)notifyRecentContactsChanged:(NSArray *)contacts
+{
+    NSEnumerator *enumerator = [self.recentContactsDelegates objectEnumerator];
+    id<IMRecentContactsDelegate> delegate = nil;
+    while (delegate == [enumerator nextObject])
+    {
+        [delegate didLoadRecentContacts:contacts];
+    }
+}
+
 @end

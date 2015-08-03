@@ -73,6 +73,8 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
+//在回调事件中取值
+- (void *)getMyRecentContacts;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
@@ -85,5 +87,6 @@
 - (void)addCmdMessageDelegate:(id<IMCmdMessageDelegate>)delegate;
 - (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
+- (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
 
 @end

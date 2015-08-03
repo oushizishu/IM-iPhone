@@ -14,6 +14,7 @@
 #import "PollingResultModel.h"
 #import "MyContactsModel.h"
 #import "PostAchiveModel.h"
+#import "RecentContactsModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -42,6 +43,11 @@
 - (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId newEndMessageId:(double_t)newEndMessageId result:(PollingResultModel *)model;
 - (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId;
 
+@end
+
+@protocol IMEngineGetRecentsDelegate <NSObject>
+
+- (void)onGetRecentContacts:(RecentContactsModel *)model;
 
 @end
 
@@ -52,6 +58,7 @@
 @property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
 @property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
+@property (nonatomic, weak) id<IMEngineGetRecentsDelegate> getRecentContactsDelegate;
 
 - (void)start;
 
@@ -76,4 +83,5 @@
                 excludeIds:(NSString *)excludeIds
             startMessageId:(double_t)startMessageId;
 
+- (void)getRecentContacts;
 @end
