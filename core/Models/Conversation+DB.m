@@ -90,6 +90,8 @@ static char BJIMConversationIMService;
     if (self.imService == nil) return nil;
     
     _lastMessage = [self.imService.imStorage queryMessage:self.lastMsgRowId];
+    _lastMessage.imService = self.imService;
+    
     objc_setAssociatedObject(self, &BJIMConversationLastMessage, _lastMessage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
     return _lastMessage;
 }

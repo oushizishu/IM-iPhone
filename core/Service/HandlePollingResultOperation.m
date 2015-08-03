@@ -200,7 +200,8 @@
                     chatToGroup.endMessageId = message.msgId;
                     
                 }
-                else
+                
+                
                 {
                     IMMessage *_lastMsg = [self.imService.imStorage queryMessage:conversation.lastMsgRowId];
                     if (_lastMsg.msgId < message.msgId)
