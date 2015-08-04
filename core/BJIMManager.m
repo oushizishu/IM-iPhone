@@ -214,9 +214,9 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
-- (void *)getMyRecentContacts
+- (void)getMyRecentContacts
 {
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    if (! [[IMEnvironment shareInstance] isLogin]) return;
     [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 

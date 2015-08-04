@@ -77,7 +77,7 @@
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
 //在回调事件中取值
-- (void *)getMyRecentContacts;
+- (void)getMyRecentContacts;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
