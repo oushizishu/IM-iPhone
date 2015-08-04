@@ -22,6 +22,7 @@
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
 #import "LoadRecentContactsOperation.h"
+#import "StoreRecentContactsOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate>
@@ -205,7 +206,10 @@
 #pragma  mark - getRecentDelegate
 - (void)onGetRecentContacts:(NSArray *)users
 {
-
+    StoreRecentContactsOperation *operation = [[StoreRecentContactsOperation alloc] init];
+    operation.imService = self;
+    operation.users = users;
+    [self.operationQueue addOperation:operation];
 }
 
 

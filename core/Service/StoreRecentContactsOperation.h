@@ -7,11 +7,11 @@
 //
 
 #import "IMBaseOperation.h"
+#import "LoadRecentContactsOperation.h"
 
 @class BJIMService;
-@interface StoreRecentContactsOperation : IMBaseOperation
+@interface StoreRecentContactsOperation : LoadRecentContactsOperation
 
-@property (nonatomic, weak) BJIMService *imService;
 @property (nonatomic, strong) NSArray *users;
 
 @end

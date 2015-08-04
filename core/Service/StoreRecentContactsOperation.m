@@ -23,11 +23,14 @@
         
         [self.imService.imStorage insertRecentContact:user owner:owner];
     }
+    
+    [super doOperationOnBackground];
+    
 }
 
 - (void)doAfterOperationOnMain
 {
-//    [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
+    [super doAfterOperationOnMain];
 }
 
 @end
