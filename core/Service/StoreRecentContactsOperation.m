@@ -17,6 +17,7 @@
 {
     
     User *owner = [IMEnvironment shareInstance].owner;;
+    [self.imService.imStorage clearRecentContactsOwner:owner];
 
     for (NSInteger index = 0; index < [self.users count]; ++ index) {
         User *user = [self.users objectAtIndex:index];

@@ -539,4 +539,10 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     [self.dbHelper insertWhenNotExists:recent];
 }
 
+- (void)clearRecentContactsOwner:(User *)user
+{
+    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
+    [self.dbHelper deleteWithClass:[RecentContacts class] where:query];
+}
+
 @end
