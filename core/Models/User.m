@@ -35,8 +35,8 @@
       @"name":@"user_name",
       @"avatar":@"avatar",
       @"nameHeader":@"name_header",
-      @"markName":@"mark_name",
-      @"markHeader":@"mark_header",
+      @"remarkName":@"remark_name",
+      @"remarkHeader":@"remark_header",
       };
 }
 

@@ -20,7 +20,7 @@
 @property (nonatomic, assign) IMUserRole userRole;
 
 @property (nonatomic, copy) NSString *nameHeader; // 名字首字母
-@property (nonatomic, copy) NSString *markName; //备注名
-@property (nonatomic, copy) NSString *markHeader; //备注首字母
+@property (nonatomic, copy) NSString *remarkName; //备注名
+@property (nonatomic, copy) NSString *remarkHeader; //备注首字母
 
 @end

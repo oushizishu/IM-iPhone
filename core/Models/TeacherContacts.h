@@ -15,7 +15,7 @@
 @property (nonatomic, assign) int64_t contactId;
 @property (nonatomic, assign) IMUserRole contactRole;
 @property (nonatomic, assign) int16_t createTime;
-@property (nonatomic, copy) NSString *markName;
-@property (nonatomic, copy) NSString *markHeader;
+@property (nonatomic, copy) NSString *remarkName;
+@property (nonatomic, copy) NSString *remarkHeader;
 
 @end

@@ -329,8 +329,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.markName = contact.markName;
-        relation.markHeader = contact.markHeader;
+        relation.remarkName = contact.remarkName;
+        relation.remarkHeader = contact.remarkHeader;
         return [self.dbHelper insertToDB:relation];
     } else if (owner.userRole == eUserRole_Student) {
         StudentContacts *relation = [[StudentContacts alloc] init];
@@ -338,8 +338,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.markName = contact.markName;
-        relation.markHeader = contact.markHeader;
+        relation.remarkName = contact.remarkName;
+        relation.remarkHeader = contact.remarkHeader;
         return [self.dbHelper insertToDB:relation];
     } else if (owner.userRole == eUserRole_Institution) {
         InstitutionContacts *relation = [[InstitutionContacts alloc] init];
@@ -347,8 +347,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.markName = contact.markName;
-        relation.markHeader = contact.markHeader;
+        relation.remarkName = contact.remarkName;
+        relation.remarkHeader = contact.remarkHeader;
         return [self.dbHelper insertToDB:relation];
     }
     return NO;
@@ -387,22 +387,22 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         {
             TeacherContacts *_relation = ((TeacherContacts *)relation);
             user = [self queryUser:_relation.contactId userRole:((TeacherContacts *)relation).contactRole];
-            user.markName = _relation.markName;
-            user.markHeader = _relation.markHeader;
+            user.remarkName = _relation.remarkName;
+            user.remarkHeader = _relation.remarkHeader;
         }
         else if ([relation isKindOfClass:[StudentContacts class]])
         {
             StudentContacts *_relation = ((StudentContacts*)relation);
             user = [self queryUser:((StudentContacts*)relation).contactId userRole:((StudentContacts *)relation).contactRole];
-            user.markHeader = _relation.markHeader;
-            user.markName = _relation.markName;
+            user.remarkHeader = _relation.remarkHeader;
+            user.remarkName = _relation.remarkName;
         }
         else if ([relation isKindOfClass:[InstitutionContacts class]])
         {
             InstitutionContacts *_relation = ((InstitutionContacts*)relation);
             user = [self queryUser:_relation.contactId userRole:((InstitutionContacts*)relation).contactRole];
-            user.markName = _relation.markName;
-            user.markHeader = _relation.markHeader;
+            user.remarkName = _relation.remarkName;
+            user.remarkHeader = _relation.remarkHeader;
         }
         if (user) {
             [users addObject:user];
@@ -455,8 +455,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     {
         RecentContacts *contact = [array objectAtIndex:index];
         User *user = [self queryUser:contact.contactId userRole:contact.contactRole];
-        user.markHeader = contact.markHeader;
-        user.markName = contact.markName;
+        user.remarkHeader = contact.remarkHeader;
+        user.remarkName = contact.remarkName;
         [contacts addObject:user];
     }
     return contacts;
@@ -523,8 +523,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     recent.userRole = owner.userRole;
     recent.contactId = contact.userId;
     recent.contactRole = contact.userRole;
-    recent.markName = contact.markName;
-    recent.markHeader = contact.markHeader;
+    recent.remarkName = contact.remarkName;
+    recent.remarkHeader = contact.remarkHeader;
     
     [self.dbHelper insertWhenNotExists:recent];
 }
