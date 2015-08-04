@@ -22,7 +22,8 @@
 
 - (id)data
 {
-    if ([_data isKindOfClass:[NSDictionary class]]) {
+    if ([_data isKindOfClass:[NSDictionary class]] ||
+        [_data isKindOfClass:[NSArray class]]) {
         return _data;
     }
     
