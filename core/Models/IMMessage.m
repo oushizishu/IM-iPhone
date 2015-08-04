@@ -25,6 +25,7 @@
            {
                IMMessageBody *messageBody = nil;
                NSString *body = [value valueForKey:@"body"];
+               if ([body length] == 0) return nil;
                NSInteger msg_t = [[value valueForKey:@"msg_t"] integerValue];
                NSDictionary *dictioanry = [NSJSONSerialization JSONObjectWithData:[body dataUsingEncoding:NSUTF8StringEncoding] options:0 error:nil];
                
