@@ -59,6 +59,7 @@
 - (void)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
+- (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
 
 #pragma mark - current chat

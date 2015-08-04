@@ -114,6 +114,11 @@
     return [self.imService getUser:userId role:userRole];
 }
 
+- (void)setUser:(User *)user
+{
+    [self.imService setUser:user];
+}
+
 - (Group *)getGroup:(int64_t)groupId
 {
     return [self.imService getGroup:groupId];

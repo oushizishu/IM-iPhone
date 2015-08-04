@@ -35,6 +35,7 @@
                                         chat_t:(IMChatType)chat_t;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
+- (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
 
 - (NSArray *)getGroupsWithUser:(User *)user;

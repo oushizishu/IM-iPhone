@@ -329,6 +329,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
+        relation.markName = contact.markName;
+        relation.markHeader = contact.markHeader;
         return [self.dbHelper insertToDB:relation];
     } else if (owner.userRole == eUserRole_Student) {
         StudentContacts *relation = [[StudentContacts alloc] init];
@@ -336,6 +338,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
+        relation.markName = contact.markName;
+        relation.markHeader = contact.markHeader;
         return [self.dbHelper insertToDB:relation];
     } else if (owner.userRole == eUserRole_Institution) {
         InstitutionContacts *relation = [[InstitutionContacts alloc] init];
@@ -343,6 +347,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.contactId = contact.userId;
         relation.contactRole = contact.userRole;
         relation.createTime = [[NSDate date] timeIntervalSince1970];
+        relation.markName = contact.markName;
+        relation.markHeader = contact.markHeader;
         return [self.dbHelper insertToDB:relation];
     }
     return NO;
@@ -379,15 +385,24 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         User *user = nil;
         if ([relation isKindOfClass:[TeacherContacts class]])
         {
-            user = [self queryUser:((TeacherContacts *)relation).contactId userRole:((TeacherContacts *)relation).contactRole];
+            TeacherContacts *_relation = ((TeacherContacts *)relation);
+            user = [self queryUser:_relation.contactId userRole:((TeacherContacts *)relation).contactRole];
+            user.markName = _relation.markName;
+            user.markHeader = _relation.markHeader;
         }
         else if ([relation isKindOfClass:[StudentContacts class]])
         {
+            StudentContacts *_relation = ((StudentContacts*)relation);
             user = [self queryUser:((StudentContacts*)relation).contactId userRole:((StudentContacts *)relation).contactRole];
+            user.markHeader = _relation.markHeader;
+            user.markName = _relation.markName;
         }
         else if ([relation isKindOfClass:[InstitutionContacts class]])
         {
-            user = [self queryUser:((InstitutionContacts*)relation).contactId userRole:((InstitutionContacts*)relation).contactRole];
+            InstitutionContacts *_relation = ((InstitutionContacts*)relation);
+            user = [self queryUser:_relation.contactId userRole:((InstitutionContacts*)relation).contactRole];
+            user.markName = _relation.markName;
+            user.markHeader = _relation.markHeader;
         }
         if (user) {
             [users addObject:user];
@@ -440,6 +455,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     {
         RecentContacts *contact = [array objectAtIndex:index];
         User *user = [self queryUser:contact.contactId userRole:contact.contactRole];
+        user.markHeader = contact.markHeader;
+        user.markName = contact.markName;
         [contacts addObject:user];
     }
     return contacts;
@@ -506,6 +523,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     recent.userRole = owner.userRole;
     recent.contactId = contact.userId;
     recent.contactRole = contact.userRole;
+    recent.markName = contact.markName;
+    recent.markHeader = contact.markHeader;
     
     [self.dbHelper insertWhenNotExists:recent];
 }

@@ -7,6 +7,7 @@
 //
 
 #import "User.h"
+#import <NSObject+LKDBHelper.h>
 
 @implementation User
 
@@ -33,6 +34,22 @@
       @"userRole":@"user_role",
       @"name":@"user_name",
       @"avatar":@"avatar",
+      @"nameHeader":@"name_header",
+      @"markName":@"mark_name",
+      @"markHeader":@"mark_header",
       };
 }
+
++ (NSDictionary *)getTableMapping
+{
+    return @{
+             @"userId":@"userId",
+             @"userId":@"userId",
+             @"userRole":@"userRole",
+             @"name":@"name",
+             @"avatar":@"avatar",
+             @"nameHeader":@"nameHeader"
+             };
+}
+
 @end

@@ -242,6 +242,11 @@
     return user;
 }
 
+- (void)setUser:(User *)user
+{
+    [self.imStorage insertOrUpdateUser:user];
+}
+
 - (void)updateCacheUser:(User *)user
 {
     for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
