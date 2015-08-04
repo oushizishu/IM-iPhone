@@ -52,6 +52,6 @@
 
 - (BOOL)isCurrentChatToUser
 {
-    return self.currentChatToUserId > 0 && self.currentChatToUserRole > 0;
+    return self.currentChatToUserId > 0 && self.currentChatToUserRole >= 0;
 }
 @end
