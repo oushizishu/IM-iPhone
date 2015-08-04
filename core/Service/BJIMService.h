@@ -34,6 +34,8 @@
                                          owner:(User *)owner
                                         chat_t:(IMChatType)chat_t;
 
+- (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;
+
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;

@@ -173,6 +173,14 @@
     return [self.imService getConversationUserOrGroupId:userId userRole:userRole owner:[IMEnvironment shareInstance].owner chat_t:eChatType_Chat];
 }
 
+- (BOOL)deleteConversation:(Conversation *)conversation
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return NO;
+    if (conversation == nil) return NO;
+    return [self.imService deleteConversation:conversation owner:[IMEnvironment shareInstance].owner];
+}
+
 #pragma makr - 联系人
 - (NSArray *)getMyGroups
 {

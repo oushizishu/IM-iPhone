@@ -301,6 +301,12 @@
     return conversation;
 }
 
+- (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
+{
+    
+    return [self.imStorage deleteConversation:conversation.rowid owner:owner.userId ownerRole:owner.userRole];
+}
+
 - (NSArray *)getGroupsWithUser:(User *)user
 {
     return [self.imStorage queryGroupsWithUser:user];
@@ -395,7 +401,7 @@
 {
     if (self.conversationDelegates == nil)
     {
-        self.conversationDelegates = [[NSHashTable alloc] init];
+        self.conversationDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.conversationDelegates addObject:delegate];
@@ -414,7 +420,7 @@
 {
     if (self.receiveNewMessageDelegates == nil)
     {
-        self.receiveNewMessageDelegates = [[NSHashTable alloc] init];
+        self.receiveNewMessageDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.receiveNewMessageDelegates addObject:delegate];
@@ -433,7 +439,7 @@
 {
     if (self.deliveredMessageDelegates == nil)
     {
-        self.deliveredMessageDelegates = [[NSHashTable alloc] init];
+        self.deliveredMessageDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.deliveredMessageDelegates addObject:delegate];
@@ -465,7 +471,7 @@
 {
     if (self.cmdMessageDelegates == nil)
     {
-        self.cmdMessageDelegates = [[NSHashTable alloc] init];
+        self.cmdMessageDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.cmdMessageDelegates addObject:delegate];
@@ -485,7 +491,7 @@
 {
     if (self.contactChangedDelegates == nil)
     {
-        self.contactChangedDelegates = [[NSHashTable alloc] init];
+        self.contactChangedDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.contactChangedDelegates addObject:delegate];
@@ -504,7 +510,7 @@
 {
     if (self.loadMoreMessagesDelegates == nil)
     {
-        self.loadMoreMessagesDelegates = [[NSHashTable alloc] init];
+        self.loadMoreMessagesDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.loadMoreMessagesDelegates addObject:delegate];
@@ -523,7 +529,7 @@
 {
     if (self.recentContactsDelegates == nil)
     {
-        self.recentContactsDelegates = [[NSHashTable alloc] init];
+        self.recentContactsDelegates = [NSHashTable weakObjectsHashTable];
     }
     
     [self.recentContactsDelegates addObject:delegate];
@@ -533,7 +539,7 @@
 {
     NSEnumerator *enumerator = [self.recentContactsDelegates objectEnumerator];
     id<IMRecentContactsDelegate> delegate = nil;
-    while (delegate == [enumerator nextObject])
+    while (delegate = [enumerator nextObject])
     {
         [delegate didLoadRecentContacts:contacts];
     }

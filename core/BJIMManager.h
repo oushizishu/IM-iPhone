@@ -50,6 +50,8 @@
 - (NSArray *)getAllConversation;
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
 - (Conversation *)getConversationGroupId:(int64_t)groupId;
+//删除会话
+- (BOOL)deleteConversation:(Conversation *)conversation;
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;

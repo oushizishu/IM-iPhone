@@ -76,6 +76,6 @@
 - (void)doAfterOperationOnMain
 {
     if (self.imService == nil) return;
-    [self.imService.imEngine postPollingRequest:self.max_msg_id excludeUserMsgs:self.excludeUserMsgIds groupsLastMsgIds:self.groups_last_msg_id currentGroup:0];
+    [self.imService.imEngine postPollingRequest:self.max_msg_id excludeUserMsgs:self.excludeUserMsgIds groupsLastMsgIds:self.groups_last_msg_id currentGroup:[IMEnvironment shareInstance].currentChatToGroupId];
 }
 @end
