@@ -455,7 +455,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
 {
-    NSString *queryString = [NSString stringWithFormat:@" userId=%lld and userRole=%ld ", userId, (long)userRole];
+    NSString *queryString = [NSString stringWithFormat:@" userId=%lld and userRole=%ld order by updateTime desc", userId, (long)userRole];
     NSArray *array = [self.dbHelper search:[RecentContacts class] where:queryString orderBy:nil offset:0 count:0];
     
     if ([array count] == 0)return nil;
