@@ -546,6 +546,7 @@
 		952093EB4E4097BC98036008 /* BJTapDetectingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 54D605C48BE56432B5BCD027 /* BJTapDetectingView.m */; };
 		95242840650C9B0FAB2656A3 /* EXTRuntimeExtensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 5EF2BF036C32365F2A961456 /* EXTRuntimeExtensions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		95367E5AF6EB2B77CE5888AD /* SSKeychain.h in Headers */ = {isa = PBXBuildFile; fileRef = FC3330343645AC8A387E8299 /* SSKeychain.h */; };
+		95AF41431B70AFC800359B4B /* RecentContactModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95AF41421B70AFC800359B4B /* RecentContactModel.m */; };
 		95B31090BC2BE967303B590F /* YLGIFImage.h in Headers */ = {isa = PBXBuildFile; fileRef = D04197D46C0C02ADB25C9CB0 /* YLGIFImage.h */; };
 		95D49E4D68A9A6EBD714CFEE /* BJGridViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = FD6639CAA83C45AB89FEF258 /* BJGridViewController.h */; };
 		9611F268E1BCE4EC974686AD /* NSLayoutConstraint+PureLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 87D6A66FEC1096AC825C2971 /* NSLayoutConstraint+PureLayout.m */; };
@@ -1649,6 +1650,8 @@
 		9512F62F44C1AEA010DD1BDB /* TKFullScreenWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKFullScreenWindow.m; path = "TKAlert&TKActionSheet/TKFullScreenWindow.m"; sourceTree = "<group>"; };
 		9550C6FEC522AF41E4DB8392 /* NSArray+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSArray+PureLayout.m"; path = "Source/NSArray+PureLayout.m"; sourceTree = "<group>"; };
 		959417472547138DCE997D0B /* LKDBHelper.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = LKDBHelper.h; path = LKDBHelper/Helper/LKDBHelper.h; sourceTree = "<group>"; };
+		95AF41411B70AFC800359B4B /* RecentContactModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RecentContactModel.h; sourceTree = "<group>"; };
+		95AF41421B70AFC800359B4B /* RecentContactModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RecentContactModel.m; sourceTree = "<group>"; };
 		96B5FD117938353CFF5739C2 /* LKDB+Mapping.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "LKDB+Mapping.m"; path = "LKDBHelper/Helper/LKDB+Mapping.m"; sourceTree = "<group>"; };
 		97336FAB6C28A79A26D4D049 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		9788E70C7DFF19B2DECCCB30 /* SDImageCache.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDImageCache.m; path = SDWebImage/SDImageCache.m; sourceTree = "<group>"; };
@@ -3053,6 +3056,8 @@
 				792CDD1C8C3BD8AF59275828 /* SendMsgModel.m */,
 				5228D5F85B054C45BFF16B6A /* SyncConfigModel.h */,
 				5E26877454E230558EC2371E /* SyncConfigModel.m */,
+				95AF41411B70AFC800359B4B /* RecentContactModel.h */,
+				95AF41421B70AFC800359B4B /* RecentContactModel.m */,
 			);
 			path = Engine;
 			sourceTree = "<group>";
@@ -5135,6 +5140,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2C500E3A8B88A0140E151D77 /* Pods-BJHL-IM-iOS-SDK-dummy.m in Sources */,
+				95AF41431B70AFC800359B4B /* RecentContactModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

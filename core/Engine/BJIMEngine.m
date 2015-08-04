@@ -11,6 +11,7 @@
 #import "BaseResponse.h"
 #import "BJIMStorage.h"
 #import "BJTimer.h"
+#import "RecentContactModel.h"
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -242,7 +243,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result.code == RESULT_CODE_SUCC)
         {
-            NSArray *users = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:result.data error:&error];
+            NSArray *users = [MTLJSONAdapter modelsOfClass:[RecentContactModel class] fromJSONArray:result.data error:&error];
 
             [weakSelf.getRecentContactsDelegate onGetRecentContacts:users];
         }
