@@ -20,6 +20,7 @@
 
     for (NSInteger index = 0; index < [self.users count]; ++ index) {
         User *user = [self.users objectAtIndex:index];
+        [self.imService.imStorage insertOrUpdateUser:user];
         
         [self.imService.imStorage insertRecentContact:user owner:owner];
     }
