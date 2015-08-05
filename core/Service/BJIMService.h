@@ -37,7 +37,6 @@
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
-- (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
@@ -83,4 +82,10 @@
 
 - (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
 - (void)notifyRecentContactsChanged:(NSArray *)contacts;
+
+- (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;
+- (void)notifyUserInfoChanged:(User *)user;
+
+- (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
+- (void)notifyGroupProfileChanged:(Group *)group;
 @end

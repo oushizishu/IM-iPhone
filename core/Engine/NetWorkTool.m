@@ -20,6 +20,8 @@
 #define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
 #define HERMES_API_GET_RECENT_CONTACTS [NSString stringWithFormat:@"%@/hermes/getRecentContacts", HOST_API]
 #define HERMES_API_GET_CHANGE_REMARK_NAME [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
+#define HERMES_API_GET_USER_INFO [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
+#define HERMES_API_GET_GROUP_PROFILE [NSString stringWithFormat:@"%@/hermes/getGroupProfile", HOST_API]
 
 
 @implementation NetWorkTool
@@ -158,5 +160,28 @@
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [requestParmas appendPostParamValue:remarkName forKey:@"remark_name"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesGetUserInfo:(int64_t)userId
+                                        role:(IMUserRole)userRole
+                                        succ:(onSuccess)succ
+                                     failure:(onFailure)failure
+{
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_USER_INFO method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesGetGroupProfile:(int64_t)groupId
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure
+{
+
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 @end

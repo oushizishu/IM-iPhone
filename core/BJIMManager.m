@@ -114,11 +114,6 @@
     return [self.imService getUser:userId role:userRole];
 }
 
-- (void)setUser:(User *)user
-{
-    [self.imService setUser:user];
-}
-
 - (Group *)getGroup:(int64_t)groupId
 {
     return [self.imService getGroup:groupId];
@@ -283,6 +278,11 @@
 - (void)addRecentContactsDelegate:(id)delegate
 {
     [self.imService addRecentContactsDelegate:delegate];
+}
+
+- (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate
+{
+    [self.imService addUserInfoChangedDelegate:delegate];
 }
 
 @end;

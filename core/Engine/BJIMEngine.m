@@ -276,6 +276,47 @@ static int ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)postGetUserInfo:(int64_t)userId
+                   role:(IMUserRole)userRole
+               callback:(void (^)(User *))callback
+{
+    [NetWorkTool hermesGetUserInfo:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.data error:&error];
+            callback(user);
+        }
+        else
+        {
+            callback(nil);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(nil);
+    }];
+}
+
+- (void)postGetGroupProfile:(int64_t)groupId callback:(void (^)(Group *))callback
+{
+    [NetWorkTool hermesGetGroupProfile:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            Group *group = [MTLJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.data error:&error];
+            callback(group);
+        }
+        else
+        {
+            callback(nil);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(nil);
+    }];
+}
+
+
 - (void)nextPollingAt
 {
     _heatBeatIndex = 0;

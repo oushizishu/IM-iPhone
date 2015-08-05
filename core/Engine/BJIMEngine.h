@@ -88,4 +88,9 @@
                       userId:(int64_t)userId
                     userRole:(IMUserRole)userRole
                     callback:(void(^)(NSString *remarkName, NSString *remarkHeader, NSInteger errCode, NSString *errMsg))callback;
+
+- (void)postGetUserInfo:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(User *result))callback;
+
+- (void)postGetGroupProfile:(int64_t)groupId callback:(void(^)(Group *result))callback;
+
 @end

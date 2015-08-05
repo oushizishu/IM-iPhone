@@ -38,6 +38,8 @@
 @property (nonatomic, strong) NSHashTable *contactChangedDelegates;
 @property (nonatomic, strong) NSHashTable *loadMoreMessagesDelegates;
 @property (nonatomic, strong) NSHashTable *recentContactsDelegates;
+@property (nonatomic, strong) NSHashTable *userInfoDelegates;
+@property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 
 @property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
@@ -240,16 +242,28 @@
     }
     
     User *user = [self.imStorage queryUser:userId userRole:userRole];
-    if (user) {
+    if (user)
+    {
         [self.usersCache addObject:user];
+    }
+    else
+    {
+        user = [[User alloc] init];
+        user.userId = userId;
+        user.userRole = userRole;
+        [self.usersCache addObject:user];
+        __WeakSelf__ weakSelf = self;
+        [self.imEngine postGetUserInfo:userId role:userRole callback:^(User *result) {
+            if (! weakSelf.bIsServiceActive) return ;
+            if (! result) return;
+            User *_user = [weakSelf getUser:userId role:userRole];
+            [_user mergeValuesForKeysFromModel:result];
+            [weakSelf.imStorage insertOrUpdateUser:_user];
+            [weakSelf notifyUserInfoChanged:_user];
+        }];
     }
     
     return user;
-}
-
-- (void)setUser:(User *)user
-{
-    [self.imStorage insertOrUpdateUser:user];
 }
 
 - (void)updateCacheUser:(User *)user
@@ -288,7 +302,6 @@
         }
     }
     
-//    Group *group = [self.imStorage queryGroupWithGroupId:groupId withOwner:[IMEnvironment shareInstance].owner];
     User *owner = [IMEnvironment shareInstance].owner;
     GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
     Group *group = [self.imStorage queryGroupWithGroupId:groupId];
@@ -298,6 +311,21 @@
         group.remarkHeader = member.remarkHeader;
         
         [self.groupsCache addObject:group];
+    }
+    else
+    {
+        group = [[Group alloc] init];
+        group.groupId = groupId;
+        [self.groupsCache addObject:group];
+        __WeakSelf__ weakSelf = self;
+        [self.imEngine postGetGroupProfile:groupId callback:^(Group *result) {
+            if (!weakSelf.bIsServiceActive) return ;
+            if (! result) return;
+            Group *_group = [weakSelf getGroup:groupId];
+            [_group mergeValuesForKeysFromModel:result];
+            [weakSelf.imStorage insertOrUpdateGroup:_group];
+            [weakSelf notifyGroupProfileChanged:_group];
+        }];
     }
     return group;
 }
@@ -591,6 +619,47 @@
     while (delegate = [enumerator nextObject])
     {
         [delegate didLoadRecentContacts:contacts];
+    }
+}
+
+- (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate
+{
+    if (self.userInfoDelegates == nil)
+    {
+        self.userInfoDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    
+    [self.userInfoDelegates addObject:delegate];
+
+}
+
+- (void)notifyUserInfoChanged:(User *)user
+{
+    NSEnumerator *enumerator = [self.userInfoDelegates objectEnumerator];
+    id<IMUserInfoChangedDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate didUserInfoChanged:user];
+    }
+}
+
+- (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate
+{
+    if (self.groupInfoDelegates == nil)
+    {
+        self.groupInfoDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    
+    [self.groupInfoDelegates addObject:delegate];
+}
+
+- (void)notifyGroupProfileChanged:(Group *)group
+{
+    NSEnumerator *enumerator = [self.groupInfoDelegates objectEnumerator];
+    id<IMGroupProfileChangedDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate didGroupProfileChanged:group];
     }
 }
 

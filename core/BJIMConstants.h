@@ -122,4 +122,18 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@class User;
+@protocol IMUserInfoChangedDelegate <NSObject>
+
+- (void)didUserInfoChanged:(User *)user;
+
+@end
+
+@class Group;
+@protocol IMGroupProfileChangedDelegate <NSObject>
+
+- (void)didGroupProfileChanged:(Group *)group;
+
+@end
+
 #endif

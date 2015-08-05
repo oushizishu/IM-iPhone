@@ -54,4 +54,13 @@
                                              remarkName:(NSString *)remarkName
                                                    succ:(onSuccess)succ
                                                 failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesGetUserInfo:(int64_t)userId
+                                        role:(IMUserRole)userRole
+                                        succ:(onSuccess)succ
+                                     failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesGetGroupProfile:(int64_t)groupId
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure;
 @end
