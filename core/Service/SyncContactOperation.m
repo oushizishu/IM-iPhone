@@ -24,17 +24,8 @@
         Group *__group = [self.imService getGroup:group.groupId];
         if (__group)
         {
-            __group.isPublic = group.isPublic ;
-            __group.createTime = group.createTime;
-            __group.maxusers = group.maxusers;
-            __group.approval = group.approval;
-            __group.status = group.status;
-            __group.descript = group.descript;
-            
-            __group.nameHeader = group.nameHeader;
-            __group.remarkName = group.remarkName;
-            __group.remarkHeader = group.remarkHeader;
-            [self.imService.imStorage updateGroup:__group];
+            [__group mergeValuesForKeysFromModel:group];
+           [self.imService.imStorage updateGroup:__group];
         }
         else
         {

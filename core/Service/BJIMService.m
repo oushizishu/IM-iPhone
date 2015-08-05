@@ -407,11 +407,7 @@
 
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
 {
-    BOOL flag = [self.imStorage deleteConversation:conversation.rowid owner:owner.userId ownerRole:owner.userRole];
-    if (flag) {
-        [self notifyConversationChanged];
-    }
-    return flag;
+    return [self.imStorage deleteConversation:conversation.rowid owner:owner.userId ownerRole:owner.userRole];
 }
 
 - (NSArray *)getGroupsWithUser:(User *)user
