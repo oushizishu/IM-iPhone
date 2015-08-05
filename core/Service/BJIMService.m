@@ -244,6 +244,7 @@
     User *user = [self.imStorage queryUser:userId userRole:userRole];
     if (user)
     {
+        [self.imStorage queryAndSetUserRemark:user owner:[IMEnvironment shareInstance].owner];
         [self.usersCache addObject:user];
     }
     else

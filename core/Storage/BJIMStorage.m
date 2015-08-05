@@ -52,6 +52,40 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
    return user;
 }
 
+- (void)queryAndSetUserRemark:(User *)user owner:(User *)owner
+{
+    NSString *classString = nil;
+    if (owner.userRole == eUserRole_Institution) {
+        classString = @"InstitutionContacts";
+    } else if (owner.userRole == eUserRole_Student) {
+        classString = @"StudentContacts";
+    } else if (owner.userRole == eUserRole_Teacher) {
+        classString = @"TeacherContacts";
+    }
+    
+    NSString *queryString = [NSString stringWithFormat:@"userId=%lld and contactId=%lld AND contactRole=%ld", owner.userId, user.userId, (long)user.userRole];
+    id relation  = [self.dbHelper searchSingle:NSClassFromString(classString) where:queryString orderBy:nil];
+    
+    if ([relation isKindOfClass:[InstitutionContacts class]])
+    {
+        InstitutionContacts *_contact = (InstitutionContacts *)relation;
+        user.remarkName = _contact.remarkName;
+        user.remarkHeader = _contact.remarkHeader;
+    }
+    else if ([relation isKindOfClass:[TeacherContacts class]])
+    {
+        TeacherContacts*_contact = (TeacherContacts*)relation;
+        user.remarkName = _contact.remarkName;
+        user.remarkHeader = _contact.remarkHeader;
+    }
+    else if ([relation isKindOfClass:[StudentContacts class]])
+    {
+        StudentContacts*_contact = (StudentContacts*)relation;
+        user.remarkName = _contact.remarkName;
+        user.remarkHeader = _contact.remarkHeader;
+    }
+}
+
 - (BOOL)insertOrUpdateUser:(User *)user
 {
     BOOL value = NO;

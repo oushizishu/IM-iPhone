@@ -18,6 +18,7 @@
 
 //user
 - (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole;
+- (void)queryAndSetUserRemark:(User *)user owner:(User *)owner;
 - (BOOL)insertOrUpdateUser:(User *)user;
 
 //group
