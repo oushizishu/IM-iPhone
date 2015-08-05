@@ -14,6 +14,7 @@
 #import "PollingResultModel.h"
 #import "MyContactsModel.h"
 #import "PostAchiveModel.h"
+#import "SyncConfigModel.h"
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -50,6 +51,12 @@
 
 @end
 
+@protocol IMEngineSyncConfigDelegate <NSObject>
+
+- (void)onSyncConfig:(SyncConfigModel *)model;
+
+@end
+
 @interface BJIMEngine : NSObject
 
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
@@ -58,6 +65,7 @@
 @property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
 @property (nonatomic, weak) id<IMEngineGetRecentsDelegate> getRecentContactsDelegate;
+@property (nonatomic, weak) id<IMEngineSyncConfigDelegate> syncConfigDelegate;
 
 - (void)start;
 

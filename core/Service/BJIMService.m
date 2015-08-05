@@ -26,7 +26,7 @@
 #import "StoreRecentContactsOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
-    IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate>
+    IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate, IMEngineSyncConfigDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -60,6 +60,7 @@
     self.imEngine.postMessageDelegate = self;
     self.imEngine.getMsgDelegate = self;
     self.imEngine.synContactDelegate = self;
+    self.imEngine.syncConfigDelegate = self;
     
     [self.imStorage insertOrUpdateUser:owner];
     
@@ -80,6 +81,7 @@
     self.imEngine.postMessageDelegate = nil;
     self.imEngine.getMsgDelegate = nil;
     self.imEngine.synContactDelegate = nil;
+    self.imEngine.syncConfigDelegate = nil;
     
     [self.usersCache removeAllObjects];
     [self.groupsCache removeAllObjects];
@@ -217,6 +219,18 @@
     operation.imService = self;
     operation.users = users;
     [self.operationQueue addOperation:operation];
+}
+
+#pragma mark - syncConfigDelegate
+- (void)onSyncConfig:(SyncConfigModel *)model
+{
+    User *system = [self getSystemSecretary];
+    system.userId = model.systemSecretary.number;
+    system.userRole = model.systemSecretary.role;
+    
+    User *waiter = [self getCustomWaiter];
+    waiter.userId = model.customWaiter.number;
+    waiter.userRole = model.customWaiter.role;
 }
 
 
@@ -411,7 +425,9 @@
 
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
 {
-    return [self.imStorage deleteConversation:conversation.rowid owner:owner.userId ownerRole:owner.userRole];
+    conversation.status = 1; //逻辑删除
+    [self.imStorage updateConversation:conversation];
+    return YES;
 }
 
 - (NSArray *)getGroupsWithUser:(User *)user

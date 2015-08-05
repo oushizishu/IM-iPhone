@@ -22,4 +22,6 @@
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) NSInteger unReadNum;
 
+@property (nonatomic, assign) NSInteger status; // 0 正常， 1 已删除
+
 @end

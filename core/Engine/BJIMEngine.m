@@ -60,7 +60,10 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
-            weakSelf.im_polling_delta = result.data[@"polling_delta"];
+            NSError *error;
+            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.data error:&error];
+            weakSelf.im_polling_delta = model.polling_delta;
+            [weakSelf.syncConfigDelegate onSyncConfig:model];
         }
         else
         {

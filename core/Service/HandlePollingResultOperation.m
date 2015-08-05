@@ -130,6 +130,7 @@
                 [self.imService.imStorage insertConversation:conversation];
             }
             
+            conversation.status = 0;// 会话状态回归正常
             message.status = eMessageStatus_Send_Succ;
             message.read = 1;
             message.played = 1;
@@ -169,6 +170,7 @@
                 message.conversationId = conversation.rowid;
                 conversation.lastMsgRowId = message.rowid;
                 conversation.unReadNum += 1;
+                conversation.status = 0;// 会话状态回归正常
                 
                 //如果当前正处于这个聊天室， 消息数不增加
                 if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
@@ -209,6 +211,7 @@
                         conversation.lastMsgRowId = message.rowid;
                     }
                 }
+                conversation.status = 0;// 会话状态回归正常
                 
                 // 处理群消息空洞
                 if (message.msgId > chatToGroup.lastMessageId)

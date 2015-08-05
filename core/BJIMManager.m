@@ -236,11 +236,13 @@
 #pragma mark - 系统小秘书 & 客服
 - (User *)getSystemSecretary
 {
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getSystemSecretary];
 }
 
 - (User *)getCustomWaiter
 {
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getCustomWaiter];
 }
 

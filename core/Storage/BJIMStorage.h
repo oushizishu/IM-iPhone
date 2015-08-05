@@ -64,7 +64,6 @@
                           chatType:(IMChatType)chatType;
 
 - (void)updateConversation:(Conversation *)conversation;
-- (BOOL)deleteConversation:(NSInteger)conversationId owner:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole;
 
 //contact

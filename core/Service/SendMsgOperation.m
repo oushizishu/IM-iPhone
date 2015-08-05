@@ -40,6 +40,7 @@
         
         [self.imService.imStorage insertConversation:conversation];
     }
+    conversation.status = 0; //会话状态回归正常
     
     conversation.lastMsgRowId = self.message.rowid;
     self.message.conversationId = conversation.rowid;

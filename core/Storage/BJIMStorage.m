@@ -288,7 +288,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
                                userRole:(IMUserRole)userRole
 {
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
-                                                     AND ownerRole=%ld  ORDER BY lastMsgRowId DESC",ownerId,(long)userRole];
+                                                     AND ownerRole=%ld and status=0  ORDER BY lastMsgRowId DESC",ownerId,(long)userRole];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     array = [array count]>0?array:nil;
     return array;
@@ -322,16 +322,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (void)updateConversation:(Conversation *)conversation
 {
     [self.dbHelper updateToDB:conversation where:[NSString stringWithFormat:@" rowid=%ld", (long)conversation.rowid]];
-}
-
-- (BOOL)deleteConversation:(NSInteger)conversationId owner:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole
-{
-    
-    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld", (long)conversationId ];
-    [self.dbHelper deleteWithClass:[IMMessage class] where:queryString];
-    
-    queryString = [NSString stringWithFormat:@" rowid=%ld and ownerId=%lld and ownerRole=%ld ", (long)conversationId, ownerId, (long)ownerRole];
-    return [self.dbHelper deleteWithClass:[Conversation class] where:queryString];
 }
 
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole
