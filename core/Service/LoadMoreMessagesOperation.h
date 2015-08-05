@@ -13,7 +13,7 @@
 @interface LoadMoreMessagesOperation : IMBaseOperation
 
 @property (nonatomic, weak) BJIMService *imService;
-@property (nonatomic, copy) Conversation *conversation;
+@property (nonatomic, strong) Conversation *conversation;
 @property (nonatomic, assign) double_t minMsgId;
 
 @end
