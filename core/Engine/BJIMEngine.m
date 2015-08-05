@@ -100,29 +100,31 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 - (void)postMessage:(IMMessage *)message
 {
+    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result.code == RESULT_CODE_SUCC)
         {
             NSError *error ;
             SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
-            [self.postMessageDelegate onPostMessageSucc:message result:model];
+            [weakSelf.postMessageDelegate onPostMessageSucc:message result:model];
         }
         else
         {
             NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
-            [self.postMessageDelegate onPostMessageFail:message error:error];
+            [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
             DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
         }
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
         NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
-        [self.postMessageDelegate onPostMessageFail:message error:_error];
+        [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
     }];
 }
 
 - (void)postMessageAchive:(IMMessage *)message
 {
+    __WeakSelf__ weakSelf = self;
     if (message.msg_t == eMessageType_IMG)
     {
         [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
@@ -131,17 +133,17 @@ static int ddLogLevel = DDLogLevelVerbose;
             if (result.code == RESULT_CODE_SUCC)
             {
                 PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
-                [self.postMessageDelegate onPostMessageAchiveSucc:message result:model];
+                [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
             {
                 NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
-                [self.postMessageDelegate onPostMessageFail:message error:error];
+                [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
             }
         } failure:^(NSError *error, RequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
-            [self.postMessageDelegate onPostMessageFail:message error:_error];
+            [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
         }];
     }
     else if (message.msg_t == eMessageType_AUDIO)
@@ -152,17 +154,17 @@ static int ddLogLevel = DDLogLevelVerbose;
             if (result.code == RESULT_CODE_SUCC)
             {
                 PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
-                [self.postMessageDelegate onPostMessageAchiveSucc:message result:model];
+                [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
             {
                 NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
-                [self.postMessageDelegate onPostMessageFail:message error:error];
+                [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
             }
         } failure:^(NSError *error, RequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
-            [self.postMessageDelegate onPostMessageFail:message error:_error];
+            [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
         }];
     }
 }
@@ -187,26 +189,26 @@ static int ddLogLevel = DDLogLevelVerbose;
             }
             if ([model.msgs count] > 0)
             {
-                [self resetPollingIndex];
+                [weakSelf resetPollingIndex];
             }
             
             if ([[IMEnvironment shareInstance] isCurrentChatToGroup] || [[IMEnvironment shareInstance] isCurrentChatToUser])
             {
-                [self resetPollingIndex];
+                [weakSelf resetPollingIndex];
             }
             
-            [self nextPollingAt];
+            [weakSelf nextPollingAt];
         }
         else
         {
             DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
-            [self nextPollingAt];
+            [weakSelf nextPollingAt];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         _bIsPollingRequesting = NO;
         DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
-        [self nextPollingAt];
+        [weakSelf nextPollingAt];
     }];
 
 }

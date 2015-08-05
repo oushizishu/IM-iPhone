@@ -15,6 +15,6 @@
 
 @property (nonatomic, strong) IMMessage *message;
 @property (nonatomic, weak) BJIMService *imService;
-@property (nonatomic, strong) SendMsgModel *model;
+@property (nonatomic, copy) SendMsgModel *model;
 
 @end

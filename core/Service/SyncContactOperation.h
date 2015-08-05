@@ -11,5 +11,5 @@
 @class MyContactsModel;
 @interface SyncContactOperation : IMBaseOperation
 @property (nonatomic, weak) BJIMService *imService;
-@property (nonatomic,strong) MyContactsModel *model;
+@property (nonatomic, copy) MyContactsModel *model;
 @end

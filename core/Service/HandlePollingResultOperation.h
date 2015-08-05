@@ -14,6 +14,6 @@
 @interface HandlePollingResultOperation : IMBaseOperation
 
 @property (nonatomic, weak) BJIMService *imService;
-@property (nonatomic, strong) PollingResultModel *model;
+@property (nonatomic, copy) PollingResultModel *model;
 
 @end

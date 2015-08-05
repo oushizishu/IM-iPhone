@@ -12,6 +12,6 @@
 @class BJIMService;
 @interface StoreRecentContactsOperation : LoadRecentContactsOperation
 
-@property (nonatomic, strong) NSArray *users;
+@property (nonatomic, copy) NSArray *users;
 
 @end

@@ -112,7 +112,12 @@
     }
     else
     {
-        [self.imService.imEngine getMsgConversation:self.conversation.rowid minMsgId:self.minMsgId groupId:self.conversation.toId userId:0 excludeIds:self.excludeIds startMessageId:self.newEndMessageId];
+        [self.imService.imEngine getMsgConversation:self.conversation.rowid
+                                           minMsgId:self.minMsgId
+                                            groupId:self.conversation.toId
+                                             userId:0
+                                         excludeIds:[self.excludeIds copy]
+                                     startMessageId:self.newEndMessageId];
     }
 }
 
