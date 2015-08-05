@@ -38,6 +38,10 @@
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
+- (User *)getUserFromCache:(int64_t)userId role:(IMUserRole)userRole;
+- (Group *)getGroupFromCache:(int64_t)groupId;
+- (void)insertUserToCache:(User *)user;
+- (void)insertGroupToCache:(Group *)group;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;

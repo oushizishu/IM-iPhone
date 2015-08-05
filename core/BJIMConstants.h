@@ -38,6 +38,7 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Student = 2,
     eUserRole_Institution = 6,
     eUserRole_Kefu = 7,
+    eUserRole_System = 100, //系统通知
     eUserRole_Anonymous = -1,
 };
 

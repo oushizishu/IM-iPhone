@@ -281,6 +281,30 @@
     }
 }
 
+- (User *)getUserFromCache:(int64_t)userId role:(IMUserRole)userRole
+{
+    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
+    {
+        User *_user = [self.usersCache objectAtIndex:index];
+        if (_user.userId == userId && _user.userRole == userRole)
+        {
+            return _user;
+        }
+    }
+    return nil;
+}
+
+- (Group *)getGroupFromCache:(int64_t)groupId
+{
+    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
+        Group *_group = [self.groupsCache objectAtIndex:index];
+        if (_group.groupId == groupId) {
+            return _group;
+        }
+    }
+    return nil;
+}
+
 - (void)updateCacheGroup:(Group *)group
 {
     for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
@@ -329,6 +353,16 @@
         }];
     }
     return group;
+}
+
+- (void)insertUserToCache:(User *)user
+{
+    [self.usersCache addObject:user];
+}
+
+- (void)insertGroupToCache:(Group *)group
+{
+    [self.groupsCache addObject:group];
 }
 
 #pragma mark - remark name
@@ -383,26 +417,95 @@
 - (NSArray *)getGroupsWithUser:(User *)user
 {
     NSArray *groups = [self.imStorage queryGroupsWithUser:user];
-    [groups enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        [self updateCacheGroup:obj];
-    }];
-    return groups;
+    NSMutableArray *list = [NSMutableArray array];
     
+    for (NSInteger index = 0; index < [groups count]; ++ index) {
+        Group *group = [groups objectAtIndex:index];
+        Group *_group = [self getGroupFromCache:group.groupId];
+        if (_group)
+        {
+            [_group mergeValuesForKeysFromModel:group];
+            [list addObject:_group];
+        }
+        else
+        {
+            [self.groupsCache addObject:group];
+            [list addObject:group];
+        }
+    }
+    return list;
 }
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user
 {
-    return [self.imStorage queryTeacherContactWithUserId:user.userId userRole:user.userRole];
+    NSArray *array = [self.imStorage queryTeacherContactWithUserId:user.userId userRole:user.userRole];
+    NSMutableArray *list = [NSMutableArray array];
+    
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        User *user = [array objectAtIndex:index];
+        User *_user = [self getUserFromCache:user.userId role:user.userRole];
+        if (_user)
+        {
+            [_user mergeValuesForKeysFromModel:user];
+            [list addObject:_user];
+        }
+        else
+        {
+            [self.usersCache addObject:user];
+            [list addObject:user];
+        }
+    }
+
+    return list;
 }
 
 - (NSArray *)getStudentContactsWithUser:(User *)user
 {
-    return [self.imStorage queryStudentContactWithUserId:user.userId userRole:user.userRole];
+    NSArray *array = [self.imStorage queryStudentContactWithUserId:user.userId userRole:user.userRole];
+    NSMutableArray *list = [NSMutableArray array];
+    
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        User *user = [array objectAtIndex:index];
+        User *_user = [self getUserFromCache:user.userId role:user.userRole];
+        if (_user)
+        {
+            [_user mergeValuesForKeysFromModel:user];
+            [list addObject:_user];
+        }
+        else
+        {
+            [self.usersCache addObject:user];
+            [list addObject:user];
+        }
+    }
+    
+    return list;
 }
 
 - (NSArray *)getInstitutionContactsWithUser:(User *)user
 {
-    return [self.imStorage queryInstitutionContactWithUserId:user.userId userRole:user.userRole];
+    NSArray *array = [self.imStorage queryInstitutionContactWithUserId:user.userId userRole:user.userRole];
+    NSMutableArray *list = [NSMutableArray array];
+    
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        User *user = [array objectAtIndex:index];
+        User *_user = [self getUserFromCache:user.userId role:user.userRole];
+        if (_user)
+        {
+            [_user mergeValuesForKeysFromModel:user];
+            [list addObject:_user];
+        }
+        else
+        {
+            [self.usersCache addObject:user];
+            [list addObject:user];
+        }
+    }
+    
+    return list;
 }
 
 - (void)getRecentContactsWithUser:(User *)user
