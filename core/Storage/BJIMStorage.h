@@ -35,7 +35,7 @@
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
 
-- (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId  ownerRole:(IMUserRole)ownerRole;
+- (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
 - (NSArray *)queryChatExludeMessagesMaxMsgId:(double_t)maxMsgId;
 - (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
 - (double_t)queryMaxMsgIdGroupChat:(int64_t)groupId;

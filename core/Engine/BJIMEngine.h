@@ -83,4 +83,9 @@
             startMessageId:(double_t)startMessageId;
 
 - (void)getRecentContacts;
+
+- (void)postChangeRemarkName:(NSString *)remarkName
+                      userId:(int64_t)userId
+                    userRole:(IMUserRole)userRole
+                    callback:(void(^)(NSString *remarkName, NSString *remarkHeader, NSInteger errCode, NSString *errMsg))callback;
 @end

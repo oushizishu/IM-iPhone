@@ -104,6 +104,9 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         Group *group = [self queryGroupWithGroupId:member.groupId];
         if (group == nil) continue;
         
+        group.remarkName = member.remarkName;
+        group.remarkHeader = member.remarkHeader;
+        
         [groups addObject:group];
     }
     return groups;
@@ -116,7 +119,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (IMMessage*)queryMessage:(NSInteger)messageRowid
 {
-    NSString *queryString = [NSString stringWithFormat:@"rowId= %ld", (long)messageRowid];
+    NSString *queryString = [NSString stringWithFormat:@"rowId=%ld", (long)messageRowid];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message;
 }
@@ -367,7 +370,9 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (Group*)queryGroupWithGroupId:(int64_t)groupId
 {
     NSString *queryString = [NSString stringWithFormat:@"groupId=%lld",groupId];
-    return [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
+    Group *group = [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
+    if (! group) return nil;
+    return group;
 }
 
 

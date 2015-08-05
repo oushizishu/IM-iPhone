@@ -7,6 +7,7 @@
 //
 
 #import "Group.h"
+#import <LKDBHelper/LKDB+Mapping.h>
 
 @implementation Group
 
@@ -40,7 +41,30 @@
              @"ownerRole":@"owner_role",
              @"memberCount":@"membercount",
              @"status":@"status",
-             @"createTime":@"create_time"
+             @"createTime":@"create_time",
+             @"nameHeader":@"name_header",
+             @"remarkName":@"remark_name",
+             @"remarkHeader":@"remark_header"
              };
 }
+
++ (NSDictionary *)getTableMapping
+{
+    return @{
+             @"groupId":@"groupId",
+             @"groupName":@"groupName",
+             @"avatar":@"avatar",
+             @"descript":@"descript",
+             @"isPublic":@"isPublic",
+             @"maxusers":@"maxusers",
+             @"approval":@"approval",
+             @"ownerId":@"ownerId",
+             @"ownerRole":@"ownerRole",
+             @"memberCount":@"memberCount",
+             @"status":@"status",
+             @"createTime":@"createTime",
+             @"nameHeader":@"nameHeader",
+             };
+}
+
 @end

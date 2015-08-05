@@ -19,6 +19,7 @@
 #define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
 #define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
 #define HERMES_API_GET_RECENT_CONTACTS [NSString stringWithFormat:@"%@/hermes/getRecentContacts", HOST_API]
+#define HERMES_API_GET_CHANGE_REMARK_NAME [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
 
 
 @implementation NetWorkTool
@@ -142,5 +143,20 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesChangeRemarkNameUserId:(int64_t)userId
+                                               userRole:(IMUserRole)userRole
+                                             remarkName:(NSString *)remarkName
+                                                   succ:(onSuccess)succ
+                                                failure:(onFailure)failure
+{
+
+    RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_GET_CHANGE_REMARK_NAME method:kHttpMethod_POST];
+    [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [requestParmas appendPostParamValue:remarkName forKey:@"remark_name"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 @end

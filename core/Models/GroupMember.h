@@ -19,6 +19,8 @@
 @property (nonatomic, assign) NSInteger status;
 @property (nonatomic, assign) int64_t createTime;
 @property (nonatomic, assign) NSInteger msgStatus;
+@property (nonatomic, copy) NSString *remarkName; //备注名
+@property (nonatomic, copy) NSString *remarkHeader; //备注首字母
 
 @property (nonatomic, strong) User *member;
 

@@ -12,6 +12,7 @@
 #import "IMEnvironment.h"
 #import "BJIMStorage.h"
 #import "IMMessage+DB.h"
+#import "GroupMember.h"
 
 
 #import "SendMsgOperation.h"
@@ -287,12 +288,48 @@
         }
     }
     
+//    Group *group = [self.imStorage queryGroupWithGroupId:groupId withOwner:[IMEnvironment shareInstance].owner];
+    User *owner = [IMEnvironment shareInstance].owner;
+    GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
     Group *group = [self.imStorage queryGroupWithGroupId:groupId];
     if (group)
     {
+        group.remarkName = member.remarkName;
+        group.remarkHeader = member.remarkHeader;
+        
         [self.groupsCache addObject:group];
     }
     return group;
+}
+
+#pragma mark - remark name
+- (void)setRemarkName:(NSString *)remarkName
+                 user:(User *)user
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postChangeRemarkName:remarkName userId:user.userId userRole:user.userRole callback:^(NSString *remarkName, NSString *remarkHeader, NSInteger errCode, NSString *errMsg) {
+        
+        if (! weakSelf.bIsServiceActive) return ;
+        
+        if (errCode == RESULT_CODE_SUCC)
+        {
+            user.remarkName = remarkName;
+            user.remarkHeader = remarkHeader;
+            [weakSelf.imStorage insertOrUpdateContactOwner:[IMEnvironment shareInstance].owner contact:user];
+            callback(remarkName, errCode, errMsg);
+        }
+        else
+        {
+            callback(remarkName, errCode, errMsg);
+        }
+    }];
+}
+
+- (void)setRemarkName:(NSString *)remarkName
+                group:(Group *)group
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback
+{
 }
 
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
@@ -316,7 +353,12 @@
 
 - (NSArray *)getGroupsWithUser:(User *)user
 {
-    return [self.imStorage queryGroupsWithUser:user];
+    NSArray *groups = [self.imStorage queryGroupsWithUser:user];
+    [groups enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        [self updateCacheGroup:obj];
+    }];
+    return groups;
+    
 }
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user

@@ -50,6 +50,15 @@
 - (void)updateCacheUser:(User *)user;
 - (void)updateCacheGroup:(Group *)group;
 
+#pragma mark - remark name
+- (void)setRemarkName:(NSString *)remarkName
+                 user:(User *)user
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
+- (void)setRemarkName:(NSString *)remarkName
+                group:(Group *)group
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
 

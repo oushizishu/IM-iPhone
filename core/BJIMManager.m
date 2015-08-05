@@ -220,6 +220,24 @@
     [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+#pragma mark - 备注名
+- (void)setRemarkName:(NSString *)remarkName
+                 user:(User *)user
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return;
+    [self.imService setRemarkName:remarkName user:user callback:callback];
+}
+
+//TODO
+//- (void)setRemarkName:(NSString *)remarkName
+//                group:(Group *)group
+//             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback
+//{
+//    if (! [[IMEnvironment shareInstance] isLogin]) return;
+//    [self.imService setRemarkName:remarkName group:group callback:callback];
+//}
+
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive

@@ -30,6 +30,10 @@
             __group.approval = group.approval;
             __group.status = group.status;
             __group.descript = group.descript;
+            
+            __group.nameHeader = group.nameHeader;
+            __group.remarkName = group.remarkName;
+            __group.remarkHeader = group.remarkHeader;
             [self.imService.imStorage updateGroup:__group];
         }
         else
@@ -43,6 +47,8 @@
             member.groupId = group.groupId;
             member.userId = currentUser.userId;
             member.userRole = currentUser.userRole;
+            member.remarkName = group.remarkName;
+            member.remarkHeader = group.remarkHeader;
             [self.imService.imStorage insertGroupMember:member];
         }
     }

@@ -79,6 +79,16 @@
 //在回调事件中取值
 - (void)getMyRecentContacts;
 
+#pragma mark - 备注名
+- (void)setRemarkName:(NSString *)remarkName
+                 user:(User *)user
+             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
+//- (void)setRemarkName:(NSString *)remarkName
+//                group:(Group *)group
+//             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
 - (void)applicationDidBecomeActive;

@@ -254,6 +254,28 @@ static int ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)postChangeRemarkName:(NSString *)remarkName
+                      userId:(int64_t)userId
+                    userRole:(IMUserRole)userRole
+                    callback:(void(^)(NSString *remarkName, NSString *remarkHeader, NSInteger errCode, NSString *errMsg))callback
+{
+    [NetWorkTool hermesChangeRemarkNameUserId:userId userRole:userRole remarkName:remarkName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error ;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result.code == RESULT_CODE_SUCC)
+        {
+            callback(remarkName, [result.data valueForKey:@"remark_header"], result.code, result.msg);
+        }
+        else
+        {
+            callback(remarkName, nil, result.code, result.msg);
+        }
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(remarkName, nil, error.code, @"网络异常,请检查网络连接");
+    }];
+}
+
 - (void)nextPollingAt
 {
     _heatBeatIndex = 0;
