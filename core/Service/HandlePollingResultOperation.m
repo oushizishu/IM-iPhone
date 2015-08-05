@@ -64,6 +64,7 @@
             _group.createTime = group.createTime;
             _group.maxusers = group.maxusers;
             _group.status = group.status;
+            _group.avatar = group.avatar;
            
             [self.imService.imStorage updateGroup:_group];
         }
@@ -175,7 +176,8 @@
                 //如果当前正处于这个聊天室， 消息数不增加
                 if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
                     if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
-                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole)
+                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole
+                        && conversation.status == 0)
                     {
                         conversation.unReadNum -= 1;
                     }
