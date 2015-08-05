@@ -285,4 +285,9 @@
     [self.imService addUserInfoChangedDelegate:delegate];
 }
 
+- (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate
+{
+    [self.imService addGroupProfileChangedDelegate:delegate];
+}
+
 @end;

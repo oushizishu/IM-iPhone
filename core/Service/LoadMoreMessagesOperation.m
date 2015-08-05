@@ -32,19 +32,12 @@
     
     double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversation.rowid];
     double maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:self.conversation.rowid];
-    if (self.minMsgId == 0) self.minMsgId = maxConversationMsgId;
     
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
-        if (self.minMsgId == maxConversationMsgId)
-        {
-            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId + 0.0001];
-        }
-        else
-        {
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
-        }
+
+        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
         
         if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
         {
@@ -62,7 +55,7 @@
         
         group.lastMessageId = maxConversationMsgId;
         
-        if (self.minMsgId < group.lastMessageId && group.endMessageId <= group.startMessageId)
+        if (self.minMsgId != 0 && self.minMsgId < group.lastMessageId && group.endMessageId <= group.startMessageId)
         {
             // 不是第一次加载，并且本地没有空洞
             self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
@@ -78,7 +71,7 @@
         }
         else
         {
-            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == maxConversationMsgId ? self.minMsgId + 0.0001 : self.minMsgId];
+            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
             
             self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来
@@ -99,6 +92,7 @@
                 self.newEndMessageId = [[list objectAtIndex:0] msgId];
             }
         }
+        if (self.minMsgId == 0) self.minMsgId = maxConversationMsgId;
         
         [self.imService.imStorage updateGroup:group];
     }
