@@ -296,7 +296,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (Conversation*)queryConversation:(int64_t)conversationId
 {
-    NSString *queryString = [NSString stringWithFormat:@"rowid=%lld",conversationId];
+    NSString *queryString = [NSString stringWithFormat:@"rowid=%lld and status=0",conversationId];
     return  [self.dbHelper  searchSingle:[Conversation class] where:queryString orderBy:nil];
 }
 
@@ -315,7 +315,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     NSString  *queryString = [NSString stringWithFormat:@"ownerId=%lld\
                                                      AND ownerRole=%ld\
                                                      AND toId=%lld %@\
-                                                     AND chat_t=%ld",ownerId, (long)ownerRole,userId,query,(long)chatType];
+                                                     AND chat_t=%ld and status=0",ownerId, (long)ownerRole,userId,query,(long)chatType];
     return [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
 }
 
