@@ -233,6 +233,16 @@
 //    [self.imService setRemarkName:remarkName group:group callback:callback];
 //}
 
+#pragma mark - 系统小秘书 & 客服
+- (User *)getSystemSecretary
+{
+    return [self.imService getSystemSecretary];
+}
+
+- (User *)getCustomWaiter
+{
+    return [self.imService getCustomWaiter];
+}
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive

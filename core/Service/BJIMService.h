@@ -49,6 +49,13 @@
 - (NSArray *)getInstitutionContactsWithUser:(User *)user;
 - (void)getRecentContactsWithUser:(User *)user;
 
+
+#pragma mark -系统小秘书 & 客服
+//系统小秘书
+- (User *)getSystemSecretary;
+// 客服
+- (User *)getCustomWaiter;
+
 //cache 相关
 - (void)updateCacheUser:(User *)user;
 - (void)updateCacheGroup:(Group *)group;

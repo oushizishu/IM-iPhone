@@ -44,6 +44,9 @@
 @property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
 
+@property (nonatomic, strong) User *systemSecretary;
+@property (nonatomic, strong) User *customeWaiter;
+
 @end
 
 @implementation BJIMService
@@ -80,7 +83,8 @@
     
     [self.usersCache removeAllObjects];
     [self.groupsCache removeAllObjects];
-    
+    self.systemSecretary = nil;
+    self.customeWaiter = nil;
 }
 
 #pragma mark - 消息操作
@@ -512,6 +516,33 @@
     
     self.imEngine.getRecentContactsDelegate = self;
     [self.imEngine getRecentContacts];
+}
+
+
+#pragma mark -系统小秘书 & 客服
+//系统小秘书
+- (User *)getSystemSecretary
+{
+    if (self.systemSecretary == nil)
+    {
+        self.systemSecretary = [[User alloc] init];
+        self.systemSecretary.userId = 12345;
+        self.systemSecretary.userRole = eUserRole_System;
+        self.systemSecretary.name = @"系统小秘书";
+    }
+    return self.systemSecretary;
+}
+// 客服
+- (User *)getCustomWaiter
+{
+    if (self.customeWaiter == nil)
+    {
+        self.customeWaiter = [[User alloc] init];
+        self.customeWaiter.userId = 12345;
+        self.customeWaiter.userRole = eUserRole_Kefu;
+        self.customeWaiter.name = @"客服";
+    }
+    return self.customeWaiter;
 }
 
 - (BJIMEngine *)imEngine

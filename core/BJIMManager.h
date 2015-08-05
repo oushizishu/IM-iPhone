@@ -87,6 +87,11 @@
 //                group:(Group *)group
 //             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
 
+#pragma mark -系统小秘书 & 客服
+//系统小秘书
+- (User *)getSystemSecretary;
+// 客服 
+- (User *)getCustomWaiter;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;
