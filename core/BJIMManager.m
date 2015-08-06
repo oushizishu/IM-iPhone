@@ -161,6 +161,13 @@
     return [self.imService getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous owner:[IMEnvironment shareInstance].owner chat_t:eChatType_GroupChat];
 }
 
+- (NSInteger)getAllConversationUnreadNum
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return 0;
+    return [self.imService getAllConversationUnReadNumWithUser:[IMEnvironment shareInstance].owner];
+}
+
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole
 {
     if (! [[IMEnvironment shareInstance] isLogin])

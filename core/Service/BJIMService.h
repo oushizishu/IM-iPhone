@@ -34,6 +34,7 @@
                                          owner:(User *)owner
                                         chat_t:(IMChatType)chat_t;
 
+- (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner;
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;

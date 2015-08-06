@@ -423,9 +423,15 @@
     return conversation;
 }
 
+- (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner
+{
+    return [self.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
+}
+
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
 {
     conversation.status = 1; //逻辑删除
+    conversation.unReadNum = 0;
     [self.imStorage updateConversation:conversation];
     return YES;
 }
