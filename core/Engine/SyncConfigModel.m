@@ -22,6 +22,24 @@
 
 @implementation SyncConfigModel
 
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"administrators"] || [key isEqualToString:@"customWaiter"] || [key isEqualToString:@"systemSecretary"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            if ([value isKindOfClass:[NSDictionary class]]) {
+                SimpleUserModel *user = [MTLJSONAdapter modelOfClass:[SimpleUserModel class] fromJSONDictionary:value error:error];
+                return user;
+            }
+            else if (value)
+            {
+                NSAssert(0, @"value类型不对");
+            }
+            return nil;
+        }];
+    }
+    return nil;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
