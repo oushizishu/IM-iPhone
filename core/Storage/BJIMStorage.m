@@ -555,17 +555,9 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
 }
 
-- (void)insertRecentContact:(User *)contact owner:(User *)owner
+- (void)insertRecentContact:(RecentContacts *)contact
 {
-    RecentContacts *recent= [[RecentContacts alloc] init];
-    recent.userId = owner.userId;
-    recent.userRole = owner.userRole;
-    recent.contactId = contact.userId;
-    recent.contactRole = contact.userRole;
-    recent.remarkName = contact.remarkName;
-    recent.remarkHeader = contact.remarkHeader;
-    
-    [self.dbHelper insertWhenNotExists:recent];
+    [self.dbHelper insertWhenNotExists:contact];
 }
 
 - (void)clearRecentContactsOwner:(User *)user
