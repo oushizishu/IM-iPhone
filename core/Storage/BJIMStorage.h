@@ -14,6 +14,7 @@
 @class IMMessage;
 @class Conversation;
 @class GroupMember;
+@class RecentContacts;
 @interface BJIMStorage : NSObject
 
 //user
