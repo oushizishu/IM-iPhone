@@ -21,6 +21,10 @@ typedef enum {
     TKAlertViewAnimationPathStyle,   //模仿path效果
 } TKAlertViewAnimation;
 
+void TKAlert1(NSString *title);
+void TKAlert2(NSString *title, NSString *message);
+void TKAlert3(NSString *title, NSString *message, NSString *buttonTitle);
+
 @protocol TKAlertViewControllerDelegate;
 
 @interface TKAlertViewController : UIViewController<UIAppearance>
@@ -64,7 +68,7 @@ typedef enum {
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated;
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated completion:(void (^)(void))completion;
 
-@property (nonatomic, assign) id<TKAlertViewControllerDelegate>delegate;
+@property (nonatomic, weak) id<TKAlertViewControllerDelegate>delegate;
 @property (nonatomic, readwrite, getter=isVisible) BOOL visible;
 
 @end
@@ -73,6 +77,8 @@ typedef enum {
 @protocol TKAlertViewControllerDelegate <NSObject>
 
 @optional
+//点击按钮dismiss才会回调
+- (BOOL)alertView:(TKAlertViewController *)alertView shouldDismissWithButtonIndex:(NSInteger)buttonIndex;
 - (void)alertView:(TKAlertViewController *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
 
 - (void)willPresentAlertView:(TKAlertViewController *)alertView;  // before animation and showing view

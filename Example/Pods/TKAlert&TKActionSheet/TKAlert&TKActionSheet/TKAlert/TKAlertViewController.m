@@ -16,8 +16,19 @@
 #import "UIScreen+Size.h"
 #import "UIDeviceAdditions.h"
 
-#import <QuartzCore/QuartzCore.h>
+void TKAlert1(NSString *title) {
+    TKAlert2(title, nil);
+}
 
+void TKAlert2(NSString *title, NSString *message) {
+    TKAlert3(title, message, nil);
+}
+
+void TKAlert3(NSString *title, NSString *message, NSString *buttonTitle) {
+    TKAlertViewController *alert = [[TKAlertViewController alloc] initWithTitle:title message:message];
+    [alert addButtonWithTitle:buttonTitle?:@"确定" handler:nil];
+    [alert show];
+}
 
 @interface TKAlertView : UIView
 
@@ -348,7 +359,7 @@ static UIFont *buttonFont = nil;
     }
 }
 
-- (NSUInteger)supportedInterfaceOrientations
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
     UIWindow *previousKeyWindow = [TKAlertOverlayWindow defaultWindow].previousKeyWindow;
     UIViewController *viewController = [previousKeyWindow currentViewController];

@@ -70,6 +70,14 @@
     return YES;
 }
 
+- (BOOL)isPlayerWithUrl:(NSURL *)url;
+{
+    if ([self.avPlayer.url isEqual:url] && self.avPlayer.isPlaying) {
+        return YES;
+    }
+    return NO;
+}
+
 - (void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
     if (self.callback) {
         self.callback(nil,YES);

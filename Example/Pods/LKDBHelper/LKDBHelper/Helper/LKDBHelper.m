@@ -166,11 +166,16 @@
         NSString *dirPath = [filePath substringToIndex:lastComponent.location];
         BOOL isDir = NO;
         BOOL isCreated = [fileManager fileExistsAtPath:dirPath isDirectory:&isDir];
-
+        
         if ((isCreated == NO) || (isDir == NO)) {
             NSError *error = nil;
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
+            NSDictionary* attributes = @{NSFileProtectionKey:NSFileProtectionNone};
+#else
+            NSDictionary* attributes = nil;
+#endif
             BOOL success = [fileManager createDirectoryAtPath:dirPath withIntermediateDirectories:YES
-                                                                      attributes:@{NSFileProtectionKey:NSFileProtectionNone} error:&error];
+                                                                      attributes:attributes error:&error];
 
             if (success == NO) {
                 LKErrorLog(@"create dir error: %@", error.debugDescription);
@@ -182,7 +187,9 @@
              *  @brief  Disk I/O error when device is locked
              *          https://github.com/ccgus/fmdb/issues/262
              */
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
             [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionNone} ofItemAtPath:dirPath error:nil];
+#endif
         }
     }
     
@@ -195,11 +202,12 @@
     
     self.bindingQueue = [[FMDatabaseQueue alloc]initWithPath:filePath
                                                        flags:SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE | SQLITE_OPEN_FILEPROTECTION_NONE];
-
+#ifdef __IPHONE_OS_VERSION_MIN_REQUIRED
     if([fileManager fileExistsAtPath:filePath])
     {
         [fileManager setAttributes:@{NSFileProtectionKey:NSFileProtectionNone} ofItemAtPath:filePath error:nil];
     }
+#endif
     
     _encryptionKey = nil;
 
@@ -474,8 +482,11 @@
         [set close];
 
         for (NSString * tableName in dropTables) {
-            NSString *dropTable = [NSString stringWithFormat:@"drop table %@", tableName];
-            [db executeUpdate:dropTable];
+            if([tableName hasPrefix:@"sqlite_"] == NO)
+            {
+                NSString *dropTable = [NSString stringWithFormat:@"drop table %@", tableName];
+                [db executeUpdate:dropTable];
+            }
         }
         
         [self.createdTableNames removeAllObjects];
@@ -908,15 +919,23 @@
 - (NSMutableArray *)searchWithSQL:(NSString *)sql toClass:(Class)modelClass
 {
     // replace @t to model table name
-    NSString *replaceString = [NSString stringWithFormat:@" %@ ", [modelClass getTableName]];
-
-    if ([sql hasSuffix:@" @t"]) {
+    NSString *replaceString = [[modelClass getTableName] stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+    
+    if([sql hasSuffix:@" @t"])
+    {
         sql = [sql stringByAppendingString:@" "];
     }
-
-    sql = [sql stringByReplacingOccurrencesOfString:@" @t " withString:replaceString];
-    sql = [sql stringByReplacingOccurrencesOfString:@" from " withString:@",rowid from "];
-
+    if([sql componentsSeparatedByString:@" from "].count == 2)
+    {
+        sql = [sql stringByReplacingOccurrencesOfString:@" from " withString:[NSString stringWithFormat:@",%@.rowid from ",replaceString]];
+    }
+    sql = [sql stringByReplacingOccurrencesOfString:@" @t " withString:
+           [NSString stringWithFormat:@" %@ ",replaceString]];
+    sql = [sql stringByReplacingOccurrencesOfString:@" @t," withString:
+           [NSString stringWithFormat:@" %@,",replaceString]];
+    sql = [sql stringByReplacingOccurrencesOfString:@",@t " withString:
+           [NSString stringWithFormat:@",%@ ",replaceString]];
+    
     __block NSMutableArray *results = nil;
     [self executeDB:^(FMDatabase *db) {
         FMResultSet *set = [db executeQuery:sql];

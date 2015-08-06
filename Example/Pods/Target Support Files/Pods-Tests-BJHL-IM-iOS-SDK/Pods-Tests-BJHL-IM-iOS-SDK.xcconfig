@@ -1,1 +1,0 @@
-PODS_TESTS_BJHL_IM_IOS_SDK_OTHER_LDFLAGS = -framework "CoreData"
