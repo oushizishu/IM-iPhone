@@ -247,6 +247,12 @@
     return [self.imService getCustomWaiter];
 }
 
+- (BOOL)isMyTeacher:(int64_t)teacherId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return NO;
+    return [self.imService isMyTeacher:teacherId];
+}
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {

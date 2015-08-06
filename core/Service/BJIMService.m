@@ -402,6 +402,14 @@
 {
 }
 
+- (BOOL)isMyTeacher:(int64_t)teacherId
+{
+    User *contact = [[User alloc] init];
+    contact.userId = teacherId;
+    contact.userRole = eUserRole_Teacher;
+    return [self.imStorage hasContactOwner:[IMEnvironment shareInstance].owner contact:contact];
+}
+
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
                                       userRole:(IMUserRole)userRole
                                          owner:(User *)owner

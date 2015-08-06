@@ -68,6 +68,9 @@
                 group:(Group *)group
              callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
 
+// 判断该老师是否为我的老师：(to学生端)
+- (BOOL)isMyTeacher:(int64_t)teacherId;
+
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
 
