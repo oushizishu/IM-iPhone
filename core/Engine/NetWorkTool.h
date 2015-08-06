@@ -46,9 +46,6 @@
                                                succ:(onSuccess)succ
                                             failure:(onFailure)failure;
 
-+ (BJNetRequestOperation *)hermesGetRecentContactsSucc:(onSuccess)succ
-                                               failure:(onFailure)failure;
-
 + (BJNetRequestOperation *)hermesChangeRemarkNameUserId:(int64_t)userId
                                                userRole:(IMUserRole)userRole
                                              remarkName:(NSString *)remarkName

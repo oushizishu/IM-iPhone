@@ -45,12 +45,6 @@
 
 @end
 
-@protocol IMEngineGetRecentsDelegate <NSObject>
-
-- (void)onGetRecentContacts:(NSArray *)users;
-
-@end
-
 @protocol IMEngineSyncConfigDelegate <NSObject>
 
 - (void)onSyncConfig:(SyncConfigModel *)model;
@@ -64,7 +58,6 @@
 @property (nonatomic, weak) id<IMEnginePollingDelegate> pollingDelegate;
 @property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
-@property (nonatomic, weak) id<IMEngineGetRecentsDelegate> getRecentContactsDelegate;
 @property (nonatomic, weak) id<IMEngineSyncConfigDelegate> syncConfigDelegate;
 
 - (void)start;
@@ -89,8 +82,6 @@
                     userId:(int64_t)userId
                 excludeIds:(NSString *)excludeIds
             startMessageId:(double_t)startMessageId;
-
-- (void)getRecentContacts;
 
 - (void)postChangeRemarkName:(NSString *)remarkName
                       userId:(int64_t)userId

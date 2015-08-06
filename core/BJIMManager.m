@@ -216,12 +216,6 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
-- (void)getMyRecentContacts
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return;
-    [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
-}
-
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user

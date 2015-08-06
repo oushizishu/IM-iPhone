@@ -76,8 +76,6 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
-//在回调事件中取值
-- (void)getMyRecentContacts;
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName

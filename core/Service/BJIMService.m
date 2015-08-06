@@ -22,11 +22,9 @@
 #import "LoadMoreMessagesOperation.h"
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
-#import "LoadRecentContactsOperation.h"
-#import "StoreRecentContactsOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
-    IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate, IMEngineSyncConfigDelegate>
+    IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 @property (nonatomic, assign) BOOL bIsServiceActive;
@@ -209,15 +207,6 @@
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
     operation.imService = self;
     operation.model = model;
-    [self.operationQueue addOperation:operation];
-}
-
-#pragma  mark - getRecentDelegate
-- (void)onGetRecentContacts:(NSArray *)users
-{
-    StoreRecentContactsOperation *operation = [[StoreRecentContactsOperation alloc] init];
-    operation.imService = self;
-    operation.users = users;
     [self.operationQueue addOperation:operation];
 }
 
@@ -529,17 +518,6 @@
     
     return list;
 }
-
-- (void)getRecentContactsWithUser:(User *)user
-{
-    LoadRecentContactsOperation *operation = [[LoadRecentContactsOperation alloc] init];
-    operation.imService = self;
-    [self.operationQueue addOperation:operation];
-    
-    self.imEngine.getRecentContactsDelegate = self;
-    [self.imEngine getRecentContacts];
-}
-
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

@@ -18,7 +18,6 @@
 #define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
 #define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
 #define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
-#define HERMES_API_GET_RECENT_CONTACTS [NSString stringWithFormat:@"%@/hermes/getRecentContacts", HOST_API]
 #define HERMES_API_GET_CHANGE_REMARK_NAME [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
 #define HERMES_API_GET_USER_INFO [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
 #define HERMES_API_GET_GROUP_PROFILE [NSString stringWithFormat:@"%@/hermes/getGroupProfile", HOST_API]
@@ -135,15 +134,6 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
     [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
-    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
-}
-
-+ (BJNetRequestOperation *)hermesGetRecentContactsSucc:(onSuccess)succ failure:(onFailure)failure
-{
-
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_RECENT_CONTACTS method:kHttpMethod_POST];
-    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

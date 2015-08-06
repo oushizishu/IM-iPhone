@@ -24,6 +24,7 @@
              @"lastMsgRowId":@"lastMsgRowId",
              @"chat_t":@"chat_t",
              @"unReadNum":@"unReadNum",
+             @"status":@"status",
              };
 }
 

@@ -48,8 +48,6 @@
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
 - (NSArray *)getStudentContactsWithUser:(User *)user;
 - (NSArray *)getInstitutionContactsWithUser:(User *)user;
-- (void)getRecentContactsWithUser:(User *)user;
-
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书
