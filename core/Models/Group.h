@@ -22,7 +22,7 @@
 @property (nonatomic, assign) int64_t ownerId;
 @property (nonatomic, assign) IMUserRole ownerRole;
 @property (nonatomic, assign) NSInteger memberCount;
-@property (nonatomic, assign) NSInteger status; // 0 保留 1 开发 2删除
+@property (nonatomic, assign) NSInteger status; // 0 保留 1 开放 2删除
 @property (nonatomic, assign) int64_t createTime;
 
 @property (nonatomic, copy) NSString *nameHeader; // 名字首字母
