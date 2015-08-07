@@ -22,11 +22,9 @@
 #import "LoadMoreMessagesOperation.h"
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
-#import "LoadRecentContactsOperation.h"
-#import "StoreRecentContactsOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
-    IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate, IMEngineSyncConfigDelegate>
+    IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
 
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
@@ -207,15 +205,6 @@
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
     operation.imService = self;
     operation.model = model;
-    [self.operationQueue addOperation:operation];
-}
-
-#pragma  mark - getRecentDelegate
-- (void)onGetRecentContacts:(NSArray *)users
-{
-    StoreRecentContactsOperation *operation = [[StoreRecentContactsOperation alloc] init];
-    operation.imService = self;
-    operation.users = users;
     [self.operationQueue addOperation:operation];
 }
 
@@ -424,6 +413,19 @@
 {
 }
 
+- (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user
+{
+    User *contact = [[User alloc] init];
+    contact.userId = teacherId;
+    contact.userRole = eUserRole_Teacher;
+    return [self.imStorage hasContactOwner:user contact:contact];
+}
+
+- (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user
+{
+    GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:user.userId userRole:user.userRole];
+    return member;
+}
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
                                       userRole:(IMUserRole)userRole
                                          owner:(User *)owner
@@ -551,17 +553,6 @@
     
     return list;
 }
-
-- (void)getRecentContactsWithUser:(User *)user
-{
-    LoadRecentContactsOperation *operation = [[LoadRecentContactsOperation alloc] init];
-    operation.imService = self;
-    [self.operationQueue addOperation:operation];
-    
-    self.imEngine.getRecentContactsDelegate = self;
-    [self.imEngine getRecentContacts];
-}
-
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

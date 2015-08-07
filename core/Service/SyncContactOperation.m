@@ -25,7 +25,7 @@
         if (__group)
         {
             [__group mergeValuesForKeysFromModel:group];
-           [self.imService.imStorage updateGroup:__group];
+            [self.imService.imStorage updateGroup:__group];
         }
         else
         {

@@ -92,7 +92,6 @@
                 self.newEndMessageId = [[list objectAtIndex:0] msgId];
             }
         }
-        if (self.minMsgId == 0) self.minMsgId = maxConversationMsgId;
         
         [self.imService.imStorage updateGroup:group];
     }

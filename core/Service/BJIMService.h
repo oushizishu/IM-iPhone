@@ -50,8 +50,6 @@
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
 - (NSArray *)getStudentContactsWithUser:(User *)user;
 - (NSArray *)getInstitutionContactsWithUser:(User *)user;
-- (void)getRecentContactsWithUser:(User *)user;
-
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书
@@ -71,6 +69,10 @@
 - (void)setRemarkName:(NSString *)remarkName
                 group:(Group *)group
              callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
+// 判断该老师是否为我的老师：(to学生端)
+- (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user;
+- (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user;
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;

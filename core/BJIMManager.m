@@ -12,6 +12,7 @@
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 #import "BJIMService+GroupManager.h"
 #import "NSError+BJIM.h"
+#import "GroupMember.h"
 
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
@@ -218,12 +219,6 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
-- (void)getMyRecentContacts
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return;
-    [self.imService getRecentContactsWithUser:[IMEnvironment shareInstance].owner];
-}
-
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
@@ -253,6 +248,25 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getCustomWaiter];
+}
+
+- (BOOL)isMyTeacher:(int64_t)teacherId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return NO;
+    return [self.imService hasTeacher:teacherId ofUser:[IMEnvironment shareInstance].owner];
+}
+
+- (BOOL)isMyGroup:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return NO;
+    return [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner] != nil;
+}
+
+- (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return eGroupMsg_All;
+    GroupMember *member = [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner];
+    return member.msgStatus;
 }
 
 #pragma mark - 应用进入前后台

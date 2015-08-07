@@ -242,23 +242,6 @@ static int ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)getRecentContacts
-{
-    __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesGetRecentContactsSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-        NSError *error;
-        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result.code == RESULT_CODE_SUCC)
-        {
-            NSArray *users = [MTLJSONAdapter modelsOfClass:[RecentContactModel class] fromJSONArray:result.data error:&error];
-
-            [weakSelf.getRecentContactsDelegate onGetRecentContacts:users];
-        }
-    } failure:^(NSError *error, RequestParams *params) {
-        DDLogError(@"Get RECENT CONTACTS FAIL [url:%@][%@]", params.url, error.userInfo);
-    }];
-}
-
 - (void)postChangeRemarkName:(NSString *)remarkName
                       userId:(int64_t)userId
                     userRole:(IMUserRole)userRole
