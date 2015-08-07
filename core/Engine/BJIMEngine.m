@@ -108,7 +108,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error ;
             SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
@@ -135,7 +135,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
             NSError *error;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-            if (result.code == RESULT_CODE_SUCC)
+            if (result != nil && result.code == RESULT_CODE_SUCC)
             {
                 PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
@@ -156,7 +156,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         [NetWorkTool hermesStorageUploadAudio:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
             NSError *error;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-            if (result.code == RESULT_CODE_SUCC)
+            if (result != nil && result.code == RESULT_CODE_SUCC)
             {
                 PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
@@ -185,7 +185,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         _bIsPollingRequesting = NO;
         
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:nil];
             if (weakSelf.pollingDelegate)
@@ -224,7 +224,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesGetMsg:eid groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
-        if(result.code == RESULT_CODE_SUCC)
+        if(result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
             PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
@@ -250,7 +250,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesChangeRemarkNameUserId:userId userRole:userRole remarkName:remarkName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error ;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             callback(remarkName, [result.data valueForKey:@"remark_header"], result.code, result.msg);
         }
@@ -271,7 +271,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesGetUserInfo:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.data error:&error];
             callback(user);
@@ -290,7 +290,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesGetGroupProfile:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             Group *group = [MTLJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.data error:&error];
             callback(group);
