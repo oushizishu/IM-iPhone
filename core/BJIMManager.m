@@ -10,6 +10,7 @@
 #import "BJIMService.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
+#import "GroupMember.h"
 
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
@@ -250,7 +251,20 @@
 - (BOOL)isMyTeacher:(int64_t)teacherId
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return NO;
-    return [self.imService isMyTeacher:teacherId];
+    return [self.imService hasTeacher:teacherId ofUser:[IMEnvironment shareInstance].owner];
+}
+
+- (BOOL)isMyGroup:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return NO;
+    return [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner] != nil;
+}
+
+- (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return eGroupMsgStatus_Normal;
+    GroupMember *member = [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner];
+    return member.msgStatus;
 }
 
 #pragma mark - 应用进入前后台

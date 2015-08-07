@@ -69,6 +69,16 @@ typedef NS_ENUM(NSInteger, IMChatType) {
     eChatType_Chat = 0, // 单聊
     eChatType_GroupChat = 1 // 群聊
 };
+
+#pragma mark - 群状态
+typedef NS_ENUM(NSInteger, IMGroupMsgStatus)
+{
+    eGroupMsgStatus_Normal = 0,
+    eGroupMsgStatus_TeacherOnly = 1,
+    eGroupMsgStatus_CloseAll = 2,
+    
+}
+
 static const int MESSAGE_PAGE_COUNT = 30;
 static const double UNAVALIABLE_MESSAGE_ID =  -1;
 

@@ -95,6 +95,8 @@
 #pragma mark - utils
 // 判断该老师是否为我的老师（to学生端）
 - (BOOL)isMyTeacher:(int64_t)teacherId;
+- (BOOL)isMyGroup:(int64_t)groupId;
+- (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId;
 
 
 #pragma mark - 应用进入前后台

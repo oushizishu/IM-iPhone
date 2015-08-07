@@ -402,14 +402,19 @@
 {
 }
 
-- (BOOL)isMyTeacher:(int64_t)teacherId
+- (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user
 {
     User *contact = [[User alloc] init];
     contact.userId = teacherId;
     contact.userRole = eUserRole_Teacher;
-    return [self.imStorage hasContactOwner:[IMEnvironment shareInstance].owner contact:contact];
+    return [self.imStorage hasContactOwner:user contact:contact];
 }
 
+- (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user
+{
+    GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:user.userId userRole:user.userRole];
+    return member;
+}
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
                                       userRole:(IMUserRole)userRole
                                          owner:(User *)owner
