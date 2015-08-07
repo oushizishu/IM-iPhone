@@ -21,7 +21,7 @@
              @"ownerRole":@"ownerRole",
              @"toId":@"toId",
              @"toRole":@"toRole",
-             @"lastMsgRowId":@"lastMsgRowId",
+             @"lastMessageId":@"lastMessageId",
              @"chat_t":@"chat_t",
              @"unReadNum":@"unReadNum",
              @"status":@"status",

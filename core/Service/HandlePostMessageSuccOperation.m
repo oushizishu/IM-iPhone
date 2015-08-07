@@ -11,6 +11,7 @@
 #import "IMMessage.h"
 #import "SendMsgModel.h"
 #import "Group.h"
+#import "Conversation.h"
 
 #import "IMCardMessageBody.h"
 @implementation HandlePostMessageSuccOperation
@@ -40,10 +41,16 @@
     }
     
     [self.imService.imStorage updateMessage:self.message];
+    
+    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
+    
+    conversation.lastMessageId = self.message.msgId;
+    [self.imService.imStorage updateConversation:conversation];
 }
 
 - (void)doAfterOperationOnMain
 {
     [self.imService notifyDeliverMessage:self.message errorCode:RESULT_CODE_SUCC error:nil];
+    [self.imService notifyConversationChanged];
 }
 @end

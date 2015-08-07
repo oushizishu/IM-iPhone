@@ -82,14 +82,14 @@ static char BJIMConversationIMService;
 - (IMMessage *)lastMessage
 {
     IMMessage *_lastMessage = objc_getAssociatedObject(self, &BJIMConversationLastMessage);
-    if (_lastMessage != nil && self.lastMsgRowId == _lastMessage.rowid)
+    if (_lastMessage != nil && self.lastMessageId == _lastMessage.msgId)
     {
         return _lastMessage;
     }
     
     if (self.imService == nil) return nil;
     
-    _lastMessage = [self.imService.imStorage queryMessage:self.lastMsgRowId];
+    _lastMessage = [self.imService.imStorage queryMessageWithMessageId:self.lastMessageId];
     _lastMessage.imService = self.imService;
     
     objc_setAssociatedObject(self, &BJIMConversationLastMessage, _lastMessage, OBJC_ASSOCIATION_RETAIN_NONATOMIC);

@@ -42,10 +42,10 @@
     }
     conversation.status = 0; //会话状态回归正常
     
-    conversation.lastMsgRowId = self.message.rowid;
     self.message.conversationId = conversation.rowid;
     
     self.message.msgId = MAX([self.imService.imStorage getConversationMaxMsgId:conversation.rowid], 0) + 0.001;
+    conversation.lastMessageId = self.message.rowid;
     
     if (self.message.chat_t == eChatType_GroupChat)
     {

@@ -18,7 +18,7 @@
 @property (nonatomic, assign) IMUserRole ownerRole;
 @property (nonatomic, assign) int64_t toId;
 @property (nonatomic, assign) IMUserRole toRole;
-@property (nonatomic, assign) NSInteger lastMsgRowId; // message 的主键id
+@property (nonatomic, assign) double_t lastMessageId;
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) NSInteger unReadNum;
 

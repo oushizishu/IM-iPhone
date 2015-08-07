@@ -127,7 +127,7 @@
                 conversation.toId = message.receiver;
                 conversation.toRole = message.receiverRole;
                 conversation.chat_t = message.chat_t;
-                conversation.lastMsgRowId = message.rowid;
+                conversation.lastMessageId = message.msgId;
                 [self.imService.imStorage insertConversation:conversation];
             }
             
@@ -163,13 +163,13 @@
                     conversation.toId = message.sender;
                     conversation.toRole = message.senderRole;
                     conversation.chat_t = message.chat_t;
-                    conversation.lastMsgRowId = message.rowid;
+                    conversation.lastMessageId = message.msgId;
                     
                     [self.imService.imStorage insertConversation:conversation];
                 }
                 
                 message.conversationId = conversation.rowid;
-                conversation.lastMsgRowId = message.rowid;
+                conversation.lastMessageId = message.msgId;
                 conversation.unReadNum += 1;
                 conversation.status = 0;// 会话状态回归正常
                 
@@ -199,7 +199,7 @@
                     conversation.toId = message.receiver;
                     conversation.toRole = message.receiverRole;
                     conversation.chat_t = message.chat_t;
-                    conversation.lastMsgRowId = message.rowid;
+                    conversation.lastMessageId = message.msgId;
                     
                     chatToGroup.startMessageId = message.msgId;
                     chatToGroup.endMessageId = message.msgId;
@@ -207,10 +207,10 @@
                 }
                 else
                 {
-                    IMMessage *_lastMsg = [self.imService.imStorage queryMessage:conversation.lastMsgRowId];
+                    IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
                     if (_lastMsg.msgId < message.msgId)
                     {
-                        conversation.lastMsgRowId = message.rowid;
+                        conversation.lastMessageId = message.msgId;
                     }
                 }
                 conversation.status = 0;// 会话状态回归正常

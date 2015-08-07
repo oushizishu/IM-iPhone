@@ -288,7 +288,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
                                userRole:(IMUserRole)userRole
 {
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
-                                                     AND ownerRole=%ld and status=0  ORDER BY lastMsgRowId DESC",ownerId,(long)userRole];
+                                                     AND ownerRole=%ld and status=0  ORDER BY lastMessageId DESC",ownerId,(long)userRole];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     array = [array count]>0?array:nil;
     return array;
