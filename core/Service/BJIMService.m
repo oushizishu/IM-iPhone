@@ -28,8 +28,6 @@
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate, IMEngineGetRecentsDelegate, IMEngineSyncConfigDelegate>
 
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
-@property (nonatomic, assign) BOOL bIsServiceActive;
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
@@ -52,6 +50,7 @@
 @implementation BJIMService
 @synthesize imEngine=_imEngine;
 @synthesize imStorage=_imStorage;
+@synthesize operationQueue = _operationQueue;
 
 - (void)startServiceWithOwner:(User *)owner
 {
@@ -203,7 +202,6 @@
 #pragma mark syncContact 
 - (void)didSyncContacts:(MyContactsModel *)model
 {
-    
     if (! self.bIsServiceActive) return;
 
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
@@ -346,12 +344,15 @@
     }
     
     User *owner = [IMEnvironment shareInstance].owner;
-    GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
     Group *group = [self.imStorage queryGroupWithGroupId:groupId];
     if (group)
     {
+        GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
         group.remarkName = member.remarkName;
         group.remarkHeader = member.remarkHeader;
+        group.msgStatus = member.msgStatus;
+        group.canLeave = member.canLeave;
+        group.canDisband = member.canDisband;
         
         [self.groupsCache addObject:group];
     }
@@ -365,6 +366,16 @@
             if (!weakSelf.bIsServiceActive) return ;
             if (! result) return;
             Group *_group = [weakSelf getGroup:groupId];
+            GroupMember *_groupMember = [[GroupMember alloc] init];
+            _groupMember.userId = owner.userId;
+            _groupMember.userRole = owner.userRole;
+            _groupMember.groupId = groupId;
+            _groupMember.msgStatus = group.msgStatus;
+            _groupMember.canDisband = group.canDisband;
+            _groupMember.canLeave = group.canLeave;
+            _groupMember.remarkHeader = group.remarkHeader;
+            _groupMember.remarkName = group.remarkName;
+            [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
             [_group mergeValuesForKeysFromModel:result];
             [weakSelf.imStorage insertOrUpdateGroup:_group];
             [weakSelf notifyGroupProfileChanged:_group];
@@ -444,16 +455,27 @@
     for (NSInteger index = 0; index < [groups count]; ++ index) {
         Group *group = [groups objectAtIndex:index];
         Group *_group = [self getGroupFromCache:group.groupId];
+        GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:_group.groupId userId:user.userId userRole:user.userRole];
+        
         if (_group)
         {
             [_group mergeValuesForKeysFromModel:group];
-            [list addObject:_group];
         }
         else
         {
+            _group = group;
             [self.groupsCache addObject:group];
-            [list addObject:group];
         }
+        
+        if (member) {
+            _group.remarkName = member.remarkName;
+            _group.remarkHeader = member.remarkHeader;
+            _group.msgStatus = member.msgStatus;
+            _group.canLeave = member.canLeave;
+            _group.canDisband = member.canDisband;
+        }
+        
+        [list addObject:_group];
     }
     return list;
 }
@@ -815,5 +837,6 @@
         [delegate didGroupProfileChanged:group];
     }
 }
+
 
 @end

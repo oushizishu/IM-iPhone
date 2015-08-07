@@ -82,6 +82,10 @@
 //groupMember
 - (GroupMember*)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (BOOL)insertGroupMember:(GroupMember*)groupMember;
+- (BOOL)insertOrUpdateGroupMember:(GroupMember *)groupMember;
+- (BOOL)updateGroupMember:(GroupMember *)groupMember;
+- (BOOL)deleteGroup:(int64_t)groupId;
+- (BOOL)deleteGroup:(int64_t)groupId user:(User *)user;
 
 //other 
 - ( BOOL)checkMessageStatus;

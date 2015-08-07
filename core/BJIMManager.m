@@ -10,6 +10,8 @@
 #import "BJIMService.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
+#import "BJIMService+GroupManager.h"
+#import "NSError+BJIM.h"
 
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
@@ -310,3 +312,67 @@
 }
 
 @end;
+
+@implementation BJIMManager (GroupManager)
+- (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
+{
+    [self.imService addGroupManagerDelegate:delegate];
+}
+
+- (void)getGroupProfile:(int64_t)groupId;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyGetGroupProfile:groupId group:nil error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService getGroupProfile:groupId];
+}
+
+- (void)leaveGroupWithGroupId:(int64_t)groupId;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyLeaveGroup:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService leaveGroupWithGroupId:groupId];
+    
+}
+
+- (void)disbandGroupWithGroupId:(int64_t)groupId;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyDisbandGroup:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService disbandGroupWithGroupId:groupId];
+}
+
+- (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyGetGroupMembers:nil page:page groupId:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService getGroupMemberWithGroupId:groupId page:page];
+}
+
+- (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyChangeGroupName:name groupId:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService changeGroupName:name groupId:groupId];
+}
+
+- (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyChangeMsgStatus:status groupId:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService setGroupMsgStatus:status groupId:groupId];
+}
+
+@end
+

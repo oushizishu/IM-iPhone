@@ -78,6 +78,16 @@
 		24B27FE415E3CCB02BDCE7C38FE8EA9A /* IMEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = 714286198F22B87C71A21161E889E83A /* IMEnvironment.h */; };
 		2503C9E2E087949C18570815827CBE4D /* NSDictionary+MTLJSONKeyPath.m in Sources */ = {isa = PBXBuildFile; fileRef = F9FD10DBA3E65D3DE46A066BE66B0090 /* NSDictionary+MTLJSONKeyPath.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		25746783B9784AC18C3588A7B5D12DAE /* BJPicture.h in Headers */ = {isa = PBXBuildFile; fileRef = CB830FC04F45BA67C27D63EE81B9989C /* BJPicture.h */; };
+		25964CDB1B7382FC007288C9 /* BJIMService+GroupManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 25964CD91B7382FC007288C9 /* BJIMService+GroupManager.h */; };
+		25964CDC1B7382FC007288C9 /* BJIMService+GroupManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 25964CDA1B7382FC007288C9 /* BJIMService+GroupManager.m */; };
+		25964CDF1B742316007288C9 /* NSError+BJIM.h in Headers */ = {isa = PBXBuildFile; fileRef = 25964CDD1B742316007288C9 /* NSError+BJIM.h */; };
+		25964CE01B742316007288C9 /* NSError+BJIM.m in Sources */ = {isa = PBXBuildFile; fileRef = 25964CDE1B742316007288C9 /* NSError+BJIM.m */; };
+		25964CE31B7455F6007288C9 /* BJIMListData.h in Headers */ = {isa = PBXBuildFile; fileRef = 25964CE11B7455F6007288C9 /* BJIMListData.h */; };
+		25964CE41B7455F6007288C9 /* BJIMListData.m in Sources */ = {isa = PBXBuildFile; fileRef = 25964CE21B7455F6007288C9 /* BJIMListData.m */; };
+		25964CE71B7457D4007288C9 /* GroupMemberListData.h in Headers */ = {isa = PBXBuildFile; fileRef = 25964CE51B7457D4007288C9 /* GroupMemberListData.h */; };
+		25964CE81B7457D4007288C9 /* GroupMemberListData.m in Sources */ = {isa = PBXBuildFile; fileRef = 25964CE61B7457D4007288C9 /* GroupMemberListData.m */; };
+		25964CEB1B748815007288C9 /* HandleGetGroupMemberOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 25964CE91B748815007288C9 /* HandleGetGroupMemberOperation.h */; };
+		25964CEC1B748815007288C9 /* HandleGetGroupMemberOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 25964CEA1B748815007288C9 /* HandleGetGroupMemberOperation.m */; };
 		25F07009DB2648A33384121A0E0CC16D /* PostAchiveModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F3B02BBAA711F8F926A2C712DFD8CBC4 /* PostAchiveModel.m */; };
 		2656501C2950563368049D5463F378A5 /* NSManagedObjectModel+MagicalRecord.h in Headers */ = {isa = PBXBuildFile; fileRef = 22779E572C893C10357D0C1F271DA939 /* NSManagedObjectModel+MagicalRecord.h */; };
 		26B21B244340BA5A2F45F3B43F1D4926 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099BC8D81DEDA973F9FF97BE55354BB /* UIButton+WebCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -914,6 +924,16 @@
 		25034C92341618E28A4CE9CE7E48B1AE /* TKActionSheetController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKActionSheetController.m; path = "TKAlert&TKActionSheet/TKActionSheet/TKActionSheetController.m"; sourceTree = "<group>"; };
 		256E2C99B9AFBAC19BFF81FE94A105C0 /* AFURLResponseSerialization.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = AFURLResponseSerialization.h; path = AFNetworking/AFURLResponseSerialization.h; sourceTree = "<group>"; };
 		258D14D09133D733140E13906A1B3CAB /* NSError+MTLModelException.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSError+MTLModelException.h"; path = "Mantle/NSError+MTLModelException.h"; sourceTree = "<group>"; };
+		25964CD91B7382FC007288C9 /* BJIMService+GroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BJIMService+GroupManager.h"; sourceTree = "<group>"; };
+		25964CDA1B7382FC007288C9 /* BJIMService+GroupManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "BJIMService+GroupManager.m"; sourceTree = "<group>"; };
+		25964CDD1B742316007288C9 /* NSError+BJIM.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+BJIM.h"; sourceTree = "<group>"; };
+		25964CDE1B742316007288C9 /* NSError+BJIM.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSError+BJIM.m"; sourceTree = "<group>"; };
+		25964CE11B7455F6007288C9 /* BJIMListData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMListData.h; sourceTree = "<group>"; };
+		25964CE21B7455F6007288C9 /* BJIMListData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMListData.m; sourceTree = "<group>"; };
+		25964CE51B7457D4007288C9 /* GroupMemberListData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMemberListData.h; sourceTree = "<group>"; };
+		25964CE61B7457D4007288C9 /* GroupMemberListData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMemberListData.m; sourceTree = "<group>"; };
+		25964CE91B748815007288C9 /* HandleGetGroupMemberOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleGetGroupMemberOperation.h; sourceTree = "<group>"; };
+		25964CEA1B748815007288C9 /* HandleGetGroupMemberOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandleGetGroupMemberOperation.m; sourceTree = "<group>"; };
 		25A866DC013827FACBC65C6CD3660004 /* BJHL-Common-iOS-SDK.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "BJHL-Common-iOS-SDK.xcconfig"; sourceTree = "<group>"; };
 		27707A2630A6A61BD02BC5A80B83B124 /* NSPersistentStoreCoordinator+MagicalRecord.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "NSPersistentStoreCoordinator+MagicalRecord.h"; path = "MagicalRecord/Categories/NSPersistentStoreCoordinator+MagicalRecord.h"; sourceTree = "<group>"; };
 		27A097E6C1DB6B34FABA69338C005B16 /* EXTScope.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = EXTScope.m; path = Mantle/extobjc/EXTScope.m; sourceTree = "<group>"; };
@@ -1614,6 +1634,7 @@
 				E7DE8204EA95BA51AE1003D983EC08F3 /* BJIMManager.m */,
 				714286198F22B87C71A21161E889E83A /* IMEnvironment.h */,
 				B7C88B145D396218FDDA73AD7F0F6E33 /* IMEnvironment.m */,
+				25964CD01B736642007288C9 /* Group */,
 				7BFBCCEC1C7BE7C32EC777BE7A6A75A8 /* Engine */,
 				380A33B63BA96799E6AC5EC87E3ABEDC /* MessageBody */,
 				E71651E2F85E4656D311B29BA270C5EB /* Models */,
@@ -1755,6 +1776,13 @@
 				AD52F61FBFC383AB7D92FE449C470C43 /* UIWebView+AFNetworking.m */,
 			);
 			name = UIKit;
+			sourceTree = "<group>";
+		};
+		25964CD01B736642007288C9 /* Group */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Group;
 			sourceTree = "<group>";
 		};
 		2A71DA320A98A712FCFF79A2827C4E81 /* SSKeychain */ = {
@@ -2305,6 +2333,8 @@
 			children = (
 				EE9E711C105813DA60D38D65E1B60E05 /* BJIMService.h */,
 				0EB2DC5630741D283D1E199613FB75C3 /* BJIMService.m */,
+				25964CD91B7382FC007288C9 /* BJIMService+GroupManager.h */,
+				25964CDA1B7382FC007288C9 /* BJIMService+GroupManager.m */,
 				99254DDF74D9BD2F623E0FAFE3B99B1D /* HandleGetMsgOperation.h */,
 				962AC1837C577228E32E1F4A1B6E9FA8 /* HandleGetMsgOperation.m */,
 				877FA0CDFE5F4D910976989A7CFF843A /* HandlePollingResultOperation.h */,
@@ -2327,6 +2357,10 @@
 				226D76F996DB3AF4AE2B77E4CB36F31C /* StoreRecentContactsOperation.m */,
 				78532E8440A728BC2B2C6805E4F48C07 /* SyncContactOperation.h */,
 				901CDD0A9D6A4CEDE78EBB714321AA7D /* SyncContactOperation.m */,
+				25964CDD1B742316007288C9 /* NSError+BJIM.h */,
+				25964CDE1B742316007288C9 /* NSError+BJIM.m */,
+				25964CE91B748815007288C9 /* HandleGetGroupMemberOperation.h */,
+				25964CEA1B748815007288C9 /* HandleGetGroupMemberOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2674,6 +2708,10 @@
 				AE3441E14EDD01279092CBEB5E04EB22 /* TeacherContacts.m */,
 				5782C1F6C9ECF8B109E18FCD478B9494 /* User.h */,
 				2E74C690BD8E039A15561F8E8F286BD3 /* User.m */,
+				25964CE11B7455F6007288C9 /* BJIMListData.h */,
+				25964CE21B7455F6007288C9 /* BJIMListData.m */,
+				25964CE51B7457D4007288C9 /* GroupMemberListData.h */,
+				25964CE61B7457D4007288C9 /* GroupMemberListData.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2806,6 +2844,7 @@
 				A1C7A783BDA07549254262C2F3CC89EF /* HandlePostMessageSuccOperation.h in Headers */,
 				13CEC8BE862CD0C82075068E620DB580 /* IMAudioMessageBody.h in Headers */,
 				BA9D7D1218D6A58AD690771C00D559B0 /* IMBaseOperation.h in Headers */,
+				25964CDB1B7382FC007288C9 /* BJIMService+GroupManager.h in Headers */,
 				1870ACCA4F26A747CDAA799F8D06009B /* IMCardMessageBody.h in Headers */,
 				AC559DAE9D07E8620801A5819A7C5122 /* IMCmdMessageBody.h in Headers */,
 				AF0DB65722ED3DCF321F569BC1881581 /* IMEmojiMessageBody.h in Headers */,
@@ -2813,6 +2852,7 @@
 				38FF1D8FF75912C4FEAEC696F8BC94E0 /* IMImgMessageBody.h in Headers */,
 				B689A96133DA43967D9AEFA62003013A /* IMLocationMessageBody.h in Headers */,
 				19A1F637D6120EA18B1E7D5DE06C6F8F /* IMMessage+DB.h in Headers */,
+				25964CE31B7455F6007288C9 /* BJIMListData.h in Headers */,
 				96CA88B4F0702E3EC80AE8BB9BECC799 /* IMMessage.h in Headers */,
 				AE18B25F832ED00F081D64958CA816A5 /* IMMessageBody.h in Headers */,
 				E3CF8A5904B2AE89B77DB842D65B1F9B /* IMNotificationMessageBody.h in Headers */,
@@ -2829,13 +2869,16 @@
 				8BC53CDDF1B12767952641C81F1C6984 /* PostAchiveModel.h in Headers */,
 				B38451C78C7A82C55BD3B482293DF5F0 /* PrePollingOperation.h in Headers */,
 				B26B44D3ECA460B4D059268551D99EBF /* RecentContactModel.h in Headers */,
+				25964CEB1B748815007288C9 /* HandleGetGroupMemberOperation.h in Headers */,
 				B9CA0F87D138D70289B0DEA6C968CE5E /* RecentContacts.h in Headers */,
 				B093BA3F21D059AE09AE6DE913FC467A /* RetrySendMsgOperation.h in Headers */,
 				5AB92EA8ED28B4F1AED600D3370C1A57 /* SendMsgModel.h in Headers */,
 				5412DC8966D4B3AA9A4288632BE88575 /* SendMsgOperation.h in Headers */,
+				25964CE71B7457D4007288C9 /* GroupMemberListData.h in Headers */,
 				5C0A3D9D4B80A14A2DDAA64C06F444C3 /* StoreRecentContactsOperation.h in Headers */,
 				7F9CA74FE4D9D03902492C5FC32EABE4 /* StudentContacts.h in Headers */,
 				38A4ECC5241B60E41ECA024BCE1637E9 /* SyncConfigModel.h in Headers */,
+				25964CDF1B742316007288C9 /* NSError+BJIM.h in Headers */,
 				A60A24F94603608361F9EC25271154DF /* SyncContactOperation.h in Headers */,
 				D8C6528A62B448469FC519C53AF91E0F /* TeacherContacts.h in Headers */,
 				D56E3F8508C80F3AB59FF13CF57E267D /* User.h in Headers */,
@@ -3719,15 +3762,18 @@
 				74D5D8D54AC4B88D3F583786BD7ECAA4 /* HandlePollingResultOperation.m in Sources */,
 				6019FD9B45DE0542071AD421D1EC1CC3 /* HandlePostMessageSuccOperation.m in Sources */,
 				4375EAFDE414B2C1A2C2B4247598678A /* IMAudioMessageBody.m in Sources */,
+				25964CE01B742316007288C9 /* NSError+BJIM.m in Sources */,
 				CA6D7EF1BBA6EF3CBA3486A6C8862868 /* IMBaseOperation.m in Sources */,
 				5E00F57FFA65D033CE2CEC88EF966BDB /* IMCardMessageBody.m in Sources */,
 				8BA8571B2A697C1AC7C451EC63DEE404 /* IMCmdMessageBody.m in Sources */,
 				4CBCF90E4147FE1F49F86576F1C82F46 /* IMEmojiMessageBody.m in Sources */,
+				25964CEC1B748815007288C9 /* HandleGetGroupMemberOperation.m in Sources */,
 				C6D479E31D78769E59C4367A1F481D57 /* IMEnvironment.m in Sources */,
 				8B5BC7EE4EEB1DE3C19C643E46B8F123 /* IMImgMessageBody.m in Sources */,
 				6C8FE0EF46EF3FF955219AA28A5FDFB3 /* IMLocationMessageBody.m in Sources */,
 				92F50E43A23C54C7DC674A917D807A20 /* IMMessage+DB.m in Sources */,
 				11855D0FEE2AF36EBC3850FF5F0B2A13 /* IMMessage.m in Sources */,
+				25964CE81B7457D4007288C9 /* GroupMemberListData.m in Sources */,
 				E4CB6FF64D97CB834BD41A43A2C058C0 /* IMMessageBody.m in Sources */,
 				53636D795AE6D5699B864114CC5617F2 /* IMNotificationMessageBody.m in Sources */,
 				3A981E024C5846B75CFA197C3D5DA6E8 /* IMTxtMessageBody.m in Sources */,
@@ -3745,12 +3791,14 @@
 				C6A6EABD0AD7917FA2CE80B057B06B4C /* RecentContactModel.m in Sources */,
 				6E39C06495AE31E9759F7FE608CD755F /* RecentContacts.m in Sources */,
 				EFBBA1406872CCD534FC2A2E781DA541 /* RetrySendMsgOperation.m in Sources */,
+				25964CDC1B7382FC007288C9 /* BJIMService+GroupManager.m in Sources */,
 				EDA8AC6229708DE5698F759BF40A11DA /* SendMsgModel.m in Sources */,
 				9A7B1C9DAC1D0B3FD59D69DED503D9E6 /* SendMsgOperation.m in Sources */,
 				0AB4AFE402B2BE39266CF81D219E11B1 /* StoreRecentContactsOperation.m in Sources */,
 				3633444543783E3D739C234849AC8E96 /* StudentContacts.m in Sources */,
 				BEB6F53FC77F3C79D6666984891D0587 /* SyncConfigModel.m in Sources */,
 				B6F45E0B16BCFF8438EB34230BC69618 /* SyncContactOperation.m in Sources */,
+				25964CE41B7455F6007288C9 /* BJIMListData.m in Sources */,
 				E64C728B823485DF499CDF61A450DA40 /* TeacherContacts.m in Sources */,
 				44B8AA76A728C248F2A25D1ABF3CA0B0 /* User.m in Sources */,
 			);

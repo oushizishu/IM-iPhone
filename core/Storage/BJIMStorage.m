@@ -523,6 +523,23 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
 }
 
+- (BOOL)updateGroupMember:(GroupMember *)groupMember;
+{
+    return [self.dbHelper updateToDB:groupMember where:[NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupMember.groupId,groupMember.userId, (long)groupMember.userRole]];
+ 
+}
+
+- (BOOL)insertOrUpdateGroupMember:(GroupMember *)groupMember;
+{
+    GroupMember *member = [self queryGroupMemberWithGroupId:groupMember.groupId userId:groupMember.userId userRole:groupMember.userRole];
+    BOOL value ;
+    if (!member) {
+        value = [self.dbHelper  insertToDB:groupMember];
+    }else{
+        value =[self.dbHelper updateToDB:groupMember where:[NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",member.groupId,member.userId, (long)member.userRole]];
+    }
+    return value;
+}
 
 - (BOOL)insertGroupMember:(GroupMember*)groupMember{
    return [self.dbHelper insertToDB:groupMember];
@@ -547,6 +564,18 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     }
     NSString *queryString = [NSString stringWithFormat:@"userId=%lld",user.userId];
     return [self.dbHelper deleteWithClass:class where:queryString];
+}
+
+- (BOOL)deleteGroup:(int64_t)groupId
+{
+    NSString *query = [NSString stringWithFormat:@" groupId=%lld ",groupId];
+    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
+}
+
+- (BOOL)deleteGroup:(int64_t)groupId user:(User *)user
+{
+    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld and groupId=%lld", user.userId, (long)user.userRole,groupId];
+    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
 }
 
 - (BOOL)deleteMyGroups:(User *)user

@@ -44,7 +44,7 @@
              @"createTime":@"create_time",
              @"nameHeader":@"name_header",
              @"remarkName":@"remark_name",
-             @"remarkHeader":@"remark_header"
+             @"remarkHeader":@"remark_header",
              };
 }
 

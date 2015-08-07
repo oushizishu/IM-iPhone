@@ -63,4 +63,21 @@
 + (BJNetRequestOperation *)hermesGetGroupProfile:(int64_t)groupId
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure;
+
+#pragma mark - Group
++ (BJNetRequestOperation *)hermesSetGroupMsgWithGroupId:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status
+                                                   succ:(onSuccess)succ
+                                                failure:(onFailure)failure;
++ (BJNetRequestOperation *)hermesChangeGroupNameWithGroupId:(int64_t)groupId newName:(NSString *)name
+                                                       succ:(onSuccess)succ
+                                                    failure:(onFailure)failure;
++ (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)index
+                                                      succ:(onSuccess)succ
+                                                   failure:(onFailure)failure;
++ (BJNetRequestOperation *)hermesDisbandGroupWithGroupId:(int64_t)groupId
+                                                    succ:(onSuccess)succ
+                                                 failure:(onFailure)failure;
++ (BJNetRequestOperation *)hermesLeaveGroupWithGroupId:(int64_t)groupId
+                                                  succ:(onSuccess)succ
+                                               failure:(onFailure)failure;
 @end

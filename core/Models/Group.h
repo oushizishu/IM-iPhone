@@ -25,6 +25,10 @@
 @property (nonatomic, assign) NSInteger status; // 0 保留 1 开发 2删除
 @property (nonatomic, assign) int64_t createTime;
 
+@property (nonatomic, assign) IMGroupMsgStatus msgStatus;
+@property (nonatomic, assign) BOOL canLeave;//是否
+@property (nonatomic, assign) BOOL canDisband;//是否能解散
+
 @property (nonatomic, copy) NSString *nameHeader; // 名字首字母
 @property (nonatomic, copy) NSString *remarkName; //备注名
 @property (nonatomic, copy) NSString *remarkHeader; //备注首字母

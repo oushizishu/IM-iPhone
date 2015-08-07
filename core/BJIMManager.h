@@ -12,8 +12,6 @@
 #import "Group.h"
 #import "Conversation.h"
 #import "IMEnvironment.h"
-
-
 /**
  *  IM 管理类， 与上层交互
  */
@@ -109,4 +107,14 @@
 - (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
 
+@end
+
+@interface BJIMManager (GroupManager)
+- (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
+- (void)getGroupProfile:(int64_t)groupId;
+- (void)leaveGroupWithGroupId:(int64_t)groupId;
+- (void)disbandGroupWithGroupId:(int64_t)groupId;
+- (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
+- (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
+- (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 @end

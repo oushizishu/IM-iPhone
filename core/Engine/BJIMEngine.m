@@ -12,6 +12,8 @@
 #import "BJIMStorage.h"
 #import "BJTimer.h"
 #import "RecentContactModel.h"
+#import "NSError+BJIM.h"
+#import "GroupMemberListData.h"
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -364,4 +366,119 @@ static int ddLogLevel = DDLogLevelVerbose;
     
     return _pollingTimer;
 }
+
+#pragma mark - Group manager
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    [NetWorkTool hermesLeaveGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+            callback(nil);
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(error);
+        }
+    }];
+}
+
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    [NetWorkTool hermesDisbandGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+            callback(nil);
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(error);
+        }
+    }];
+}
+
+- (void)postChangeGroupName:(int64_t)groupId newName:(NSString *)name callback:(void (^)(NSError *err))callback
+{
+    [NetWorkTool hermesChangeGroupNameWithGroupId:groupId newName:name succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+            callback(nil);
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(error);
+        }
+    }];
+
+}
+
+- (void)postSetGroupMsg:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status callback:(void (^)(NSError *err))callback
+{
+    [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+            callback(nil);
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(error);
+        }
+    }];
+    
+}
+
+- (void)postGetGroupMembers:(int64_t)groupId page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback
+{
+    [NetWorkTool hermesGetGroupMemberWithGroupId:groupId page:index succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+        {
+            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.data error:&error];
+            members.page = index;
+            members.groupId = groupId;
+            callback(members, error);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(nil, error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(nil, error);
+        }
+    }];
+    
+}
+
 @end

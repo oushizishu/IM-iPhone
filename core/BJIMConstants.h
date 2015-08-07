@@ -69,6 +69,23 @@ typedef NS_ENUM(NSInteger, IMChatType) {
     eChatType_Chat = 0, // 单聊
     eChatType_GroupChat = 1 // 群聊
 };
+//消息提醒状态
+typedef NS_ENUM(NSInteger, IMGroupMsgStatus)
+{
+    eGroupMsg_All = 0, //提示所有消息;
+    eGroupMsg_OnlyTeacher = 1, //只提示老师消息
+    eGroupMsg_None = 2, //不提示
+};
+
+
+//错误类型
+typedef NS_ENUM(NSInteger, IMErrorType) {
+    eError_msgError = -3,//返回reason错误
+    eError_paramsError = -2,
+    eError_noLogin = -1,
+    eError_suc = 0,
+};
+
 static const int MESSAGE_PAGE_COUNT = 30;
 static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
@@ -134,6 +151,19 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 @protocol IMGroupProfileChangedDelegate <NSObject>
 
 - (void)didGroupProfileChanged:(Group *)group;
+
+@end
+
+@class GroupMemberListData;
+@class GroupMember;
+@protocol IMGroupManagerResultDelegate <NSObject>
+@optional
+- (void)onGetGroupProfileResult:(NSError *)error groupId:(int64_t)groupId group:(Group *)group;
+- (void)onGetGroupMemberResult:(NSError *)error members:(GroupMemberListData *)memberList page:(NSInteger)page groupId:(int64_t)groupId;
+- (void)onLeaveGroupResult:(NSError *)error groupId:(int64_t)groupId;
+- (void)onDisbandGroupResult:(NSError *)error groupId:(int64_t)groupId;
+- (void)onChangeGroupNameResult:(NSError *)error newName:(NSString *)newName groupId:(int64_t)groupId;
+- (void)onChangeMsgStatusResult:(NSError *)error msgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 
 @end
 

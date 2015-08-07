@@ -32,16 +32,16 @@
             [self.imService.imStorage insertOrUpdateGroup:group];
         }
         
-        GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:currentUser.userId userRole:currentUser.userRole];
-        if (!member) {
-            member = [[GroupMember  alloc] init];
-            member.groupId = group.groupId;
-            member.userId = currentUser.userId;
-            member.userRole = currentUser.userRole;
-            member.remarkName = group.remarkName;
-            member.remarkHeader = group.remarkHeader;
-            [self.imService.imStorage insertGroupMember:member];
-        }
+        GroupMember *_groupMember = [[GroupMember alloc] init];
+        _groupMember.userId = currentUser.userId;
+        _groupMember.userRole = currentUser.userRole;
+        _groupMember.groupId = group.groupId;
+        _groupMember.msgStatus = group.msgStatus;
+        _groupMember.canDisband = group.canDisband;
+        _groupMember.canLeave = group.canLeave;
+        _groupMember.remarkHeader = group.remarkHeader;
+        _groupMember.remarkName = group.remarkName;
+        [self.imService.imStorage insertOrUpdateGroupMember:_groupMember];
     }
     
     NSArray *organizationList = self.model.organizationList;
