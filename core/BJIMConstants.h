@@ -17,6 +17,8 @@
 #import <Mantle/Mantle.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <CocoaLumberjack/DDLegacyMacros.h>
+#import "GroupMemberListData.h"
+#import "NSError+BJIM.h"
 
 #pragma mark - 接口返回成功码
 #define RESULT_CODE_SUCC 0
