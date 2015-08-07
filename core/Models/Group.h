@@ -26,7 +26,7 @@
 @property (nonatomic, assign) int64_t createTime;
 
 @property (nonatomic, assign) IMGroupMsgStatus msgStatus;
-@property (nonatomic, assign) BOOL canLeave;//是否
+@property (nonatomic, assign) BOOL canLeave;//是否能退出
 @property (nonatomic, assign) BOOL canDisband;//是否能解散
 
 @property (nonatomic, copy) NSString *nameHeader; // 名字首字母
