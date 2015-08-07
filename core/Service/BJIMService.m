@@ -561,7 +561,7 @@
     if (self.systemSecretary == nil)
     {
         self.systemSecretary = [[User alloc] init];
-        self.systemSecretary.userId = 12345;
+        self.systemSecretary.userId = 100000100;
         self.systemSecretary.userRole = eUserRole_System;
         self.systemSecretary.name = @"系统小秘书";
     }
@@ -573,7 +573,7 @@
     if (self.customeWaiter == nil)
     {
         self.customeWaiter = [[User alloc] init];
-        self.customeWaiter.userId = 12345;
+        self.customeWaiter.userId = 100000110;
         self.customeWaiter.userRole = eUserRole_Kefu;
         self.customeWaiter.name = @"客服";
     }
