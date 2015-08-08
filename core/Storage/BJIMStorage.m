@@ -184,7 +184,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     NSString *queryString = [NSString stringWithFormat:@"receiver=%lld \
                              AND sender <> %lld \
-                             ORDER BY msgId ",groupId, sender];
+                             ORDER BY msgId DESC ",groupId, sender];
     
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;

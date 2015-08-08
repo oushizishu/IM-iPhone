@@ -46,7 +46,7 @@
     for (NSInteger index = 0; index < [groups count]; ++ index)
     {
         Group *group = [groups objectAtIndex:index];
-        int64_t groupLastMsgId = (int64_t)[self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userRole sendRole:owner.userRole];
+        int64_t groupLastMsgId = (int64_t)[self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userId sendRole:owner.userRole];
         
         NSArray *excludeGroupMsgs = [self.imService.imStorage queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
        
