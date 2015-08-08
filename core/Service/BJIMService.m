@@ -758,6 +758,17 @@
     
     [self.loadMoreMessagesDelegates addObject:delegate];
 }
+
+- (void)notifyPreLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation
+{
+    NSEnumerator *enumerator = [self.loadMoreMessagesDelegates objectEnumerator];
+    id<IMLoadMessageDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate didPreLoadMessages:messages conversation:conversation];
+    }
+}
+
 - (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore
 {
     NSEnumerator *enumerator = [self.loadMoreMessagesDelegates objectEnumerator];

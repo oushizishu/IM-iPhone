@@ -94,6 +94,7 @@
 - (void)notifyContactChanged;
 
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
+- (void)notifyPreLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation;
 - (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore;
 
 - (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
