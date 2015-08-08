@@ -180,6 +180,7 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:@"1" forKey:@"group_auth"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -213,6 +214,7 @@
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)index] forKey:@"page"];
+    [requestParmas appendPostParamValue:@"20" forKey:@"page_size"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
