@@ -10,7 +10,7 @@
 #import "BJIMConstants.h"
 #import "User.h"
 
-@interface GroupMember : MTLModel<MTLJSONSerializing>
+@interface GroupMember : NSObject
 
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) IMUserRole userRole;
