@@ -20,8 +20,8 @@
 {
     Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     
-    double maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:conversation.rowid];
-    self.message.msgId = maxConversationMsgId + 0.001;
+//    double maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:conversation.rowid];
+    self.message.msgId = [self.imService.imStorage queryAllMessageMaxMsgId] + 0.001;
     conversation.lastMessageId = self.message.msgId;
     
     [self.imService.imStorage updateConversation:conversation];

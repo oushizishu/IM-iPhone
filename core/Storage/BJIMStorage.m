@@ -237,6 +237,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return message.msgId;
 }
 
+- (double)queryAllMessageMaxMsgId
+{
+    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return message.msgId;
+}
+
 /**
  minMsgId 闭区间
  */

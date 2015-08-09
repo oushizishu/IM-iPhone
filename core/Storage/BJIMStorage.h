@@ -48,6 +48,7 @@
 - (double)queryMinMsgIdInConversation:(NSInteger)conversationId;
 // 查询会话最大的 msgId
 - (double)queryMaxMsgIdInConversation:(NSInteger)conversationId;
+- (double)queryAllMessageMaxMsgId;
 // 根据 id 区间查询 messages
 - (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
                                  minMsgId:(double_t)minMsgId
