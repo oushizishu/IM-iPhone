@@ -56,6 +56,7 @@ static char BJGroupMamagerDelegateKey;
             [weakSelf notifyGetGroupProfile:groupId group:nil error:[NSError bjim_errorWithReason:@"请求失败"]];
             return;
         }
+        [group mergeValuesForKeysFromModel:result];
         GroupMember *_groupMember = [[GroupMember alloc] init];
         _groupMember.userId = owner.userId;
         _groupMember.userRole = owner.userRole;
@@ -66,7 +67,6 @@ static char BJGroupMamagerDelegateKey;
         _groupMember.remarkHeader = group.remarkHeader;
         _groupMember.remarkName = group.remarkName;
         [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
-        [group mergeValuesForKeysFromModel:result];
         [weakSelf.imStorage insertOrUpdateGroup:group];
         [weakSelf notifyGroupProfileChanged:group];
         [weakSelf notifyGetGroupProfile:groupId group:group error:nil];
