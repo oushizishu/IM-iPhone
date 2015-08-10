@@ -434,6 +434,11 @@
     GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:user.userId userRole:user.userRole];
     return member;
 }
+
+- (void)setUser:(User *)user
+{
+    [self.imStorage insertOrUpdateUser:user];
+}
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
                                       userRole:(IMUserRole)userRole
                                          owner:(User *)owner
@@ -561,6 +566,7 @@
     
     return list;
 }
+
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

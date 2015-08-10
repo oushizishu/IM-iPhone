@@ -73,6 +73,7 @@
 // 判断该老师是否为我的老师：(to学生端)
 - (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user;
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user;
+- (void)setUser:(User *)user;
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;

@@ -219,6 +219,13 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+- (void)setUser:(User *)user
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return ;
+    if (user == nil) return;
+    [self.imService setUser:user];
+}
+
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
