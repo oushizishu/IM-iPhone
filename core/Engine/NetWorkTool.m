@@ -35,6 +35,11 @@
 + (BJNetRequestOperation *)hermesSyncConfig:(onSuccess)succ
                                     failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
@@ -45,6 +50,11 @@
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_SEND_MESSAGE method:kHttpMethod_POST];
     
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -65,6 +75,11 @@
 
 + (BJNetRequestOperation*)hermesGetContactSucc:(onSuccess)succ failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
@@ -77,6 +92,11 @@
                                                             succ:(onSuccess)succ
                                                          failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_POLLING method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
@@ -106,6 +126,11 @@
                                    succ:(onSuccess)succ
                                 failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_MSG method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", eid] forKey:@"eid"];
@@ -122,6 +147,11 @@
                                                succ:(onSuccess)succ
                                             failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -150,7 +180,11 @@
                                                    succ:(onSuccess)succ
                                                 failure:(onFailure)failure
 {
-
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_GET_CHANGE_REMARK_NAME method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
@@ -165,6 +199,11 @@
                                         succ:(onSuccess)succ
                                      failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_USER_INFO method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
@@ -176,7 +215,11 @@
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure
 {
-
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
@@ -190,6 +233,11 @@
                                                   succ:(onSuccess)succ
                                                failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_LEAVE_GROUP method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
@@ -200,6 +248,11 @@
                                                     succ:(onSuccess)succ
                                                  failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
@@ -210,6 +263,11 @@
                                                     succ:(onSuccess)succ
                                                  failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
@@ -222,6 +280,11 @@
                                                     succ:(onSuccess)succ
                                                  failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_SET_GROUP_NAME method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
@@ -233,6 +296,11 @@
                                                     succ:(onSuccess)succ
                                                  failure:(onFailure)failure
 {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_SET_MSG_STATUS method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
