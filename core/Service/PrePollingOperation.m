@@ -54,8 +54,6 @@
             [__excludeUserMsgIds appendFormat:@"%lld,", (int64_t)msg.msgId];
         }
         
-        if (groupLastMsgId == 0) continue;
-        
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
                               @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId]
                               };
