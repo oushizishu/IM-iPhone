@@ -22,6 +22,7 @@
 #import "LoadMoreMessagesOperation.h"
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
+#import "RetryMessageOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
@@ -101,6 +102,13 @@
 
 - (void)retryMessage:(IMMessage *)message
 {
+    message.status = eMessageStatus_Sending;
+    message.imService = self;
+    RetryMessageOperation *operation = [[RetryMessageOperation alloc] init];
+    operation.message = message;
+    operation.imService = self;
+    [self.operationQueue addOperation:operation];
+    
     [self notifyWillDeliveryMessage:message];
 }
 
@@ -758,6 +766,17 @@
     
     [self.loadMoreMessagesDelegates addObject:delegate];
 }
+
+- (void)notifyPreLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation
+{
+    NSEnumerator *enumerator = [self.loadMoreMessagesDelegates objectEnumerator];
+    id<IMLoadMessageDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        [delegate didPreLoadMessages:messages conversation:conversation];
+    }
+}
+
 - (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore
 {
     NSEnumerator *enumerator = [self.loadMoreMessagesDelegates objectEnumerator];

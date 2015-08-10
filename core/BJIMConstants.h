@@ -132,6 +132,8 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
            conversation:(Conversation *)conversation
                 hasMore:(BOOL)hasMore;
 
+- (void)didPreLoadMessages:(NSArray *)preMessages
+              conversation:(Conversation *)conversation;
 @end
 
 @protocol IMRecentContactsDelegate <NSObject>

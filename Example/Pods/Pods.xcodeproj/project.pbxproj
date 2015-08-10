@@ -310,6 +310,8 @@
 		9271E124B5BC3EDBB36B8502B781E1B2 /* UIActivityIndicatorView+AFNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 06FB00772467EE549D9E6AD6E5777DB3 /* UIActivityIndicatorView+AFNetworking.m */; };
 		92F50E43A23C54C7DC674A917D807A20 /* IMMessage+DB.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D938F50532EA3BAE2C4D8EB14824B06 /* IMMessage+DB.m */; };
 		940358510E48BF8A32CD9F9E3EF69EAF /* DDLog.h in Headers */ = {isa = PBXBuildFile; fileRef = FD88ECF3E3017C356AFD50C973D0924D /* DDLog.h */; };
+		9542B8721B7632DA004C353D /* RetryMessageOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9542B8701B7632DA004C353D /* RetryMessageOperation.h */; };
+		9542B8731B7632DA004C353D /* RetryMessageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9542B8711B7632DA004C353D /* RetryMessageOperation.m */; };
 		959A760B9FD290A2220E3D9864226AB2 /* JLTwitterPermission.h in Headers */ = {isa = PBXBuildFile; fileRef = A4EB1E0DE1D9D4388E0329CDD6AC6392 /* JLTwitterPermission.h */; };
 		96CA88B4F0702E3EC80AE8BB9BECC799 /* IMMessage.h in Headers */ = {isa = PBXBuildFile; fileRef = 81383D64F2DD5CDFFD9122226257A7B2 /* IMMessage.h */; };
 		972014FA4C672CF2DEBC1910369812B2 /* BJAudioBufferRecorder.h in Headers */ = {isa = PBXBuildFile; fileRef = DA6D7323D17A757EF967BA74099AE96E /* BJAudioBufferRecorder.h */; };
@@ -1173,6 +1175,8 @@
 		94A3A502E45BCAFDE7DBF578918FBE73 /* AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-prefix.pch"; sourceTree = "<group>"; };
 		9526B905B8383FD455798616FC0FE394 /* BJHL-IM-iOS-SDK-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "BJHL-IM-iOS-SDK-Private.xcconfig"; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9542B8701B7632DA004C353D /* RetryMessageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetryMessageOperation.h; sourceTree = "<group>"; };
+		9542B8711B7632DA004C353D /* RetryMessageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetryMessageOperation.m; sourceTree = "<group>"; };
 		961BC74D8FBFF593BCB903C3D34CEECC /* MBProgressHUD-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MBProgressHUD-Private.xcconfig"; sourceTree = "<group>"; };
 		962AC1837C577228E32E1F4A1B6E9FA8 /* HandleGetMsgOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = HandleGetMsgOperation.m; sourceTree = "<group>"; };
 		963D51078560EE3936C9C5E142B73F1C /* libSlimeRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSlimeRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2349,6 +2353,8 @@
 				25964CDE1B742316007288C9 /* NSError+BJIM.m */,
 				25964CE91B748815007288C9 /* HandleGetGroupMemberOperation.h */,
 				25964CEA1B748815007288C9 /* HandleGetGroupMemberOperation.m */,
+				9542B8701B7632DA004C353D /* RetryMessageOperation.h */,
+				9542B8711B7632DA004C353D /* RetryMessageOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2862,7 +2868,6 @@
 				5AB92EA8ED28B4F1AED600D3370C1A57 /* SendMsgModel.h in Headers */,
 				5412DC8966D4B3AA9A4288632BE88575 /* SendMsgOperation.h in Headers */,
 				25964CE71B7457D4007288C9 /* GroupMemberListData.h in Headers */,
-				5C0A3D9D4B80A14A2DDAA64C06F444C3 /* StoreRecentContactsOperation.h in Headers */,
 				7F9CA74FE4D9D03902492C5FC32EABE4 /* StudentContacts.h in Headers */,
 				38A4ECC5241B60E41ECA024BCE1637E9 /* SyncConfigModel.h in Headers */,
 				25964CDF1B742316007288C9 /* NSError+BJIM.h in Headers */,
@@ -2897,6 +2902,7 @@
 				D729CD4BB6D23938BB76AAD75B54B55B /* AFSecurityPolicy.h in Headers */,
 				399534E169B55429F3419B77D9437F46 /* AFURLConnectionOperation.h in Headers */,
 				3A00F1A48C7B5CCD04869BB79FCFB4E1 /* AFURLRequestSerialization.h in Headers */,
+				9542B8721B7632DA004C353D /* RetryMessageOperation.h in Headers */,
 				A07FA71F293F615F122D79A1755B5A2B /* AFURLResponseSerialization.h in Headers */,
 				D2DB5F039D69D96A8AC862B27D989BF1 /* AFURLSessionManager.h in Headers */,
 				A900109BBF7078A89F433CBC0C682E4F /* UIActivityIndicatorView+AFNetworking.h in Headers */,
@@ -3897,6 +3903,7 @@
 				58B6CB6204DCE1A3E338B35CBA5E265A /* UIImageView+AFNetworking.m in Sources */,
 				5597E65DA5096109C8D33A73A3809EDF /* UIProgressView+AFNetworking.m in Sources */,
 				387D27BC6BA3C556BEB91665793BF82F /* UIRefreshControl+AFNetworking.m in Sources */,
+				9542B8731B7632DA004C353D /* RetryMessageOperation.m in Sources */,
 				BA34F2CB08E8708879D0340595564E5C /* UIWebView+AFNetworking.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

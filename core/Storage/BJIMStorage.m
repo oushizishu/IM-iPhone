@@ -184,7 +184,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     NSString *queryString = [NSString stringWithFormat:@"receiver=%lld \
                              AND sender <> %lld \
-                             ORDER BY msgId ",groupId, sender];
+                             ORDER BY msgId DESC ",groupId, sender];
     
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
@@ -233,6 +233,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (double)queryMaxMsgIdInConversation:(NSInteger)conversationId
 {
     NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC", (long)conversationId];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    return message.msgId;
+}
+
+- (double)queryAllMessageMaxMsgId
+{
+    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     return message.msgId;
 }

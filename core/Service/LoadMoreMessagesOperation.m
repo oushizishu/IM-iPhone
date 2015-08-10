@@ -16,6 +16,7 @@
 @interface LoadMoreMessagesOperation()
 
 @property (nonatomic, strong) NSArray *messages;
+@property (nonatomic, strong) NSArray *preMessages;
 
 @property (nonatomic, assign) BOOL hasMore;
 @property (nonatomic, copy) NSString *excludeIds;
@@ -71,11 +72,11 @@
         }
         else
         {
-            NSArray *list = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
+            self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
             
             self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来
-            [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+            [self.preMessages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
                 IMMessage *_message = (IMMessage *)obj;
                 if (_message.status != eMessageStatus_Send_Fail)
                 {
@@ -88,8 +89,8 @@
                 }
             }];
             
-            if ([list count] > 0) {
-                self.newEndMessageId = [[list objectAtIndex:0] msgId];
+            if ([self.preMessages count] > 0) {
+                self.newEndMessageId = [[self.preMessages objectAtIndex:0] msgId];
             }
         }
         
@@ -101,6 +102,7 @@
 {
     if (self.messages)
     {
+        // 本地已加载完毕， 不需要通过网络
         [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
     }
     else
@@ -111,6 +113,11 @@
                                              userId:0
                                          excludeIds:[self.excludeIds copy]
                                      startMessageId:self.newEndMessageId];
+        
+        if (self.minMsgId == 0 && [self.preMessages count] > 0)
+        {
+            [self.imService notifyPreLoadMessages:self.preMessages conversation:self.conversation];
+        }
     }
 }
 

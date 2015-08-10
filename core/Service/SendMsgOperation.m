@@ -44,7 +44,7 @@
     
     self.message.conversationId = conversation.rowid;
     
-    self.message.msgId = MAX([self.imService.imStorage getConversationMaxMsgId:conversation.rowid], 0) + 0.001;
+    self.message.msgId = MAX([self.imService.imStorage queryAllMessageMaxMsgId], 0) + 0.001;
     conversation.lastMessageId = self.message.rowid;
     
     if (self.message.chat_t == eChatType_GroupChat)

@@ -60,7 +60,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
             SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.data error:&error];
@@ -84,7 +84,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
             MyContactsModel *model = [MTLJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.data error:&error];

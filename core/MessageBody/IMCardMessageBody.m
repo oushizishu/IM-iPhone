@@ -16,7 +16,9 @@
              @"title":@"title",
              @"content":@"content",
              @"url":@"url",
-             @"thumb":@"thubm",
+             @"thumb":@"thumb",
+             @"number":@"number",
+             @"type":@"type",
              };
 }
 
