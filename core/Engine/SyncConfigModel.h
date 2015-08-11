@@ -21,7 +21,7 @@
 @interface SyncConfigModel : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, strong) NSArray *polling_delta;
-@property (nonatomic, assign) NSInteger *close_polling;
+@property (nonatomic, assign) NSInteger close_polling;
 
 @property (nonatomic, strong) SimpleUserModel *administrators;
 @property (nonatomic, strong) SimpleUserModel *customWaiter;
