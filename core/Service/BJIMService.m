@@ -44,7 +44,6 @@
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
-@property (nonatomic, strong, readonly) NSOperationQueue *writeOperationQueue; // DB 写操作线程
 
 @end
 

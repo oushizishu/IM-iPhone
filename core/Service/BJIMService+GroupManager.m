@@ -182,7 +182,7 @@ static char BJGroupMamagerDelegateKey;
         else
         {
             HandleGetGroupMemberOperation *operation = [[HandleGetGroupMemberOperation alloc] initWithService:self listData:members];
-            [self.operationQueue addOperation:operation];
+            [self.writeOperationQueue addOperation:operation];
         }
         
     }];
