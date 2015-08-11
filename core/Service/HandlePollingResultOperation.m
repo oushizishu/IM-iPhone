@@ -67,12 +67,10 @@
             _group.avatar = group.avatar;
            
             [self.imService.imStorage updateGroup:_group];
-            [self.imService updateCacheGroup:_group];
         }
         else
         {
             [self.imService.imStorage insertOrUpdateGroup:group];
-            [self.imService updateCacheGroup:group];
         }
         
         GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:owner.userId userRole:owner.userRole];

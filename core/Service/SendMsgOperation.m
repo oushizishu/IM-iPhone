@@ -52,7 +52,6 @@
         Group *group = [self.imService getGroup:self.message.receiver];
         group.lastMessageId = self.message.msgId;
         group.endMessageId = self.message.msgId;
-        [self.imService.imStorage updateGroup:group];
     }
     
     [self.imService.imStorage updateConversation:conversation];
