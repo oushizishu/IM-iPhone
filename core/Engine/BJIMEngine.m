@@ -437,9 +437,9 @@ static int ddLogLevel = DDLogLevelVerbose;
     
 }
 
-- (void)postGetGroupMembers:(int64_t)groupId page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback
+- (void)postGetGroupMembers:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback
 {
-    [NetWorkTool hermesGetGroupMemberWithGroupId:groupId page:index succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupMemberWithGroupId:groupId userRole:userRole page:index succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
@@ -447,6 +447,7 @@ static int ddLogLevel = DDLogLevelVerbose;
             GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.data error:&error];
             members.page = index;
             members.groupId = groupId;
+            members.userRole = userRole;
             callback(members, error);
         }
         else

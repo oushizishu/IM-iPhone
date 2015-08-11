@@ -206,7 +206,7 @@
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)index
++ (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index
                                                     succ:(onSuccess)succ
                                                  failure:(onFailure)failure
 {
@@ -215,6 +215,9 @@
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)index] forKey:@"page"];
     [requestParmas appendPostParamValue:@"20" forKey:@"page_size"];
+    if (userRole != eUserRole_Anonymous) {
+        [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)userRole] forKey:@"user_role"];
+    }
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 

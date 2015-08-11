@@ -151,7 +151,7 @@ static char BJGroupMamagerDelegateKey;
     }];
 }
 
-- (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
+- (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
 {
     //1.检测登录
     //2.检查group是否在本地存在 检查page的正确
@@ -160,31 +160,31 @@ static char BJGroupMamagerDelegateKey;
     //3.回调
     
     if (page<1) {
-        [self notifyGetGroupMembers:nil page:page groupId:groupId error:[NSError bjim_errorWithReason:@"page不能小于1" code:eError_paramsError]];
+        [self notifyGetGroupMembers:nil userRole:userRole page:page groupId:groupId error:[NSError bjim_errorWithReason:@"page不能小于1" code:eError_paramsError]];
         return;
     }
     
     Group *group = [self getGroup:groupId];
     if (group == nil) {
-        [self notifyGetGroupMembers:nil page:page groupId:groupId error:[NSError bjim_errorWithReason:@"群组不存在"]];
+        [self notifyGetGroupMembers:nil userRole:userRole page:page groupId:groupId error:[NSError bjim_errorWithReason:@"群组不存在"]];
         return;
     }
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postGetGroupMembers:groupId page:page callback:^(GroupMemberListData *members, NSError *err) {
+    [self.imEngine postGetGroupMembers:groupId userRole:userRole page:page callback:^(GroupMemberListData *members, NSError *err) {
         if (!weakSelf.bIsServiceActive)
         {
-            [self notifyGetGroupMembers:nil page:page groupId:groupId error:[NSError bjim_errorWithReason:@"已断开连接"]];
+            [self notifyGetGroupMembers:nil userRole:userRole page:page groupId:groupId error:[NSError bjim_errorWithReason:@"已断开连接"]];
             return ;
         }
         if (err) {
-            [weakSelf notifyGetGroupMembers:nil page:page groupId:groupId error:err];
+            [weakSelf notifyGetGroupMembers:nil userRole:userRole page:page groupId:groupId error:err];
         }
         else
         {
             HandleGetGroupMemberOperation *operation = [[HandleGetGroupMemberOperation alloc] initWithService:self listData:members];
             [self.operationQueue addOperation:operation];
         }
-
+        
     }];
 }
 
@@ -295,14 +295,22 @@ static char BJGroupMamagerDelegateKey;
     }
 }
 
-- (void)notifyGetGroupMembers:(GroupMemberListData *)members page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error
+- (void)notifyGetGroupMembers:(GroupMemberListData *)members userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error
 {
     NSEnumerator *enumerator = [self.groupManagerDelegates objectEnumerator];
     id<IMGroupManagerResultDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        if ([delegate respondsToSelector:@selector(onGetGroupMemberResult:members:page:groupId:)]) {
-            [delegate onGetGroupMemberResult:error members:members page:page groupId:groupId];
+        if (userRole == eUserRole_Anonymous) {
+            if ([delegate respondsToSelector:@selector(onGetGroupMemberResult:members:page:groupId:)]) {
+                [delegate onGetGroupMemberResult:error members:members page:page groupId:groupId];
+            }
+        }
+        else
+        {
+            if ([delegate respondsToSelector:@selector(onGetGroupMemberResult:members:userRole:page:groupId:)]) {
+                [delegate onGetGroupMemberResult:error members:members userRole:userRole page:page groupId:groupId];
+            }
         }
     }
 }

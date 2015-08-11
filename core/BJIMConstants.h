@@ -162,6 +162,7 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 @optional
 - (void)onGetGroupProfileResult:(NSError *)error groupId:(int64_t)groupId group:(Group *)group;
 - (void)onGetGroupMemberResult:(NSError *)error members:(GroupMemberListData *)memberList page:(NSInteger)page groupId:(int64_t)groupId;
+- (void)onGetGroupMemberResult:(NSError *)error members:(GroupMemberListData *)memberList userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId;
 - (void)onLeaveGroupResult:(NSError *)error groupId:(int64_t)groupId;
 - (void)onDisbandGroupResult:(NSError *)error groupId:(int64_t)groupId;
 - (void)onChangeGroupNameResult:(NSError *)error newName:(NSString *)newName groupId:(int64_t)groupId;

@@ -49,6 +49,9 @@
 }
 - (BOOL)sendTotarget:(id)target handleWithUrl:(NSURL*)url;
 {
+    /**
+     url decode 只做一次
+     */
     if ( [[url scheme] isEqualToString:self.scheme] )
     {
         if (!self.host)
@@ -58,9 +61,9 @@
             NSString *query = [url query];
             NSDictionary *param;
             if (query) {
-                NSString *decodeString = [query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//                NSString *decodeString = [query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 
-                param = [decodeString uq_URLQueryDictionary];
+                param = [query uq_URLQueryDictionary];
             }
             
             [self triggerEventToTarget:target withEvent:eventType withData:param];
@@ -71,9 +74,9 @@
             {
                 //path不存在 ||  //path存在 并且相等
                 NSString *query = [url query];
-                NSString *decodeString = [query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//                NSString *decodeString = [query stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
                 
-                NSDictionary *param = [decodeString uq_URLQueryDictionary];
+                NSDictionary *param = [query uq_URLQueryDictionary];
                 [self triggerEventToTarget:target withData:param];
                 
             }

@@ -68,7 +68,7 @@
 + (BJNetRequestOperation *)hermesChangeGroupNameWithGroupId:(int64_t)groupId newName:(NSString *)name
                                                        succ:(onSuccess)succ
                                                     failure:(onFailure)failure;
-+ (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)index
++ (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index
                                                       succ:(onSuccess)succ
                                                    failure:(onFailure)failure;
 + (BJNetRequestOperation *)hermesDisbandGroupWithGroupId:(int64_t)groupId

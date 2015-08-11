@@ -364,11 +364,21 @@
 - (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
 {
     if (![[IMEnvironment shareInstance] isLogin]) {
-        [self.imService notifyGetGroupMembers:nil page:page groupId:groupId error:[NSError bjim_loginError]];
+        [self.imService notifyGetGroupMembers:nil userRole:eUserRole_Anonymous page:page groupId:groupId error:[NSError bjim_loginError]];
         return;
     }
-    [self.imService getGroupMemberWithGroupId:groupId page:page];
+    [self.imService getGroupMemberWithGroupId:groupId userRole:eUserRole_Anonymous page:page];
 }
+
+- (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyGetGroupMembers:nil userRole:userRole page:page groupId:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService getGroupMemberWithGroupId:groupId userRole:userRole page:page];
+}
+
 
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 {

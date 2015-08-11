@@ -14,7 +14,7 @@
 - (void)getGroupProfile:(int64_t)groupId;
 - (void)leaveGroupWithGroupId:(int64_t)groupId;
 - (void)disbandGroupWithGroupId:(int64_t)groupId;
-- (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
+- (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 - (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 
@@ -23,6 +23,6 @@
 - (void)notifyLeaveGroup:(int64_t)groupId error:(NSError *)error;
 - (void)notifyDisbandGroup:(int64_t)groupId error:(NSError *)error;
 - (void)notifyChangeGroupName:(NSString *)name groupId:(int64_t)groupId error:(NSError *)error;
-- (void)notifyGetGroupMembers:(GroupMemberListData *)members page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error;
+- (void)notifyGetGroupMembers:(GroupMemberListData *)members userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error;
 - (void)notifyChangeMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId error:(NSError *)error;
 @end

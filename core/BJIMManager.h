@@ -120,6 +120,7 @@
 - (void)leaveGroupWithGroupId:(int64_t)groupId;
 - (void)disbandGroupWithGroupId:(int64_t)groupId;
 - (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
+- (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 - (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 @end

@@ -71,7 +71,7 @@
 
 - (void)doAfterOperationOnMain;
 {
-    [self.imService notifyGetGroupMembers:self.listData page:self.listData.page groupId:self.listData.groupId error:nil];
+    [self.imService notifyGetGroupMembers:self.listData userRole:self.listData.userRole page:self.listData.page groupId:self.listData.groupId error:nil];
  
 }
 

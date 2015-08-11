@@ -14,4 +14,5 @@
 
 @interface GroupMemberListData : BJIMListData
 @property (assign, nonatomic) int64_t groupId;
+@property (assign, nonatomic) IMUserRole userRole;
 @end

@@ -93,7 +93,7 @@
 - (void)postGetGroupProfile:(int64_t)groupId callback:(void(^)(Group *result))callback;
 
 #pragma mark - group
-- (void)postGetGroupMembers:(int64_t)groupId page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback;
+- (void)postGetGroupMembers:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback;
 - (void)postSetGroupMsg:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status callback:(void (^)(NSError *err))callback;
 - (void)postChangeGroupName:(int64_t)groupId newName:(NSString *)name callback:(void (^)(NSError *err))callback;
 - (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
