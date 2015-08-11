@@ -24,4 +24,11 @@
 
 @property (nonatomic, assign) NSInteger status; // 0 正常， 1 已删除
 
+- (instancetype)initWithOwnerId:(int64_t)ownerId
+                      ownerRole:(IMUserRole)ownerRole
+                           toId:(int64_t)toId
+                         toRole:(IMUserRole)toRole
+                  lastMessageId:(double_t)lastMessageId
+                       chatType:(IMChatType)chatType;
+
 @end

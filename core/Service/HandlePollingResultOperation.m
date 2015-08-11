@@ -121,13 +121,9 @@
             
             if (conversation == nil)
             {// 创建新的 conversation，unreadnumber 不增加
-                conversation = [[Conversation alloc] init];
-                conversation.ownerId = message.sender;
-                conversation.ownerRole = message.senderRole;
-                conversation.toId = message.receiver;
-                conversation.toRole = message.receiverRole;
-                conversation.chat_t = message.chat_t;
-                conversation.lastMessageId = message.msgId;
+
+                conversation = [[Conversation alloc] initWithOwnerId:message.sender ownerRole:message.senderRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
+                
                 [self.imService.imStorage insertConversation:conversation];
             }
             
@@ -157,13 +153,7 @@
                 
                 if (conversation == nil)
                 {
-                    conversation = [[Conversation alloc] init];
-                    conversation.ownerId = message.receiver;
-                    conversation.ownerRole = message.receiverRole;
-                    conversation.toId = message.sender;
-                    conversation.toRole = message.senderRole;
-                    conversation.chat_t = message.chat_t;
-                    conversation.lastMessageId = message.msgId;
+                    conversation = [[Conversation alloc] initWithOwnerId:message.receiver ownerRole:message.receiverRole toId:message.sender toRole:message.senderRole lastMessageId:message.msgId chatType:message.chat_t];
                     
                     [self.imService.imStorage insertConversation:conversation];
                 }
@@ -193,13 +183,7 @@
                 Group *chatToGroup = [self.imService getGroup:message.receiver];
                 if (conversation == nil)
                 {
-                    conversation = [[Conversation alloc] init];
-                    conversation.ownerId = owner.userId;
-                    conversation.ownerRole = owner.userRole;
-                    conversation.toId = message.receiver;
-                    conversation.toRole = message.receiverRole;
-                    conversation.chat_t = message.chat_t;
-                    conversation.lastMessageId = message.msgId;
+                    conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
                     
                     chatToGroup.startMessageId = message.msgId;
                     chatToGroup.endMessageId = message.msgId;
