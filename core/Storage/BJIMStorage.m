@@ -239,8 +239,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (double)queryAllMessageMaxMsgId
 {
-    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
-    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+//    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:nil orderBy:@" ORDER BY msgId DESC"];
     return message.msgId;
 }
 
