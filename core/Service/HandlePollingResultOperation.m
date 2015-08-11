@@ -55,7 +55,7 @@
     {
         Group *group = [groups objectAtIndex:index];
         
-        Group *_group = [self.imService getGroup:group.groupId];
+        Group *_group = [self.imService.imStorage queryGroupWithGroupId:group.groupId];
         
         if (_group != nil)
         { //目的是为了更新 cache 中的 Group
@@ -67,10 +67,12 @@
             _group.avatar = group.avatar;
            
             [self.imService.imStorage updateGroup:_group];
+            [self.imService updateCacheGroup:_group];
         }
         else
         {
             [self.imService.imStorage insertOrUpdateGroup:group];
+            [self.imService updateCacheGroup:group];
         }
         
         GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:owner.userId userRole:owner.userRole];
