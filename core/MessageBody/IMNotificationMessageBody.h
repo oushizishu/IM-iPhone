@@ -8,8 +8,9 @@
 
 #import "IMTxtMessageBody.h"
 
-@interface IMNotificationMessageBody : IMTxtMessageBody
-
+@interface IMNotificationMessageBody : IMMessageBody
+@property (nonatomic, assign) TxtMessageContentType type;
+@property (nonatomic, copy) NSString *content;
 @property (nonatomic, copy) NSString *action;
 
 @end
