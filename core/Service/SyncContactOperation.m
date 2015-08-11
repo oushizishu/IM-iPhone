@@ -21,15 +21,17 @@
     
     NSArray *groupList = self.model.groupList;
     for (Group *group  in groupList) {
-        Group *__group = [self.imService getGroup:group.groupId];
+        Group *__group = [self.imService.imStorage queryGroupWithGroupId:group.groupId];
         if (__group)
         {
             [__group mergeValuesForKeysFromModel:group];
             [self.imService.imStorage updateGroup:__group];
+            [self.imService updateCacheGroup:__group];
         }
         else
         {
             [self.imService.imStorage insertOrUpdateGroup:group];
+            [self.imService updateCacheGroup:group];
         }
         
         GroupMember *_groupMember = [[GroupMember alloc] init];
