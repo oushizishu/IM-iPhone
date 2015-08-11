@@ -14,5 +14,5 @@
 @property (copy, nonatomic) NSString *url;
 @property (copy, nonatomic) NSString *thumb;
 @property (nonatomic, copy) NSString *number;
-@property (nonatomic, assign) NSInteger *type;
+@property (nonatomic, assign) NSInteger type;
 @end

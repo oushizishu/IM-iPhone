@@ -10,6 +10,28 @@
 
 @implementation Conversation
 
+- (instancetype)initWithOwnerId:(int64_t)ownerId
+                      ownerRole:(IMUserRole)ownerRole
+                           toId:(int64_t)toId
+                         toRole:(IMUserRole)toRole
+                  lastMessageId:(double_t)lastMessageId
+                       chatType:(IMChatType)chatType
+{
+    self = [super init];
+    if (self)
+    {
+        _ownerId = ownerId;
+        _ownerRole = ownerRole;
+        _toId = toId;
+        _toRole = toRole;
+        _lastMessageId = lastMessageId;
+        _chat_t = chatType;
+        NSLog(@"Conversation  ownerId=%lld  toId=%lld chatT=%ld", _ownerId, _toId, _chat_t);
+    }
+
+    return self;
+}
+
 + (NSString *)getTableName
 {
     return @"CONVERSATION";

@@ -55,6 +55,21 @@
                  userAvatar:(NSString *)userAvatar
                    userRole:(IMUserRole)userRole
 {
+    NSAssert([OauthToken length] > 0, @"IMAuthToken  must not be null.");
+    
+    if ([OauthToken isEqualToString:[IMEnvironment shareInstance].oAuthToken] &&
+        [IMEnvironment shareInstance].owner != nil &&
+        [IMEnvironment shareInstance].owner.userId == userId &&
+        [IMEnvironment shareInstance].owner.userRole == userRole &&
+        self.imService.bIsServiceActive)
+    {
+        // 重复登录，节省资源
+        [IMEnvironment shareInstance].owner.name = userName;
+        [IMEnvironment shareInstance].owner.avatar = userAvatar;
+        return;
+    }
+    
+    
     User *owner = [[User alloc] init];
     [owner setUserId:userId];
     [owner setName:userName];
@@ -217,6 +232,13 @@
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     if ([IMEnvironment shareInstance].owner.userRole == eUserRole_Institution) return nil;
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
+}
+
+- (void)setUser:(User *)user
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return ;
+    if (user == nil) return;
+    [self.imService setUser:user];
 }
 
 #pragma mark - 备注名

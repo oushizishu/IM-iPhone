@@ -74,6 +74,7 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
+- (void)setUser:(User *)user;
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName

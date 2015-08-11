@@ -55,6 +55,23 @@ typedef NS_ENUM(NSInteger, IMMessageType)
     eMessageType_CMD = 7,
 };
 
+#pragma mark - 卡片消息类型 type 值.
+typedef NS_ENUM(NSInteger, IMCardMessageType)
+{
+    /*! @brief  班课类型*/
+    eIMCardMessageTypeClassCourse = 3,
+    /*! @brief 教师详情*/
+    eIMCardMessageTypeTeacherDetail = 1,
+    /*! @brief 机构详情*/
+    eIMCardMessageTypeOrgDetail = 2,
+    /*! @brief 机构黑板报*/
+    eIMCardMessageTypeOrgBlackBoard = 4,
+    /*! @brief 机构优惠劵*/
+    eIMCardMessageTypeOrgCoupon = 5,
+    /*! @brief 老师优惠劵*/
+    eIMCardMessageTypeTeacherCoupon = 6,
+};
+
 #pragma mark - 消息状态
 typedef NS_ENUM(NSInteger, IMMessageStatus)
 {
