@@ -129,7 +129,7 @@
                 [self.imService.imStorage insertConversation:conversation];
             }
             
-            conversation.status = 0;// 会话状态回归正常
+//            conversation.status = 0;// 会话状态回归正常
             message.status = eMessageStatus_Send_Succ;
             message.read = 1;
             message.played = 1;
