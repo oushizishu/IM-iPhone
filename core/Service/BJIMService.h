@@ -17,7 +17,6 @@
 @property (nonatomic, assign) BOOL bIsServiceActive;
 @property (nonatomic, strong, readonly) BJIMEngine *imEngine;
 @property (nonatomic, strong, readonly) BJIMStorage *imStorage;
-@property (nonatomic, strong, readonly) NSOperationQueue *operationQueue;
 
 
 - (void)startServiceWithOwner:(User *)owner;

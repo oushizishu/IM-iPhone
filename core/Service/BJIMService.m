@@ -43,13 +43,16 @@
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
+@property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
+@property (nonatomic, strong, readonly) NSOperationQueue *writeOperationQueue; // DB 写操作线程
 
 @end
 
 @implementation BJIMService
 @synthesize imEngine=_imEngine;
 @synthesize imStorage=_imStorage;
-@synthesize operationQueue = _operationQueue;
+@synthesize readOperationQueue=_readOperationQueue;
+@synthesize writeOperationQueue=_writeOperationQueue;
 
 - (void)startServiceWithOwner:(User *)owner
 {
@@ -70,7 +73,8 @@
 
 - (void)stopService
 {
-    [self.operationQueue cancelAllOperations];
+    [self.readOperationQueue cancelAllOperations];
+    [self.writeOperationQueue cancelAllOperations];
     self.bIsServiceActive = NO;
     
     [self.imEngine stop];
@@ -95,7 +99,8 @@
     SendMsgOperation *operation = [[SendMsgOperation alloc] init];
     operation.message = message;
     operation.imService = self;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.readOperationQueue addOperation:operation]; //可以放在读的队列中
     
     [self notifyWillDeliveryMessage:message];
 }
@@ -107,7 +112,8 @@
     RetryMessageOperation *operation = [[RetryMessageOperation alloc] init];
     operation.message = message;
     operation.imService = self;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.readOperationQueue addOperation:operation]; //可以放在读的队列中
     
     [self notifyWillDeliveryMessage:message];
 }
@@ -119,7 +125,8 @@
     operation.minMsgId = minMsgId;
     operation.imService = self;
     operation.conversation = conversation;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.readOperationQueue addOperation:operation];
 }
 
 #pragma mark - Post Message Delegate
@@ -132,7 +139,8 @@
     operation.message = message;
     operation.model = model;
     
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.writeOperationQueue addOperation:operation];
 }
 
 - (void)onPostMessageAchiveSucc:(IMMessage *)message result:(PostAchiveModel *)model
@@ -168,7 +176,8 @@
     if (! self.bIsServiceActive) return;
     PrePollingOperation *operation = [[PrePollingOperation alloc] init];
     operation.imService = self;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.readOperationQueue addOperation:operation];
 }
 
 - (void)onPollingFinish:(PollingResultModel *)model
@@ -178,7 +187,8 @@
     HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
     operation.imService = self;
     operation.model = model;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.writeOperationQueue addOperation:operation];
 }
 
 #pragma mark - get Msg Delegate
@@ -191,7 +201,8 @@
     operation.model = model;
     operation.minMsgId = minMsgId;
     operation.newEndMessageId = newEndMessageId;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.writeOperationQueue addOperation:operation];
 }
 
 - (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId
@@ -202,7 +213,8 @@
     operation.conversationId = conversationId;
     operation.minMsgId = minMsgId;
     
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.writeOperationQueue addOperation:operation];
 }
 
 #pragma mark syncContact 
@@ -213,7 +225,8 @@
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
     operation.imService = self;
     operation.model = model;
-    [self.operationQueue addOperation:operation];
+//    [self.operationQueue addOperation:operation];
+    [self.writeOperationQueue addOperation:operation];
 }
 
 #pragma mark - syncConfigDelegate
@@ -613,14 +626,25 @@
     return _imStorage;
 }
 
-- (NSOperationQueue *)operationQueue
+- (NSOperationQueue *)readOperationQueue
 {
-    if (_operationQueue == nil)
+    if (_readOperationQueue == nil)
     {
-        _operationQueue = [[NSOperationQueue alloc] init];
-        [_operationQueue setMaxConcurrentOperationCount:3];
+        _readOperationQueue = [[NSOperationQueue alloc] init];
+        [_readOperationQueue setMaxConcurrentOperationCount:3];
     }
-    return _operationQueue;
+    return _readOperationQueue;
+}
+
+- (NSOperationQueue *)writeOperationQueue
+{
+    if (_writeOperationQueue == nil)
+    {
+        _writeOperationQueue = [[NSOperationQueue alloc] init];
+        //DB 写操作只能顺序执行
+        [_writeOperationQueue setMaxConcurrentOperationCount:1];
+    }
+    return _writeOperationQueue;
 }
 
 - (NSMutableArray *)usersCache
