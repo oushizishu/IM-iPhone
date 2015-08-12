@@ -32,27 +32,27 @@
 //message
 - (BOOL)insertMessage:(IMMessage*)message;
 - (IMMessage*)queryMessage:(NSInteger)messageRowid;
-- (IMMessage*)queryMessageWithMessageId:(double_t)messageId;
+- (IMMessage*)queryMessageWithMessageId:(NSString *)messageId;
 - (BOOL)updateMessage:(IMMessage*)message;
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
 
-- (double)queryChatLastMsgIdOwnerId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
-- (NSArray *)queryChatExludeMessagesMaxMsgId:(double_t)maxMsgId;
-- (double)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
-- (double_t)queryMaxMsgIdGroupChat:(int64_t)groupId;
-- (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(double_t)maxMsgId;
+- (NSString *)queryChatLastMsgIdOwnerId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
+- (NSArray *)queryChatExludeMessagesMaxMsgId:(NSString *)maxMsgId;
+- (NSString *)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
+- (NSString *)queryMaxMsgIdGroupChat:(int64_t)groupId;
+- (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(NSString *)maxMsgId;
 // 群组会话最大的消息id 
-- (double)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
+- (NSString *)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
 // 查询会话的最小 msgId
-- (double)queryMinMsgIdInConversation:(NSInteger)conversationId;
+- (NSString *)queryMinMsgIdInConversation:(NSInteger)conversationId;
 // 查询会话最大的 msgId
-- (double)queryMaxMsgIdInConversation:(NSInteger)conversationId;
-- (double)queryAllMessageMaxMsgId;
+- (NSString *)queryMaxMsgIdInConversation:(NSInteger)conversationId;
+- (NSString *)queryAllMessageMaxMsgId;
 // 根据 id 区间查询 messages
 - (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
-                                 minMsgId:(double_t)minMsgId
-                                 maxMsgId:(double_t)maxMsgId;
+                                 minMsgId:(NSString *)minMsgId
+                                 maxMsgId:(NSString *)maxMsgId;
 
 //conversation
 - (BOOL)insertConversation:(NSObject *)conversation;
@@ -74,8 +74,7 @@
 - (BOOL)deleteMyContactWithUser:(User*)user;
 - (BOOL)deleteMyGroups:(User *)user;
 
-
-- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;;
+- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
@@ -89,10 +88,7 @@
 - (BOOL)deleteGroup:(int64_t)groupId user:(User *)user;
 
 //other 
-- ( BOOL)checkMessageStatus;
--  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(double)minMsgId;
-
-
-- (double)getConversationMaxMsgId:(NSInteger)conversationId;
+- (BOOL)checkMessageStatus;
+-  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
 
 @end

@@ -40,8 +40,8 @@
 
 @protocol  IMEngineGetMessageDelegate <NSObject>
 
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId newEndMessageId:(double_t)newEndMessageId result:(PollingResultModel *)model;
-- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId;
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(NSString *)minMsgId newEndMessageId:(NSString *)newEndMessageId result:(PollingResultModel *)model;
+- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
 
 @end
 
@@ -77,11 +77,11 @@
               currentGroup:(int64_t)groupId;
 
 - (void)getMsgConversation:(NSInteger)conversationId
-                  minMsgId:(int64_t)eid
+                  minMsgId:(NSString *)eid
                    groupId:(int64_t)groupId
                     userId:(int64_t)userId
                 excludeIds:(NSString *)excludeIds
-            startMessageId:(double_t)startMessageId;
+            startMessageId:(NSString *)startMessageId;
 
 - (void)postChangeRemarkName:(NSString *)remarkName
                       userId:(int64_t)userId

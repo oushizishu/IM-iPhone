@@ -228,10 +228,10 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 }
 
-- (void)getMsgConversation:(NSInteger)conversationId minMsgId:(int64_t)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds startMessageId:(double_t)startMessageId
+- (void)getMsgConversation:(NSInteger)conversationId minMsgId:(NSString *)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds startMessageId:(NSString *)startMessageId
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesGetMsg:eid groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetMsg:[eid longLongValue] groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if(result != nil && result.code == RESULT_CODE_SUCC)

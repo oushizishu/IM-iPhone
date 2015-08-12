@@ -57,7 +57,7 @@
 - (void)retryMessage:(IMMessage *)message;
 //- (void)loadMoreMessages:(Conversation *)conversation;
 // 初始化以及加载会话消息
-- (void)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation;
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;

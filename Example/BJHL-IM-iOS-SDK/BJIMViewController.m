@@ -41,6 +41,15 @@
     [button setTitle:@"登录" forState:UIControlStateNormal];
     [button addTarget:self action:@selector(loginClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
+    
+    
+//    CGFloat val = 37.777779;
+//    
+//    CGFloat rounded_down = floorf(val * 100.0) / 100.0;   /* Result: 37.77 */
+//    CGFloat nearest = floorf(val * 100 + 0.5) / 100.0;  /* Result: 37.78 */
+//    CGFloat rounded_up = ceilf(val * 100) / 100.0;
+//    double x = 88372.00699999;
+//    double y = ceil(x * 1000)/1000.0;
 }
 
 - (void)loginClick:(id)sender {

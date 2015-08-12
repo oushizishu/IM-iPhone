@@ -32,7 +32,7 @@
     if (conversation == nil)
     {
         User *owner = [IMEnvironment shareInstance].owner;
-        conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:0 chatType:self.message.chat_t];
+        conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:@"" chatType:self.message.chat_t];
         
         [self.imService.imStorage insertConversation:conversation];
     }
@@ -40,7 +40,8 @@
     
     self.message.conversationId = conversation.rowid;
     
-    self.message.msgId = MAX([self.imService.imStorage queryAllMessageMaxMsgId], 0) + 0.001;
+    self.message.msgId = [NSString stringWithFormat:@"%.3lf", [[self.imService.imStorage queryAllMessageMaxMsgId] doubleValue] + 0.001];
+    
     conversation.lastMessageId = self.message.msgId;
     
     if (self.message.chat_t == eChatType_GroupChat)

@@ -38,20 +38,22 @@
     {
         Group *group = [self.imService getGroup:self.conversation.toId];
         
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:self.minMsgId == 0 ? group.lastMessageId + 0.0001 : self.minMsgId];
+        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
+        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
         
-        double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
+        NSString *minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
         if (self.model == nil)
         {
             //getMsg 失败. 只从本地加载更多数据
-            if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
+            
+            if ([self.messages count] > 0 && ([[[self.messages objectAtIndex:0] msgId] doubleValue] > [minConversationMsgId doubleValue]))
             {
                 self.hasMore = YES;
             }
         }
         else
         {
-            group.endMessageId = self.newEndMessageId;
+            group.endMessageId = self.endMessageId;
             
             NSArray *list = [self.imService.imStorage loadMoreMessagesConversation:self.conversationId minMsgId:group.startMessageId maxMsgId:group.endMessageId];
             

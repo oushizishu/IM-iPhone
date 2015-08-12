@@ -18,7 +18,7 @@
 @property (nonatomic, assign) IMUserRole ownerRole;
 @property (nonatomic, assign) int64_t toId;
 @property (nonatomic, assign) IMUserRole toRole;
-@property (nonatomic, assign) double_t lastMessageId;
+@property (nonatomic, copy) NSString *lastMessageId;
 @property (nonatomic, assign) IMChatType chat_t;
 @property (nonatomic, assign) NSInteger unReadNum;
 
@@ -28,7 +28,7 @@
                       ownerRole:(IMUserRole)ownerRole
                            toId:(int64_t)toId
                          toRole:(IMUserRole)toRole
-                  lastMessageId:(double_t)lastMessageId
+                  lastMessageId:(NSString *)lastMessageId
                        chatType:(IMChatType)chatType;
 
 @end

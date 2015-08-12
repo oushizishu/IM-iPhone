@@ -14,6 +14,6 @@
 
 @property (nonatomic, weak) BJIMService *imService;
 @property (nonatomic, strong) Conversation *conversation;
-@property (nonatomic, assign) double_t minMsgId;
+@property (nonatomic, copy) NSString *minMsgId;
 
 @end

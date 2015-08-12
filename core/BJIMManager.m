@@ -118,7 +118,7 @@
 //    [self.imService loadMoreMessages:conversation];
 //}
 
-- (void)loadMessageFromMinMsgId:(double_t)minMsgId inConversation:(Conversation *)conversation
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
