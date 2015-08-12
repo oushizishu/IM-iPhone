@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C1C79E7D3E2A7ECC23D7EAF /* libPods-BJHL-IM-iOS-SDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF511DA1B396C8FD68E20F39 /* libPods-BJHL-IM-iOS-SDK.a */; };
+		250DC2BB1B7B49310087E940 /* BJChatLoadMoreHeadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 250DC2BA1B7B49310087E940 /* BJChatLoadMoreHeadView.m */; };
 		255206A21B57AFC7007B34C4 /* BJConversationListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 255206A11B57AFC7007B34C4 /* BJConversationListViewController.m */; };
 		45619B6F7E7337F86342075F /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 70B42517535184E74628C63F /* libPods-Tests.a */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
@@ -144,6 +145,8 @@
 /* Begin PBXFileReference section */
 		0DF388E93CF84D319664775D /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 		1D279237435A9B5BE6A39168 /* Pods-BJHL-IM-iOS-SDK.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK.debug.xcconfig"; sourceTree = "<group>"; };
+		250DC2B91B7B49310087E940 /* BJChatLoadMoreHeadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJChatLoadMoreHeadView.h; sourceTree = "<group>"; };
+		250DC2BA1B7B49310087E940 /* BJChatLoadMoreHeadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJChatLoadMoreHeadView.m; sourceTree = "<group>"; };
 		255206A01B57AFC7007B34C4 /* BJConversationListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJConversationListViewController.h; sourceTree = "<group>"; };
 		255206A11B57AFC7007B34C4 /* BJConversationListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJConversationListViewController.m; sourceTree = "<group>"; };
 		31DE67A144DDD652919468A2 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
@@ -659,11 +662,13 @@
 		9552CF751B7B2B0A001E8D4C /* View */ = {
 			isa = PBXGroup;
 			children = (
-				9552CF761B7B2B0A001E8D4C /* BJActionCollectionViewCell.h */,
-				9552CF771B7B2B0A001E8D4C /* BJActionCollectionViewCell.m */,
-				9552CF781B7B2B0A001E8D4C /* BJActionCollectionViewCell.xib */,
-				9552CF791B7B2B0A001E8D4C /* BJAttributedHighlightLabel.h */,
-				9552CF7A1B7B2B0A001E8D4C /* BJAttributedHighlightLabel.m */,
+				250DC2B91B7B49310087E940 /* BJChatLoadMoreHeadView.h */,
+				250DC2BA1B7B49310087E940 /* BJChatLoadMoreHeadView.m */,
+				9542BAF91B79FC93004C353D /* BJActionCollectionViewCell.h */,
+				9542BAFA1B79FC93004C353D /* BJActionCollectionViewCell.m */,
+				9542BAFB1B79FC93004C353D /* BJActionCollectionViewCell.xib */,
+				9542BAFC1B79FC93004C353D /* BJAttributedHighlightLabel.h */,
+				9542BAFD1B79FC93004C353D /* BJAttributedHighlightLabel.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -945,12 +950,13 @@
 				9552CF991B7B2B0A001E8D4C /* BJChatCellFactory.m in Sources */,
 				9552CFEC1B7B2B0A001E8D4C /* BJActionCollectionViewCell.m in Sources */,
 				6003F59E195388D20070C39A /* BJIMAppDelegate.m in Sources */,
-				9552CF981B7B2B0A001E8D4C /* BJChatBaseCell.m in Sources */,
-				9552CFF91B7B2B0A001E8D4C /* User+ViewModel.m in Sources */,
-				9552CFF61B7B2B0A001E8D4C /* IMMessage+ViewModel.m in Sources */,
-				9552CFA51B7B2B0A001E8D4C /* BJMessageTextView.m in Sources */,
-				9552CF961B7B2B0A001E8D4C /* BJAudioShowCalculation.m in Sources */,
-				9552CFEB1B7B2B0A001E8D4C /* IM.xcdatamodel in Sources */,
+				9542BB1B1B79FC93004C353D /* BJChatBaseCell.m in Sources */,
+				9542BB7C1B79FC93004C353D /* User+ViewModel.m in Sources */,
+				250DC2BB1B7B49310087E940 /* BJChatLoadMoreHeadView.m in Sources */,
+				9542BB791B79FC93004C353D /* IMMessage+ViewModel.m in Sources */,
+				9542BB281B79FC93004C353D /* BJMessageTextView.m in Sources */,
+				9542BB191B79FC93004C353D /* BJAudioShowCalculation.m in Sources */,
+				9542BB6E1B79FC93004C353D /* IM.xcdatamodel in Sources */,
 				950E2D9B1B5D1A7D00DC79F2 /* BJConversationTableViewCell.m in Sources */,
 				9552CFF21B7B2B0A001E8D4C /* BJChatViewController+BrowserHelper.m in Sources */,
 				9552CFF31B7B2B0A001E8D4C /* BJExchangeIMModel.m in Sources */,

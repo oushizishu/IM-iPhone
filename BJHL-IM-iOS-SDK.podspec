@@ -37,5 +37,5 @@ Pod::Spec.new do |s|
   s.dependency 'BJHL-Common-iOS-SDK'
   s.dependency 'LKDBHelper', '~>2.1.3'
   s.dependency 'YLGIFImage', '~> 0.11'
-  s.dependency 'SlimeRefresh', '~> 0.0.1'
+  s.dependency 'SECoreTextView', '~> 0.8.5'
 end
