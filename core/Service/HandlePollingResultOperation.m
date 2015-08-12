@@ -117,14 +117,13 @@
                 message.rowid = _message.rowid;
             }
             
-            conversation = [self.imService.imStorage queryConversation:message.sender ownerRole:message.senderRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
+            conversation = [self.imService getConversationUserOrGroupId:message.sender userRole:message.senderRole ownerId:message.receiver ownerRole:message.receiverRole chat_t:message.chat_t];
             
             if (conversation == nil)
             {// 创建新的 conversation，unreadnumber 不增加
-
                 conversation = [[Conversation alloc] initWithOwnerId:message.sender ownerRole:message.senderRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
                 
-                [self.imService.imStorage insertConversation:conversation];
+                [self.imService insertConversation:conversation];
             }
             
 //            conversation.status = 0;// 会话状态回归正常
@@ -149,13 +148,13 @@
         
             if (message.chat_t == eChatType_Chat)
             { // 单聊
-                conversation = [self.imService.imStorage queryConversation:message.receiver ownerRole:message.receiverRole otherUserOrGroupId:message.sender userRole:message.senderRole chatType:message.chat_t];
+                conversation = [self.imService getConversationUserOrGroupId:message.sender userRole:message.senderRole ownerId:message.receiver ownerRole:message.receiverRole chat_t:message.chat_t];
                 
                 if (conversation == nil)
                 {
                     conversation = [[Conversation alloc] initWithOwnerId:message.receiver ownerRole:message.receiverRole toId:message.sender toRole:message.senderRole lastMessageId:message.msgId chatType:message.chat_t];
                     
-                    [self.imService.imStorage insertConversation:conversation];
+                    [self.imService insertConversation:conversation];
                 }
                 
                 message.conversationId = conversation.rowid;
@@ -166,8 +165,8 @@
                 //如果当前正处于这个聊天室， 消息数不增加
                 if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
                     if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
-                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole
-                        && conversation.status == 0)
+                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole &&
+                        conversation.status == 0)
                     {
                         conversation.unReadNum -= 1;
                     }
@@ -178,7 +177,7 @@
             }
             else
             { // 群聊
-                conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:message.receiver userRole:message.receiverRole chatType:message.chat_t];
+                conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
                 
                 Group *chatToGroup = [self.imService getGroup:message.receiver];
                 if (conversation == nil)
@@ -187,12 +186,12 @@
                     
                     chatToGroup.startMessageId = message.msgId;
                     chatToGroup.endMessageId = message.msgId;
-                    [self.imService.imStorage insertConversation:conversation];
+                    [self.imService insertConversation:conversation];
                 }
                 else
                 {
                     IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
-                    if ([_lastMsg.msgId longLongValue] < [message.msgId longLongValue])
+                    if ([_lastMsg.msgId doubleValue] < [message.msgId doubleValue])
                     {
                         conversation.lastMessageId = message.msgId;
                     }
@@ -200,7 +199,7 @@
                 conversation.status = 0;// 会话状态回归正常
                 
                 // 处理群消息空洞
-                if ([message.msgId longLongValue]> [chatToGroup.lastMessageId longLongValue])
+                if ([message.msgId doubleValue]> [chatToGroup.lastMessageId doubleValue])
                 {
                     chatToGroup.lastMessageId = message.msgId;
                 }
@@ -241,7 +240,7 @@
     for (NSInteger index = 0; index < [unread_number count]; ++ index)
     {
         UnReadNum *num = [unread_number objectAtIndex:index];
-        Conversation *conversation = [self.imService.imStorage queryConversation:owner.userId ownerRole:owner.userRole otherUserOrGroupId:num.group_id userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
+        Conversation *conversation = [self.imService getConversationUserOrGroupId:num.group_id userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
         
         if (conversation)
         {

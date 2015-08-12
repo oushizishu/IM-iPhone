@@ -18,7 +18,8 @@
 
 - (void)doOperationOnBackground
 {
-    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
+    
+    Conversation *conversation = [self.imService getConversationUserOrGroupId:self.message.receiver userRole:self.message.receiverRole ownerId:self.message.sender ownerRole:self.message.senderRole chat_t:self.message.chat_t];
     
     self.message.msgId = [NSString stringWithFormat:@"%.3lf", [[self.imService.imStorage queryAllMessageMaxMsgId] doubleValue] + 0.001];
     

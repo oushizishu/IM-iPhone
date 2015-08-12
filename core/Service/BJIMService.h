@@ -33,8 +33,10 @@
 - (NSArray *)getAllConversationWithOwner:(User *)owner;
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
                                       userRole:(IMUserRole)userRole
-                                         owner:(User *)owner
+                                         ownerId:(int64_t)ownerId
+                                     ownerRole:(IMUserRole)ownerRole
                                         chat_t:(IMChatType)chat_t;
+- (void)insertConversation:(Conversation *)conversation;
 
 - (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner;
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;

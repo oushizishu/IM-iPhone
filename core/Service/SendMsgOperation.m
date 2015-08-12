@@ -20,22 +20,17 @@
     
     
     [self.imService.imStorage insertMessage:self.message];
-    
-    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
-    
-    if (conversation == nil)
-    {
-        //query conversation
-        conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
-    }
+   
+    Conversation *conversation = [self.imService getConversationUserOrGroupId:self.message.receiver userRole:self.message.receiverRole ownerId:self.message.sender ownerRole:self.message.senderRole chat_t:self.message.chat_t];
     
     if (conversation == nil)
     {
         User *owner = [IMEnvironment shareInstance].owner;
         conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:@"" chatType:self.message.chat_t];
         
-        [self.imService.imStorage insertConversation:conversation];
+        [self.imService insertConversation:conversation];
     }
+    
     conversation.status = 0; //会话状态回归正常
     
     self.message.conversationId = conversation.rowid;

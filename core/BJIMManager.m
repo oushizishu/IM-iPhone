@@ -176,7 +176,8 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin])
         return nil;
-    return [self.imService getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous owner:[IMEnvironment shareInstance].owner chat_t:eChatType_GroupChat];
+    User *owner = [IMEnvironment shareInstance].owner;
+    return [self.imService getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
 }
 
 - (NSInteger)getAllConversationUnreadNum
@@ -190,7 +191,8 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin])
         return nil;
-    return [self.imService getConversationUserOrGroupId:userId userRole:userRole owner:[IMEnvironment shareInstance].owner chat_t:eChatType_Chat];
+    User *owner = [IMEnvironment shareInstance].owner;
+    return [self.imService getConversationUserOrGroupId:userId userRole:userRole ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
 }
 
 - (BOOL)deleteConversation:(Conversation *)conversation
