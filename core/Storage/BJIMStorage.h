@@ -32,7 +32,7 @@
 //message
 - (BOOL)insertMessage:(IMMessage*)message;
 - (IMMessage*)queryMessage:(NSInteger)messageRowid;
-- (IMMessage*)queryMessageWithMessageId:(int64_t)messageId;
+- (IMMessage*)queryMessageWithMessageId:(double_t)messageId;
 - (BOOL)updateMessage:(IMMessage*)message;
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
