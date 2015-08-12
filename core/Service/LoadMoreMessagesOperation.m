@@ -57,7 +57,7 @@
         
         group.lastMessageId = maxConversationMsgId;
         
-        if (self.minMsgId != 0 && [self.minMsgId doubleValue] < [group.lastMessageId doubleValue] && [group.endMessageId doubleValue] <= [group.startMessageId doubleValue])
+        if (self.minMsgId != nil && [self.minMsgId doubleValue] < [group.lastMessageId doubleValue] && [group.endMessageId doubleValue] <= [group.startMessageId doubleValue])
         {
             // 不是第一次加载，并且本地没有空洞
             self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
@@ -73,7 +73,7 @@
         }
         else
         {
-            NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
+            NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
             
             self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
             
@@ -117,7 +117,7 @@
                                          excludeIds:[self.excludeIds copy]
                                      startMessageId:self.endMessageId];
         
-        if (self.minMsgId == 0 && [self.preMessages count] > 0)
+        if (self.minMsgId == nil && [self.preMessages count] > 0)
         {
             [self.imService notifyPreLoadMessages:self.preMessages conversation:self.conversation];
         }
