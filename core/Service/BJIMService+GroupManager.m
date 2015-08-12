@@ -96,7 +96,8 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         if (!err) {
-            Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous owner:[IMEnvironment shareInstance].owner chat_t:eChatType_GroupChat];
+            User *owner = [IMEnvironment shareInstance].owner;
+            Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
             if ([weakSelf deleteConversation:conv owner:[IMEnvironment shareInstance].owner]) {
                 [weakSelf notifyConversationChanged];
             }
@@ -136,7 +137,9 @@ static char BJGroupMamagerDelegateKey;
         }
         //请求成功
         if (!err) {
-            Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous owner:[IMEnvironment shareInstance].owner chat_t:eChatType_GroupChat];
+            
+            User *owner = [IMEnvironment shareInstance].owner;
+            Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
             if ([weakSelf deleteConversation:conv owner:[IMEnvironment shareInstance].owner]) {
                 [weakSelf notifyConversationChanged];
             }
