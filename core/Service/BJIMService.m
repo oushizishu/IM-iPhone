@@ -300,7 +300,8 @@
     if (conversation == nil)
     {
         conversation = [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
-        [self.converastionsCache addObject:conversation];
+        if (conversation)
+            [self.converastionsCache addObject:conversation];
     }
     return conversation;
 }
