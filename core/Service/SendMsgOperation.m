@@ -31,12 +31,8 @@
     
     if (conversation == nil)
     {
-        conversation = [[Conversation alloc] init];
-        conversation.ownerId = [IMEnvironment shareInstance].owner.userId;
-        conversation.ownerRole = [IMEnvironment shareInstance].owner.userRole;
-        conversation.toId = self.message.receiver;
-        conversation.toRole = self.message.receiverRole;
-        conversation.chat_t = self.message.chat_t;
+        User *owner = [IMEnvironment shareInstance].owner;
+        conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:0 chatType:self.message.chat_t];
         
         [self.imService.imStorage insertConversation:conversation];
     }
@@ -45,7 +41,7 @@
     self.message.conversationId = conversation.rowid;
     
     self.message.msgId = MAX([self.imService.imStorage queryAllMessageMaxMsgId], 0) + 0.001;
-    conversation.lastMessageId = self.message.rowid;
+    conversation.lastMessageId = self.message.msgId;
     
     if (self.message.chat_t == eChatType_GroupChat)
     {
