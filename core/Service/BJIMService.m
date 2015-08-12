@@ -250,9 +250,16 @@
 {
     if ([self.converastionsCache count] == 0)
     {
-        NSArray *list = [self getAllConversationWithOwner:owner];
+        NSArray *list = [self getAllConversationFromDBWithOwner:owner];
         [self.converastionsCache addObjectsFromArray:list];
     }
+    
+    [self.converastionsCache sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
+        Conversation *con1 = (Conversation *)obj1;
+        Conversation *con2 = (Conversation *)obj2;
+        return [con1.lastMessageId compare:con2.lastMessageId];
+    }];
+
     return self.converastionsCache;
 }
 
