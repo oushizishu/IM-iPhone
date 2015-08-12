@@ -40,7 +40,7 @@
 
 @property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
-@property (nonatomic, strong) NSMutableArray *converastionsCache;
+//@property (nonatomic, strong) NSMutableArray *converastionsCache;
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
@@ -87,7 +87,7 @@
     
     [self.usersCache removeAllObjects];
     [self.groupsCache removeAllObjects];
-    [self.converastionsCache removeAllObjects];
+//    [self.converastionsCache removeAllObjects];
     
     self.systemSecretary = nil;
     self.customeWaiter = nil;
@@ -248,6 +248,7 @@
 #pragma mark -- conversation
 - (NSArray *)getAllConversationWithOwner:(User *)owner
 {
+    /*
     if ([self.converastionsCache count] == 0)
     {
         NSArray *list = [self getAllConversationFromDBWithOwner:owner];
@@ -261,6 +262,8 @@
     }];
 
     return self.converastionsCache;
+     */
+    return [self getAllConversationFromDBWithOwner:owner];
 }
 
 - (NSArray *)getAllConversationFromDBWithOwner:(User *)owner
@@ -281,29 +284,30 @@
                                      ownerRole:(IMUserRole)ownerRole
                                         chat_t:(IMChatType)chat_t
 {
-    Conversation *conversation = nil;
-
-    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
-    {
-        Conversation *_conversation = [self.converastionsCache objectAtIndex:index];
-        if (_conversation.ownerId == ownerId &&
-            _conversation.ownerRole == ownerRole &&
-            _conversation.toId == userOrGroupId &&
-            _conversation.toRole == userRole &&
-            _conversation.chat_t == chat_t)
-        {
-            conversation = _conversation;
-            break;
-        }
-    }
-    
-    if (conversation == nil)
-    {
-        conversation = [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
-        if (conversation)
-            [self.converastionsCache addObject:conversation];
-    }
-    return conversation;
+//    Conversation *conversation = nil;
+//
+//    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
+//    {
+//        Conversation *_conversation = [self.converastionsCache objectAtIndex:index];
+//        if (_conversation.ownerId == ownerId &&
+//            _conversation.ownerRole == ownerRole &&
+//            _conversation.toId == userOrGroupId &&
+//            _conversation.toRole == userRole &&
+//            _conversation.chat_t == chat_t)
+//        {
+//            conversation = _conversation;
+//            break;
+//        }
+//    }
+//    
+//    if (conversation == nil)
+//    {
+//        conversation = [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
+//        if (conversation)
+//            [self.converastionsCache addObject:conversation];
+//    }
+//    return conversation;
+    return  [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
 }
 
 - (Conversation *)getConversationFromDBUserOrGroupId:(int64_t)userOrGroupId
@@ -320,20 +324,20 @@
 
 - (void)insertConversation:(Conversation *)conversation
 {
-    [self.converastionsCache addObject:conversation];
+//    [self.converastionsCache addObject:conversation];
     [self.imStorage insertConversation:conversation];
 }
 
 - (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner
 {
-//    return [self.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
-    NSInteger unreadNum = 0;
-    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
-    {
-        unreadNum += [[self.converastionsCache objectAtIndex:index] unReadNum];
-    }
-
-    return unreadNum;
+    return [self.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
+//    NSInteger unreadNum = 0;
+//    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
+//    {
+//        unreadNum += [[self.converastionsCache objectAtIndex:index] unReadNum];
+//    }
+//
+//    return unreadNum;
 }
 
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
@@ -343,7 +347,7 @@
     [self.imStorage updateConversation:conversation];
     
     // 从 cache 中删除
-    [self.converastionsCache removeObject:conversation];
+//    [self.converastionsCache removeObject:conversation];
     
     return YES;
 }
@@ -746,14 +750,14 @@
     return _groupsCache;
 }
 
-- (NSMutableArray *)converastionsCache
-{
-    if (_converastionsCache == nil)
-    {
-        _converastionsCache = [[NSMutableArray alloc] initWithCapacity:10];
-    }
-    return _converastionsCache;
-}
+//- (NSMutableArray *)converastionsCache
+//{
+//    if (_converastionsCache == nil)
+//    {
+//        _converastionsCache = [[NSMutableArray alloc] initWithCapacity:10];
+//    }
+//    return _converastionsCache;
+//}
 
 #pragma mark - application call back
 - (void)applicationEnterForeground
