@@ -350,6 +350,16 @@
 #pragma mark - cache
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole
 {
+    if (userId == [self getSystemSecretary].userId && userRole == [self getSystemSecretary].userRole)
+    {
+        return [self getSystemSecretary];
+    }
+    
+    if (userId == [self getCustomWaiter].userId && userRole == [self getCustomWaiter].userRole)
+    {
+        return [self getCustomWaiter];
+    }
+    
     for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
     {
         User *user = [self.usersCache objectAtIndex:index];
