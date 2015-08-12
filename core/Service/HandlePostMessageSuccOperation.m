@@ -31,6 +31,13 @@
     }
     
     self.message.msgId = self.model.msgId;
+    IMMessage *__message = [self.imService.imStorage queryMessageWithMessageId:self.model.msgId];
+    if (__message)
+    {
+        // 该消息 ID 已存在本地。 属于重复消息
+        [__message deleteToDB];
+        
+    }
     self.message.createAt = self.model.createAt;
     if ([self.model.body length] > 0)
     {
