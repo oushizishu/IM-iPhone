@@ -33,7 +33,7 @@
 @property (nonatomic, copy) NSString *remarkName; //备注名
 @property (nonatomic, copy) NSString *remarkHeader; //备注首字母
 
-@property (nonatomic, assign) double lastMessageId;
-@property (nonatomic, assign) double startMessageId;
-@property (nonatomic, assign) double endMessageId;
+@property (nonatomic, copy) NSString *lastMessageId;
+@property (nonatomic, copy) NSString *startMessageId;
+@property (nonatomic, copy) NSString *endMessageId;
 @end

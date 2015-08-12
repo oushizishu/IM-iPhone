@@ -14,7 +14,7 @@
 
 @interface PrePollingOperation()
 
-@property (nonatomic, assign) int64_t max_msg_id;
+@property (nonatomic, copy) NSString *max_msg_id;
 @property (nonatomic, copy) NSString *groups_last_msg_id;
 @property (nonatomic, copy) NSString *excludeUserMsgIds;
 
@@ -28,7 +28,7 @@
     
     User *owner = [IMEnvironment shareInstance].owner;
     
-    self.max_msg_id = (int64_t)[self.imService.imStorage queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
+    self.max_msg_id = [self.imService.imStorage queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
     
     NSArray *excludeUserMsgs = [self.imService.imStorage queryChatExludeMessagesMaxMsgId:self.max_msg_id];
     
@@ -36,7 +36,7 @@
     for (NSInteger index = 0; index < [excludeUserMsgs count]; ++ index)
     {
         IMMessage *__message = [excludeUserMsgs objectAtIndex:index];
-        [__excludeUserMsgIds appendFormat:@"%lld,", (int64_t)__message.msgId];
+        [__excludeUserMsgIds appendFormat:@"%lld,", [__message.msgId longLongValue]];
     }
     
     
@@ -46,7 +46,7 @@
     for (NSInteger index = 0; index < [groups count]; ++ index)
     {
         Group *group = [groups objectAtIndex:index];
-        int64_t groupLastMsgId = (int64_t)[self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userId sendRole:owner.userRole];
+        NSString *groupLastMsgId = [self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userId sendRole:owner.userRole];
         
         NSArray *excludeGroupMsgs = [self.imService.imStorage queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
        
@@ -55,7 +55,7 @@
         }
         
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
-                              @"last_msg_id":[NSString stringWithFormat:@"%lld", groupLastMsgId]
+                              @"last_msg_id":groupLastMsgId == nil ? @"0": groupLastMsgId
                               };
 
         [lastGroupMsgIds addObject:dic];
@@ -74,7 +74,7 @@
 - (void)doAfterOperationOnMain
 {
     if (self.imService == nil) return;
-    [self.imService.imEngine postPollingRequest:self.max_msg_id
+    [self.imService.imEngine postPollingRequest:[self.max_msg_id longLongValue]
                                 excludeUserMsgs:[self.excludeUserMsgIds copy]
                                groupsLastMsgIds:[self.groups_last_msg_id copy]
                                    currentGroup:[IMEnvironment shareInstance].currentChatToGroupId];

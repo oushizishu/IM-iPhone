@@ -14,7 +14,7 @@
                       ownerRole:(IMUserRole)ownerRole
                            toId:(int64_t)toId
                          toRole:(IMUserRole)toRole
-                  lastMessageId:(double_t)lastMessageId
+                  lastMessageId:(NSString *)lastMessageId
                        chatType:(IMChatType)chatType
 {
     self = [super init];

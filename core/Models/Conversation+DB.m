@@ -82,7 +82,7 @@ static char BJIMConversationIMService;
 - (IMMessage *)lastMessage
 {
     IMMessage *_lastMessage = objc_getAssociatedObject(self, &BJIMConversationLastMessage);
-    if (_lastMessage != nil && self.lastMessageId == _lastMessage.msgId)
+    if (_lastMessage != nil && [self.lastMessageId isEqualToString:_lastMessage.msgId])
     {
         return _lastMessage;
     }

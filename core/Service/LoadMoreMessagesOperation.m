@@ -20,7 +20,7 @@
 
 @property (nonatomic, assign) BOOL hasMore;
 @property (nonatomic, copy) NSString *excludeIds;
-@property (nonatomic, assign) double_t newEndMessageId;
+@property (nonatomic, copy) NSString *endMessageId;
 
 @end
 
@@ -31,16 +31,17 @@
     if (self.imService == nil) return;
     self.conversation.imService = self.imService;
     
-    double minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversation.rowid];
-    double maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:self.conversation.rowid];
+    NSString *minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversation.rowid];
+    NSString *maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:self.conversation.rowid];
     
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
 
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
+        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
+        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
         
-        if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
+        if ([self.messages count] > 0 && [[[self.messages objectAtIndex:0] msgId] doubleValue] > [minConversationMsgId doubleValue])
         {
             self.hasMore = YES;
         }
@@ -56,7 +57,7 @@
         
         group.lastMessageId = maxConversationMsgId;
         
-        if (self.minMsgId != 0 && self.minMsgId < group.lastMessageId && group.endMessageId <= group.startMessageId)
+        if (self.minMsgId != 0 && [self.minMsgId doubleValue] < [group.lastMessageId doubleValue] && [group.endMessageId doubleValue] <= [group.startMessageId doubleValue])
         {
             // 不是第一次加载，并且本地没有空洞
             self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
@@ -72,7 +73,9 @@
         }
         else
         {
-            self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId == 0 ? maxConversationMsgId + 0.0001 : self.minMsgId];
+            NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
+            
+            self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
             
             self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来
@@ -81,16 +84,16 @@
                 if (_message.status != eMessageStatus_Send_Fail)
                 {
                     if ([_excludeIds length] == 0) {
-                        _excludeIds = [NSString stringWithFormat:@"%lld", (int64_t)_message.msgId];
+                        _excludeIds = [NSString stringWithFormat:@"%lld", [_message.msgId longLongValue]];
                     } else {
-                        _excludeIds = [NSString stringWithFormat:@"%@,%lld", _excludeIds, (int64_t)_message.msgId];
+                        _excludeIds = [NSString stringWithFormat:@"%@,%lld", _excludeIds, [_message.msgId longLongValue]];
                     }
                     
                 }
             }];
             
             if ([self.preMessages count] > 0) {
-                self.newEndMessageId = [[self.preMessages objectAtIndex:0] msgId];
+                self.endMessageId = [[self.preMessages objectAtIndex:0] msgId];
             }
         }
         
@@ -112,7 +115,7 @@
                                             groupId:self.conversation.toId
                                              userId:0
                                          excludeIds:[self.excludeIds copy]
-                                     startMessageId:self.newEndMessageId];
+                                     startMessageId:self.endMessageId];
         
         if (self.minMsgId == 0 && [self.preMessages count] > 0)
         {

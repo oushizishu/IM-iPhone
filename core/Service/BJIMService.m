@@ -117,7 +117,7 @@
     [self notifyWillDeliveryMessage:message];
 }
 
-- (void)loadMessages:(Conversation *)conversation minMsgId:(double_t)minMsgId
+- (void)loadMessages:(Conversation *)conversation minMsgId:(NSString *)minMsgId
 {
     LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
     
@@ -191,7 +191,7 @@
 }
 
 #pragma mark - get Msg Delegate
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(double_t)minMsgId newEndMessageId:(double_t)newEndMessageId result:(PollingResultModel *)model
+- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(NSString *)minMsgId newEndMessageId:(NSString *)newEndMessageId result:(PollingResultModel *)model
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
@@ -199,12 +199,12 @@
     operation.conversationId = conversationId;
     operation.model = model;
     operation.minMsgId = minMsgId;
-    operation.newEndMessageId = newEndMessageId;
+    operation.endMessageId = newEndMessageId;
 //    [self.operationQueue addOperation:operation];
     [self.writeOperationQueue addOperation:operation];
 }
 
-- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(double_t)minMsgId
+- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(NSString *)minMsgId
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];

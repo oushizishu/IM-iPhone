@@ -11,7 +11,7 @@
 @interface HandleGetMsgOperation : HandlePollingResultOperation
 
 @property (nonatomic, assign) NSInteger conversationId;
-@property (nonatomic, assign) double_t minMsgId;
-@property (nonatomic, assign) double_t newEndMessageId;
+@property (nonatomic, assign) NSString *minMsgId;
+@property (nonatomic, copy) NSString *endMessageId;
 
 @end

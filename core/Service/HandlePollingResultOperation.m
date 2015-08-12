@@ -192,7 +192,7 @@
                 else
                 {
                     IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
-                    if (_lastMsg.msgId < message.msgId)
+                    if ([_lastMsg.msgId longLongValue] < [message.msgId longLongValue])
                     {
                         conversation.lastMessageId = message.msgId;
                     }
@@ -200,7 +200,7 @@
                 conversation.status = 0;// 会话状态回归正常
                 
                 // 处理群消息空洞
-                if (message.msgId > chatToGroup.lastMessageId)
+                if ([message.msgId longLongValue]> [chatToGroup.lastMessageId longLongValue])
                 {
                     chatToGroup.lastMessageId = message.msgId;
                 }
@@ -227,13 +227,13 @@
                 self.groupMinMessage = [[NSMutableDictionary alloc] init];
             }
             
-            double endMsgId = [[self.groupMinMessage valueForKey:[NSString stringWithFormat:@"%lld", conversation.toId]] doubleValue];
-            if (endMsgId == 0 || endMsgId > message.msgId)
+            NSString *endMsgId = [self.groupMinMessage valueForKey:[NSString stringWithFormat:@"%lld", conversation.toId]];
+            if (endMsgId == nil || [endMsgId longLongValue]> [message.msgId longLongValue])
             {
                 endMsgId = message.msgId;
             }
             
-            [self.groupMinMessage setValue:[NSString stringWithFormat:@"%lf", endMsgId] forKey:[NSString stringWithFormat:@"%lld", conversation.toId]];
+            [self.groupMinMessage setValue:endMsgId forKey:[NSString stringWithFormat:@"%lld", conversation.toId]];
         }
     }
     
@@ -251,15 +251,15 @@
     }
     
     //处理群组 eid
-    [self.groupMinMessage enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+    [self.groupMinMessage enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
         int64_t group_id = [key longLongValue];
         Group *group = [self.imService getGroup:group_id];
         if (group == nil) return ;
         
-        group.endMessageId = [obj doubleValue];
+        group.endMessageId = value;
         group.lastMessageId = [self.imService.imStorage queryMaxMsgIdGroupChat:group_id];
         
-        if (group.endMessageId <= group.startMessageId)
+        if ([group.endMessageId longLongValue] <= [group.startMessageId longLongValue])
         {
             group.endMessageId = group.lastMessageId;
             group.startMessageId = group.lastMessageId;

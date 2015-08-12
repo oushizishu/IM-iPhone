@@ -21,7 +21,7 @@
 
 @interface IMMessage : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) double_t msgId;
+@property (nonatomic, copy) NSString *msgId;
 @property (nonatomic, assign) int64_t sender;
 @property (nonatomic, assign) IMUserRole senderRole;
 @property (nonatomic, assign) int64_t receiver;
