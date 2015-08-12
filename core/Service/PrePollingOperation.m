@@ -14,7 +14,7 @@
 
 @interface PrePollingOperation()
 
-@property (nonatomic, assign) NSString *max_msg_id;
+@property (nonatomic, copy) NSString *max_msg_id;
 @property (nonatomic, copy) NSString *groups_last_msg_id;
 @property (nonatomic, copy) NSString *excludeUserMsgIds;
 
@@ -55,7 +55,7 @@
         }
         
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
-                              @"last_msg_id":groupLastMsgId
+                              @"last_msg_id":groupLastMsgId == nil ? @"0": groupLastMsgId
                               };
 
         [lastGroupMsgIds addObject:dic];
