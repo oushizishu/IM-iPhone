@@ -63,7 +63,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.data error:&error];
+            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
             weakSelf.im_polling_delta = model.polling_delta;
             [weakSelf.syncConfigDelegate onSyncConfig:model];
         }
@@ -87,7 +87,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            MyContactsModel *model = [MTLJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.data error:&error];
+            MyContactsModel *model = [MTLJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.dictionaryData error:&error];
             if (weakSelf.synContactDelegate)
             {
                 [weakSelf.synContactDelegate didSyncContacts:model];
@@ -111,7 +111,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error ;
-            SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
+            SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.dictionaryData error:&error];
             [weakSelf.postMessageDelegate onPostMessageSucc:message result:model];
         }
         else
@@ -137,7 +137,7 @@ static int ddLogLevel = DDLogLevelVerbose;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
             {
-                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
+                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
@@ -158,7 +158,7 @@ static int ddLogLevel = DDLogLevelVerbose;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
             {
-                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.data error:&error];
+                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
@@ -187,7 +187,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
-            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:nil];
+            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:nil];
             if (weakSelf.pollingDelegate)
             {
                 [weakSelf.pollingDelegate onPollingFinish:model];
@@ -237,7 +237,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if(result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
+            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:&error];
             [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid newEndMessageId:startMessageId result:model];
         }
         else
@@ -283,7 +283,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
-            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.data error:&error];
+            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(user);
         }
         else
@@ -300,9 +300,9 @@ static int ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesGetGroupProfile:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result != nil && result.code == RESULT_CODE_SUCC)
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            Group *group = [MTLJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.data error:&error];
+            Group *group = [MTLJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(group);
         }
         else
@@ -454,7 +454,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
         {
-            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.data error:&error];
+            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
             members.page = index;
             members.groupId = groupId;
             members.userRole = userRole;

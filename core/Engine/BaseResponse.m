@@ -8,6 +8,8 @@
 
 #import "BaseResponse.h"
 
+static int ddLogLevel = DDLogLevelVerbose;
+
 @implementation BaseResponse
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
@@ -18,6 +20,34 @@
              @"data":@"data",
              @"ts":@"ts"
              };
+}
+
+- (id)dictionaryData
+{
+    if ([_data isKindOfClass:[NSDictionary class]]) {
+        return _data;
+    }
+    else if (_data)
+    {
+        DDLogError(@"返回数据类型不对 [data:%@]",_data);
+        NSAssert1(0, @"返回数据类型不对 [data:%@]", _data);
+        return nil;
+    }
+    return nil;
+}
+
+- (id)arrayData
+{
+    if ([_data isKindOfClass:[NSArray class]]) {
+        return _data;
+    }
+    else if (_data)
+    {
+        DDLogError(@"返回数据类型不对 [data:%@]",_data);
+        NSAssert1(0, @"返回数据类型不对 [data:%@]", _data);
+        return nil;
+    }
+    return nil;
 }
 
 - (id)data

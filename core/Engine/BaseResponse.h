@@ -17,4 +17,6 @@
 @property (nonatomic, assign) NSInteger ts;
 
 
+- (id)arrayData;
+- (id)dictionaryData;
 @end
