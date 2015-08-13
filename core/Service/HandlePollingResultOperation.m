@@ -177,7 +177,7 @@
             }
             else
             { // 群聊
-                conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
+                conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:owner.userId ownerRole:owner.userRole chat_t:message.chat_t];
                 
                 Group *chatToGroup = [self.imService getGroup:message.receiver];
                 if (conversation == nil)
