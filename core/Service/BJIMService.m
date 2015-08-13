@@ -23,6 +23,7 @@
 #import "HandleGetMsgOperation.h"
 #import "SyncContactOperation.h"
 #import "RetryMessageOperation.h"
+#import "ResetConversationUnreadNumOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
@@ -326,6 +327,14 @@
 {
 //    [self.converastionsCache addObject:conversation];
     [self.imStorage insertConversation:conversation];
+}
+
+- (void)resetConversationUnreadnum:(Conversation *)conversation
+{
+    ResetConversationUnreadNumOperation *operation = [[ResetConversationUnreadNumOperation alloc] init];
+    operation.imService = self;
+    operation.conversation = conversation;
+    [self.writeOperationQueue addOperation:operation];
 }
 
 - (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner

@@ -333,15 +333,25 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole
 {
-    NSArray *array = [self queryAllConversationOwnerId:ownerId userRole:userRole];
-    if ([array count] == 0) {
-        return 0;
-    }
-    int unRead = 0;
-    for (Conversation *conversation in array) {
-        unRead += conversation.unReadNum;
-    }
-    return unRead;
+    
+//    NSArray *array = [self queryAllConversationOwnerId:ownerId userRole:userRole];
+//    if ([array count] == 0) {
+//        return 0;
+//    }
+//    int unRead = 0;
+//    for (Conversation *conversation in array) {
+//        unRead += conversation.unReadNum;
+//    }
+    __block NSInteger num = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld", ownerId, (long)userRole];
+        FMResultSet *result = [db executeQuery: query];
+        while ([result next])
+        {
+            num = [result longForColumnIndex:0];
+        }
+    }];
+    return 0;
 }
 
 #pragma mark contact

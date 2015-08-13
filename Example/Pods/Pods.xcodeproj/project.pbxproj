@@ -286,6 +286,8 @@
 		93EC24D8C9353959F826574129633F27 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5B903C4F72CA999FFE215A41FBCF244 /* Foundation.framework */; };
 		944D93AD67C388C7341013386DEAFB08 /* NSString+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 30E3D3843D48DF1D7A1A5DA206A346C7 /* NSString+Base64.m */; };
 		950CAA57D2802C4FAC1162253451F756 /* JLMicrophonePermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C75AE198758D8B198E0667DD27BD795B /* JLMicrophonePermission.m */; };
+		9552D51E1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */; };
+		9552D51F1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */; };
 		957785AA19FFF37616B53C13A816D3C3 /* TeacherContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = A53876AB67556204DBEA9DEDBC645649 /* TeacherContacts.h */; };
 		95F5A3AE07804E9BF9C3356A6691E69C /* LKDB+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = C3840868672050E63F67F8B0022D2504 /* LKDB+Mapping.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		962E764FA4F6A68E49B529118B206FF6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 690E22868E913EC73D8A0C7786548923 /* CoreData.framework */; };
@@ -1175,6 +1177,8 @@
 		94A3A502E45BCAFDE7DBF578918FBE73 /* AFNetworking-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AFNetworking-prefix.pch"; sourceTree = "<group>"; };
 		950232C4D913D6B925A4EA537901D3E4 /* MTLReflection.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MTLReflection.h; path = Mantle/MTLReflection.h; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetConversationUnreadNumOperation.h; sourceTree = "<group>"; };
+		9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetConversationUnreadNumOperation.m; sourceTree = "<group>"; };
 		958218667A702BCFA1C4473C83697F20 /* UIView+Extension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+Extension.m"; path = "core/UIView/UIView+Extension.m"; sourceTree = "<group>"; };
 		95ABD78E649B13C50CD9A549416B39FE /* BJAudioBufferRecorder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJAudioBufferRecorder.m; path = core/MediaRecorder/BJAudioBufferRecorder.m; sourceTree = "<group>"; };
 		963D51078560EE3936C9C5E142B73F1C /* libSlimeRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSlimeRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2102,6 +2106,8 @@
 				483E8BA3CA3F8AFE7BB279BE3C860C74 /* SendMsgOperation.m */,
 				F704ED1CCA865B3B16179CEE38F9043B /* SyncContactOperation.h */,
 				49653D16432ADEF02E5253E701796E25 /* SyncContactOperation.m */,
+				9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */,
+				9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2907,6 +2913,7 @@
 				6E33918F36CFA8086D3AA55BEC7A64EF /* UIImageView+AFNetworking.h in Headers */,
 				4FA3F1D09F75E0DB0CE83428C0F99D3B /* UIKit+AFNetworking.h in Headers */,
 				8D548C76F2F79350FE0A2EA1776414FA /* UIProgressView+AFNetworking.h in Headers */,
+				9552D51E1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h in Headers */,
 				CD5CF104BF4DDA7DBFDC9754B19F863E /* UIRefreshControl+AFNetworking.h in Headers */,
 				FCCC1F0489212D3F6B0F3B7C5714CE88 /* UIWebView+AFNetworking.h in Headers */,
 			);
@@ -3830,6 +3837,7 @@
 				FEDEB9482591D67000DD5C01C08C8584 /* UIButton+AFNetworking.m in Sources */,
 				E2B354EC243881DEE720CF6F23D45CDA /* UIImageView+AFNetworking.m in Sources */,
 				E2C49ACD2475A289FCBD85B6463D5E74 /* UIProgressView+AFNetworking.m in Sources */,
+				9552D51F1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m in Sources */,
 				B381E432C6F83C39B58CDA411AEAD814 /* UIRefreshControl+AFNetworking.m in Sources */,
 				60E35725F496D8C0ABA1F92A8413A18A /* UIWebView+AFNetworking.m in Sources */,
 			);

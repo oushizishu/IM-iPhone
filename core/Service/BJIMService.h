@@ -37,7 +37,7 @@
                                      ownerRole:(IMUserRole)ownerRole
                                         chat_t:(IMChatType)chat_t;
 - (void)insertConversation:(Conversation *)conversation;
-
+- (void)resetConversationUnreadnum:(Conversation *)conversation;
 - (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner;
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;
 

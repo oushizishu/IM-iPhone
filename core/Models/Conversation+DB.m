@@ -110,8 +110,7 @@ static char BJIMConversationIMService;
 {
     if (self.unReadNum == 0) return;
     
-    self.unReadNum = 0;
-    [self.imService.imStorage updateConversation:self];
-    [self.imService notifyConversationChanged];
+    [self.imService resetConversationUnreadnum:self];
 }
+
 @end
