@@ -62,7 +62,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
 @property (nonatomic, weak) id<IMEngineSyncConfigDelegate> syncConfigDelegate;
 
-@property (nonatomic, assign) errCodeFilterCallback errCodeFilterCallback;
+@property (nonatomic, copy) errCodeFilterCallback errCodeFilterCallback;
 
 - (void)start;
 
