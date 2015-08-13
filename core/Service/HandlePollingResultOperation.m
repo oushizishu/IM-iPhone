@@ -117,7 +117,7 @@
                 message.rowid = _message.rowid;
             }
             
-            conversation = [self.imService getConversationUserOrGroupId:message.sender userRole:message.senderRole ownerId:message.receiver ownerRole:message.receiverRole chat_t:message.chat_t];
+            conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
             
             if (conversation == nil)
             {// 创建新的 conversation，unreadnumber 不增加

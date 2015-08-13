@@ -351,7 +351,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
             num = [result longForColumnIndex:0];
         }
     }];
-    return 0;
+    return num;
 }
 
 #pragma mark contact
