@@ -349,6 +349,11 @@
     [self.imService addGroupProfileChangedDelegate:delegate];
 }
 
+- (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate
+{
+    [self.imService addDisconnectionDelegate:delegate];
+}
+
 @end;
 
 @implementation BJIMManager (GroupManager)

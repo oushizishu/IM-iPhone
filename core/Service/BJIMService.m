@@ -38,6 +38,7 @@
 @property (nonatomic, strong) NSHashTable *recentContactsDelegates;
 @property (nonatomic, strong) NSHashTable *userInfoDelegates;
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
+@property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 
 @property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
@@ -70,6 +71,14 @@
     
     [self.imEngine syncConfig];
     [self.imEngine syncContacts];
+    
+    __WeakSelf__ weakSelf = self;
+    self.imEngine.errCodeFilterCallback = ^(NSInteger code, NSString *errMsg){
+        [weakSelf notifyErrorCode:code msg:errMsg];
+    };
+    
+    [self.imEngine registerErrorCode:eError_token_invalid];
+
 }
 
 - (void)stopService
@@ -92,6 +101,9 @@
     
     self.systemSecretary = nil;
     self.customeWaiter = nil;
+    
+    [self.imEngine unregisterErrorCode:eError_token_invalid];
+    self.imEngine.errCodeFilterCallback = nil;
 }
 
 #pragma mark - 消息操作
@@ -981,5 +993,22 @@
     }
 }
 
+- (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate
+{
+    if (self.disconnectionStateDelegates == nil)
+    {
+        self.disconnectionStateDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    [self.disconnectionStateDelegates addObject:delegate];
+}
+
+- (void)notifyErrorCode:(NSInteger)code msg:(NSString *)msg
+{
+    NSEnumerator *enumerator = [self.disconnectionStateDelegates objectEnumerator];
+    id<IMDisconnectionDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject]) {
+        [delegate didDisconnectionServer:code errMsg:msg];
+    }
+}
 
 @end

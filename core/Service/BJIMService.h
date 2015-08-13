@@ -109,4 +109,5 @@
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
 - (void)notifyGroupProfileChanged:(Group *)group;
 
+- (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
 @end

@@ -101,6 +101,7 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
     eError_paramsError = -2,
     eError_noLogin = -1,
     eError_suc = 0,
+    eError_token_invalid = 510005, //token 失效
 };
 
 static const int MESSAGE_PAGE_COUNT = 30;
@@ -170,6 +171,12 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 @protocol IMGroupProfileChangedDelegate <NSObject>
 
 - (void)didGroupProfileChanged:(Group *)group;
+
+@end
+
+@protocol IMDisconnectionDelegate <NSObject>
+
+- (void)didDisconnectionServer:(IMErrorType)code errMsg:(NSString *)errorMessage;
 
 @end
 
