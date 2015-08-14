@@ -279,7 +279,7 @@
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)model.page] forKey:@"page"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.pageSize] forKey:@"page_size"];
     if (model.groupId != eUserRole_Anonymous) {
-        [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.groupId] forKey:@"user_role"];
+        [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.userRole] forKey:@"user_role"];
     }
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }

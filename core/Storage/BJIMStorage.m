@@ -349,7 +349,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         FMResultSet *result = [db executeQuery: query];
         while ([result next])
         {
-            num = [result longForColumnIndex:0];
+            num += [result longForColumnIndex:0];
         }
     }];
     return num;
