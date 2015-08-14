@@ -102,6 +102,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 - (void)postChangeGroupName:(int64_t)groupId newName:(NSString *)name callback:(void (^)(NSError *err))callback;
 - (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
 - (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+- (void)postSetGroupPush:(int64_t)groupId pushStatus:(IMGroupPushStatus)stauts callback:(void (^)(NSError *err))callback;
 
 #pragma mark - erroCode
 - (void)registerErrorCode:(IMErrorType)code;

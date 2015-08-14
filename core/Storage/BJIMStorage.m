@@ -140,6 +140,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         
         group.remarkName = member.remarkName;
         group.remarkHeader = member.remarkHeader;
+        group.pushStatus = member.pushStatus;
         
         [groups addObject:group];
     }

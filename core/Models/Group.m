@@ -65,7 +65,8 @@
              @"remarkHeader":@"remark_header",
              @"canLeave":@"can_quit",
              @"canDisband":@"can_dismiss",
-             @"msgStatus":@"msg_status"
+             @"msgStatus":@"msg_status",
+             @"pushStatus":@"push_status"
              };
 }
 

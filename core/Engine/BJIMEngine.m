@@ -488,7 +488,31 @@ static int ddLogLevel = DDLogLevelVerbose;
             callback(nil, error);
         }
     }];
-    
+}
+
+- (void)postSetGroupPush:(int64_t)groupId pushStatus:(IMGroupPushStatus)stauts callback:(void (^)(NSError *))callback
+{
+    [NetWorkTool hermesSetGroupPushStatusWithGroupId:groupId pushStatus:stauts succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+        {
+            callback(error);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+       if (callback)
+       {
+           callback(nil);
+       }
+    }];
 }
 
 - (void)registerErrorCode:(IMErrorType)code

@@ -65,6 +65,7 @@
             _group.maxusers = group.maxusers;
             _group.status = group.status;
             _group.avatar = group.avatar;
+            _group.pushStatus = group.pushStatus;
            
             [self.imService.imStorage updateGroup:_group];
         }

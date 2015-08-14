@@ -491,6 +491,7 @@
         group.msgStatus = member.msgStatus;
         group.canLeave = member.canLeave;
         group.canDisband = member.canDisband;
+        group.pushStatus = member.pushStatus;
         
         [self.groupsCache addObject:group];
     }
@@ -513,6 +514,8 @@
             _groupMember.canLeave = group.canLeave;
             _groupMember.remarkHeader = group.remarkHeader;
             _groupMember.remarkName = group.remarkName;
+            _groupMember.pushStatus = group.pushStatus;
+            
             [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
             [_group mergeValuesForKeysFromModel:result];
             [weakSelf.imStorage insertOrUpdateGroup:_group];
@@ -607,6 +610,7 @@
             _group.msgStatus = member.msgStatus;
             _group.canLeave = member.canLeave;
             _group.canDisband = member.canDisband;
+            _group.pushStatus = member.pushStatus;
         }
         
         [list addObject:_group];
