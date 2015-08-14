@@ -44,6 +44,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 - (void)start
 {
     _engineActive = YES;
+    _bIsPollingRequesting = NO;
     [self resetPollingIndex];
     [self nextPollingAt];
     [self.pollingTimer.timer fire];
@@ -185,7 +186,6 @@ static int ddLogLevel = DDLogLevelVerbose;
           groupsLastMsgIds:(NSString *)group_last_msg_ids
               currentGroup:(int64_t)groupId
 {
-    _bIsPollingRequesting = YES;
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         _bIsPollingRequesting = NO;
@@ -351,6 +351,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     }
     else
     {
+        _bIsPollingRequesting = YES;
         [self.pollingDelegate onShouldStartPolling];
     }
 }
