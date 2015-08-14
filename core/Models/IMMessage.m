@@ -102,4 +102,26 @@
              @"messageBody":@[@"body", @"msg_t"],
              };
 }
+
+
++ (NSDictionary *)getTableMapping
+{
+    return @{@"msgId":@"msgId",
+             @"sender":@"sender",
+             @"senderRole":@"senderRole",
+             @"receiver":@"receiver",
+             @"receiverRole":@"receiverRole",
+             @"ext":@"ext",
+             @"createAt":@"createAt",
+             @"chat_t":@"chat_t",
+             @"msg_t":@"msg_t",
+             @"status":@"status",
+             @"read":@"read",
+             @"played":@"played",
+             @"sign":@"sign",
+             @"conversationId":@"conversationId",
+             @"messageBody":@"messageBody",
+             };
+}
+
 @end
