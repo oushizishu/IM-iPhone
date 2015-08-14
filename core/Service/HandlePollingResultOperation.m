@@ -105,9 +105,25 @@
         Conversation *conversation = nil;
         if (message.sender == owner.userId && message.senderRole == owner.userRole)
         {
+            
+            if (message.chat_t == eChatType_Chat) {
+                if (! [self checkHasUser:message.receiver role:message.receiverRole array:self.model.users])
+                {
+                    //垃圾消息
+                    continue;
+                }
+            }
+            else
+            {
+                if (! [self checkhasGroup:message.receiver array:self.model.groups])
+                {
+                    // 垃圾消息
+                    continue;
+                }
+            }
+            
             //如果更换设备登陆，消息链中可能会有之前自己发送的消息
             //判断 message 表中是否已有这条消息，如果没有则入库
-            
             IMMessage *_message = [self.imService.imStorage queryMessageWithMessageId:message.msgId];
             if (_message == nil)
             {
@@ -143,6 +159,23 @@
             {
                 // 该消息本地已接受过
                 continue;
+            }
+            
+            if (message.chat_t == eChatType_Chat)
+            {
+                if (! [self checkHasUser:message.sender role:message.senderRole array:self.model.users])
+                {
+                    // 垃圾消息
+                    continue;
+                }
+            }
+            else
+            {
+                if (![self checkhasGroup:message.receiver array:self.model.groups])
+                {
+                    //垃圾消息
+                    continue;
+                }
             }
             
             [self.imService.imStorage insertMessage:message];
@@ -287,6 +320,30 @@
     {
         [self.imService notifyCmdMessages:self.cmdMessages];
     }
+}
+
+- (BOOL)checkHasUser:(int64_t)userId role:(IMUserRole)role array:(NSArray *)array
+{
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        User *user = [array objectAtIndex:index];
+        if (user.userId == userId && user.userRole == role)
+        {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (BOOL)checkhasGroup:(int64_t)groupId array:(NSArray *)array
+{
+    for (NSInteger index = 0; index < [array count]; ++ index)
+    {
+        Group *group = [array objectAtIndex:index];
+        if (groupId == group.groupId)
+            return YES;
+    }
+    return NO;
 }
 
 @end
