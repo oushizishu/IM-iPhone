@@ -90,6 +90,7 @@
                     }
                     
                 }
+                _message.imService = self.imService;
             }];
             
             if ([self.preMessages count] > 0) {
