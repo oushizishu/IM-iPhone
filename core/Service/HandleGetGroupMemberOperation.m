@@ -71,7 +71,13 @@
 
 - (void)doAfterOperationOnMain;
 {
-    [self.imService notifyGetGroupMembers:self.listData userRole:self.listData.userRole page:self.listData.page groupId:self.listData.groupId error:nil];
+    if (self.model) {
+        [self.imService notifyGetGroupMembers:self.listData model:self.model error:nil];
+    }
+    else
+    {
+        [self.imService notifyGetGroupMembers:self.listData userRole:self.listData.userRole page:self.listData.page groupId:self.listData.groupId error:nil];
+    }
  
 }
 

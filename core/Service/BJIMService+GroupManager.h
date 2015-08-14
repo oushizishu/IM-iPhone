@@ -7,7 +7,7 @@
 //
 
 #import "BJIMService.h"
-
+@class GetGroupMemberModel;
 @interface BJIMService (GroupManager)
 //群组设置
 - (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
@@ -15,6 +15,7 @@
 - (void)leaveGroupWithGroupId:(int64_t)groupId;
 - (void)disbandGroupWithGroupId:(int64_t)groupId;
 - (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
+- (void)getGroupMemberWithModel:(GetGroupMemberModel *)model;
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 - (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 - (void)setGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId;
@@ -25,6 +26,7 @@
 - (void)notifyDisbandGroup:(int64_t)groupId error:(NSError *)error;
 - (void)notifyChangeGroupName:(NSString *)name groupId:(int64_t)groupId error:(NSError *)error;
 - (void)notifyGetGroupMembers:(GroupMemberListData *)members userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error;
+- (void)notifyGetGroupMembers:(GroupMemberListData *)members model:(GetGroupMemberModel *)model error:(NSError *)error;
 - (void)notifyChangeMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId error:(NSError *)error;
 - (void)notifyChangeGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId error:(NSError *)error;
 @end
