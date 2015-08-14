@@ -349,6 +349,11 @@
     [self.imService addGroupProfileChangedDelegate:delegate];
 }
 
+- (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate
+{
+    [self.imService addDisconnectionDelegate:delegate];
+}
+
 @end;
 
 @implementation BJIMManager (GroupManager)
@@ -420,6 +425,15 @@
         return;
     }
     [self.imService setGroupMsgStatus:status groupId:groupId];
+}
+
+- (void)setGroupPushStatus:(IMGroupPushStatus)status groupid:(int64_t)groupId
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyChangeGroupPushStatus:status groupId:groupId error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService setGroupPushStatus:status groupId:groupId];
 }
 
 @end

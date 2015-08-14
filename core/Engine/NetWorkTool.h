@@ -77,4 +77,8 @@
 + (BJNetRequestOperation *)hermesLeaveGroupWithGroupId:(int64_t)groupId
                                                   succ:(onSuccess)succ
                                                failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesSetGroupPushStatusWithGroupId:(int64_t)groupId pushStatus:(IMGroupPushStatus)status
+                                                          succ:(onSuccess)succ
+                                                       failure:(onFailure)failure;
 @end

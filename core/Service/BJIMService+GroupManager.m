@@ -15,6 +15,8 @@
 #import "GroupMember.h"
 #import "HandleGetGroupMemberOperation.h"
 
+#import "HandleDisbandGroupOperation.h"
+
 static int ddLogLevel = DDLogLevelVerbose;
 
 static char BJGroupMamagerDelegateKey;
@@ -66,6 +68,8 @@ static char BJGroupMamagerDelegateKey;
         _groupMember.canLeave = group.canLeave;
         _groupMember.remarkHeader = group.remarkHeader;
         _groupMember.remarkName = group.remarkName;
+        _groupMember.pushStatus = group.pushStatus;
+        
         [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
         [weakSelf.imStorage insertOrUpdateGroup:group];
         [weakSelf notifyGroupProfileChanged:group];
@@ -137,7 +141,12 @@ static char BJGroupMamagerDelegateKey;
         }
         //请求成功
         if (!err) {
+            HandleDisbandGroupOperation *operation = [[HandleDisbandGroupOperation alloc] init];
+            operation.imService = self;
+            operation.groupId = groupId;
+            [self.writeOperationQueue addOperation:operation];
             
+            /*
             User *owner = [IMEnvironment shareInstance].owner;
             Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
             if ([weakSelf deleteConversation:conv owner:[IMEnvironment shareInstance].owner]) {
@@ -148,9 +157,12 @@ static char BJGroupMamagerDelegateKey;
                 DDLogError(@"Group Manager fail 删除群所有关系失败");
             }
             [weakSelf notifyContactChanged];
+             */
         }
-        
-        [weakSelf notifyDisbandGroup:groupId error:err];
+        else
+        {
+            [weakSelf notifyDisbandGroup:groupId error:err];
+        }
     }];
 }
 
@@ -224,25 +236,42 @@ static char BJGroupMamagerDelegateKey;
     //2.检查group是否在本地存在
     //3.成功更新Group内存、更新groupMember到本地
     //3.回调
-
     Group *group = [self getGroup:groupId];
     if (group == nil) {
         [self notifyChangeMsgStatus:status groupId:groupId error:[NSError bjim_errorWithReason:@"群组不存在"]];
         return;
     }
     __WeakSelf__ weakSelf = self;
-    User *owner = [IMEnvironment shareInstance].owner;
     [self.imEngine postSetGroupMsg:groupId msgStatus:status callback:^(NSError *err) {
         if (!weakSelf.bIsServiceActive)
         {
-            [self notifyChangeMsgStatus:status groupId:groupId error:[NSError bjim_errorWithReason:@"已断开连接"]];
+            [weakSelf notifyChangeMsgStatus:status groupId:groupId error:[NSError bjim_errorWithReason:@"已断开连接"]];
             return ;
         }
+        User *owner = [IMEnvironment shareInstance].owner;
         GroupMember *groupMember = [weakSelf.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
         groupMember.msgStatus = status;
         group.msgStatus = status;
         [weakSelf.imStorage updateGroupMember:groupMember];
         [weakSelf notifyChangeMsgStatus:status groupId:groupId error:err];
+    }];
+}
+
+- (void)setGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postSetGroupPush:groupId pushStatus:status callback:^(NSError *err) {
+        if (!weakSelf.bIsServiceActive)
+        {
+            [weakSelf notifyChangeGroupPushStatus:status groupId:groupId error:[NSError bjim_errorWithReason:@"已断开连接"]];
+            return ;
+        }
+        User *owner = [IMEnvironment shareInstance].owner;
+        GroupMember *groupMember = [weakSelf.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
+        groupMember.pushStatus = status;
+        [self getGroup:groupId].pushStatus = status;
+        [weakSelf.imStorage updateGroupMember:groupMember];
+        [weakSelf notifyChangeGroupPushStatus:status groupId:groupId error:err];
     }];
 }
 
@@ -330,6 +359,18 @@ static char BJGroupMamagerDelegateKey;
     }
 }
 
+- (void)notifyChangeGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId error:(NSError *)error
+{
+    NSEnumerator *enumerator = [self.groupManagerDelegates objectEnumerator];
+    id<IMGroupManagerResultDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(onChangePushStatusResult:pushStatus:groupId:)]) {
+            [delegate onChangePushStatusResult:error pushStatus:status groupId:groupId];
+        }
+    }
+}
+
 
 #pragma mark - set get
 - (void)setGroupManagerDelegates:(NSHashTable *)groupManagerDelegates
@@ -344,5 +385,6 @@ static char BJGroupMamagerDelegateKey;
     }
     return objc_getAssociatedObject(self, &BJGroupMamagerDelegateKey);
 }
+
 
 @end

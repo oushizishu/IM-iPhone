@@ -26,6 +26,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 @property (nonatomic, strong) BJTimer *pollingTimer;
 @property (nonatomic, strong) NSArray *im_polling_delta;
+@property (nonatomic, strong) NSMutableArray *registerErrorCodeList;
 @end
 
 @implementation BJIMEngine
@@ -43,6 +44,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 - (void)start
 {
     _engineActive = YES;
+    _bIsPollingRequesting = NO;
     [self resetPollingIndex];
     [self nextPollingAt];
     [self.pollingTimer.timer fire];
@@ -70,6 +72,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Sync Config Fail [%@]", error.userInfo);
@@ -96,6 +99,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             DDLogWarn(@"Sync Contacts Fail [url:%@][params:%@]", params.url, params.urlPostParams);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
@@ -116,6 +120,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            [self callbackErrorCode:result.code errMsg:result.msg];
             NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
             [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
             DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
@@ -145,6 +150,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
                 [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
+                [self callbackErrorCode:result.code errMsg:result.msg];
             }
         } failure:^(NSError *error, RequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
@@ -166,6 +172,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
                 [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
+                [self callbackErrorCode:result.code errMsg:result.msg];
             }
         } failure:^(NSError *error, RequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
@@ -179,7 +186,6 @@ static int ddLogLevel = DDLogLevelVerbose;
           groupsLastMsgIds:(NSString *)group_last_msg_ids
               currentGroup:(int64_t)groupId
 {
-    _bIsPollingRequesting = YES;
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         _bIsPollingRequesting = NO;
@@ -218,6 +224,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         {
             DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
             [weakSelf nextPollingAt];
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
@@ -244,6 +251,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         {
             DDLogWarn(@"Get MSG FAIL [url:%@][%@]", params.url, params.urlPostParams);
             [weakSelf.getMsgDelegate onGetMsgFail:conversationId minMsgId:eid];
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
@@ -267,6 +275,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             callback(remarkName, nil, result.code, result.msg);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
@@ -289,6 +298,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             callback(nil);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         callback(nil);
@@ -308,6 +318,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             callback(nil);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         callback(nil);
@@ -340,6 +351,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     }
     else
     {
+        _bIsPollingRequesting = YES;
         [self.pollingDelegate onShouldStartPolling];
     }
 }
@@ -374,6 +386,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
             callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         if (callback) {
@@ -395,6 +408,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
             callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         if (callback) {
@@ -416,6 +430,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
             callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         if (callback) {
@@ -438,6 +453,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
             callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         if (callback) {
@@ -466,13 +482,71 @@ static int ddLogLevel = DDLogLevelVerbose;
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
             callback(nil, error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         if (callback) {
             callback(nil, error);
         }
     }];
-    
+}
+
+- (void)postSetGroupPush:(int64_t)groupId pushStatus:(IMGroupPushStatus)stauts callback:(void (^)(NSError *))callback
+{
+    [NetWorkTool hermesSetGroupPushStatusWithGroupId:groupId pushStatus:stauts succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+        {
+            callback(error);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+       if (callback)
+       {
+           callback(nil);
+       }
+    }];
+}
+
+- (void)registerErrorCode:(IMErrorType)code
+{
+    [self.registerErrorCodeList addObject:@(code)];
+}
+
+- (void)unregisterErrorCode:(IMErrorType)code
+{
+    [self.registerErrorCodeList removeObject:@(code)];
+}
+
+- (void)callbackErrorCode:(NSInteger)errCode  errMsg:(NSString *)errMsg
+{
+    for (NSInteger index = 0; index < [self.registerErrorCodeList count]; ++ index)
+    {
+        if (errCode == [[self.registerErrorCodeList objectAtIndex:index] integerValue])
+        {
+            if (self.errCodeFilterCallback)
+            {
+                self.errCodeFilterCallback(errCode, errMsg);
+            }
+        }
+    }
+}
+
+- (NSMutableArray *)registerErrorCodeList
+{
+    if (_registerErrorCodeList == nil)
+    {
+        _registerErrorCodeList = [[NSMutableArray alloc] init];
+    }
+    return _registerErrorCodeList;
 }
 
 @end

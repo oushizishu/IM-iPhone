@@ -43,6 +43,8 @@
         _groupMember.canLeave = group.canLeave;
         _groupMember.remarkHeader = group.remarkHeader;
         _groupMember.remarkName = group.remarkName;
+        _groupMember.pushStatus = group.pushStatus;
+        
         [self.imService.imStorage insertOrUpdateGroupMember:_groupMember];
     }
     

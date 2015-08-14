@@ -288,6 +288,8 @@
 		950CAA57D2802C4FAC1162253451F756 /* JLMicrophonePermission.m in Sources */ = {isa = PBXBuildFile; fileRef = C75AE198758D8B198E0667DD27BD795B /* JLMicrophonePermission.m */; };
 		9552D51E1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */; };
 		9552D51F1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */; };
+		9552D7351B7D88DB001E8D4C /* HandleDisbandGroupOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552D7331B7D88DB001E8D4C /* HandleDisbandGroupOperation.h */; };
+		9552D7361B7D88DB001E8D4C /* HandleDisbandGroupOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552D7341B7D88DB001E8D4C /* HandleDisbandGroupOperation.m */; };
 		957785AA19FFF37616B53C13A816D3C3 /* TeacherContacts.h in Headers */ = {isa = PBXBuildFile; fileRef = A53876AB67556204DBEA9DEDBC645649 /* TeacherContacts.h */; };
 		95F5A3AE07804E9BF9C3356A6691E69C /* LKDB+Mapping.m in Sources */ = {isa = PBXBuildFile; fileRef = C3840868672050E63F67F8B0022D2504 /* LKDB+Mapping.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		962E764FA4F6A68E49B529118B206FF6 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 690E22868E913EC73D8A0C7786548923 /* CoreData.framework */; };
@@ -1179,6 +1181,8 @@
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
 		9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetConversationUnreadNumOperation.h; sourceTree = "<group>"; };
 		9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetConversationUnreadNumOperation.m; sourceTree = "<group>"; };
+		9552D7331B7D88DB001E8D4C /* HandleDisbandGroupOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleDisbandGroupOperation.h; sourceTree = "<group>"; };
+		9552D7341B7D88DB001E8D4C /* HandleDisbandGroupOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandleDisbandGroupOperation.m; sourceTree = "<group>"; };
 		958218667A702BCFA1C4473C83697F20 /* UIView+Extension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+Extension.m"; path = "core/UIView/UIView+Extension.m"; sourceTree = "<group>"; };
 		95ABD78E649B13C50CD9A549416B39FE /* BJAudioBufferRecorder.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJAudioBufferRecorder.m; path = core/MediaRecorder/BJAudioBufferRecorder.m; sourceTree = "<group>"; };
 		963D51078560EE3936C9C5E142B73F1C /* libSlimeRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libSlimeRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -2108,6 +2112,8 @@
 				49653D16432ADEF02E5253E701796E25 /* SyncContactOperation.m */,
 				9552D51C1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.h */,
 				9552D51D1B7C3085001E8D4C /* ResetConversationUnreadNumOperation.m */,
+				9552D7331B7D88DB001E8D4C /* HandleDisbandGroupOperation.h */,
+				9552D7341B7D88DB001E8D4C /* HandleDisbandGroupOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2906,6 +2912,7 @@
 				22DEC16BEE76B96DA2B0E74CC683F7FC /* AFURLConnectionOperation.h in Headers */,
 				B203353BB7BD5EFF1C484E646268A7E2 /* AFURLRequestSerialization.h in Headers */,
 				34817F04A43C42EEE3E2FE72208BED0A /* AFURLResponseSerialization.h in Headers */,
+				9552D7351B7D88DB001E8D4C /* HandleDisbandGroupOperation.h in Headers */,
 				5631C9E097C660A9637453553A26A2E1 /* AFURLSessionManager.h in Headers */,
 				4542312DF3082C0365E21548D1927AC6 /* UIActivityIndicatorView+AFNetworking.h in Headers */,
 				00609654F674AF1855ABDE219778C568 /* UIAlertView+AFNetworking.h in Headers */,
@@ -3828,6 +3835,7 @@
 				1F4FCEEAD5027FA9B8CA4C514FEF2ECE /* AFNetworkReachabilityManager.m in Sources */,
 				763B1F6FF0B0812CBFADE5D827A382F6 /* AFNetworking-dummy.m in Sources */,
 				B393A6C9BE0A126B19B56A8E15140254 /* AFSecurityPolicy.m in Sources */,
+				9552D7361B7D88DB001E8D4C /* HandleDisbandGroupOperation.m in Sources */,
 				684867ED472529A2CC9778717BF2240D /* AFURLConnectionOperation.m in Sources */,
 				626D8CA88EC544C6F595A079A0717E62 /* AFURLRequestSerialization.m in Sources */,
 				4216C169BEE6D17015932D7A3A6789D4 /* AFURLResponseSerialization.m in Sources */,

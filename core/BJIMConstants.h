@@ -94,6 +94,13 @@ typedef NS_ENUM(NSInteger, IMGroupMsgStatus)
     eGroupMsg_None = 2, //不提示
 };
 
+// 群消息面da扰状态
+typedef NS_ENUM(NSInteger, IMGroupPushStatus)
+{
+    eGroupPushStatus_close = 0,
+    eGroupPushStatus_open = 1
+};
+
 
 //错误类型
 typedef NS_ENUM(NSInteger, IMErrorType) {
@@ -101,6 +108,7 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
     eError_paramsError = -2,
     eError_noLogin = -1,
     eError_suc = 0,
+    eError_token_invalid = 510005, //token 失效
 };
 
 static const int MESSAGE_PAGE_COUNT = 30;
@@ -173,6 +181,12 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@protocol IMDisconnectionDelegate <NSObject>
+
+- (void)didDisconnectionServer:(IMErrorType)code errMsg:(NSString *)errorMessage;
+
+@end
+
 @class GroupMemberListData;
 @class GroupMember;
 @protocol IMGroupManagerResultDelegate <NSObject>
@@ -184,7 +198,7 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 - (void)onDisbandGroupResult:(NSError *)error groupId:(int64_t)groupId;
 - (void)onChangeGroupNameResult:(NSError *)error newName:(NSString *)newName groupId:(int64_t)groupId;
 - (void)onChangeMsgStatusResult:(NSError *)error msgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
-
+- (void)onChangePushStatusResult:(NSError *)error pushStatus:(IMGroupPushStatus)stauts groupId:(int64_t)groupId;
 @end
 
 #endif

@@ -51,6 +51,8 @@
 
 @end
 
+typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
+
 @interface BJIMEngine : NSObject
 
 @property (nonatomic, assign, getter=isEngineActive, readonly) BOOL engineActive;
@@ -59,6 +61,8 @@
 @property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
 @property (nonatomic, weak) id<IMEngineSyncConfigDelegate> syncConfigDelegate;
+
+@property (nonatomic, copy) errCodeFilterCallback errCodeFilterCallback;
 
 - (void)start;
 
@@ -98,5 +102,9 @@
 - (void)postChangeGroupName:(int64_t)groupId newName:(NSString *)name callback:(void (^)(NSError *err))callback;
 - (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
 - (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+- (void)postSetGroupPush:(int64_t)groupId pushStatus:(IMGroupPushStatus)stauts callback:(void (^)(NSError *err))callback;
 
+#pragma mark - erroCode
+- (void)registerErrorCode:(IMErrorType)code;
+- (void)unregisterErrorCode:(IMErrorType)code;
 @end

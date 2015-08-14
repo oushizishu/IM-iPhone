@@ -7,6 +7,7 @@
 //
 
 #import "NetWorkTool.h"
+#import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 
 #define HOST_APIS @[@"http://test-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
@@ -26,6 +27,7 @@
 #define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
 #define HERMES_API_SET_GROUP_NAME [NSString stringWithFormat:@"%@/hermes/setGroupName", HOST_API]
 #define HERMES_API_SET_MSG_STATUS [NSString stringWithFormat:@"%@/hermes/setMsgStatus", HOST_API]
+#define HERMES_API_SET_PUSH_STATUS [NSString stringWithFormat:@"%@/hermes/setPushStatus", HOST_API]
 #define HERMES_API_LEAVE_GROUP [NSString stringWithFormat:@"%@/hermes/quitGroup", HOST_API]
 #define HERMES_API_DISBAND_GROUP [NSString stringWithFormat:@"%@/hermes/dissolveGroup", HOST_API]
 
@@ -156,7 +158,8 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.jpg", [[NSDate date] timeIntervalSince1970]];
-    [requestParams appendFile:messageBody.file mimeType:@"image/*" filename:filename forKey:@"attachment"];
+    NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJFileManagerTool libraryDir] ,messageBody.file];
+    [requestParams appendFile:filePath mimeType:@"image/*" filename:filename forKey:@"attachment"];
     
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
@@ -170,7 +173,8 @@
     [requestParams  appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
-    [requestParams appendFile:messageBody.file mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
+    NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJFileManagerTool libraryDir] ,messageBody.file];
+    [requestParams appendFile:filePath mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -311,4 +315,19 @@
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
++ (BJNetRequestOperation *)hermesSetGroupPushStatusWithGroupId:(int64_t)groupId pushStatus:(IMGroupPushStatus)status
+                                                          succ:(onSuccess)succ
+                                                       failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_SET_PUSH_STATUS method:kHttpMethod_POST];
+    [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"push_status"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
+}
 @end

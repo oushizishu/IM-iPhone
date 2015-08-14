@@ -112,6 +112,7 @@
 - (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
 - (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
+- (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
 
 @end
 
@@ -124,4 +125,5 @@
 - (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 - (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
+- (void)setGroupPushStatus:(IMGroupPushStatus)status groupid:(int64_t)groupId;
 @end
