@@ -13,6 +13,7 @@
 #import "BJIMConstants.h"
 #import "GroupMemberListData.h"
 #import "GroupMember.h"
+#import "GetGroupMemberModel.h"
 #import "HandleGetGroupMemberOperation.h"
 
 #import "HandleDisbandGroupOperation.h"
@@ -162,6 +163,43 @@ static char BJGroupMamagerDelegateKey;
         else
         {
             [weakSelf notifyDisbandGroup:groupId error:err];
+        }
+    }];
+}
+
+- (void)getGroupMemberWithModel:(GetGroupMemberModel *)model
+{
+    //1.检测登录
+    //2.检查group是否在本地存在 检查page的正确
+    //3.更细群关系到本地
+    //4.更新用户列表信息到本地 保证内存中只有一份user
+    //3.回调
+    
+    if (model.page<1) {
+        [self notifyGetGroupMembers:nil model:model error:[NSError bjim_errorWithReason:@"page不能小于1" code:eError_paramsError]];
+        return;
+    }
+    
+    Group *group = [self getGroup:model.groupId];
+    if (group == nil) {
+        [self notifyGetGroupMembers:nil model:model error:[NSError bjim_errorWithReason:@"群组不存在"]];
+        return;
+    }
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postGetGroupMembersWithModel:model callback:^(GroupMemberListData *members, NSError *err) {
+        if (!weakSelf.bIsServiceActive)
+        {
+            [self notifyGetGroupMembers:nil model:model error:[NSError bjim_errorWithReason:@"已断开连接"]];
+            return ;
+        }
+        if (err) {
+            [weakSelf notifyGetGroupMembers:nil model:model error:err];
+        }
+        else
+        {
+            HandleGetGroupMemberOperation *operation = [[HandleGetGroupMemberOperation alloc] initWithService:self listData:members];
+            operation.model = model;
+            [self.writeOperationQueue addOperation:operation];
         }
     }];
 }
@@ -326,6 +364,19 @@ static char BJGroupMamagerDelegateKey;
         }
     }
 }
+
+- (void)notifyGetGroupMembers:(GroupMemberListData *)members model:(GetGroupMemberModel *)model error:(NSError *)error
+{
+    NSEnumerator *enumerator = [self.groupManagerDelegates objectEnumerator];
+    id<IMGroupManagerResultDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(onGetGroupMemberResult:members:)]) {
+            [delegate onGetGroupMemberResult:error members:members];
+        }
+    }
+}
+
 
 - (void)notifyGetGroupMembers:(GroupMemberListData *)members userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error
 {

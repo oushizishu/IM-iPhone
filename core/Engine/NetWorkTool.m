@@ -31,6 +31,7 @@
 #define HERMES_API_LEAVE_GROUP [NSString stringWithFormat:@"%@/hermes/quitGroup", HOST_API]
 #define HERMES_API_DISBAND_GROUP [NSString stringWithFormat:@"%@/hermes/dissolveGroup", HOST_API]
 
+#import "GetGroupMemberModel.h"
 
 @implementation NetWorkTool
 
@@ -260,6 +261,26 @@
     RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:kHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesGetGroupMemberWithModel:(GetGroupMemberModel *)model
+                                                      succ:(onSuccess)succ
+                                                   failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParmas = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kHttpMethod_POST];
+    [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", model.groupId] forKey:@"group_id"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)model.page] forKey:@"page"];
+    [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.pageSize] forKey:@"page_size"];
+    if (model.groupId != eUserRole_Anonymous) {
+        [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.userRole] forKey:@"user_role"];
+    }
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParmas success:succ failure:failure];
 }
 

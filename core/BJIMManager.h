@@ -116,6 +116,7 @@
 
 @end
 
+@class GetGroupMemberModel;
 @interface BJIMManager (GroupManager)
 - (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
 - (void)getGroupProfile:(int64_t)groupId;
@@ -123,6 +124,7 @@
 - (void)disbandGroupWithGroupId:(int64_t)groupId;
 - (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
 - (void)getGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)page;
+- (void)getGroupMemberWithModel:(GetGroupMemberModel *)model;
 - (void)changeGroupName:(NSString *)name groupId:(int64_t)groupId;
 - (void)setGroupMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId;
 - (void)setGroupPushStatus:(IMGroupPushStatus)status groupid:(int64_t)groupId;

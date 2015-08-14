@@ -13,6 +13,7 @@
 #import "BJTimer.h"
 #import "RecentContactModel.h"
 #import "NSError+BJIM.h"
+#import "GetGroupMemberModel.h"
 #import "GroupMemberListData.h"
 
 static int ddLogLevel = DDLogLevelVerbose;
@@ -461,6 +462,34 @@ static int ddLogLevel = DDLogLevelVerbose;
         }
     }];
     
+}
+
+- (void)postGetGroupMembersWithModel:(GetGroupMemberModel *)model callback:(void (^)(GroupMemberListData *members, NSError *err))callback
+{
+    [NetWorkTool hermesGetGroupMemberWithModel:model succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC)
+        {
+            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
+            members.page = model.page;
+            members.groupId = model.groupId;
+            members.userRole = model.userRole;
+            callback(members, error);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(nil, error);
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if (callback) {
+            callback(nil, error);
+        }
+    }];
 }
 
 - (void)postGetGroupMembers:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback

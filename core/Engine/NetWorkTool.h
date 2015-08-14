@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 #import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
+
 #import "IMMessage.h"
 #import "IMEnvironment.h"
+
+@class GetGroupMemberModel;
 
 @interface NetWorkTool : NSObject
 
@@ -68,6 +71,10 @@
 + (BJNetRequestOperation *)hermesChangeGroupNameWithGroupId:(int64_t)groupId newName:(NSString *)name
                                                        succ:(onSuccess)succ
                                                     failure:(onFailure)failure;
++ (BJNetRequestOperation *)hermesGetGroupMemberWithModel:(GetGroupMemberModel *)model
+                                                    succ:(onSuccess)succ
+                                                 failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index
                                                       succ:(onSuccess)succ
                                                    failure:(onFailure)failure;

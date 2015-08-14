@@ -79,6 +79,8 @@
 		205632DAD2789C800A47BCACCB786ED6 /* NSManagedObject+MagicalAggregation.h in Headers */ = {isa = PBXBuildFile; fileRef = 89BA6320E07AD791ED89B681C7FFB555 /* NSManagedObject+MagicalAggregation.h */; };
 		22DEC16BEE76B96DA2B0E74CC683F7FC /* AFURLConnectionOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 8AF1DFA912E8DF1D09B643F8AE4CC581 /* AFURLConnectionOperation.h */; };
 		2358EE556EF067512DADC50B59A15D25 /* SDWebImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C8A6792D4A925F9D3ABA38CB9537E /* SDWebImageManager.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		257AAF951B7E14FC00646F30 /* GetGroupMemberModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 257AAF931B7E14FC00646F30 /* GetGroupMemberModel.h */; };
+		257AAF961B7E14FC00646F30 /* GetGroupMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 257AAF941B7E14FC00646F30 /* GetGroupMemberModel.m */; };
 		2641CB1667363000C535DFA9F608B45E /* BJTapDetectingView.h in Headers */ = {isa = PBXBuildFile; fileRef = 34B66C370B9606A31D714BB0DEBE54CF /* BJTapDetectingView.h */; };
 		264DBC93EA89E1FDB1851869EAB1A9F6 /* NSValueTransformer+MTLInversionAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = B65C1942DF8EF0E70506E961845E2DF7 /* NSValueTransformer+MTLInversionAdditions.h */; };
 		26B21B244340BA5A2F45F3B43F1D4926 /* UIButton+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 5099BC8D81DEDA973F9FF97BE55354BB /* UIButton+WebCache.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
@@ -926,6 +928,8 @@
 		241D0202E849C70D040E72F272E456C3 /* Group.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		24C7CAACC5741F61ADC083749C3E92F2 /* MTLModel.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MTLModel.m; path = Mantle/MTLModel.m; sourceTree = "<group>"; };
 		25034C92341618E28A4CE9CE7E48B1AE /* TKActionSheetController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TKActionSheetController.m; path = "TKAlert&TKActionSheet/TKActionSheet/TKActionSheetController.m"; sourceTree = "<group>"; };
+		257AAF931B7E14FC00646F30 /* GetGroupMemberModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GetGroupMemberModel.h; sourceTree = "<group>"; };
+		257AAF941B7E14FC00646F30 /* GetGroupMemberModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GetGroupMemberModel.m; sourceTree = "<group>"; };
 		25CCF72E3056D9C36005DDE25E63AE13 /* Conversation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = Conversation.h; sourceTree = "<group>"; };
 		2638B78B9EE22CB7F361C219C60FD45F /* UIScrollView+Extension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+Extension.m"; path = "core/UIView/UIScrollView+Extension.m"; sourceTree = "<group>"; };
 		26BD2E70D1AC53CC5BEEF1B526C062F4 /* LoadMoreMessagesOperation.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = LoadMoreMessagesOperation.m; sourceTree = "<group>"; };
@@ -2474,6 +2478,8 @@
 				8A1A9434FCA3D2F3B4591519E065CE11 /* TeacherContacts.m */,
 				6D4384113A7CAAE095017B41C8EEDDCA /* User.h */,
 				BE04D1FED719594EA2F683624073A242 /* User.m */,
+				257AAF931B7E14FC00646F30 /* GetGroupMemberModel.h */,
+				257AAF941B7E14FC00646F30 /* GetGroupMemberModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2903,6 +2909,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				61E10C879E70F47DD9C83AAEDC07E794 /* AFHTTPRequestOperation.h in Headers */,
+				257AAF951B7E14FC00646F30 /* GetGroupMemberModel.h in Headers */,
 				968A4469B74A3F48352E4D04258A9EA9 /* AFHTTPRequestOperationManager.h in Headers */,
 				D13AA6D6DF5ED147A7386DDC6CF4081F /* AFHTTPSessionManager.h in Headers */,
 				4DCE97A37DF3DAD4C35A8A1219DC9EFA /* AFNetworkActivityIndicatorManager.h in Headers */,
@@ -3835,6 +3842,7 @@
 				1F4FCEEAD5027FA9B8CA4C514FEF2ECE /* AFNetworkReachabilityManager.m in Sources */,
 				763B1F6FF0B0812CBFADE5D827A382F6 /* AFNetworking-dummy.m in Sources */,
 				B393A6C9BE0A126B19B56A8E15140254 /* AFSecurityPolicy.m in Sources */,
+				257AAF961B7E14FC00646F30 /* GetGroupMemberModel.m in Sources */,
 				9552D7361B7D88DB001E8D4C /* HandleDisbandGroupOperation.m in Sources */,
 				684867ED472529A2CC9778717BF2240D /* AFURLConnectionOperation.m in Sources */,
 				626D8CA88EC544C6F595A079A0717E62 /* AFURLRequestSerialization.m in Sources */,

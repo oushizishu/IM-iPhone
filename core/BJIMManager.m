@@ -390,6 +390,15 @@
     [self.imService disbandGroupWithGroupId:groupId];
 }
 
+- (void)getGroupMemberWithModel:(GetGroupMemberModel *)model;
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        [self.imService notifyGetGroupMembers:nil model:model error:[NSError bjim_loginError]];
+        return;
+    }
+    [self.imService getGroupMemberWithModel:model];
+}
+
 - (void)getGroupMemberWithGroupId:(int64_t)groupId page:(NSUInteger)page;
 {
     if (![[IMEnvironment shareInstance] isLogin]) {
