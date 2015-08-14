@@ -741,7 +741,7 @@
     if (_readOperationQueue == nil)
     {
         _readOperationQueue = [[NSOperationQueue alloc] init];
-        [_readOperationQueue setMaxConcurrentOperationCount:3];
+        [_readOperationQueue setMaxConcurrentOperationCount:1];
     }
     return _readOperationQueue;
 }
