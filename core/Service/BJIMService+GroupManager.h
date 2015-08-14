@@ -26,5 +26,5 @@
 - (void)notifyChangeGroupName:(NSString *)name groupId:(int64_t)groupId error:(NSError *)error;
 - (void)notifyGetGroupMembers:(GroupMemberListData *)members userRole:(IMUserRole)userRole page:(NSInteger)page groupId:(int64_t)groupId error:(NSError *)error;
 - (void)notifyChangeMsgStatus:(IMGroupMsgStatus)status groupId:(int64_t)groupId error:(NSError *)error;
-- (void)notifyChangeGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId error:(NSError *)error
+- (void)notifyChangeGroupPushStatus:(IMGroupPushStatus)status groupId:(int64_t)groupId error:(NSError *)error;
 @end
