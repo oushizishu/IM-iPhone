@@ -10,6 +10,7 @@
 #import "BJIMService.h"
 #import "Conversation.h"
 #import "IMEnvironment.h"
+#import "BJIMService+GroupManager.h"
 
 @interface HandleDisbandGroupOperation()
 
@@ -46,6 +47,8 @@
     if (_hasContactsChanged) {
         [self.imService notifyContactChanged];
     }
+    
+    [self.imService notifyDisbandGroup:self.groupId error:nil];
 }
 
 
