@@ -69,7 +69,8 @@
     }
     else if ([key isEqualToString:@"msgId"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            return @([value doubleValue]);
+            NSString *result = [NSString stringWithFormat:@"%011ld", (long)[value integerValue]];
+            return result;
         }];
     }
     return nil;

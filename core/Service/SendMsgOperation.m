@@ -35,7 +35,7 @@
     
     self.message.conversationId = conversation.rowid;
     
-    self.message.msgId = [NSString stringWithFormat:@"%.3lf", [[self.imService.imStorage queryAllMessageMaxMsgId] doubleValue] + 0.001];
+    self.message.msgId = [NSString stringWithFormat:@"%011.3lf", [[self.imService.imStorage queryAllMessageMaxMsgId] doubleValue] + 0.001];
     
     conversation.lastMessageId = self.message.msgId;
     
