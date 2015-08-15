@@ -131,7 +131,7 @@
             }
             else
             {
-                message.rowid = _message.rowid;
+                continue;
             }
             
             conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
@@ -190,9 +190,16 @@
                     
                     [self.imService insertConversation:conversation];
                 }
+                else
+                {
+                    if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
+                    {
+                        conversation.lastMessageId = message.msgId;
+                    }
+                }
                 
                 message.conversationId = conversation.rowid;
-                conversation.lastMessageId = message.msgId;
+//                conversation.lastMessageId = message.msgId;
                 conversation.unReadNum += 1;
                 conversation.status = 0;// 会话状态回归正常
                 
@@ -224,8 +231,8 @@
                 }
                 else
                 {
-                    IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
-                    if ([_lastMsg.msgId doubleValue] < [message.msgId doubleValue])
+//                    IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
+                    if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
                     {
                         conversation.lastMessageId = message.msgId;
                     }
