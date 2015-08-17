@@ -38,7 +38,7 @@
     {
         //单聊，直接查询数据库
 
-        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
+        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
         self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
         
         if ([self.messages count] > 0 && [[[self.messages objectAtIndex:0] msgId] doubleValue] > [minConversationMsgId doubleValue])
@@ -73,7 +73,7 @@
         }
         else
         {
-            NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
+            NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
             
             self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
             
