@@ -38,7 +38,7 @@
     {
         Group *group = [self.imService getGroup:self.conversation.toId];
         
-        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%.4lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
+        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
         self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
         
         NSString *minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
