@@ -10,6 +10,18 @@
 
 @implementation SendMsgModel
 
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"msgId"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            NSString *result = [NSString stringWithFormat:@"%011ld", (long)[value integerValue]];
+            return result;
+        }];
+    }
+    return nil;
+    
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
