@@ -24,6 +24,7 @@
 #import "SyncContactOperation.h"
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
+#import "ResetMsgIdOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
     IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
@@ -78,7 +79,17 @@
     };
     
     [self.imEngine registerErrorCode:eError_token_invalid];
-
+    
+    //TODO bugfix
+    /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
+     修复过一次以后就不再需要了*/
+    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
+    {
+        ResetMsgIdOperation *operation = [[ResetMsgIdOperation alloc] init];
+        operation.imService = self;
+        [self.writeOperationQueue addOperation:operation];
+    }
+    
 }
 
 - (void)stopService

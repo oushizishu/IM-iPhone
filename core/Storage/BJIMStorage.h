@@ -91,4 +91,7 @@
 - (BOOL)checkMessageStatus;
 -  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
 
+// msgId 长度小于 11
+- (NSArray *)queryAllBugMessages;
+
 @end

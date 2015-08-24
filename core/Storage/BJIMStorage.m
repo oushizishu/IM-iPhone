@@ -596,4 +596,10 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
 }
 
+- (NSArray *)queryAllBugMessages
+{
+    NSString *query = [NSString stringWithFormat:@" length(msgId)<11"];
+    return [self.dbHelper search:[IMMessage class] where:query orderBy:nil offset:0 count:0];
+}
+
 @end

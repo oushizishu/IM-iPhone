@@ -317,6 +317,8 @@
 		94D5EECF8859B950DE3F9C50A9F2AD2A /* DDLogMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 3CA7EB93D68E7EA72D3BBCC24D6AA4BC /* DDLogMacros.h */; };
 		94E218B1C776C6E65BEA155C75837F99 /* HandleGetMsgOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 459B00D6054E12EF6E34E903BE752FC1 /* HandleGetMsgOperation.h */; };
 		9545F7E17D604CE6891AF9BEC131286D /* IMEmojiMessageBody.m in Sources */ = {isa = PBXBuildFile; fileRef = 87578F75CA085C86F095351E1781AFF4 /* IMEmojiMessageBody.m */; };
+		9552D8441B8B9BBD001E8D4C /* ResetMsgIdOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552D8421B8B9BBD001E8D4C /* ResetMsgIdOperation.h */; };
+		9552D8451B8B9BBD001E8D4C /* ResetMsgIdOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552D8431B8B9BBD001E8D4C /* ResetMsgIdOperation.m */; };
 		955C3338187D13169F138172CFC4A7A4 /* LKDBHelper-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = D4D47727EEFDD9D9742AD65389122E25 /* LKDBHelper-dummy.m */; };
 		956068DBD50348852E1B2638AD8B10D6 /* GroupMember.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A88706E54C0BEFCC1AF90EA2B84D440 /* GroupMember.m */; };
 		9590883D01394D32AA2630BCCC59FEDB /* UIScrollView+Extension.h in Headers */ = {isa = PBXBuildFile; fileRef = AAB4360BA9776A80B861078BD553F5BE /* UIScrollView+Extension.h */; };
@@ -1231,6 +1233,8 @@
 		935E22A51001CC35D1E37DF28E468ADC /* NSLayoutConstraint+PureLayout.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSLayoutConstraint+PureLayout.m"; path = "Source/NSLayoutConstraint+PureLayout.m"; sourceTree = "<group>"; };
 		941E8E81C3C3D5D16CD75FA3A3F58CFD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9552D8421B8B9BBD001E8D4C /* ResetMsgIdOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetMsgIdOperation.h; sourceTree = "<group>"; };
+		9552D8431B8B9BBD001E8D4C /* ResetMsgIdOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetMsgIdOperation.m; sourceTree = "<group>"; };
 		957F4DC5EA6D43DC9C90600BFA138522 /* BJPictureBrowserPrivate.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BJPictureBrowserPrivate.h; path = core/BJPhotoBrowser/Classes/BJPictureBrowserPrivate.h; sourceTree = "<group>"; };
 		95DF6E4FC5D2DF08AA922C2DAE472FFD /* SETextGeometry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SETextGeometry.h; path = Lib/SETextGeometry.h; sourceTree = "<group>"; };
 		9604FEA57F027BE7ACF260497ED01044 /* DDMultiFormatter.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDMultiFormatter.h; path = Classes/Extensions/DDMultiFormatter.h; sourceTree = "<group>"; };
@@ -2026,6 +2030,8 @@
 				F14CA37979F2B443F74CB1B68FA15DB7 /* SendMsgOperation.m */,
 				621DC3BB7929EFC30F2B210CFF25E8AE /* SyncContactOperation.h */,
 				EFC7EEEF3C33BA46799F1EF4F53C8B40 /* SyncContactOperation.m */,
+				9552D8421B8B9BBD001E8D4C /* ResetMsgIdOperation.h */,
+				9552D8431B8B9BBD001E8D4C /* ResetMsgIdOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3053,6 +3059,7 @@
 				341280D292062849868EA618BF10AA1C /* AFNetworkReachabilityManager.h in Headers */,
 				F4423271DA42BCFCEDD94CC0BD810AF9 /* AFNetworking.h in Headers */,
 				E1075F2042014E46D14FDBEA7B1E2132 /* AFSecurityPolicy.h in Headers */,
+				9552D8441B8B9BBD001E8D4C /* ResetMsgIdOperation.h in Headers */,
 				979DE16409025B7E0E4BD2AC830D58A5 /* AFURLConnectionOperation.h in Headers */,
 				25E96444257425CFF5DB93CB39CF345A /* AFURLRequestSerialization.h in Headers */,
 				123738DCE0DA6615EAD220F0A108D397 /* AFURLResponseSerialization.h in Headers */,
@@ -3949,6 +3956,7 @@
 				E4EBD89DB41F40F65B4965686693AA23 /* AFURLRequestSerialization.m in Sources */,
 				29EFA99D97519232B161617EE4BABD09 /* AFURLResponseSerialization.m in Sources */,
 				B2FE47D6803B2C3FF48D68CA72C36ACA /* AFURLSessionManager.m in Sources */,
+				9552D8451B8B9BBD001E8D4C /* ResetMsgIdOperation.m in Sources */,
 				FA7CD7E539DC95D1802DE612688169C9 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				64305C24787B2422D488D8A96A279C00 /* UIAlertView+AFNetworking.m in Sources */,
 				5550016E77A7BE7EB3617C20D79505F7 /* UIButton+AFNetworking.m in Sources */,
