@@ -602,4 +602,17 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self.dbHelper search:[IMMessage class] where:query orderBy:nil offset:0 count:0];
 }
 
+- (void)updateConversationWithErrorLastMessageId:(NSString *)errMsgId newMsgId:(NSString *)msgId
+{
+    [self.dbHelper updateToDB:[Conversation class] set:[NSString stringWithFormat:@" lastMessageId='%@'", msgId] where:[NSString stringWithFormat:@" lastMessageId='%@'", errMsgId]];
+}
+
+- (void)updateGroupErrorMsgId:(NSString *)errMsgId newMsgId:(NSString *)msgId
+{
+    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" lastMessageId='%@'", msgId] where:[NSString stringWithFormat:@" lastMessageId='%@'", errMsgId]];
+    
+    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" startMessageId='%@'", msgId] where:[NSString stringWithFormat:@" startMessageId='%@'", errMsgId]];
+    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" endMessageId='%@'", msgId] where:[NSString stringWithFormat:@" endMessageId='%@'", errMsgId]];
+}
+
 @end

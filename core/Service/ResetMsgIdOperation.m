@@ -27,6 +27,10 @@
         IMMessage *msg = [messages objectAtIndex:index];
         NSInteger _msgId = [msg.msgId integerValue];
         NSString *msgId = [NSString stringWithFormat:@"%011ld", (long)_msgId];
+        
+        [self.imService.imStorage updateConversationWithErrorLastMessageId:msg.msgId newMsgId:msgId];
+        [self.imService.imStorage updateGroupErrorMsgId:msg.msgId newMsgId:msgId];
+        
         if ([self.imService.imStorage queryMessageWithMessageId:msgId])
         {
             //该消息ID 已存在. 重复消息，可以删除
