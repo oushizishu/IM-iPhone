@@ -627,9 +627,10 @@
     }
     id<BJPicture> photo = [self photoAtIndex:index];
     page.photo = photo;
+    WS(weakSelf);
     [page setImageDidLoadBlock:^(BJZoomingScrollView *page, id<BJPicture> picture) {
         if (picture == photo) {
-            [self loadAdjacentPhotosIfNecessary:photo];
+            [weakSelf loadAdjacentPhotosIfNecessary:photo];
         }
     }];
     

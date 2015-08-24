@@ -35,7 +35,7 @@
       "~> 2.0.1"
     ],
     "BJHL-Common-iOS-SDK": [
-
+      "~>0.5.4"
     ],
     "LKDBHelper": [
       "~>2.1.3"
@@ -43,8 +43,8 @@
     "YLGIFImage": [
       "~> 0.11"
     ],
-    "SlimeRefresh": [
-      "~> 0.0.1"
+    "SECoreTextView": [
+      "~> 0.8.5"
     ]
   }
 }

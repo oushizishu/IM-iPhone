@@ -58,14 +58,12 @@ install_resource()
   esac
 }
 if [[ "$CONFIGURATION" == "Debug" ]]; then
-  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh.png"
-  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh@2X.png"
+  install_resource "SECoreTextView/Resources/SECoreTextView.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/BJHL-Common-iOS-SDK.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/BJHL-IM-iOS-SDK.bundle"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
-  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh.png"
-  install_resource "SlimeRefresh/SlimeRefresh/SlimeRefresh/sr_refresh@2X.png"
+  install_resource "SECoreTextView/Resources/SECoreTextView.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/BJHL-Common-iOS-SDK.bundle"
   install_resource "${BUILT_PRODUCTS_DIR}/BJHL-IM-iOS-SDK.bundle"
 fi

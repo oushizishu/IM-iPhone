@@ -55,8 +55,13 @@
     {
         [self setImage:[UIImage imageWithContentsOfFile:[url relativePath]]];
     }
-    else
-        [self setImage:nil];
+    else{
+        [self setImage:placeholder];
+    }
+   
+    
+    
+    
     
 }
 

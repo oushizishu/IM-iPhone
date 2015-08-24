@@ -34,7 +34,7 @@ Pod::Spec.new do |s|
   s.dependency 'AFNetworking', '~> 2.5'
   s.dependency 'Mantle', '~>2.0.2'
   s.dependency 'CocoaLumberjack', '~> 2.0.1'
-  s.dependency 'BJHL-Common-iOS-SDK'
+  s.dependency 'BJHL-Common-iOS-SDK', '~>0.5.4'
   s.dependency 'LKDBHelper', '~>2.1.3'
   s.dependency 'YLGIFImage', '~> 0.11'
   s.dependency 'SECoreTextView', '~> 0.8.5'
