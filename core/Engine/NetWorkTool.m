@@ -9,7 +9,7 @@
 #import "NetWorkTool.h"
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 
-#define HOST_APIS @[@"http://test-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
+#define HOST_APIS @[@"http://dev-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
 #define HERMES_API_SYNC_CONFIG [NSString stringWithFormat:@"%@/hermes/syncConfig", HOST_API]
