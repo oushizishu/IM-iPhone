@@ -69,6 +69,7 @@
         return;
     }
     
+    [self logout];
     
     User *owner = [[User alloc] init];
     [owner setUserId:userId];

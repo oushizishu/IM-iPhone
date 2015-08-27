@@ -55,7 +55,7 @@
         }
         
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
-                              @"last_msg_id":groupLastMsgId == nil ? @"0": groupLastMsgId
+                              @"last_msg_id":groupLastMsgId == nil ? @"0": [NSString stringWithFormat:@"%ld", (long)[groupLastMsgId integerValue]]
                               };
 
         [lastGroupMsgIds addObject:dic];
