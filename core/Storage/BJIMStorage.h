@@ -8,6 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
+#import "UserDao.h"
+#import "InstitutionContactDao.h"
+#import "StudentContactDao.h"
+#import "TeacherContactDao.h"
+
 @class BJIMConversationDBManager;
 @class User;
 @class Group;
@@ -17,10 +22,10 @@
 @class RecentContacts;
 @interface BJIMStorage : NSObject
 
-//user
-- (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole;
-- (void)queryAndSetUserRemark:(User *)user owner:(User *)owner;
-- (BOOL)insertOrUpdateUser:(User *)user;
+@property (nonatomic, strong) UserDao *userDao;
+@property (nonatomic, strong) InstitutionContactDao *institutionDao;
+@property (nonatomic, strong) StudentContactDao *studentDao;
+@property (nonatomic, strong) TeacherContactDao *teacherDao;
 
 //group
 - (Group*)queryGroup:(Group*)group;
@@ -70,13 +75,10 @@
 
 //contact
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact;
-- (BOOL)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
-- (BOOL)deleteMyContactWithUser:(User*)user;
+- (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
+- (void)deleteMyContactWithUser:(User*)user;
 - (BOOL)deleteMyGroups:(User *)user;
 
-- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
-- (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
-- (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 
 //groupMember

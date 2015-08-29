@@ -42,10 +42,9 @@
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner;
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
+- (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
-- (User *)getUserFromCache:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroupFromCache:(int64_t)groupId;
-- (void)insertUserToCache:(User *)user;
 - (void)insertGroupToCache:(Group *)group;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
@@ -60,7 +59,6 @@
 - (User *)getCustomWaiter;
 
 //cache 相关
-- (void)updateCacheUser:(User *)user;
 - (void)updateCacheGroup:(Group *)group;
 
 #pragma mark - remark name
@@ -75,7 +73,6 @@
 // 判断该老师是否为我的老师：(to学生端)
 - (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user;
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user;
-- (void)setUser:(User *)user;
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;

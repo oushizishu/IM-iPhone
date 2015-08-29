@@ -18,6 +18,7 @@
 #import "InstitutionContacts.h"
 #import "RecentContacts.h"
 
+
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
 const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
 const NSString *const IMStudentContactTabaleName = @"STUDENTCONTACTS";
@@ -30,6 +31,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 @interface BJIMStorage()
 @property (nonatomic, strong) LKDBHelper *dbHelper;
 
+
 @end
 
 @implementation BJIMStorage
@@ -40,62 +42,23 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     if (self)
     {
         self.dbHelper = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME];
+        self.userDao = [[UserDao alloc] init];
+        self.userDao.dbHelper = self.dbHelper;
+        self.userDao.imStroage = self;
         
+        self.institutionDao = [[InstitutionContactDao alloc] init];
+        self.institutionDao.dbHelper = self.dbHelper;
+        self.institutionDao.imStroage = self;
+        
+        self.studentDao = [[StudentContactDao alloc] init];
+        self.studentDao.dbHelper = self.dbHelper;
+        self.studentDao.imStroage = self;
+        
+        self.teacherDao = [[TeacherContactDao alloc] init];
+        self.teacherDao.dbHelper = self.dbHelper;
+        self.teacherDao.imStroage = self;
     }
     return self;
-}
-
-#pragma mark User表
-- (User*)queryUser:(int64_t)userId userRole:(NSInteger)userRole
-{
-   User *user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId=%lld AND userRole=%ld",userId,(long)userRole] orderBy:nil];
-   return user;
-}
-
-- (void)queryAndSetUserRemark:(User *)user owner:(User *)owner
-{
-    NSString *classString = nil;
-    if (owner.userRole == eUserRole_Institution) {
-        classString = @"InstitutionContacts";
-    } else if (owner.userRole == eUserRole_Student) {
-        classString = @"StudentContacts";
-    } else if (owner.userRole == eUserRole_Teacher) {
-        classString = @"TeacherContacts";
-    }
-    
-    NSString *queryString = [NSString stringWithFormat:@"userId=%lld and contactId=%lld AND contactRole=%ld", owner.userId, user.userId, (long)user.userRole];
-    id relation  = [self.dbHelper searchSingle:NSClassFromString(classString) where:queryString orderBy:nil];
-    
-    if ([relation isKindOfClass:[InstitutionContacts class]])
-    {
-        InstitutionContacts *_contact = (InstitutionContacts *)relation;
-        user.remarkName = _contact.remarkName;
-        user.remarkHeader = _contact.remarkHeader;
-    }
-    else if ([relation isKindOfClass:[TeacherContacts class]])
-    {
-        TeacherContacts*_contact = (TeacherContacts*)relation;
-        user.remarkName = _contact.remarkName;
-        user.remarkHeader = _contact.remarkHeader;
-    }
-    else if ([relation isKindOfClass:[StudentContacts class]])
-    {
-        StudentContacts*_contact = (StudentContacts*)relation;
-        user.remarkName = _contact.remarkName;
-        user.remarkHeader = _contact.remarkHeader;
-    }
-}
-
-- (BOOL)insertOrUpdateUser:(User *)user
-{
-    BOOL value = NO;
-    User *result = [self queryUser:user.userId userRole:user.userRole];
-    if (!result) {
-       value = [self.dbHelper  insertToDB:user];
-    }else{
-       value =[self.dbHelper updateToDB:user where:[NSString stringWithFormat:@"userId=%lld and userRole=%ld",user.userId, (long)user.userRole]];
-    }
-    return value;
 }
 
 #pragma mark group 
@@ -358,26 +321,23 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 #pragma mark contact
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact
 {
-    NSString *classString = nil;
-    if (owner.userRole == eUserRole_Institution) {
-        classString = @"InstitutionContacts";
-    } else if (owner.userRole == eUserRole_Student) {
-        classString = @"StudentContacts";
-    } else if (owner.userRole == eUserRole_Teacher) {
-        classString = @"TeacherContacts";
+    if (owner.userRole == eUserRole_Institution)
+    {
+        return ([self.institutionDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
     }
-    
-    NSString *queryString = [NSString stringWithFormat:@"userId=%lld and contactId=%lld AND contactRole=%ld", owner.userId, contact.userId, (long)contact.userRole];
-    id relation  = [self.dbHelper searchSingle:NSClassFromString(classString) where:queryString orderBy:nil];
-    return relation != nil;
-    
+    else if (owner.userRole == eUserRole_Student)
+    {
+        return ([self.studentDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
+    }
+    else if (owner.userRole == eUserRole_Teacher)
+    {
+        return ([self.teacherDao loadContactId:contact.userId contactRole:contact.userRole owner:owner]);
+    }
+    return NO;
 }
-- (BOOL)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact
+
+- (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact
 {
-    if ([self hasContactOwner:owner contact:contact]) {
-        return NO;
-    }
-    
     if (owner.userRole == eUserRole_Teacher) {
         TeacherContacts *relation = [[TeacherContacts alloc] init];
         relation.userId = owner.userId;
@@ -386,7 +346,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.createTime = [[NSDate date] timeIntervalSince1970];
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
-        return [self.dbHelper insertToDB:relation];
+        [self.teacherDao insertOrUpdateContact:relation owner:owner];
     } else if (owner.userRole == eUserRole_Student) {
         StudentContacts *relation = [[StudentContacts alloc] init];
         relation.userId = owner.userId;
@@ -395,7 +355,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.createTime = [[NSDate date] timeIntervalSince1970];
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
-        return [self.dbHelper insertToDB:relation];
+        [self.studentDao insertOrUpdateContact:relation owner:owner];
     } else if (owner.userRole == eUserRole_Institution) {
         InstitutionContacts *relation = [[InstitutionContacts alloc] init];
         relation.userId = owner.userId;
@@ -404,9 +364,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.createTime = [[NSDate date] timeIntervalSince1970];
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
-        return [self.dbHelper insertToDB:relation];
+        [self.institutionDao insertOrUpdateContact:relation owner:owner];
     }
-    return NO;
 }
 
 - (Group*)queryGroupWithGroupId:(int64_t)groupId
@@ -415,89 +374,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     Group *group = [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
     if (! group) return nil;
     return group;
-}
-
-
-- (NSArray*)queryContactsWithTableName:(NSString*)tableName
-                                UserId:(int64_t)userId
-                            contactRole:(IMUserRole)contactRole
-{
-    
-    NSString *classString = nil;
-    if ([IMStudentContactTabaleName isEqualToString:tableName]) {
-       classString = @"StudentContacts";
-    } else if ([IMTeacherContactTableName isEqualToString:tableName]) {
-        classString = @"TeacherContacts";
-    } else if ([IMInstitutionContactTableName isEqualToString:tableName]) {
-        classString = @"InstitutionContacts";
-    }
-   
-    NSString *queryString  = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE  userId=%lld AND contactRole=%ld;",tableName,userId, (long)contactRole];
-    NSArray *array = [self.dbHelper searchWithSQL:queryString toClass:NSClassFromString(classString)];
-    if ([array count] == 0) {
-        return nil;
-    }
-    NSMutableArray *users = [NSMutableArray array];
-    for (id relation  in array) {
-        User *user = nil;
-        if ([relation isKindOfClass:[TeacherContacts class]])
-        {
-            TeacherContacts *_relation = ((TeacherContacts *)relation);
-            user = [self queryUser:_relation.contactId userRole:((TeacherContacts *)relation).contactRole];
-            user.remarkName = _relation.remarkName;
-            user.remarkHeader = _relation.remarkHeader;
-        }
-        else if ([relation isKindOfClass:[StudentContacts class]])
-        {
-            StudentContacts *_relation = ((StudentContacts*)relation);
-            user = [self queryUser:((StudentContacts*)relation).contactId userRole:((StudentContacts *)relation).contactRole];
-            user.remarkHeader = _relation.remarkHeader;
-            user.remarkName = _relation.remarkName;
-        }
-        else if ([relation isKindOfClass:[InstitutionContacts class]])
-        {
-            InstitutionContacts *_relation = ((InstitutionContacts*)relation);
-            user = [self queryUser:_relation.contactId userRole:((InstitutionContacts*)relation).contactRole];
-            user.remarkName = _relation.remarkName;
-            user.remarkHeader = _relation.remarkHeader;
-        }
-        if (user) {
-            [users addObject:user];
-        }
-    }
-    return users;
-}
-
-- (NSArray*)queryTeacherContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
-{
-    NSString *tableName = nil;
-    if (userRole == eUserRole_Teacher) return nil;
-    if (userRole == eUserRole_Student) tableName = [NSString stringWithFormat:@"%@", IMStudentContactTabaleName];
-    else if (userRole == eUserRole_Institution) tableName = [NSString stringWithFormat:@"%@", IMInstitutionContactTableName];
-
-    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Teacher];
-}
-
-- (NSArray*)queryStudentContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
-{
-    NSString *tableName = nil;
-    if (userRole == eUserRole_Student) return nil;
-    if (userRole == eUserRole_Teacher) tableName = [NSString stringWithFormat:@"%@", IMTeacherContactTableName];
-    else if (userRole == eUserRole_Institution) tableName = [NSString stringWithFormat:@"%@", IMInstitutionContactTableName];
-    
- 
-    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Student];
-}
-
-
-
-- (NSArray*)queryInstitutionContactWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
-{
-    NSString *tableName = nil;
-    if (userRole == eUserRole_Institution) return nil;
-    if (userRole == eUserRole_Teacher) tableName = [NSString stringWithFormat:@"%@", IMTeacherContactTableName];
-    else if (userRole == eUserRole_Student) tableName = [NSString stringWithFormat:@"%@", IMStudentContactTabaleName];
-    return [self queryContactsWithTableName:tableName UserId:userId contactRole:eUserRole_Institution];
 }
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
@@ -511,7 +387,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     for (NSInteger index = 0; index < [array count]; ++ index)
     {
         RecentContacts *contact = [array objectAtIndex:index];
-        User *user = [self queryUser:contact.contactId userRole:contact.contactRole];
+        User *user = [self.userDao loadUser:contact.contactId role:contact.contactRole];
         user.remarkHeader = contact.remarkHeader;
         user.remarkName = contact.remarkName;
         [contacts addObject:user];
@@ -564,18 +440,20 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 }
 
 
-- (BOOL)deleteMyContactWithUser:(User*)user
+- (void)deleteMyContactWithUser:(User*)user
 {
-    Class class = nil;
-    if (user.userRole == eUserRole_Teacher){
-        class = NSClassFromString(@"TeacherContacts");
-    }else if (user.userRole == eUserRole_Student) {
-        class = NSClassFromString(@"StudentContacts");
-    }else if(user.userRole == eUserRole_Institution){
-        class = NSClassFromString(@"InstitutionContacts");
+    if (user.userRole == eUserRole_Teacher)
+    {
+        [self.teacherDao deleteAllContacts:user];
     }
-    NSString *queryString = [NSString stringWithFormat:@"userId=%lld",user.userId];
-    return [self.dbHelper deleteWithClass:class where:queryString];
+    else if (user.userRole == eUserRole_Student)
+    {
+        [self.studentDao deleteAllContacts:user];
+    }
+    else if(user.userRole == eUserRole_Institution)
+    {
+        [self.institutionDao deleteAllContacts:user];
+    }
 }
 
 - (BOOL)deleteGroup:(int64_t)groupId

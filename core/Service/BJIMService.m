@@ -41,7 +41,6 @@
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 
-@property (nonatomic, strong) NSMutableArray *usersCache;
 @property (nonatomic, strong) NSMutableArray *groupsCache;
 //@property (nonatomic, strong) NSMutableArray *converastionsCache;
 
@@ -66,7 +65,7 @@
     self.imEngine.synContactDelegate = self;
     self.imEngine.syncConfigDelegate = self;
     
-    [self.imStorage insertOrUpdateUser:owner];
+    [self.imStorage.userDao insertOrUpdateUser:owner];
     
     [self.imEngine start];
     
@@ -106,7 +105,7 @@
     self.imEngine.synContactDelegate = nil;
     self.imEngine.syncConfigDelegate = nil;
     
-    [self.usersCache removeAllObjects];
+//    [self.usersCache removeAllObjects];
     [self.groupsCache removeAllObjects];
 //    [self.converastionsCache removeAllObjects];
     
@@ -397,34 +396,19 @@
         return [self getCustomWaiter];
     }
     
-    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
-    {
-        User *user = [self.usersCache objectAtIndex:index];
-        if (user.userId == userId && user.userRole == userRole)
-        {
-            return user;
-        }
-    }
-    
-    User *user = [self.imStorage queryUser:userId userRole:userRole];
-    if (user)
-    {
-        [self.imStorage queryAndSetUserRemark:user owner:[IMEnvironment shareInstance].owner];
-        [self.usersCache addObject:user];
-    }
-    else
+    User *user = [self.imStorage.userDao loadUserAndMarkName:userId role:userRole owner:[IMEnvironment shareInstance].owner];
+    if (! user)
     {
         user = [[User alloc] init];
         user.userId = userId;
         user.userRole = userRole;
-        [self.usersCache addObject:user];
         __WeakSelf__ weakSelf = self;
         [self.imEngine postGetUserInfo:userId role:userRole callback:^(User *result) {
             if (! weakSelf.bIsServiceActive) return ;
             if (! result) return;
             User *_user = [weakSelf getUser:userId role:userRole];
             [_user mergeValuesForKeysFromModel:result];
-            [weakSelf.imStorage insertOrUpdateUser:_user];
+            [weakSelf.imStorage.userDao insertOrUpdateUser:_user];
             [weakSelf notifyUserInfoChanged:_user];
         }];
     }
@@ -432,32 +416,11 @@
     return user;
 }
 
-- (void)updateCacheUser:(User *)user
+- (void)setUser:(id)user
 {
-    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
-    {
-        User *_user = [self.usersCache objectAtIndex:index];
-        if (_user.userId == user.userId && _user.userRole == user.userRole)
-        {
-            _user.name = user.name;
-            _user.avatar = user.avatar;
-            return;
-        }
-    }
+    [self.imStorage.userDao insertOrUpdateUser:user];
 }
 
-- (User *)getUserFromCache:(int64_t)userId role:(IMUserRole)userRole
-{
-    for (NSInteger index = 0; index < [self.usersCache count]; ++ index)
-    {
-        User *_user = [self.usersCache objectAtIndex:index];
-        if (_user.userId == userId && _user.userRole == userRole)
-        {
-            return _user;
-        }
-    }
-    return nil;
-}
 
 - (Group *)getGroupFromCache:(int64_t)groupId
 {
@@ -536,10 +499,6 @@
     return group;
 }
 
-- (void)insertUserToCache:(User *)user
-{
-    [self.usersCache addObject:user];
-}
 
 - (void)insertGroupToCache:(Group *)group
 {
@@ -590,10 +549,6 @@
     return member;
 }
 
-- (void)setUser:(User *)user
-{
-    [self.imStorage insertOrUpdateUser:user];
-}
 
 - (NSArray *)getGroupsWithUser:(User *)user
 {
@@ -631,74 +586,53 @@
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user
 {
-    NSArray *array = [self.imStorage queryTeacherContactWithUserId:user.userId userRole:user.userRole];
-    NSMutableArray *list = [NSMutableArray array];
-    
-    for (NSInteger index = 0; index < [array count]; ++ index)
+    if (user.userRole == eUserRole_Teacher)
     {
-        User *user = [array objectAtIndex:index];
-        User *_user = [self getUserFromCache:user.userId role:user.userRole];
-        if (_user)
-        {
-            [_user mergeValuesForKeysFromModel:user];
-            [list addObject:_user];
-        }
-        else
-        {
-            [self.usersCache addObject:user];
-            [list addObject:user];
-        }
+        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Teacher];
     }
-
-    return list;
+    else if (user.userRole == eUserRole_Student)
+    {
+        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Teacher];
+    }
+    else if (user.userRole == eUserRole_Institution)
+    {
+        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Teacher];
+    }
+    return nil;
 }
 
 - (NSArray *)getStudentContactsWithUser:(User *)user
 {
-    NSArray *array = [self.imStorage queryStudentContactWithUserId:user.userId userRole:user.userRole];
-    NSMutableArray *list = [NSMutableArray array];
-    
-    for (NSInteger index = 0; index < [array count]; ++ index)
+    if (user.userRole == eUserRole_Teacher)
     {
-        User *user = [array objectAtIndex:index];
-        User *_user = [self getUserFromCache:user.userId role:user.userRole];
-        if (_user)
-        {
-            [_user mergeValuesForKeysFromModel:user];
-            [list addObject:_user];
-        }
-        else
-        {
-            [self.usersCache addObject:user];
-            [list addObject:user];
-        }
+        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Student];
     }
-    
-    return list;
+    else if (user.userRole == eUserRole_Student)
+    {
+        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Student];
+    }
+    else if (user.userRole == eUserRole_Institution)
+    {
+        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Student];
+    }
+    return nil;
 }
 
 - (NSArray *)getInstitutionContactsWithUser:(User *)user
 {
-    NSArray *array = [self.imStorage queryInstitutionContactWithUserId:user.userId userRole:user.userRole];
-    NSMutableArray *list = [NSMutableArray array];
-    
-    for (NSInteger index = 0; index < [array count]; ++ index)
+    if (user.userRole == eUserRole_Teacher)
     {
-        User *user = [array objectAtIndex:index];
-        User *_user = [self getUserFromCache:user.userId role:user.userRole];
-        if (_user)
-        {
-            [_user mergeValuesForKeysFromModel:user];
-            [list addObject:_user];
-        }
-        else
-        {
-            [self.usersCache addObject:user];
-            [list addObject:user];
-        }
+        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Institution];
     }
-    
-    return list;
+    else if (user.userRole == eUserRole_Student)
+    {
+        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Institution];
+    }
+    else if (user.userRole == eUserRole_Institution)
+    {
+        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Institution];
+    }
+    return nil;
 }
 
 
@@ -768,14 +702,6 @@
     return _writeOperationQueue;
 }
 
-- (NSMutableArray *)usersCache
-{
-    if (_usersCache == nil)
-    {
-        _usersCache = [[NSMutableArray alloc] initWithCapacity:10];
-    }
-    return _usersCache;
-}
 
 - (NSMutableArray *)groupsCache
 {

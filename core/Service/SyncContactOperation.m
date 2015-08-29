@@ -50,25 +50,20 @@
     
     NSArray *organizationList = self.model.organizationList;
     for (User *user in organizationList) {
-        [self.imService.imStorage insertOrUpdateUser:user];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        
-        [self.imService updateCacheUser:user];
-        
     }
     
     NSArray *studentList = self.model.studentList;
     for (User *user in studentList) {
-        [self.imService.imStorage insertOrUpdateUser:user];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        [self.imService updateCacheUser:user];
     }
     
     NSArray *teacherList = self.model.teacherList;
     for (User *user in teacherList) {
-        [self.imService.imStorage insertOrUpdateUser:user];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        [self.imService updateCacheUser:user];
     }
 }
 

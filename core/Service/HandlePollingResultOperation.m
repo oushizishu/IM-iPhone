@@ -39,15 +39,13 @@
     {
         User *user = [users objectAtIndex:index];
         
-        [self.imService.imStorage insertOrUpdateUser:user];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
         
         if (user.userId == owner.userId && user.userRole == owner.userRole)
         {
             owner.name = user.name;
             owner.avatar = user.avatar;
         }
-        
-        [self.imService updateCacheUser:user];
     }
     
     NSArray *groups = self.model.groups;

@@ -52,8 +52,8 @@
         }
         
         //把user信息写入本地
-        User *_user = [self.imService getUserFromCache:user.userId role:user.userRole];
-        if (!_user) {
+        User *_user = [self.imService.imStorage.userDao loadUser:user.userId role:user.userRole];
+        if (! _user) {
             _user = user;
         }
         else
@@ -63,7 +63,7 @@
             _user.nameHeader = user.nameHeader;
         }
         [userList addObject:_user];
-        [self.imService.imStorage insertOrUpdateUser:_user];
+        [self.imService.imStorage.userDao insertOrUpdateUser:_user];
         
     }
     self.listData.list = [userList copy];
