@@ -36,7 +36,7 @@
     self.conversation.imService = self.imService;
     if (self.conversation.chat_t == eChatType_GroupChat)
     {
-        Group *group = [self.imService getGroup:self.conversation.toId];
+        Group *group = [self.imService.imStorage.groupDao load:self.conversation.toId];
         
         NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
         self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
@@ -63,7 +63,7 @@
                 group.endMessageId = group.lastMessageId;
                 group.startMessageId = group.lastMessageId;
                 self.hasMore = NO;
-                [self.imService.imStorage updateGroup:group];
+                [self.imService.imStorage.groupDao insertOrUpdate:group];
             }
             else
             { // 还存在空洞

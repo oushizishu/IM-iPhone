@@ -57,60 +57,19 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         self.teacherDao = [[TeacherContactDao alloc] init];
         self.teacherDao.dbHelper = self.dbHelper;
         self.teacherDao.imStroage = self;
+        
+        self.groupDao = [[GroupDao alloc] init];
+        self.groupDao.dbHelper = self.dbHelper;
+        self.groupDao.imStroage = self;
+        
+        self.groupMemberDao = [[GroupMemberDao alloc] init];
+        self.groupMemberDao.dbHelper = self.dbHelper;
+        self.groupMemberDao.imStroage = self;
     }
     return self;
 }
 
-#pragma mark group 
-
-
-- (Group*)queryGroup:(Group*)group
-{
-   return  [self.dbHelper searchSingle:[group class] where:[NSString stringWithFormat:@"groupId = %lld",group.groupId] orderBy:nil];
-}
-
-- (BOOL)insertOrUpdateGroup:(Group*)group
-{
-    BOOL value = NO;
-    Group *result = [self queryGroup:group];
-    if (!result) {
-        value = [self.dbHelper  insertToDB:group];
-    }else{
-        [self updateGroup:group];
-    }
-    return value;
- 
-}
-
-- (void)updateGroup:(Group*)group
-{
-    [self.dbHelper updateToDB:group where:[NSString stringWithFormat:@"groupId=%lld",group.groupId]];;
-}
-
-- (NSArray *)queryGroupsWithUser:(User *)user
-{
-    NSString *queryGroupMember = [NSString stringWithFormat:@" userId=%lld \
-                                   AND userRole=%ld", user.userId, (long)user.userRole];
-    NSArray *groupMembers = [self.dbHelper search:[GroupMember class] where:queryGroupMember orderBy:nil offset:0 count:0];
-    if ([groupMembers count] == 0) return nil;
-    
-    NSMutableArray *groups = [[NSMutableArray alloc] initWithCapacity:[groupMembers count]];
-    
-    for (NSInteger index = 0; index < [groupMembers count]; ++ index) {
-        GroupMember *member = [groupMembers objectAtIndex:index];
-        Group *group = [self queryGroupWithGroupId:member.groupId];
-        if (group == nil) continue;
-        
-        group.remarkName = member.remarkName;
-        group.remarkHeader = member.remarkHeader;
-        group.pushStatus = member.pushStatus;
-        
-        [groups addObject:group];
-    }
-    return groups;
-}
-
-#pragma mark message 
+#pragma mark message
 - (BOOL)insertMessage:(IMMessage*)message{
     return [self.dbHelper insertToDB:message];
 }
@@ -338,7 +297,8 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact
 {
-    if (owner.userRole == eUserRole_Teacher) {
+    if (owner.userRole == eUserRole_Teacher)
+    {
         TeacherContacts *relation = [[TeacherContacts alloc] init];
         relation.userId = owner.userId;
         relation.contactId = contact.userId;
@@ -347,7 +307,9 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
         [self.teacherDao insertOrUpdateContact:relation owner:owner];
-    } else if (owner.userRole == eUserRole_Student) {
+    }
+    else if (owner.userRole == eUserRole_Student)
+    {
         StudentContacts *relation = [[StudentContacts alloc] init];
         relation.userId = owner.userId;
         relation.contactId = contact.userId;
@@ -356,7 +318,9 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
         [self.studentDao insertOrUpdateContact:relation owner:owner];
-    } else if (owner.userRole == eUserRole_Institution) {
+    }
+    else if (owner.userRole == eUserRole_Institution)
+    {
         InstitutionContacts *relation = [[InstitutionContacts alloc] init];
         relation.userId = owner.userId;
         relation.contactId = contact.userId;
@@ -366,14 +330,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.remarkHeader = contact.remarkHeader;
         [self.institutionDao insertOrUpdateContact:relation owner:owner];
     }
-}
-
-- (Group*)queryGroupWithGroupId:(int64_t)groupId
-{
-    NSString *queryString = [NSString stringWithFormat:@"groupId=%lld",groupId];
-    Group *group = [self.dbHelper searchSingle:[Group class] where:queryString orderBy:nil];
-    if (! group) return nil;
-    return group;
 }
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
@@ -411,35 +367,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return _array;
 }
 
-- (GroupMember *)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole
-{
-    NSString *queryString = [NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupId, userId, (long)userRole];
-    return [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
-}
-
-- (BOOL)updateGroupMember:(GroupMember *)groupMember;
-{
-    return [self.dbHelper updateToDB:groupMember where:[NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupMember.groupId,groupMember.userId, (long)groupMember.userRole]];
- 
-}
-
-- (BOOL)insertOrUpdateGroupMember:(GroupMember *)groupMember;
-{
-    GroupMember *member = [self queryGroupMemberWithGroupId:groupMember.groupId userId:groupMember.userId userRole:groupMember.userRole];
-    BOOL value ;
-    if (!member) {
-        value = [self.dbHelper  insertToDB:groupMember];
-    }else{
-        value =[self.dbHelper updateToDB:groupMember where:[NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",member.groupId,member.userId, (long)member.userRole]];
-    }
-    return value;
-}
-
-- (BOOL)insertGroupMember:(GroupMember*)groupMember{
-   return [self.dbHelper insertToDB:groupMember];
-}
-
-
 - (void)deleteMyContactWithUser:(User*)user
 {
     if (user.userRole == eUserRole_Teacher)
@@ -454,24 +381,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     {
         [self.institutionDao deleteAllContacts:user];
     }
-}
-
-- (BOOL)deleteGroup:(int64_t)groupId
-{
-    NSString *query = [NSString stringWithFormat:@" groupId=%lld ",groupId];
-    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
-}
-
-- (BOOL)deleteGroup:(int64_t)groupId user:(User *)user
-{
-    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld and groupId=%lld", user.userId, (long)user.userRole,groupId];
-    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
-}
-
-- (BOOL)deleteMyGroups:(User *)user
-{
-    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
-    return [self.dbHelper deleteWithClass:[GroupMember class] where:query];
 }
 
 - (NSArray *)queryAllBugMessages

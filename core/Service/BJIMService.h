@@ -44,8 +44,6 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
-- (Group *)getGroupFromCache:(int64_t)groupId;
-- (void)insertGroupToCache:(Group *)group;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
@@ -57,9 +55,6 @@
 - (User *)getSystemSecretary;
 // 客服
 - (User *)getCustomWaiter;
-
-//cache 相关
-- (void)updateCacheGroup:(Group *)group;
 
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName

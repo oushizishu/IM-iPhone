@@ -16,5 +16,5 @@
 - (id)objectByCondition:(BOOL (^)(id key, id item))condition lock:(BOOL)lock;
 - (void)appendObject:(id)object key:(id)key lock:(BOOL)lock;
 - (void)clear;
-- (void)removeObjectForKey:(id)key;
+- (void)removeObjectForKey:(id)key lock:(BOOL)lock;
 @end

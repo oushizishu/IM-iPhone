@@ -53,7 +53,7 @@
     }
     else
     { // 群消息必须走一次 getMsg
-        Group *group = [self.imService getGroup:self.conversation.toId];
+        Group *group = [self.imService.imStorage.groupDao load:self.conversation.toId];
         
         group.lastMessageId = maxConversationMsgId;
         
@@ -98,7 +98,7 @@
             }
         }
         
-        [self.imService.imStorage updateGroup:group];
+        [self.imService.imStorage.groupDao insertOrUpdate:group];
     }
 }
 

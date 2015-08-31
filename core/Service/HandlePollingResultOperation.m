@@ -53,24 +53,7 @@
     {
         Group *group = [groups objectAtIndex:index];
         
-        Group *_group = [self.imService.imStorage queryGroupWithGroupId:group.groupId];
-        
-        if (_group != nil)
-        { //目的是为了更新 cache 中的 Group
-            _group.descript = group.descript;
-            _group.isPublic = group.isPublic;
-            _group.createTime = group.createTime;
-            _group.maxusers = group.maxusers;
-            _group.status = group.status;
-            _group.avatar = group.avatar;
-            _group.pushStatus = group.pushStatus;
-           
-            [self.imService.imStorage updateGroup:_group];
-        }
-        else
-        {
-            [self.imService.imStorage insertOrUpdateGroup:group];
-        }
+        [self.imService.imStorage.groupDao insertOrUpdate:group];
         
         GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:owner.userId userRole:owner.userRole];
         if (member == nil)
@@ -218,7 +201,7 @@
             { // 群聊
                 conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:owner.userId ownerRole:owner.userRole chat_t:message.chat_t];
                 
-                Group *chatToGroup = [self.imService getGroup:message.receiver];
+                Group *chatToGroup = [self.imService.imStorage.groupDao load:message.receiver];
                 if (conversation == nil)
                 {
                     conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
@@ -247,7 +230,7 @@
                 
                 [self.imService.imStorage updateMessage:message];
                 [self.imService.imStorage updateConversation:conversation];
-                [self.imService.imStorage updateGroup:chatToGroup];
+                [self.imService.imStorage.groupDao insertOrUpdate:chatToGroup];
             }
             
             if (self.receiveNewMessages == nil)
@@ -291,7 +274,7 @@
     //处理群组 eid
     [self.groupMinMessage enumerateKeysAndObjectsUsingBlock:^(id key, id value, BOOL *stop) {
         int64_t group_id = [key longLongValue];
-        Group *group = [self.imService getGroup:group_id];
+        Group *group = [self.imService.imStorage.groupDao load:group_id];
         if (group == nil) return ;
         
         group.endMessageId = value;
@@ -303,7 +286,7 @@
             group.startMessageId = group.lastMessageId;
         }
         
-        [self.imService.imStorage updateGroup:group];
+        [self.imService.imStorage.groupDao insertOrUpdate:group];
     }];
     
     [self.receiveNewMessages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

@@ -12,6 +12,8 @@
 #import "InstitutionContactDao.h"
 #import "StudentContactDao.h"
 #import "TeacherContactDao.h"
+#import "GroupDao.h"
+#import "GroupMemberDao.h"
 
 @class BJIMConversationDBManager;
 @class User;
@@ -26,13 +28,8 @@
 @property (nonatomic, strong) InstitutionContactDao *institutionDao;
 @property (nonatomic, strong) StudentContactDao *studentDao;
 @property (nonatomic, strong) TeacherContactDao *teacherDao;
-
-//group
-- (Group*)queryGroup:(Group*)group;
-- (BOOL)insertOrUpdateGroup:(Group*)group;
-- (void)updateGroup:(Group*)group;
-- (Group*)queryGroupWithGroupId:(int64_t)groupId;
-- (NSArray *)queryGroupsWithUser:(User *)user;
+@property (nonatomic, strong) GroupDao *groupDao;
+@property (nonatomic, strong) GroupMemberDao *groupMemberDao;
 
 //message
 - (BOOL)insertMessage:(IMMessage*)message;
@@ -77,19 +74,10 @@
 - (BOOL)hasContactOwner:(User*)owner contact:(User*)contact;
 - (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
 - (void)deleteMyContactWithUser:(User*)user;
-- (BOOL)deleteMyGroups:(User *)user;
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 
-//groupMember
-- (GroupMember*)queryGroupMemberWithGroupId:(int64_t)groupId userId:(int64_t)userId userRole:(IMUserRole)userRole;
-- (BOOL)insertGroupMember:(GroupMember*)groupMember;
-- (BOOL)insertOrUpdateGroupMember:(GroupMember *)groupMember;
-- (BOOL)updateGroupMember:(GroupMember *)groupMember;
-- (BOOL)deleteGroup:(int64_t)groupId;
-- (BOOL)deleteGroup:(int64_t)groupId user:(User *)user;
-
-//other 
+//other
 - (BOOL)checkMessageStatus;
 -  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
 

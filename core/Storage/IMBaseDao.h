@@ -18,7 +18,9 @@
 @property (nonatomic, weak) BJIMStorage *imStroage;
 
 - (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock;
+
 - (void)detach:(id)key;
+- (void)detach:(id)key lock:(BOOL)lock;
 
 - (void)clear;
 

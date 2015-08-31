@@ -86,11 +86,13 @@
     [self unlock];
 }
 
-- (void)removeObjectForKey:(id)key
+- (void)removeObjectForKey:(id)key lock:(BOOL)lock
 {
-    [self lock];
+    if (lock)
+        [self lock];
     [self.dictionary removeObjectForKey:key];
-    [self unlock];
+    if (lock)
+        [self unlock];
 }
 
 @end

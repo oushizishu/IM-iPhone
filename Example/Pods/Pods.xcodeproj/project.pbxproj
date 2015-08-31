@@ -315,6 +315,10 @@
 		944A51149395AAC218FE8CE43142B3F7 /* GetGroupMemberModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 15E3B1C36B562FDD4171EEA7F01C3C7E /* GetGroupMemberModel.m */; };
 		9474B15ACAFC9E40B572E282739B9341 /* RetrySendMsgOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 783917A85548346E5766C7402B37DF4C /* RetrySendMsgOperation.m */; };
 		94D219748468E16B6368CB9D6B4ABD6B /* BJIMConstants.h in Headers */ = {isa = PBXBuildFile; fileRef = CBB3E095F0D6FCAA57C67143EB161A9B /* BJIMConstants.h */; };
+		9552DC0E1B93F6B7001E8D4C /* GroupDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552DC0C1B93F6B7001E8D4C /* GroupDao.h */; };
+		9552DC0F1B93F6B7001E8D4C /* GroupDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552DC0D1B93F6B7001E8D4C /* GroupDao.m */; };
+		9552DC121B9409BE001E8D4C /* GroupMemberDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552DC101B9409BE001E8D4C /* GroupMemberDao.h */; };
+		9552DC131B9409BE001E8D4C /* GroupMemberDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552DC111B9409BE001E8D4C /* GroupMemberDao.m */; };
 		9581EE28A7D6BF797FB9F49F4B812D41 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A782DE09D2D29068E6CD933CA8205D4 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; };
 		968BB85D6AE6CC4D19EE3AAA8B8FF939 /* TeacherContactDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 88D5A9EA9A36C74CE7549007EA851F40 /* TeacherContactDao.h */; };
 		9733663AF5C846D98D5C24B82DE945DC /* PureLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE33739F4073AC66263D07A93BEA91CA /* PureLayout-dummy.m */; };
@@ -1272,6 +1276,10 @@
 		94514C5D97945015BBFEEF1972C11BF1 /* AFHTTPSessionManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = AFHTTPSessionManager.m; path = AFNetworking/AFHTTPSessionManager.m; sourceTree = "<group>"; };
 		952CE138E6A53ADFA93C17CD1F8607B7 /* IMMessage.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = IMMessage.m; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9552DC0C1B93F6B7001E8D4C /* GroupDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupDao.h; sourceTree = "<group>"; };
+		9552DC0D1B93F6B7001E8D4C /* GroupDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupDao.m; sourceTree = "<group>"; };
+		9552DC101B9409BE001E8D4C /* GroupMemberDao.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupMemberDao.h; sourceTree = "<group>"; };
+		9552DC111B9409BE001E8D4C /* GroupMemberDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMemberDao.m; sourceTree = "<group>"; };
 		95724D1E58D50E9BE3399B9119287841 /* BJIMEngine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = BJIMEngine.m; sourceTree = "<group>"; };
 		95DF6E4FC5D2DF08AA922C2DAE472FFD /* SETextGeometry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SETextGeometry.h; path = Lib/SETextGeometry.h; sourceTree = "<group>"; };
 		95E81EE900E111CBB36FD40E77B5D802 /* RecentContacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RecentContacts.h; sourceTree = "<group>"; };
@@ -1821,6 +1829,10 @@
 				D2BF5B2DEE2BA17445AB7CBA2DDDB383 /* TeacherContactDao.m */,
 				86EEBEE93296E8561F3518C59A14A4E3 /* UserDao.h */,
 				687439995C6BFBCD3C4350EC1E52D61C /* UserDao.m */,
+				9552DC0C1B93F6B7001E8D4C /* GroupDao.h */,
+				9552DC0D1B93F6B7001E8D4C /* GroupDao.m */,
+				9552DC101B9409BE001E8D4C /* GroupMemberDao.h */,
+				9552DC111B9409BE001E8D4C /* GroupMemberDao.m */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -3041,12 +3053,14 @@
 				8636168AAA98A4EA080EBF9FC7BEF5FD /* AFURLSessionManager.h in Headers */,
 				C16B372CDC0407238E57038E7FE04D21 /* UIActivityIndicatorView+AFNetworking.h in Headers */,
 				E1007F548FF7FBD1E7D24F3052753C1F /* UIAlertView+AFNetworking.h in Headers */,
+				9552DC0E1B93F6B7001E8D4C /* GroupDao.h in Headers */,
 				3B0F11CC2AE42B1556E52A4480038C0D /* UIButton+AFNetworking.h in Headers */,
 				A89DDD3E691FC74DBCECB14DE9F1E7A4 /* UIImageView+AFNetworking.h in Headers */,
 				5E06EE85803D313EDFCE84E809AC17C9 /* UIKit+AFNetworking.h in Headers */,
 				8846E185881C499E4B140FB02855FD2D /* UIProgressView+AFNetworking.h in Headers */,
 				6DAC1C5A103B74F727E0DFBB91EA0B64 /* UIRefreshControl+AFNetworking.h in Headers */,
 				FC435763904DBF8A15AA02756C1E2A7B /* UIWebView+AFNetworking.h in Headers */,
+				9552DC121B9409BE001E8D4C /* GroupMemberDao.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3947,10 +3961,12 @@
 				09433B3F52280500F219C8A59F923051 /* AFURLRequestSerialization.m in Sources */,
 				D987E9574274E7C9FBDB6BE83BED98F2 /* AFURLResponseSerialization.m in Sources */,
 				DFD30BCE099D0E265FC12B28135F720B /* AFURLSessionManager.m in Sources */,
+				9552DC0F1B93F6B7001E8D4C /* GroupDao.m in Sources */,
 				87DE7DC0326C9F31142581E6CC97340D /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				F1DC36562A19325FFB9B8EC5A6B2517F /* UIAlertView+AFNetworking.m in Sources */,
 				30F5B052C86A36E5617953C34EEBF572 /* UIButton+AFNetworking.m in Sources */,
 				C6AC1FC6CD1AEDF2821DFCF5165D255E /* UIImageView+AFNetworking.m in Sources */,
+				9552DC131B9409BE001E8D4C /* GroupMemberDao.m in Sources */,
 				32B27D77B0BEB214AE490823A821A5A0 /* UIProgressView+AFNetworking.m in Sources */,
 				9F79B7254C68A9FD7C4A727043A7533D /* UIRefreshControl+AFNetworking.m in Sources */,
 				6E8AEC0F4934A8B637B854DF54B22464 /* UIWebView+AFNetworking.m in Sources */,

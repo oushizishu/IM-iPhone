@@ -71,8 +71,8 @@ static char BJGroupMamagerDelegateKey;
         _groupMember.remarkName = group.remarkName;
         _groupMember.pushStatus = group.pushStatus;
         
-        [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
-        [weakSelf.imStorage insertOrUpdateGroup:group];
+        [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+        [weakSelf.imStorage.groupDao insertOrUpdate:group];
         [weakSelf notifyGroupProfileChanged:group];
         [weakSelf notifyGetGroupProfile:groupId group:group error:nil];
     }];
@@ -109,9 +109,10 @@ static char BJGroupMamagerDelegateKey;
             else
                 DDLogError(@"Group Manager fail 删除会话失败");
             
-            if (![weakSelf.imStorage deleteGroup:groupId user:[IMEnvironment shareInstance].owner]) {
-                DDLogError(@"Group Manager fail 删除群和我的关系失败");
-            }
+//            if (![weakSelf.imStorage deleteGroup:groupId user:[IMEnvironment shareInstance].owner]) {
+//                DDLogError(@"Group Manager fail 删除群和我的关系失败");
+//            }
+            [weakSelf.imStorage.groupMemberDao deleteGroupMember:groupId user:[IMEnvironment shareInstance].owner];
             [weakSelf notifyContactChanged];
         }
         
@@ -262,7 +263,7 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         group.groupName = name;
-        [weakSelf.imStorage insertOrUpdateGroup:group];
+        [weakSelf.imStorage.groupDao insertOrUpdate:group];
         [weakSelf notifyGroupProfileChanged:group];
         [weakSelf notifyChangeGroupName:name groupId:groupId error:err];
     }];
@@ -287,10 +288,10 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         User *owner = [IMEnvironment shareInstance].owner;
-        GroupMember *groupMember = [weakSelf.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
+        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:groupId userRole:owner.userId groupId:owner.userRole];
         groupMember.msgStatus = status;
         group.msgStatus = status;
-        [weakSelf.imStorage updateGroupMember:groupMember];
+        [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
         [weakSelf notifyChangeMsgStatus:status groupId:groupId error:err];
     }];
 }
@@ -305,10 +306,10 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         User *owner = [IMEnvironment shareInstance].owner;
-        GroupMember *groupMember = [weakSelf.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
+        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:groupId userRole:owner.userId groupId:owner.userRole];
         groupMember.pushStatus = status;
-        [self getGroup:groupId].pushStatus = status;
-        [weakSelf.imStorage updateGroupMember:groupMember];
+        [weakSelf.imStorage.groupDao load:groupId].pushStatus = status;
+        [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
         [weakSelf notifyChangeGroupPushStatus:status groupId:groupId error:err];
     }];
 }

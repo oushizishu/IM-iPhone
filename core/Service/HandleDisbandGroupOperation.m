@@ -35,7 +35,7 @@
         _hasConversationChanged = YES;
     }
     
-    _hasConversationChanged = [self.imService.imStorage deleteGroup:self.groupId];
+    _hasConversationChanged = [self.imService.imStorage.groupMemberDao delete deleteGroup:self.groupId];
 }
 
 - (void)doAfterOperationOnMain

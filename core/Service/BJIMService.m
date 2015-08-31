@@ -41,7 +41,6 @@
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 
-@property (nonatomic, strong) NSMutableArray *groupsCache;
 //@property (nonatomic, strong) NSMutableArray *converastionsCache;
 
 @property (nonatomic, strong) User *systemSecretary;
@@ -105,8 +104,6 @@
     self.imEngine.synContactDelegate = nil;
     self.imEngine.syncConfigDelegate = nil;
     
-//    [self.usersCache removeAllObjects];
-    [self.groupsCache removeAllObjects];
 //    [self.converastionsCache removeAllObjects];
     
     self.systemSecretary = nil;
@@ -421,64 +418,28 @@
     [self.imStorage.userDao insertOrUpdateUser:user];
 }
 
-
-- (Group *)getGroupFromCache:(int64_t)groupId
-{
-    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
-        Group *_group = [self.groupsCache objectAtIndex:index];
-        if (_group.groupId == groupId) {
-            return _group;
-        }
-    }
-    return nil;
-}
-
-- (void)updateCacheGroup:(Group *)group
-{
-    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
-        Group *_group = [self.groupsCache objectAtIndex:index];
-        if (_group.groupId == group.groupId) {
-           
-            [_group mergeValuesForKeysFromModel:group];
-            
-            return;
-        }
-    }
-}
-
 - (Group *)getGroup:(int64_t)groupId
 {
-    for (NSInteger index = 0; index < [self.groupsCache count]; ++ index) {
-        Group *group = [self.groupsCache objectAtIndex:index];
-        if (group.groupId == groupId) {
-            return group;
-        }
-    }
-    
     User *owner = [IMEnvironment shareInstance].owner;
-    Group *group = [self.imStorage queryGroupWithGroupId:groupId];
+    Group *group = [self.imStorage.groupDao load:groupId];
     if (group)
     {
-        GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:owner.userId userRole:owner.userRole];
+        GroupMember *member = [self.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:groupId];
         group.remarkName = member.remarkName;
         group.remarkHeader = member.remarkHeader;
         group.msgStatus = member.msgStatus;
         group.canLeave = member.canLeave;
         group.canDisband = member.canDisband;
         group.pushStatus = member.pushStatus;
-        
-        [self.groupsCache addObject:group];
     }
     else
     {
         group = [[Group alloc] init];
         group.groupId = groupId;
-        [self.groupsCache addObject:group];
         __WeakSelf__ weakSelf = self;
         [self.imEngine postGetGroupProfile:groupId callback:^(Group *result) {
             if (!weakSelf.bIsServiceActive) return ;
             if (! result) return;
-            Group *_group = [weakSelf getGroup:groupId];
             GroupMember *_groupMember = [[GroupMember alloc] init];
             _groupMember.userId = owner.userId;
             _groupMember.userRole = owner.userRole;
@@ -490,19 +451,13 @@
             _groupMember.remarkName = group.remarkName;
             _groupMember.pushStatus = group.pushStatus;
             
-            [weakSelf.imStorage insertOrUpdateGroupMember:_groupMember];
-            [_group mergeValuesForKeysFromModel:result];
-            [weakSelf.imStorage insertOrUpdateGroup:_group];
-            [weakSelf notifyGroupProfileChanged:_group];
+            [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+            [group mergeValuesForKeysFromModel:result];
+            [weakSelf.imStorage.groupDao insertOrUpdate:group];
+            [weakSelf notifyGroupProfileChanged:group];
         }];
     }
     return group;
-}
-
-
-- (void)insertGroupToCache:(Group *)group
-{
-    [self.groupsCache addObject:group];
 }
 
 #pragma mark - remark name
@@ -545,43 +500,15 @@
 
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user
 {
-    GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:groupId userId:user.userId userRole:user.userRole];
+    GroupMember *member = [self.imStorage.groupMemberDao loadMember:user.userId userRole:user.userRole groupId:groupId];
     return member;
 }
 
 
 - (NSArray *)getGroupsWithUser:(User *)user
 {
-    NSArray *groups = [self.imStorage queryGroupsWithUser:user];
-    NSMutableArray *list = [NSMutableArray array];
-    
-    for (NSInteger index = 0; index < [groups count]; ++ index) {
-        Group *group = [groups objectAtIndex:index];
-        Group *_group = [self getGroupFromCache:group.groupId];
-        GroupMember *member = [self.imStorage queryGroupMemberWithGroupId:_group.groupId userId:user.userId userRole:user.userRole];
-        
-        if (_group)
-        {
-            [_group mergeValuesForKeysFromModel:group];
-        }
-        else
-        {
-            _group = group;
-            [self.groupsCache addObject:group];
-        }
-        
-        if (member) {
-            _group.remarkName = member.remarkName;
-            _group.remarkHeader = member.remarkHeader;
-            _group.msgStatus = member.msgStatus;
-            _group.canLeave = member.canLeave;
-            _group.canDisband = member.canDisband;
-            _group.pushStatus = member.pushStatus;
-        }
-        
-        [list addObject:_group];
-    }
-    return list;
+    NSArray *groups = [self.imStorage.groupMemberDao loadAllGroups:user];
+    return groups;
 }
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user
@@ -700,16 +627,6 @@
         [_writeOperationQueue setMaxConcurrentOperationCount:1];
     }
     return _writeOperationQueue;
-}
-
-
-- (NSMutableArray *)groupsCache
-{
-    if (_groupsCache == nil)
-    {
-        _groupsCache = [[NSMutableArray alloc] initWithCapacity:10];
-    }
-    return _groupsCache;
 }
 
 //- (NSMutableArray *)converastionsCache

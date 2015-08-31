@@ -27,7 +27,12 @@
 
 - (void)detach:(id)key
 {
-    [self.identityScope removeObjectForKey:key];
+    [self detach:key lock:YES];
+}
+
+- (void)detach:(id)key lock:(BOOL)lock
+{
+    [self.identityScope removeObjectForKey:key lock:lock];
 }
 
 - (void)clear
