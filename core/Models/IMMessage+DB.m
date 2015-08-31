@@ -12,49 +12,24 @@
 @implementation IMMessage(DB)
 
 static char BJIMMessageIMService;
-static char BJIMMessageIMSenderUser;
-static char BJIMMessageIMReceiverUser;
-static char BJIMMessageIMReceiverGroup;
+//static char BJIMMessageIMSenderUser;
+//static char BJIMMessageIMReceiverUser;
+//static char BJIMMessageIMReceiverGroup;
 
 - (User *)getSenderUser
 {
-    User * _sendUser = objc_getAssociatedObject(self, &BJIMMessageIMSenderUser);
-    
-    if (_sendUser != nil) return _sendUser;
-    
-    if (self.imService == nil) return nil;
-    
-    _sendUser = [self.imService getUser:self.sender role:self.senderRole];
-    objc_setAssociatedObject(self, &BJIMMessageIMSenderUser, _sendUser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    return _sendUser;
+    return [self.imService getUser:self.sender role:self.senderRole];
 }
 
 - (User *)getReceiverUser
 {
-    if (self.chat_t == eChatType_GroupChat) return nil;
-    
-    User * _receiverUser = objc_getAssociatedObject(self, &BJIMMessageIMReceiverUser);
-    
-    if (_receiverUser != nil) return _receiverUser;
-    
-    if (self.imService == nil) return nil;
-    
-    _receiverUser = [self.imService getUser:self.receiver role:self.receiverRole];
-    objc_setAssociatedObject(self, &BJIMMessageIMReceiverUser, _receiverUser, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    return _receiverUser;
+    return [self.imService getUser:self.receiver role:self.receiverRole];
     
 }
 
 - (Group *)getReceiverGroup
 {
-    if (self.chat_t == eChatType_Chat) return nil;
-    Group *_receiverGroup = objc_getAssociatedObject(self, &BJIMMessageIMReceiverGroup);
-    
-    if (_receiverGroup) return _receiverGroup;
-    
-    _receiverGroup = [self.imService getGroup:self.receiver];
-    objc_setAssociatedObject(self, &BJIMMessageIMReceiverGroup, _receiverGroup, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-    return _receiverGroup;
+    return [self.imService getGroup:self.receiver];
 }
 
 - (void)setImService:(BJIMService *)imService
@@ -71,14 +46,14 @@ static char BJIMMessageIMReceiverGroup;
 {
     if (self.read == 1) return;
     self.read = 1;
-    [self.imService.imStorage updateMessage:self];
+    [self.imService.imStorage.messageDao update:self];
 }
 
 - (void)markPlayed
 {
     if (self.played == 1) return;
     self.played = 1;
-    [self.imService.imStorage updateMessage:self];
+    [self.imService.imStorage.messageDao update:self];
 }
 
 @end

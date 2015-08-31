@@ -31,15 +31,15 @@
     if (self.imService == nil) return;
     self.conversation.imService = self.imService;
     
-    NSString *minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversation.rowid];
-    NSString *maxConversationMsgId = [self.imService.imStorage queryMaxMsgIdInConversation:self.conversation.rowid];
+    NSString *minConversationMsgId = [self.imService.imStorage.messageDao queryMinMsgIdInConversation:self.conversation.rowid];
+    NSString *maxConversationMsgId = [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid];
     
     if (self.conversation.chat_t == eChatType_Chat)
     {
         //单聊，直接查询数据库
 
         NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
+        self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
         
         if ([self.messages count] > 0 && [[[self.messages objectAtIndex:0] msgId] doubleValue] > [minConversationMsgId doubleValue])
         {
@@ -60,7 +60,7 @@
         if (self.minMsgId != nil && [self.minMsgId doubleValue] < [group.lastMessageId doubleValue] && [group.endMessageId doubleValue] <= [group.startMessageId doubleValue])
         {
             // 不是第一次加载，并且本地没有空洞
-            self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
+            self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:self.minMsgId];
             
             if ([self.messages count] > 0 && [[self.messages objectAtIndex:0] msgId] > minConversationMsgId)
             {
@@ -75,7 +75,7 @@
         {
             NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
             
-            self.preMessages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
+            self.preMessages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
             
             self.excludeIds = @"";
             // 群聊中可能包含空洞，getMsg 把可能不存在的消息拉下来

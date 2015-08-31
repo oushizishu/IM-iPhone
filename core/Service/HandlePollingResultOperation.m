@@ -55,14 +55,14 @@
         
         [self.imService.imStorage.groupDao insertOrUpdate:group];
         
-        GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:group.groupId userId:owner.userId userRole:owner.userRole];
+        GroupMember *member = [self.imService.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:group.groupId];
         if (member == nil)
         {
             member = [[GroupMember alloc] init];
             member.groupId = group.groupId;
             member.userId = owner.userId;
             member.userRole = owner.userRole;
-            [self.imService.imStorage insertGroupMember:member];
+            [self.imService.imStorage.groupMemberDao insertOrUpdate:member];
         }
     }
     
@@ -105,10 +105,10 @@
             
             //如果更换设备登陆，消息链中可能会有之前自己发送的消息
             //判断 message 表中是否已有这条消息，如果没有则入库
-            IMMessage *_message = [self.imService.imStorage queryMessageWithMessageId:message.msgId];
+            IMMessage *_message = [self.imService.imStorage.messageDao loadWithMessageId:message.msgId];
             if (_message == nil)
             {
-                [self.imService.imStorage insertMessage:message];
+                [self.imService.imStorage.messageDao insert:message];
             }
             else
             {
@@ -131,11 +131,11 @@
             
             message.conversationId = conversation.rowid;
             
-            [self.imService.imStorage updateMessage:message];
+            [self.imService.imStorage.messageDao update:message];
         }
         else
         { // 接收到的消息
-            IMMessage *_message = [self.imService.imStorage queryMessageWithMessageId:message.msgId];
+            IMMessage *_message = [self.imService.imStorage.messageDao loadWithMessageId:message.msgId];
             if(_message != nil)
             {
                 // 该消息本地已接受过
@@ -159,7 +159,7 @@
                 }
             }
             
-            [self.imService.imStorage insertMessage:message];
+            [self.imService.imStorage.messageDao insert:message];
         
             if (message.chat_t == eChatType_Chat)
             { // 单聊
@@ -194,8 +194,8 @@
                     }
                 }
                 
-                [self.imService.imStorage updateMessage:message];
-                [self.imService.imStorage updateConversation:conversation];
+                [self.imService.imStorage.messageDao update:message];
+                [self.imService.imStorage.conversationDao update:conversation];
             }
             else
             { // 群聊
@@ -228,8 +228,8 @@
                 
                 message.conversationId = conversation.rowid;
                 
-                [self.imService.imStorage updateMessage:message];
-                [self.imService.imStorage updateConversation:conversation];
+                [self.imService.imStorage.messageDao update:message];
+                [self.imService.imStorage.conversationDao update:conversation];
                 [self.imService.imStorage.groupDao insertOrUpdate:chatToGroup];
             }
             
@@ -267,7 +267,7 @@
         if (conversation)
         {
             conversation.unReadNum = num.num;
-            [self.imService.imStorage updateConversation:conversation];
+            [self.imService.imStorage.conversationDao update:conversation];
         }
     }
     
@@ -278,7 +278,7 @@
         if (group == nil) return ;
         
         group.endMessageId = value;
-        group.lastMessageId = [self.imService.imStorage queryMaxMsgIdGroupChat:group_id];
+        group.lastMessageId = [self.imService.imStorage.messageDao queryMaxMsgIdGroupChat:group_id];
         
         if ([group.endMessageId longLongValue] <= [group.startMessageId longLongValue])
         {

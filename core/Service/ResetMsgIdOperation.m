@@ -31,14 +31,14 @@
         [self.imService.imStorage updateConversationWithErrorLastMessageId:msg.msgId newMsgId:msgId];
         [self.imService.imStorage updateGroupErrorMsgId:msg.msgId newMsgId:msgId];
         
-        if ([self.imService.imStorage queryMessageWithMessageId:msgId])
+        if ([self.imService.imStorage.messageDao loadWithMessageId:msgId])
         {
             //该消息ID 已存在. 重复消息，可以删除
             [msg deleteToDB];
             continue;
         }
         msg.msgId = msgId;
-        [self.imService.imStorage updateMessage:msg];
+        [self.imService.imStorage.messageDao update:msg];
     }
     [[NSUserDefaults standardUserDefaults] setValue:@"ResetMsgIdOperation" forKey:@"ResetMsgIdOperation"];
     [[NSUserDefaults standardUserDefaults] synchronize];

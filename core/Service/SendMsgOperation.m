@@ -19,7 +19,7 @@
     self.message.played = 1;
     
     
-    [self.imService.imStorage insertMessage:self.message];
+    [self.imService.imStorage.messageDao insert:self.message];
    
     Conversation *conversation = [self.imService getConversationUserOrGroupId:self.message.receiver userRole:self.message.receiverRole ownerId:self.message.sender ownerRole:self.message.senderRole chat_t:self.message.chat_t];
     
@@ -35,7 +35,7 @@
     
     self.message.conversationId = conversation.rowid;
     
-    self.message.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage queryAllMessageMaxMsgId] doubleValue] + 0.001];
+    self.message.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
     
     conversation.lastMessageId = self.message.msgId;
     
@@ -46,8 +46,8 @@
         group.endMessageId = self.message.msgId;
     }
     
-    [self.imService.imStorage updateConversation:conversation];
-    [self.imService.imStorage updateMessage:self.message];
+    [self.imService.imStorage.conversationDao update:conversation];
+    [self.imService.imStorage.messageDao update:self.message];
 }
 
 - (void)doAfterOperationOnMain

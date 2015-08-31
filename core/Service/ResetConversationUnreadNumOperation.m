@@ -15,7 +15,7 @@
 - (void)doOperationOnBackground
 {
     self.conversation.unReadNum = 0;
-    [self.imService.imStorage updateConversation:self.conversation];
+    [self.imService.imStorage.conversationDao update:self.conversation];
 }
 
 - (void)doAfterOperationOnMain

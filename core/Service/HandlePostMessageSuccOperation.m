@@ -31,7 +31,7 @@
     }
     
     self.message.msgId = self.model.msgId;
-    IMMessage *__message = [self.imService.imStorage queryMessageWithMessageId:self.model.msgId];
+    IMMessage *__message = [self.imService.imStorage.messageDao loadWithMessageId:self.model.msgId];
     if (__message)
     {
         // 该消息 ID 已存在本地。 属于重复消息
@@ -47,12 +47,13 @@
         self.message.messageBody = [IMCardMessageBody modelWithDictionary:dictioanry error:&error];
     }
     
-    [self.imService.imStorage updateMessage:self.message];
+    [self.imService.imStorage.messageDao update:self.message];
     
-    Conversation *conversation = [self.imService.imStorage queryConversation:self.message.sender ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
+    Conversation *conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:self.message.sender
+                                                                                 ownerRole:self.message.senderRole otherUserOrGroupId:self.message.receiver userRole:self.message.receiverRole chatType:self.message.chat_t];
     
     conversation.lastMessageId = self.message.msgId;
-    [self.imService.imStorage updateConversation:conversation];
+    [self.imService.imStorage.conversationDao update:conversation];
 }
 
 - (void)doAfterOperationOnMain

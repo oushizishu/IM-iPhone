@@ -28,9 +28,9 @@
     
     User *owner = [IMEnvironment shareInstance].owner;
     
-    self.max_msg_id = [self.imService.imStorage queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
+    self.max_msg_id = [self.imService.imStorage.messageDao queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
     
-    NSArray *excludeUserMsgs = [self.imService.imStorage queryChatExludeMessagesMaxMsgId:self.max_msg_id];
+    NSArray *excludeUserMsgs = [self.imService.imStorage.messageDao queryChatExludeMessagesMaxMsgId:self.max_msg_id];
     
     NSMutableString *__excludeUserMsgIds = [[NSMutableString alloc] init];
     for (NSInteger index = 0; index < [excludeUserMsgs count]; ++ index)
@@ -40,15 +40,15 @@
     }
     
     
-    NSArray *groups = [self.imService.imStorage queryGroupsWithUser:owner];
+    NSArray *groups = [self.imService.imStorage.groupMemberDao loadAllGroups:owner];
     
     NSMutableArray *lastGroupMsgIds = [[NSMutableArray alloc] initWithCapacity:[groups count]];
     for (NSInteger index = 0; index < [groups count]; ++ index)
     {
         Group *group = [groups objectAtIndex:index];
-        NSString *groupLastMsgId = [self.imService.imStorage queryGroupChatLastMsgId:group.groupId withoutSender:owner.userId sendRole:owner.userRole];
+        NSString *groupLastMsgId = [self.imService.imStorage.messageDao queryGroupChatLastMsgId:group.groupId withoutSender:owner.userId sendRole:owner.userRole];
         
-        NSArray *excludeGroupMsgs = [self.imService.imStorage queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
+        NSArray *excludeGroupMsgs = [self.imService.imStorage.messageDao queryGroupChatExcludeMsgs:group.groupId maxMsgId:groupLastMsgId];
        
         for (IMMessage *msg in excludeGroupMsgs) {
             [__excludeUserMsgIds appendFormat:@"%lld,", [msg.msgId longLongValue]];

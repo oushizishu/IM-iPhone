@@ -14,6 +14,8 @@
 #import "TeacherContactDao.h"
 #import "GroupDao.h"
 #import "GroupMemberDao.h"
+#import "IMMessageDao.h"
+#import "ConversationDao.h"
 
 @class BJIMConversationDBManager;
 @class User;
@@ -30,44 +32,13 @@
 @property (nonatomic, strong) TeacherContactDao *teacherDao;
 @property (nonatomic, strong) GroupDao *groupDao;
 @property (nonatomic, strong) GroupMemberDao *groupMemberDao;
+@property (nonatomic, strong) IMMessageDao *messageDao;
+@property (nonatomic, strong) ConversationDao *conversationDao;
 
-//message
-- (BOOL)insertMessage:(IMMessage*)message;
-- (IMMessage*)queryMessage:(NSInteger)messageRowid;
-- (IMMessage*)queryMessageWithMessageId:(NSString *)messageId;
-- (BOOL)updateMessage:(IMMessage*)message;
-- (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
-- (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
-
-- (NSString *)queryChatLastMsgIdOwnerId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
-- (NSArray *)queryChatExludeMessagesMaxMsgId:(NSString *)maxMsgId;
-- (NSString *)queryGroupChatLastMsgId:(int64_t)groupId withoutSender:(int64_t)sender sendRole:(NSInteger)senderRole;
-- (NSString *)queryMaxMsgIdGroupChat:(int64_t)groupId;
-- (NSArray *)queryGroupChatExcludeMsgs:(int64_t)groupId maxMsgId:(NSString *)maxMsgId;
-// 群组会话最大的消息id 
-- (NSString *)queryGroupConversationMaxMsgId:(int64_t)groupId owner:(int64_t)ownerId role:(NSInteger)ownerRole;
-// 查询会话的最小 msgId
-- (NSString *)queryMinMsgIdInConversation:(NSInteger)conversationId;
-// 查询会话最大的 msgId
-- (NSString *)queryMaxMsgIdInConversation:(NSInteger)conversationId;
-- (NSString *)queryAllMessageMaxMsgId;
-// 根据 id 区间查询 messages
-- (NSArray *)loadMoreMessagesConversation:(NSInteger)conversationId
-                                 minMsgId:(NSString *)minMsgId
-                                 maxMsgId:(NSString *)maxMsgId;
+//clear DB cache
+- (void)clearSession;
 
 //conversation
-- (BOOL)insertConversation:(NSObject *)conversation;
-- (NSArray*)queryAllConversationOwnerId:(int64_t)ownerId
-                               userRole:(IMUserRole)userRole;
-- (Conversation*)queryConversation:(int64_t)conversationId;
-- (Conversation*)queryConversation:(int64_t)ownerId
-                          ownerRole:(IMUserRole)ownerRole
-                otherUserOrGroupId:(int64_t)userId
-                          userRole:(IMUserRole)otherRserRole
-                          chatType:(IMChatType)chatType;
-
-- (void)updateConversation:(Conversation *)conversation;
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole;
 
 //contact
@@ -79,7 +50,6 @@
 
 //other
 - (BOOL)checkMessageStatus;
--  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
 
 // bugfix
 // msgId 长度小于 11

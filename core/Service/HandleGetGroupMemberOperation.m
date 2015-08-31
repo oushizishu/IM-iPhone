@@ -42,13 +42,13 @@
     NSMutableArray *userList = [[NSMutableArray alloc] initWithCapacity:0];
     for (User *user in self.listData.list) {
         //把群关系写入本地
-        GroupMember *member = [self.imService.imStorage queryGroupMemberWithGroupId:groupId userId:user.userId userRole:user.userRole];
+        GroupMember *member = [self.imService.imStorage.groupMemberDao loadMember:user.userId userRole:user.userRole groupId:groupId];
         if (!member) {
             member = [[GroupMember alloc] init];
             member.userId = user.userId;
             member.userRole = user.userRole;
             member.groupId = groupId;
-            [self.imService.imStorage insertGroupMember:member];
+            [self.imService.imStorage.groupMemberDao insertOrUpdate:member];
         }
         
         //把user信息写入本地

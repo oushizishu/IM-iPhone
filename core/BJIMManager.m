@@ -151,6 +151,8 @@
     [IMEnvironment shareInstance].currentChatToUserId = -1;
     [IMEnvironment shareInstance].currentChatToUserRole = -1;
     [IMEnvironment shareInstance].currentChatToGroupId = groupId;
+    // clear message cache
+    [self.imService.imStorage.messageDao clear];
 }
 
 - (void)stopChat

@@ -16,7 +16,7 @@
     User *currentUser = [[IMEnvironment shareInstance] owner];
 
     [self.imService.imStorage deleteMyContactWithUser:currentUser];
-    [self.imService.imStorage deleteMyGroups:currentUser];
+    [self.imService.imStorage.groupMemberDao deleteUserGroupMember:currentUser];
     
     
     NSArray *groupList = self.model.groupList;
@@ -34,7 +34,7 @@
         _groupMember.remarkName = group.remarkName;
         _groupMember.pushStatus = group.pushStatus;
         
-        [self.imService.imStorage insertOrUpdateGroupMember:_groupMember];
+        [self.imService.imStorage.groupMemberDao insertOrUpdate:_groupMember];
     }
     
     NSArray *organizationList = self.model.organizationList;

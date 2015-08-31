@@ -178,7 +178,7 @@
         IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
         messageBody.url = model.url;
     }
-    [self.imStorage updateMessage:message];
+    [self.imStorage.messageDao update:message];
     [self.imEngine postMessage:message];
 }
 
@@ -187,7 +187,7 @@
     if (! self.bIsServiceActive) return;
     
     message.status = eMessageStatus_Send_Fail;
-    [self.imStorage updateMessage:message];
+    [self.imStorage.messageDao update:message];
     
     [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
 }
@@ -268,27 +268,7 @@
 #pragma mark -- conversation
 - (NSArray *)getAllConversationWithOwner:(User *)owner
 {
-    /*
-    if ([self.converastionsCache count] == 0)
-    {
-        NSArray *list = [self getAllConversationFromDBWithOwner:owner];
-        [self.converastionsCache addObjectsFromArray:list];
-    }
-    
-    [self.converastionsCache sortUsingComparator:^NSComparisonResult(id obj1, id obj2) {
-        Conversation *con1 = (Conversation *)obj1;
-        Conversation *con2 = (Conversation *)obj2;
-        return [con1.lastMessageId compare:con2.lastMessageId];
-    }];
-
-    return self.converastionsCache;
-     */
-    return [self getAllConversationFromDBWithOwner:owner];
-}
-
-- (NSArray *)getAllConversationFromDBWithOwner:(User *)owner
-{
-    NSArray *list = [self.imStorage queryAllConversationOwnerId:owner.userId userRole:owner.userRole];
+    NSArray *list = [self.imStorage.conversationDao loadAllWithOwnerId:owner.userId userRole:owner.userRole];
     
     __WeakSelf__ weakSelf = self;
     [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -304,48 +284,12 @@
                                      ownerRole:(IMUserRole)ownerRole
                                         chat_t:(IMChatType)chat_t
 {
-//    Conversation *conversation = nil;
-//
-//    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
-//    {
-//        Conversation *_conversation = [self.converastionsCache objectAtIndex:index];
-//        if (_conversation.ownerId == ownerId &&
-//            _conversation.ownerRole == ownerRole &&
-//            _conversation.toId == userOrGroupId &&
-//            _conversation.toRole == userRole &&
-//            _conversation.chat_t == chat_t)
-//        {
-//            conversation = _conversation;
-//            break;
-//        }
-//    }
-//    
-//    if (conversation == nil)
-//    {
-//        conversation = [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
-//        if (conversation)
-//            [self.converastionsCache addObject:conversation];
-//    }
-//    return conversation;
-    return  [self getConversationFromDBUserOrGroupId:userOrGroupId userRole:userRole ownerId:ownerId ownerRole:ownerRole chat_t:chat_t];
-}
-
-- (Conversation *)getConversationFromDBUserOrGroupId:(int64_t)userOrGroupId
-                                      userRole:(IMUserRole)userRole
-                                         ownerId:(int64_t)ownerId
-                                           ownerRole:(IMUserRole)ownerRole
-                                        chat_t:(IMChatType)chat_t
-{
-    Conversation *conversation = [self.imStorage queryConversation:ownerId ownerRole:ownerRole otherUserOrGroupId:userOrGroupId userRole:userRole chatType:chat_t];
-    
-    conversation.imService = self;
-    return conversation;
+    return [self.imStorage.conversationDao loadWithOwnerId:ownerId ownerRole:ownerRole otherUserOrGroupId:userOrGroupId userRole:userRole chatType:chat_t];
 }
 
 - (void)insertConversation:(Conversation *)conversation
 {
-//    [self.converastionsCache addObject:conversation];
-    [self.imStorage insertConversation:conversation];
+    [self.imStorage.conversationDao insert:conversation];
 }
 
 - (void)resetConversationUnreadnum:(Conversation *)conversation
@@ -359,20 +303,13 @@
 - (NSInteger)getAllConversationUnReadNumWithUser:(User *)owner
 {
     return [self.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
-//    NSInteger unreadNum = 0;
-//    for (NSInteger index = 0; index < self.converastionsCache.count; ++ index)
-//    {
-//        unreadNum += [[self.converastionsCache objectAtIndex:index] unReadNum];
-//    }
-//
-//    return unreadNum;
 }
 
 - (BOOL)deleteConversation:(Conversation *)conversation owner:(User *)owner
 {
     conversation.status = 1; //逻辑删除
     conversation.unReadNum = 0;
-    [self.imStorage updateConversation:conversation];
+    [self.imStorage.conversationDao update:conversation];
     
     // 从 cache 中删除
 //    [self.converastionsCache removeObject:conversation];

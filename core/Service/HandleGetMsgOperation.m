@@ -29,7 +29,7 @@
         [super doOperationOnBackground];
     }
     
-    self.conversation = [self.imService.imStorage queryConversation:self.conversationId];
+    self.conversation = [self.imService.imStorage.conversationDao loadWithConversationId:self.conversationId];
     
     if (self.conversation == nil) return;
     
@@ -39,9 +39,9 @@
         Group *group = [self.imService.imStorage.groupDao load:self.conversation.toId];
         
         NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
-        self.messages = [self.imService.imStorage loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
+        self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
         
-        NSString *minConversationMsgId = [self.imService.imStorage queryMinMsgIdInConversation:self.conversationId];
+        NSString *minConversationMsgId = [self.imService.imStorage.messageDao queryMinMsgIdInConversation:self.conversationId];
         if (self.model == nil)
         {
             //getMsg 失败. 只从本地加载更多数据
@@ -55,7 +55,7 @@
         {
             group.endMessageId = self.endMessageId;
             
-            NSArray *list = [self.imService.imStorage loadMoreMessagesConversation:self.conversationId minMsgId:group.startMessageId maxMsgId:group.endMessageId];
+            NSArray *list = [self.imService.imStorage.messageDao loadMoreMessagesConversation:self.conversationId minMsgId:group.startMessageId maxMsgId:group.endMessageId];
             
             if ([list count] == 0)
             {
