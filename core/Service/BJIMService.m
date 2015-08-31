@@ -41,8 +41,6 @@
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 
-//@property (nonatomic, strong) NSMutableArray *converastionsCache;
-
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
@@ -103,8 +101,6 @@
     self.imEngine.getMsgDelegate = nil;
     self.imEngine.synContactDelegate = nil;
     self.imEngine.syncConfigDelegate = nil;
-    
-//    [self.converastionsCache removeAllObjects];
     
     self.systemSecretary = nil;
     self.customeWaiter = nil;
@@ -565,15 +561,6 @@
     }
     return _writeOperationQueue;
 }
-
-//- (NSMutableArray *)converastionsCache
-//{
-//    if (_converastionsCache == nil)
-//    {
-//        _converastionsCache = [[NSMutableArray alloc] initWithCapacity:10];
-//    }
-//    return _converastionsCache;
-//}
 
 #pragma mark - application call back
 - (void)applicationEnterForeground
