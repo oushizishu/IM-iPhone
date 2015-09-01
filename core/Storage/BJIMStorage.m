@@ -24,13 +24,8 @@ const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
 const NSString *const IMStudentContactTabaleName = @"STUDENTCONTACTS";
 const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS";
 
-#define IM_STRAGE_NAME @"bjhl-hermes-db"
-
-
-
 @interface BJIMStorage()
 @property (nonatomic, strong) LKDBHelper *dbHelper;
-
 
 @end
 

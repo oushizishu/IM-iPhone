@@ -107,6 +107,8 @@
     
     [self.imEngine unregisterErrorCode:eError_token_invalid];
     self.imEngine.errCodeFilterCallback = nil;
+    
+    [self.imStorage clearSession];
 }
 
 #pragma mark - 消息操作
