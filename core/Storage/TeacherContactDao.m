@@ -20,6 +20,8 @@
     
     NSArray *array = [self.dbHelper search:[TeacherContacts class] where:query orderBy:nil offset:0 count:0];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:query class:[TeacherContacts class]];
+    
     NSMutableArray *users = [[NSMutableArray alloc] initWithCapacity:[array count]];
     for (NSInteger index = 0; index < [array count]; ++ index)
     {
@@ -51,10 +53,17 @@
     {
         NSString *queryString = [NSString stringWithFormat:@"userId=%lld AND contactId=%lld AND contactRole=%ld", owner.userId, contactId, (long)contactRole];
         contact = [self.dbHelper searchSingle:[TeacherContacts class] where:queryString orderBy:nil];
+        
+        [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[TeacherContacts class]];
+        
         if (contact)
         {
             [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:@"nil " class:[TeacherContacts class]];
     }
     
     return contact;
@@ -66,6 +75,7 @@
     {
         [self.dbHelper insertToDB:contact];
         [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[TeacherContacts class]];
     }
 }
 
@@ -76,6 +86,8 @@
     [self.dbHelper deleteWithClass:[TeacherContacts class] where:sql];
     
     [self.identityScope clear];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"deleteALl" class:[TeacherContacts class]];
 }
 
 - (void)deleteContactId:(int64_t)contactId contactRole:(IMUserRole)contactRole owner:(User *)owner
@@ -83,6 +95,8 @@
     if (owner.userRole != eUserRole_Teacher ) return;
     NSString *sql = [NSString stringWithFormat:@"userId=%lld and contactId=%lld and contactRole=%ld", owner.userId, contactId, (long)contactRole];
     [self.dbHelper deleteWithClass:[TeacherContacts class] where:sql];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[TeacherContacts class]];
     
     TeacherContacts *contact = [self.identityScope objectByCondition:^BOOL(id key, id item) {
         TeacherContacts *_contact = (TeacherContacts *)item;

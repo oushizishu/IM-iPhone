@@ -20,6 +20,8 @@
     
     NSArray *array = [self.dbHelper search:[StudentContacts class] where:query orderBy:nil offset:0 count:0];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:query class:[StudentContacts class]];
+    
      NSMutableArray *users = [[NSMutableArray alloc] initWithCapacity:[array count]];
     for (NSInteger index = 0; index < [array count]; ++ index)
     {
@@ -51,10 +53,17 @@
     {
         NSString *queryString = [NSString stringWithFormat:@"userId=%lld AND contactId=%lld AND contactRole=%ld", owner.userId, contactId, (long)contactRole];
         contact = [self.dbHelper searchSingle:[StudentContacts class] where:queryString orderBy:nil];
+        
+        [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[StudentContacts class]];
+        
         if (contact)
         {
             [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[StudentContacts class]];
     }
     
     return contact;
@@ -65,6 +74,7 @@
     if ([self loadContactId:contact.contactId contactRole:contact.contactRole owner:owner] == nil)
     {
         [self.dbHelper insertToDB:contact];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[StudentContacts class]];
         [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
     }
 }
@@ -74,6 +84,7 @@
     if (owner.userRole != eUserRole_Student) return;
     NSString *sql = [NSString stringWithFormat:@"userId=%lld", owner.userId];
     [self.dbHelper deleteWithClass:[StudentContacts class] where:sql];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@" deleteALL " class:[StudentContacts class]];
     
     [self.identityScope clear];
 }
@@ -83,6 +94,8 @@
     if (owner.userRole != eUserRole_Student ) return;
     NSString *sql = [NSString stringWithFormat:@"userId=%lld and contactId=%lld and contactRole=%ld", owner.userId, contactId, (long)contactRole];
     [self.dbHelper deleteWithClass:[StudentContacts class] where:sql];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@" delete " class:[StudentContacts class]];
     
     StudentContacts *contact = [self.identityScope objectByCondition:^BOOL(id key, id item) {
         StudentContacts *_contact = (StudentContacts *)item;

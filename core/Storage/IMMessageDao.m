@@ -22,10 +22,16 @@
     {
         msg = [self.dbHelper searchSingle:[IMMessage class] where:[NSString stringWithFormat:@"rowid=%ld", (long)rowId] orderBy:nil];
         
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"rowid" class:[IMMessage class]];
+        
         if (msg)
         {
             [self attachEntityKey:@(msg.rowid) entity:msg lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[IMMessage class]];
     }
 
     return msg;
@@ -42,10 +48,16 @@
     {
         msg = [self.dbHelper searchSingle:[IMMessage class] where:[NSString stringWithFormat:@" msgId='%@'", messageId] orderBy:nil];
         
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@" msgId " class:[IMMessage class]];
+        
         if (msg)
         {
             [self attachEntityKey:@(msg.rowid) entity:msg lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[IMMessage class]];
     }
     return msg;
 }
@@ -54,12 +66,14 @@
 {
     [self.dbHelper insertToDB:message];
     [self attachEntityKey:@(message.rowid) entity:message lock:YES];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[IMMessage class]];
 }
 
 - (void)update:(IMMessage *)message
 {
     [self.dbHelper updateToDB:message where:nil];
     [self attachEntityKey:@(message.rowid) entity:message lock:YES];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"update" class:[IMMessage class]];
 }
 
 - (NSString *)queryChatLastMsgIdOwnerId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole
@@ -68,6 +82,7 @@
     
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -81,6 +96,7 @@
                              AND sender <> %lld \
                              ORDER BY msgId DESC ",groupId, sender];
       IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -92,6 +108,7 @@
 {
     NSString *queryString = [NSString stringWithFormat:@" receiver=%lld order by msgId desc", groupId];
     IMMessage *msg = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (msg)
     {
         [self attachEntityKey:@(msg.rowid) entity:msg lock:YES];
@@ -107,6 +124,7 @@
                              AND senderRole=%ld\
                              ORDER  BY msgId DESC", groupId, ownerId, (long)ownerRole];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -119,6 +137,7 @@
     NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld \
                              ORDER BY msgId ASC ", (long)conversationId];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -130,6 +149,7 @@
 {
     NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld ORDER BY msgId DESC", (long)conversationId];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -141,6 +161,7 @@
 {
     //    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
     IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:nil orderBy:@" msgId DESC"];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"msgId DESC" class:[IMMessage class]];
     if (message)
     {
         [self attachEntityKey:@(message.rowid) entity:message lock:YES];
@@ -154,6 +175,8 @@
                              ORDER BY msgId DESC LIMIT %d ", (long)conversationId, KEY_LOAD_MESSAGE_PAGE_COUNT];
     NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     NSArray *__array = [[_array reverseObjectEnumerator] allObjects];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     
     [self.identityScope lock];
     for (NSInteger index = 0; index < __array.count; ++ index)
@@ -179,6 +202,8 @@
     NSMutableArray *_array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     NSArray *__array = [[_array reverseObjectEnumerator] allObjects];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
+    
     [self.identityScope lock];
     for (NSInteger index = 0; index < __array.count; ++ index)
     {
@@ -195,6 +220,7 @@
     NSString *queryString = [NSString stringWithFormat:@" chat_t=0 and msgId>'%@'", maxMsgId];
     NSArray *messages = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     [self.identityScope lock];
     for (NSInteger index = 0; index < messages.count; ++ index)
     {
@@ -211,6 +237,7 @@
     NSString *queryString = [NSString stringWithFormat:@"receiver=%lld and msgId>'%@' and status=%ld", groupId, maxMsgId, eMessageStatus_Send_Succ];
     NSArray *array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     [self.identityScope lock];
     for (NSInteger index = 0; index < array.count; ++ index)
     {
@@ -236,6 +263,7 @@
     NSArray *array = [self.dbHelper search:[IMMessage class] where:queryString orderBy:nil offset:0 count:0];
     NSArray *_array = [[array reverseObjectEnumerator] allObjects];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     [self.identityScope lock];
     for (NSInteger index = 0; index < _array.count; ++ index)
     {
@@ -255,6 +283,7 @@
     
     NSArray *_array = [[array reverseObjectEnumerator] allObjects];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
     [self.identityScope lock];
     for (NSInteger index = 0; index < _array.count; ++ index)
     {

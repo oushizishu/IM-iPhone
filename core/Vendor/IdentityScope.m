@@ -11,7 +11,7 @@
 @interface IdentityScope()
 
 @property (nonatomic, strong) NSMutableDictionary *dictionary;
-@property (nonatomic, strong) NSLock *myLock;
+@property (nonatomic, strong) NSRecursiveLock *myLock;
 
 @end
 
@@ -22,7 +22,7 @@
     self = [super init];
     if (self) {
         _dictionary = [[NSMutableDictionary alloc] init];
-        _myLock = [[NSLock alloc] init];
+        _myLock = [[NSRecursiveLock alloc] init];//[[NSLock alloc] init];
     }
     return self;
 }

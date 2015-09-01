@@ -25,10 +25,16 @@
     {
         user = [self.dbHelper searchSingle:[User class] where:[NSString stringWithFormat:@"userId=%lld AND userRole=%ld",userId,(long)userRole] orderBy:nil];
         
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"userID and userRole" class:[User class]];
+        
         if (user)
         {
             [self attachEntityKey:@(user.rowid) entity:user lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[User class]];
     }
     return user;
 }
@@ -70,10 +76,13 @@
         _user.avatar = user.avatar;
         [_user updateToDB];
         user.rowid = _user.rowid;
+        
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@" update " class:[User class]];
     }
     else
     {
         [self.dbHelper insertToDB:user];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[User class]];
     }
     [self attachEntityKey:@(user.rowid) entity:user lock:YES];
 }

@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "IdentityScope.h"
 #import "LKDBHelper.h"
-
+#import "DaoStatistics.h"
 
 @class BJIMStorage;
 @interface IMBaseDao : NSObject

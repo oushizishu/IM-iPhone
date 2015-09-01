@@ -17,11 +17,16 @@
     {
         NSString *queryString = [NSString stringWithFormat:@"rowid=%ld and status=0", (long)conversationId];
         conversation = [self.dbHelper  searchSingle:[Conversation class] where:queryString orderBy:nil];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
         
         if (conversation)
         {
             [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[Conversation class]];
     }
     return conversation;
 }
@@ -54,10 +59,15 @@
                                   AND chat_t=%ld and status=0",ownerId, (long)ownerRole,userId,query,(long)chatType];
         conversation = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
         
+        [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
         if (conversation)
         {
             [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[Conversation class]];
     }
     return conversation;
 }
@@ -66,12 +76,14 @@
 {
     [self.dbHelper insertToDB:conversation];
     [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[Conversation class]];
 }
 
 - (void)update:(Conversation *)conversation
 {
     [self.dbHelper updateToDB:conversation where:nil];
     [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"update" class:[Conversation class]];
 }
 
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
@@ -79,7 +91,7 @@
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
                               AND ownerRole=%ld and status=0  ORDER BY lastMessageId DESC",ownerId,(long)ownerRole];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
-    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
     [self.identityScope lock];
     for (NSInteger index = 0; index < array.count; ++ index) {
         Conversation *_conv = [array objectAtIndex:index];

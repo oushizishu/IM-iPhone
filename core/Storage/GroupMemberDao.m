@@ -23,10 +23,15 @@
         NSString *queryString = [NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupId, userId, (long)userRole];
         member = [self.dbHelper searchSingle:[GroupMember class] where:queryString orderBy:nil];
         
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@" groupId and userId and userRole" class:[GroupMemberDao class]];
         if (member)
         {
             [self attachEntityKey:@(member.rowid) entity:member lock:YES];
         }
+    }
+    else
+    {
+        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[GroupMemberDao class]];
     }
     
     return member;
@@ -39,10 +44,12 @@
     {
         groupMember.rowid = _member.rowid;
         [self.dbHelper updateToDB:groupMember where:nil];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"update" class:[GroupMemberDao class]];
     }
     else
     {
         [self.dbHelper insertToDB:groupMember];
+        [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[GroupMemberDao class]];
     }
     [self attachEntityKey:@(groupMember.rowid) entity:groupMember lock:YES];
 }
@@ -51,6 +58,7 @@
 {
     NSString *query = [NSString stringWithFormat:@" groupId=%lld ",groupId];
     [self.dbHelper deleteWithClass:[GroupMember class] where:query];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[GroupMemberDao class]];
     
     [self.identityScope lock];
     
@@ -77,6 +85,8 @@
     NSString *queryString = [NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupId, user.userId, (long)user.userRole];
     [self.dbHelper deleteWithClass:[GroupMember class] where:queryString];
     
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[GroupMemberDao class]];
+    
     GroupMember *member = [self.identityScope objectByCondition:^BOOL(id key, id item) {
         GroupMember *_member = (GroupMember *)item;
         return (_member.userId == user.userId && _member.userRole == user.userRole && _member.groupId == groupId);
@@ -92,6 +102,8 @@
 {
      NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
     [self.dbHelper deleteWithClass:[GroupMember class] where:query];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[GroupMemberDao class]];
     
     [self.identityScope lock];
     
@@ -120,6 +132,8 @@
     
     NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
     NSArray *array = [self.dbHelper search:[GroupMember class] where:query orderBy:nil offset:0 count:0];
+    
+    [[DaoStatistics sharedInstance] logDBOperationSQL:@"loadAll  userId and userRole" class:[GroupMemberDao class]];
     
     [self.identityScope lock];
     for (NSInteger index = 0; index < array.count; ++ index)

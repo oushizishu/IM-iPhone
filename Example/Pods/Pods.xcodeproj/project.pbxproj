@@ -324,6 +324,8 @@
 		9552DC121B9409BE001E8D4C /* GroupMemberDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552DC101B9409BE001E8D4C /* GroupMemberDao.h */; };
 		9552DC131B9409BE001E8D4C /* GroupMemberDao.m in Sources */ = {isa = PBXBuildFile; fileRef = 9552DC111B9409BE001E8D4C /* GroupMemberDao.m */; };
 		9581EE28A7D6BF797FB9F49F4B812D41 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 4A782DE09D2D29068E6CD933CA8205D4 /* NSValueTransformer+MTLPredefinedTransformerAdditions.h */; };
+		95E3BF1C1B959B0A00CF2FE5 /* DaoStatistics.h in Headers */ = {isa = PBXBuildFile; fileRef = 95E3BF1A1B959B0A00CF2FE5 /* DaoStatistics.h */; };
+		95E3BF1D1B959B0A00CF2FE5 /* DaoStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E3BF1B1B959B0A00CF2FE5 /* DaoStatistics.m */; };
 		968BB85D6AE6CC4D19EE3AAA8B8FF939 /* TeacherContactDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 88D5A9EA9A36C74CE7549007EA851F40 /* TeacherContactDao.h */; };
 		9733663AF5C846D98D5C24B82DE945DC /* PureLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE33739F4073AC66263D07A93BEA91CA /* PureLayout-dummy.m */; };
 		97895D6235A2D556BA9B14DD9BCE19A5 /* BJPicture.h in Headers */ = {isa = PBXBuildFile; fileRef = CB91F6BB5B4489F0AF3BBD372AC05B63 /* BJPicture.h */; };
@@ -1290,6 +1292,8 @@
 		9552DC111B9409BE001E8D4C /* GroupMemberDao.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupMemberDao.m; sourceTree = "<group>"; };
 		95724D1E58D50E9BE3399B9119287841 /* BJIMEngine.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = BJIMEngine.m; sourceTree = "<group>"; };
 		95DF6E4FC5D2DF08AA922C2DAE472FFD /* SETextGeometry.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SETextGeometry.h; path = Lib/SETextGeometry.h; sourceTree = "<group>"; };
+		95E3BF1A1B959B0A00CF2FE5 /* DaoStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DaoStatistics.h; sourceTree = "<group>"; };
+		95E3BF1B1B959B0A00CF2FE5 /* DaoStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DaoStatistics.m; sourceTree = "<group>"; };
 		95E81EE900E111CBB36FD40E77B5D802 /* RecentContacts.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = RecentContacts.h; sourceTree = "<group>"; };
 		960C0E8295DDE5E1B5C59CD934AE2052 /* MagicalRecord-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MagicalRecord-prefix.pch"; sourceTree = "<group>"; };
 		9714D44C0AD66864BF88141AB8D74B8E /* NSManagedObject+MagicalDataImport.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "NSManagedObject+MagicalDataImport.m"; path = "MagicalRecord/Categories/NSManagedObject/NSManagedObject+MagicalDataImport.m"; sourceTree = "<group>"; };
@@ -2781,6 +2785,8 @@
 				3F8994D43343EEE8E841EA72C1773A83 /* IdentityScope.h */,
 				B7200167C37A022D8804E1A355AC02E7 /* IdentityScope.m */,
 				ABAB653BD6900A8D4E6C9C99AD4B61C8 /* aes */,
+				95E3BF1A1B959B0A00CF2FE5 /* DaoStatistics.h */,
+				95E3BF1B1B959B0A00CF2FE5 /* DaoStatistics.m */,
 			);
 			path = Vendor;
 			sourceTree = "<group>";
@@ -3056,6 +3062,7 @@
 				DC055D2E428A7709E8BAFA63E7832A31 /* AFHTTPRequestOperationManager.h in Headers */,
 				7047EF7C0507281FB68BA28B759CD7C0 /* AFHTTPSessionManager.h in Headers */,
 				953873A21B945F3C0028F6DF /* IMMessageDao.h in Headers */,
+				95E3BF1C1B959B0A00CF2FE5 /* DaoStatistics.h in Headers */,
 				5F499C6F9C67AE91291476E5D1AA1C3B /* AFNetworkActivityIndicatorManager.h in Headers */,
 				6A527CB7609F23B2FA83A5E894F21321 /* AFNetworkReachabilityManager.h in Headers */,
 				D5EE9B89ABA7AE4F911FAA6ECE0D05C4 /* AFNetworking.h in Headers */,
@@ -3972,6 +3979,7 @@
 				79C6B4D9D5835C75C45F6E92C69953D5 /* AFNetworking-dummy.m in Sources */,
 				253A26DC40D5AC21236C74A77D8C0A53 /* AFSecurityPolicy.m in Sources */,
 				B5FB8CF8EE7F2FF047C206AF4695FBDC /* AFURLConnectionOperation.m in Sources */,
+				95E3BF1D1B959B0A00CF2FE5 /* DaoStatistics.m in Sources */,
 				09433B3F52280500F219C8A59F923051 /* AFURLRequestSerialization.m in Sources */,
 				D987E9574274E7C9FBDB6BE83BED98F2 /* AFURLResponseSerialization.m in Sources */,
 				DFD30BCE099D0E265FC12B28135F720B /* AFURLSessionManager.m in Sources */,
