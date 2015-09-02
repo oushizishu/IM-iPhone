@@ -53,8 +53,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     DEBUG_MODE_CODE_BEGIN
     
     cacheCount ++ ;
-    if (sql)
-        DDLogInfo(@"DaoStatistics target:[%@] SQL Cache :[%@]", clazz, sql);
+    DDLogInfo(@"DaoStatistics target:[%@] SQL Cache :[%@]", clazz, sql);
     if (cacheCount % 30 == 0)
         [self statistics];
     DEBUG_MODE_CODE_END
