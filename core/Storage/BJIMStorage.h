@@ -42,9 +42,9 @@
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole;
 
 //contact
-- (BOOL)hasContactOwner:(User*)owner contact:(User*)contact;
-- (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact;
-- (void)deleteMyContactWithUser:(User*)user;
+- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact;
+- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact;
+- (void)deleteMyContactWithUser:(User *)user;
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 

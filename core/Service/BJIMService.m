@@ -26,8 +26,11 @@
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
 
-@interface BJIMService()<IMEnginePostMessageDelegate,IMEngineSynContactDelegate, IMEnginePollingDelegate,
-    IMEngineGetMessageDelegate, IMEngineSyncConfigDelegate>
+@interface BJIMService()<IMEnginePostMessageDelegate,
+                         IMEngineSynContactDelegate,
+                         IMEnginePollingDelegate,
+                         IMEngineGetMessageDelegate,
+                         IMEngineSyncConfigDelegate>
 
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
@@ -329,7 +332,7 @@
     }
     
     User *user = [self.imStorage.userDao loadUserAndMarkName:userId role:userRole owner:[IMEnvironment shareInstance].owner];
-    if (! user)
+    if (!user)
     {
         user = [[User alloc] init];
         user.userId = userId;

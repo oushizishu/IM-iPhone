@@ -101,7 +101,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 }
 
 #pragma mark contact
-- (BOOL)hasContactOwner:(User*)owner contact:(User*)contact
+- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact
 {
     if (owner.userRole == eUserRole_Institution)
     {
@@ -118,7 +118,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return NO;
 }
 
-- (void)insertOrUpdateContactOwner:(User*)owner contact:(User*)contact
+- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact
 {
     if (owner.userRole == eUserRole_Teacher)
     {
