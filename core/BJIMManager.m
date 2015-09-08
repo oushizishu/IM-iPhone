@@ -246,6 +246,20 @@
     [self.imService setUser:user];
 }
 
+- (void)addRecentContactId:(int64_t)userId
+               contactRole:(IMUserRole)userRole
+                  callback:(void (^)(BaseResponse *))callback
+{
+    if (![[IMEnvironment shareInstance] isLogin])
+    {
+        if (callback)
+            callback(nil);
+        return;
+    }
+    
+    [self.imService addRecentContactId:userId contactRole:userRole callback:callback];
+}
+
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user

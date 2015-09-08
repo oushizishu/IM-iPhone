@@ -26,6 +26,9 @@
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
 
+#import "NetWorkTool.h"
+#import "BaseResponse.h"
+
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
                          IMEnginePollingDelegate,
@@ -498,6 +501,23 @@
         return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Institution];
     }
     return nil;
+}
+
+- (void)addRecentContactId:(int64_t)userId
+               contactRole:(IMUserRole)userRole
+                  callback:(void (^)(BaseResponse *))callback
+{
+    [NetWorkTool hermesAddRecentContactId:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+       if (callback)
+       {
+           NSError *error;
+           BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+           callback(result);
+       }
+    } failure:^(NSError *error, RequestParams *params) {
+       if (callback)
+           callback(nil);
+    }];
 }
 
 

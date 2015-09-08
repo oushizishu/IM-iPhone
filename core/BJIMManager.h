@@ -12,6 +12,8 @@
 #import "Group.h"
 #import "Conversation.h"
 #import "IMEnvironment.h"
+
+#import "BaseResponse.h"
 /**
  *  IM 管理类， 与上层交互
  */
@@ -75,6 +77,10 @@
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
 - (void)setUser:(User *)user;
+
+- (void)addRecentContactId:(int64_t)userId
+               contactRole:(IMUserRole)userRole
+                  callback:(void(^)(BaseResponse *response))callback;
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName

@@ -64,6 +64,11 @@
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesAddRecentContactId:(int64_t)userId
+                                               role:(IMUserRole)userRole
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure;
+
 #pragma mark - Group
 + (BJNetRequestOperation *)hermesSetGroupMsgWithGroupId:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status
                                                    succ:(onSuccess)succ
