@@ -177,6 +177,7 @@ PODS:
     - FMDB/common
   - LKDBHelper (2.1.4):
     - FMDB
+  - MagicalRecord (2.3.0)
   - Mantle (2.0.4):
     - Mantle/extobjc (= 2.0.4)
   - Mantle/extobjc (2.0.4)
@@ -193,6 +194,7 @@ PODS:
 
 DEPENDENCIES:
   - BJHL-IM-iOS-SDK (from `../`)
+  - MagicalRecord
 
 EXTERNAL SOURCES:
   BJHL-IM-iOS-SDK:
@@ -205,6 +207,7 @@ SPEC CHECKSUMS:
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   LKDBHelper: 6bde14a7d8d1915dd6f1a960176cc868175dd14d
+  MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
   Mantle: 6bee68168423948be0c0c5924832bf3af188e099
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   PureLayout: 461724f6da2da366709e5fe6e6006f6039b7c2dd

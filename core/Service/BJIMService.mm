@@ -26,6 +26,9 @@
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
 
+#import "BJIMHttpEngine.h"
+#import "BJIMSocketEngine.h"
+
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
                          IMEnginePollingDelegate,
@@ -73,7 +76,7 @@
     [self.imEngine syncContacts];
     
     __WeakSelf__ weakSelf = self;
-    self.imEngine.errCodeFilterCallback = ^(NSInteger code, NSString *errMsg){
+    self.imEngine.errCodeFilterCallback = ^(IMErrorType code, NSString *errMsg){
         [weakSelf notifyErrorCode:code msg:errMsg];
     };
     
@@ -88,7 +91,6 @@
         operation.imService = self;
         [self.writeOperationQueue addOperation:operation];
     }
-    
 }
 
 - (void)stopService
@@ -257,11 +259,11 @@
 {
     User *system = [self getSystemSecretary];
     system.userId = model.systemSecretary.number;
-    system.userRole = model.systemSecretary.role;
+    system.userRole = (IMUserRole)model.systemSecretary.role;
     
     User *waiter = [self getCustomWaiter];
     waiter.userId = model.customWaiter.number;
-    waiter.userRole = model.customWaiter.role;
+    waiter.userRole = (IMUserRole)model.customWaiter.role;
 }
 
 
@@ -527,12 +529,15 @@
     return self.customeWaiter;
 }
 
-- (BJIMHttpEngine *)imEngine
+- (BJIMAbstractEngine *)imEngine
 {
     if (_imEngine == nil)
     {
-        _imEngine = [[BJIMHttpEngine alloc] init];
-        _imEngine.synContactDelegate = self;
+        //默认使用 Socket Engine.
+        _imEngine = [[BJIMSocketEngine alloc] init];
+//        _imEngine = [bjimso];
+//        _imEngine = [[BJIMHttpEngine alloc] init];
+//        _imEngine.synContactDelegate = self;
     }
     return _imEngine;
 }
@@ -789,7 +794,7 @@
     [self.disconnectionStateDelegates addObject:delegate];
 }
 
-- (void)notifyErrorCode:(NSInteger)code msg:(NSString *)msg
+- (void)notifyErrorCode:(IMErrorType)code msg:(NSString *)msg
 {
     NSEnumerator *enumerator = [self.disconnectionStateDelegates objectEnumerator];
     id<IMDisconnectionDelegate> delegate = nil;

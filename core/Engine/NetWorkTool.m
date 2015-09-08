@@ -8,6 +8,7 @@
 
 #import "NetWorkTool.h"
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
+#import "NSDictionary+Json.h"
 
 #define HOST_APIS @[@"http://dev-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
@@ -67,7 +68,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", message.receiverRole] forKey:@"receiver_r"];
     [requestParams appendPostParamValue:message.messageBody.description forKey:@"body"];
     if (message.ext != nil) {
-        [requestParams appendPostParamValue:message.ext.description forKey:@"ext"];
+        
+        NSString *ext = [message.ext jsonString];
+        if (ext)
+            [requestParams appendPostParamValue:ext forKey:@"ext"];
     }
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", message.chat_t] forKey:@"chat_t"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", message.msg_t] forKey:@"msg_t"];

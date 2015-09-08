@@ -149,7 +149,7 @@
 - (void)startChatToGroup:(int64_t)groupId
 {
     [IMEnvironment shareInstance].currentChatToUserId = -1;
-    [IMEnvironment shareInstance].currentChatToUserRole = -1;
+    [IMEnvironment shareInstance].currentChatToUserRole = eUserRole_Anonymous;
     [IMEnvironment shareInstance].currentChatToGroupId = groupId;
     // clear message cache
     [self.imService.imStorage.messageDao clear];
@@ -158,7 +158,7 @@
 - (void)stopChat
 {
     [IMEnvironment shareInstance].currentChatToUserId = -1;
-    [IMEnvironment shareInstance].currentChatToUserRole = -1;
+    [IMEnvironment shareInstance].currentChatToUserRole = eUserRole_Anonymous;
     [IMEnvironment shareInstance].currentChatToGroupId = -1;
 }
 

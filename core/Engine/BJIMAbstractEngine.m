@@ -25,18 +25,18 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 - (void)start 
 {
-    assert("请重载这个方法");
+    NSAssert(0, @"请重载这个方法");
 }
 
 - (void)stop
 {
-    assert("请重载这个方法");
+    NSAssert(0, @"请重载这个方法");
 }
 
 
 - (void)syncConfig
 {
-    assert("请重载这个方法");
+    NSAssert(0, @"请重载这个方法");
 }
 
 - (void)syncContacts
@@ -68,7 +68,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 - (void)postMessage:(IMMessage *)message
 {
-    assert("请重载这个方法");
+    NSAssert(0, @"请重载这个方法");
 }
 
 - (void)postMessageAchive:(IMMessage *)message
@@ -125,7 +125,7 @@ static int ddLogLevel = DDLogLevelVerbose;
           groupsLastMsgIds:(NSString *)group_last_msg_ids
               currentGroup:(int64_t)groupId
 {
-    assert("请重载这个方法");
+    NSAssert(0, @"请重载这个方法");
 }
 
 - (void)getMsgConversation:(NSInteger)conversationId minMsgId:(NSString *)eid groupId:(int64_t)groupId userId:(int64_t)userId excludeIds:(NSString *)excludeIds startMessageId:(NSString *)startMessageId
