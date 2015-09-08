@@ -8,14 +8,14 @@
 
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
-#import "BJIMEngine.h"
+#import "BJIMHttpEngine.h"
 #import "BJIMStorage.h"
 #import "IMMessage.h"
 
 
 @interface BJIMService : NSObject
 @property (nonatomic, assign) BOOL bIsServiceActive;
-@property (nonatomic, strong, readonly) BJIMEngine *imEngine;
+@property (nonatomic, strong, readonly) BJIMHttpEngine *imEngine;
 @property (nonatomic, strong, readonly) BJIMStorage *imStorage;
 
 @property (nonatomic, strong, readonly) NSOperationQueue *writeOperationQueue; // DB 写操作线程

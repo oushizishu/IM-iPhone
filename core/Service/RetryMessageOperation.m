@@ -12,7 +12,7 @@
 #import "IMMessage.h"
 #import "BJIMService.h"
 #import "BJIMStorage.h"
-#import "BJIMEngine.h"
+#import "BJIMHttpEngine.h"
 
 @implementation RetryMessageOperation
 

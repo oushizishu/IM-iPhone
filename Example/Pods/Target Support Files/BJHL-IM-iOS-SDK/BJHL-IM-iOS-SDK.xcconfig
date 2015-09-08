@@ -1,1 +1,2 @@
-BJHL_IM_IOS_SDK_OTHER_LDFLAGS = -framework "CoreData"
+BJHL_IM_IOS_SDK_LIBRARY_SEARCH_PATHS = "$(PODS_ROOT)/../../core/lib"
+BJHL_IM_IOS_SDK_OTHER_LDFLAGS = -l"websockets" -framework "CoreData"

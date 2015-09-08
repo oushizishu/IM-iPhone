@@ -7,6 +7,4 @@ end
 
 target 'Tests', :exclusive => true do
   pod "BJHL-IM-iOS-SDK", :path => "../"
-
-  pod 'MagicalRecord', '2.2'
 end

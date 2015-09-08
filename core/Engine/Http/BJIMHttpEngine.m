@@ -1,0 +1,209 @@
+//
+//  BJIMEngine.m
+//  BJIM
+//
+//  Created by 杨磊 on 15/5/8.
+//  Copyright (c) 2015年 杨磊. All rights reserved.
+//
+
+#import "BJIMHttpEngine.h"
+#import "NetWorkTool.h"
+#import "BaseResponse.h"
+#import "BJIMStorage.h"
+#import "BJTimer.h"
+#import "RecentContactModel.h"
+#import "NSError+BJIM.h"
+#import "GetGroupMemberModel.h"
+#import "GroupMemberListData.h"
+
+static int ddLogLevel = DDLogLevelVerbose;
+
+@interface BJIMHttpEngine()
+{
+    NSInteger _pollingIndex;
+    NSInteger _heatBeatIndex;
+    BOOL _bIsPollingRequesting;
+}
+
+@property (nonatomic, strong) BJTimer *pollingTimer;
+@property (nonatomic, strong) NSArray *im_polling_delta;
+@end
+
+@implementation BJIMHttpEngine
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self)
+    {
+       self.im_polling_delta = @[@2, @4, @6, @8, @10];
+    }
+    return self;
+}
+
+- (void)start
+{
+    self.engineActive = YES;
+    _bIsPollingRequesting = NO;
+    [self resetPollingIndex];
+    [self nextPollingAt];
+    [self.pollingTimer.timer fire];
+}
+
+- (void)stop
+{
+    self.engineActive = NO;
+    [self.pollingTimer invalidate];
+    self.pollingTimer = nil;
+}
+
+- (void)syncConfig
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result != nil && result.code == RESULT_CODE_SUCC)
+        {
+            NSError *error;
+            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            weakSelf.im_polling_delta = model.polling_delta;
+            [weakSelf.syncConfigDelegate onSyncConfig:model];
+        }
+        else
+        {
+            DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        DDLogError(@"Sync Config Fail [%@]", error.userInfo);
+        
+    }];
+}
+
+
+- (void)postMessage:(IMMessage *)message
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result != nil && result.code == RESULT_CODE_SUCC)
+        {
+            NSError *error ;
+            SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            [weakSelf.postMessageDelegate onPostMessageSucc:message result:model];
+        }
+        else
+        {
+            [self callbackErrorCode:result.code errMsg:result.msg];
+            NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
+            [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
+            DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
+        NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
+        [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
+    }];
+}
+
+- (void)postPullRequest:(int64_t)max_user_msg_id
+           excludeUserMsgs:(NSString *)excludeUserMsgs
+          groupsLastMsgIds:(NSString *)group_last_msg_ids
+              currentGroup:(int64_t)groupId
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        _bIsPollingRequesting = NO;
+        
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
+        if (result != nil && result.code == RESULT_CODE_SUCC)
+        {
+            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:nil];
+            if (weakSelf.pollingDelegate)
+            {
+                [weakSelf.pollingDelegate onPollingFinish:model];
+            }
+            if ([model.msgs count] > 0)
+            {
+                [weakSelf resetPollingIndex];
+            }
+            
+            if ([model.ops count] > 0)
+            {
+                // 联系人有改变，刷新联系人
+                if ([model.ops[0] integerValue] == 1)
+                {
+                    [weakSelf syncContacts];
+                }
+            }
+            
+            if ([[IMEnvironment shareInstance] isCurrentChatToGroup] || [[IMEnvironment shareInstance] isCurrentChatToUser])
+            {
+                [weakSelf resetPollingIndex];
+            }
+            
+            
+            [weakSelf nextPollingAt];
+        }
+        else
+        {
+            DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
+            [weakSelf nextPollingAt];
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        _bIsPollingRequesting = NO;
+        DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
+        [weakSelf nextPollingAt];
+    }];
+
+}
+
+- (void)nextPollingAt
+{
+    _heatBeatIndex = 0;
+    _pollingIndex = (MIN([self.im_polling_delta count] - 1, _pollingIndex + 1)) % [self.im_polling_delta count];
+}
+
+- (void)handlePollingEvent
+{
+    if (! [self isEngineActive]) {
+        return;
+    }
+    
+    if (_bIsPollingRequesting) return;
+    
+    _heatBeatIndex ++ ;
+    _heatBeatIndex = MAX(0, MIN(_heatBeatIndex, [self.im_polling_delta[_pollingIndex] integerValue]));
+    if (_heatBeatIndex != [self.im_polling_delta[_pollingIndex] integerValue])
+        return;
+    
+    if (self.postMessageDelegate == nil)
+    {
+        [self nextPollingAt];
+    }
+    else
+    {
+        _bIsPollingRequesting = YES;
+        [self.pollingDelegate onShouldStartPolling];
+    }
+}
+
+- (void)resetPollingIndex
+{
+    _heatBeatIndex = 0;
+    _pollingIndex = -1;
+}
+
+- (BJTimer *)pollingTimer
+{
+    if (_pollingTimer == nil)
+    {
+        _pollingTimer = [BJTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) forMode:NSRunLoopCommonModes];
+    }
+    
+    return _pollingTimer;
+}
+
+@end

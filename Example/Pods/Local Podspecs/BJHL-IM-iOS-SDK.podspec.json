@@ -16,7 +16,8 @@
     "ios": "6.1"
   },
   "requires_arc": true,
-  "source_files": "core/**/*.{h,m}",
+  "source_files": "core/**/*.{h,m,cpp,mm}",
+  "vendored_libraries": "core/lib/*.a",
   "resource_bundles": {
     "BJHL-IM-iOS-SDK": [
       "Resources/*"

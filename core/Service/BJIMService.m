@@ -527,11 +527,11 @@
     return self.customeWaiter;
 }
 
-- (BJIMEngine *)imEngine
+- (BJIMHttpEngine *)imEngine
 {
     if (_imEngine == nil)
     {
-        _imEngine = [[BJIMEngine alloc] init];
+        _imEngine = [[BJIMHttpEngine alloc] init];
         _imEngine.synContactDelegate = self;
     }
     return _imEngine;
