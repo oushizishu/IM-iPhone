@@ -340,6 +340,8 @@
         user = [[User alloc] init];
         user.userId = userId;
         user.userRole = userRole;
+        [self.imStorage.userDao insertOrUpdateUser:user];
+        
         __WeakSelf__ weakSelf = self;
         [self.imEngine postGetUserInfo:userId role:userRole callback:^(User *result) {
             if (! weakSelf.bIsServiceActive) return ;
@@ -378,6 +380,8 @@
         group = [[Group alloc] init];
         group.groupId = groupId;
         __WeakSelf__ weakSelf = self;
+        [self.imStorage.groupDao insertOrUpdate:group];
+        
         [self.imEngine postGetGroupProfile:groupId callback:^(Group *result) {
             if (!weakSelf.bIsServiceActive) return ;
             if (! result) return;
@@ -436,6 +440,14 @@
     User *contact = [[User alloc] init];
     contact.userId = teacherId;
     contact.userRole = eUserRole_Teacher;
+    return [self.imStorage hasContactOwner:user contact:contact];
+}
+
+- (BOOL)hasInsitituion:(int64_t)institutionId ofUser:(User *)user
+{
+    User *contact = [[User alloc] init];
+    contact.userId = institutionId;
+    contact.userRole = eUserRole_Institution;
     return [self.imStorage hasContactOwner:user contact:contact];
 }
 

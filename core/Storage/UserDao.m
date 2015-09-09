@@ -87,4 +87,32 @@
     [self attachEntityKey:@(user.rowid) entity:user lock:YES];
 }
 
+//- (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock
+//{
+//    if (lock)
+//    {
+//        [self.identityScope lock];
+//    }
+//    
+//    User *user = [self.identityScope objectByKey:key lock:NO];
+//    if (user)
+//    {
+//        User *_user = (User *)entity;
+//        user.name = _user.name;
+//        user.avatar = _user.avatar;
+//        user.nameHeader = _user.nameHeader;
+//        user.remarkHeader = _user.remarkHeader;
+//        user.remarkName = _user.remarkName;
+//    }
+//    else
+//    {
+//        [self.identityScope appendObject:entity key:key lock:NO];
+//    }
+//    
+//    if (lock)
+//    {
+//        [self.identityScope unlock];
+//    }
+//}
+
 @end

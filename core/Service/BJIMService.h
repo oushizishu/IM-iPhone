@@ -72,6 +72,8 @@
 
 // 判断该老师是否为我的老师：(to学生端)
 - (BOOL)hasTeacher:(int64_t)teacherId ofUser:(User *)user;
+// 判断该机构是否为我的机构:(to学生端)
+- (BOOL)hasInsitituion:(int64_t)institutionId ofUser:(User *)user;
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user;
 
 - (void)applicationEnterBackground;

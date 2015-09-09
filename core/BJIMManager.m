@@ -297,6 +297,12 @@
     return [self.imService hasTeacher:teacherId ofUser:[IMEnvironment shareInstance].owner];
 }
 
+- (BOOL)isMyInstitution:(int64_t)orgId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return NO;
+    return [self.imService hasInsitituion:orgId ofUser:[IMEnvironment shareInstance].owner];
+}
+
 - (BOOL)isMyGroup:(int64_t)groupId
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return NO;

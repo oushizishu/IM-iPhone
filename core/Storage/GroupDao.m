@@ -59,6 +59,47 @@
     [self detach:@(groupId)];
 }
 
+//- (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock
+//{
+//    if (lock)
+//    {
+//        [self.identityScope lock];
+//    }
+//    
+//    Group *group = [self.identityScope objectByKey:key lock:NO];
+//    if (group)
+//    {
+//        Group *_group = (Group *)entity;
+//        
+//        group.groupName = _group.groupName;
+//        group.avatar = _group.avatar;
+//        group.descript = _group.descript;
+//        group.isPublic = _group.isPublic;
+//        group.maxusers = _group.maxusers;
+//        group.memberCount = _group.memberCount;
+//        group.status = _group.status;
+//        group.pushStatus = _group.pushStatus;
+//        group.msgStatus = _group.msgStatus;
+//        group.canLeave = _group.canLeave;
+//        group.canDisband = _group.canDisband;
+//        group.nameHeader = _group.nameHeader;
+//        group.remarkName = _group.remarkName;
+//        group.remarkHeader = _group.remarkHeader;
+//        group.lastMessageId = _group.lastMessageId;
+//        group.startMessageId = _group.startMessageId;
+//        group.endMessageId = _group.endMessageId;
+//    }
+//    else
+//    {
+//        [self.identityScope appendObject:entity key:key lock:NO];
+//    }
+//    
+//    if (lock)
+//    {
+//        [self.identityScope unlock];
+//    }
+//}
+
 //- (void)deleteAll:(User *)user
 //{
 //
