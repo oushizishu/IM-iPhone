@@ -18,6 +18,19 @@
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
+//request api
+#define SOCKET_API_REQUEST_MESSAGE_SEND     @"message_send_req"
+#define SOCKET_API_REQUEST_MESSAGE_PULL     @"message_pull_req"
+#define SOCKET_API_REQUEST_LOGIN            @"session_record"
+#define SOCKET_API_REQUEST_HEART_BEAT       @"heart_beat"
+
+//response api
+#define SOCKET_API_RESPONSE_MESSAGE_SEND    @"message_send_res"
+#define SOCKET_API_RESPONSE_MESSAGE_PULL    @"message_pull_res"
+#define SOCKET_API_RESPONSE_LOGIN           @"session_record_res"
+#define SOCKET_API_RESPONSE_HEART_BEAT      @"heart_beat"
+#define SOCKET_API_RESPONSE_MESSAGE_NEW     @"message_new"
+
 
 @interface NSDictionary (SocketParams)
 
@@ -101,10 +114,6 @@ public:
     socketDelegate = new IMSocketDelegate();
     socketDelegate->engine = self;
     webSocket->init(*socketDelegate, "ws://192.168.19.102:3021");
-    
-//登陆成功后再开启心跳
-//    self.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
-//    
 }
 
 - (void)stop
@@ -141,7 +150,7 @@ public:
     [dic setObject:[NSString stringWithFormat:@"%ld", message.msg_t] forKey:@"msg_t"];
     [dic setObject:message.sign forKey:@"sign"];
     
-    std::string data = [self construct_req_param:dic];
+    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND];
     webSocket->send(data);
 }
 
@@ -169,7 +178,7 @@ public:
         [dic setObject:excludeUserMsgs forKey:@"exclude_msg_ids"];
     }
     
-    std::string data = [self construct_req_param:dic];
+    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL];
     webSocket->send(data);
 }
 
@@ -183,20 +192,27 @@ public:
     NSString *sign = [result objectForKey:@"sign"];
     NSString *response = [result objectForKey:@"response"];
     
-    if ([message isEqualToString:@"session_record"])
+    if ([message isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
-    
+//        登陆成功后再开启心跳
+        self.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
+        // 每次登陆完成后，拉一次消息。
+        [self.pollingDelegate onShouldStartPolling];
     }
-    else if ([message isEqualToString:@"heart_beat"])
+    else if ([message isEqualToString:SOCKET_API_RESPONSE_HEART_BEAT])
     { // 心跳回调
-    
+        self.engineActive = YES;
     }
-    else if ([message isEqualToString:@"message_pull_req"])
+    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_PULL])
     { // 拉消息回调
     }
-    else if ([message isEqualToString:@"message_send_req"])
+    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_SEND])
     { // 发消息回调
     
+    }
+    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_NEW])
+    { // 有新消息
+        [self.pollingDelegate onShouldStartPolling];
     }
 }
 
@@ -205,7 +221,7 @@ public:
  */
 -  (void)doHeartbeat
 {
-    std::string data = [self construct_no_params_req];
+    std::string data = [self construct_heart_beat];
     webSocket->send(data);
 }
 
@@ -220,17 +236,16 @@ public:
 
 - (void)doLogin
 {
-    std::string data = [self construct_no_params_req];
+    std::string data = [self construct_login_req];
     webSocket->send(data);
     self.engineActive = YES;
 }
 
 #pragma mark construct data
-- (std::string)construct_no_params_req
+- (std::string)construct_login_req
 {
     NSDictionary *dic = @{
-                          @"message_type":@"session_record",
-                          @"PHPSESSION":@"",
+                          @"message_type":SOCKET_API_REQUEST_LOGIN,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
                           };
@@ -241,12 +256,25 @@ public:
     return buf;
 }
 
-- (std::string)construct_req_param:(NSDictionary *)params
+- (std::string)construct_heart_beat
+{
+    NSDictionary *dic = @{
+                          @"message_type":SOCKET_API_REQUEST_HEART_BEAT,
+                          @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
+                          @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
+                          };
+    
+    
+    NSString *string = [dic jsonString];
+    std::string buf([string UTF8String]);
+    return buf;
+}
+
+- (std::string)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType
 {
     NSString *uuid = [self uuidString];
     NSDictionary *dic = @{
-                          @"message_type":@"message_send_req",
-                          @"PHPSESSID":@"",
+                          @"message_type":messageType,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
                           @"param":[params socketParamsString],
