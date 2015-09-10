@@ -15,6 +15,7 @@
 #import "NSDictionary+Json.h"
 #import "BJTimer.h"
 #import "NSString+Json.h"
+#import "NSError+BJIM.h"
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -75,6 +76,7 @@ public:
 }
 
 @property (nonatomic, strong) BJTimer *heartBeatTimer;
+@property (nonatomic, strong) NSMutableDictionary *requestQueue;
 
 @end
 
@@ -150,8 +152,12 @@ public:
     [dic setObject:[NSString stringWithFormat:@"%ld", message.msg_t] forKey:@"msg_t"];
     [dic setObject:message.sign forKey:@"sign"];
     
-    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND];
+    NSString *uuid = [self uuidString];
+    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
     webSocket->send(data);
+    
+    [self.requestQueue setObject:message forKey:uuid];
+    
 }
 
 - (void)postPullRequest:(int64_t)max_user_msg_id
@@ -178,7 +184,8 @@ public:
         [dic setObject:excludeUserMsgs forKey:@"exclude_msg_ids"];
     }
     
-    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL];
+    NSString *uuid = [self uuidString];
+    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid];
     webSocket->send(data);
 }
 
@@ -199,20 +206,57 @@ public:
         // 每次登陆完成后，拉一次消息。
         [self.pollingDelegate onShouldStartPolling];
     }
-    else if ([message isEqualToString:SOCKET_API_RESPONSE_HEART_BEAT])
+    else if ([messageType isEqualToString:SOCKET_API_RESPONSE_HEART_BEAT])
     { // 心跳回调
         self.engineActive = YES;
     }
-    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_PULL])
+    else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_PULL])
     { // 拉消息回调
+        [self dealPullMessage:[response jsonValue]];
     }
-    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_SEND])
+    else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_SEND])
     { // 发消息回调
-    
+        [self dealPostMessage:[response jsonValue] sign:sign];
     }
-    else if ([message isEqualToString:SOCKET_API_RESPONSE_MESSAGE_NEW])
+    else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_NEW])
     { // 有新消息
         [self.pollingDelegate onShouldStartPolling];
+    }
+}
+
+- (void)dealPostMessage:(NSDictionary *)response sign:(NSString *)uuid
+{
+    NSError *error;
+    BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+    IMMessage *msg = [self.requestQueue objectForKey:uuid];
+    if (result && result.code == RESULT_CODE_SUCC)
+    {
+        SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
+        
+        [self.postMessageDelegate onPostMessageSucc:msg result:model];
+    }
+    else
+    {
+        [self callbackErrorCode:result.code errMsg:result.msg];
+        NSError *error = [NSError bjim_errorWithReason:result.msg code:result.code];
+        [self.postMessageDelegate onPostMessageFail:msg error:error];
+    }
+    
+    [self.requestQueue removeObjectForKey:uuid];
+}
+
+- (void)dealPullMessage:(NSDictionary *)response
+{
+    NSError *error;
+    BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+    if (result && result.code == RESULT_CODE_SUCC)
+    {
+        PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
+        [self.pollingDelegate onPollingFinish:model];
+    }
+    else
+    {
+        [self callbackErrorCode:result.code errMsg:result.msg];
     }
 }
 
@@ -270,9 +314,8 @@ public:
     return buf;
 }
 
-- (std::string)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType
+- (std::string)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType sign:(NSString *)uuid
 {
-    NSString *uuid = [self uuidString];
     NSDictionary *dic = @{
                           @"message_type":messageType,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
@@ -290,6 +333,15 @@ public:
 {
     double time = [[NSDate date] timeIntervalSince1970];
     return [NSString stringWithFormat:@"%lf", time];
+}
+
+- (NSMutableDictionary *)requestQueue
+{
+    if (_requestQueue == nil)
+    {
+        _requestQueue = [[NSMutableDictionary alloc] init];
+    }
+    return _requestQueue;
 }
 
 #pragma mark - WebSocket Delegate
@@ -311,7 +363,7 @@ void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network:
 
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
-    [engine reconnect];
+//    [engine reconnect];
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
