@@ -32,6 +32,8 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define SOCKET_API_RESPONSE_HEART_BEAT      @"heart_beat"
 #define SOCKET_API_RESPONSE_MESSAGE_NEW     @"message_new"
 
+#define SOCKET_HOST_TEST  @""
+
 
 @interface NSDictionary (SocketParams)
 
@@ -77,6 +79,7 @@ public:
 
 @property (nonatomic, strong) BJTimer *heartBeatTimer;
 @property (nonatomic, strong) NSMutableDictionary *requestQueue;
+@property (nonatomic, assign) NSInteger retryConnectCount;
 
 @end
 
@@ -116,6 +119,7 @@ public:
     socketDelegate = new IMSocketDelegate();
     socketDelegate->engine = self;
     webSocket->init(*socketDelegate, "ws://192.168.19.102:3021");
+    _retryConnectCount = 0;
 }
 
 - (void)stop
@@ -199,7 +203,7 @@ public:
     NSString *sign = [result objectForKey:@"sign"];
     NSString *response = [result objectForKey:@"response"];
     
-    if ([message isEqualToString:SOCKET_API_RESPONSE_LOGIN])
+    if ([messageType isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
 //        登陆成功后再开启心跳
         self.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
@@ -276,6 +280,8 @@ public:
 {
     [self stop];
     [self start];
+    
+    _retryConnectCount ++ ;
 }
 
 - (void)doLogin

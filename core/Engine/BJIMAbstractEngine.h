@@ -15,6 +15,19 @@
 #import "SyncConfigModel.h"
 #import "GetGroupMemberModel.h"
 
+typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
+{
+    IMNetwork_Efficiency_High = 1, // 高网络效率
+    IMNetwork_Efficiency_Normal = 2,
+    IMNetwork_Efficiency_Low = 3
+};
+
+@class BJIMAbstractEngine;
+@protocol IMEngineNetworkEfficiencyDelegate <NSObject>
+
+- (void)networkEfficiencyChanged:(IMNetworkEfficiency)efficiency engine:(BJIMAbstractEngine *)engine;
+
+@end
 
 @protocol IMEnginePostMessageDelegate <NSObject>
 
@@ -61,6 +74,9 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 @property (nonatomic, weak) id<IMEngineSynContactDelegate> synContactDelegate;
 @property (nonatomic, weak) id<IMEngineGetMessageDelegate> getMsgDelegate;
 @property (nonatomic, weak) id<IMEngineSyncConfigDelegate> syncConfigDelegate;
+
+
+@property (nonatomic, weak) id<IMEngineNetworkEfficiencyDelegate> networkEfficiencyDelegate;
 
 @property (nonatomic, copy) errCodeFilterCallback errCodeFilterCallback;
 
