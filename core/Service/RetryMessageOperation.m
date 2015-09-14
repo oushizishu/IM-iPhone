@@ -25,6 +25,14 @@
     
     conversation.lastMessageId = self.message.msgId;
     
+    if (self.message.msg_t == eChatType_GroupChat)
+    {
+        Group *group = [self.imService.imStorage.groupDao load:self.message.receiver];
+        group.lastMessageId = self.message.msgId;
+        group.endMessageId = self.message.msgId;
+        [self.imService.imStorage.groupDao insertOrUpdate:group];
+    }
+    
     [self.imService.imStorage.conversationDao update:conversation];
     [self.imService.imStorage.messageDao update:self.message];
 }

@@ -288,7 +288,7 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         User *owner = [IMEnvironment shareInstance].owner;
-        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:groupId userRole:owner.userId groupId:owner.userRole];
+        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:groupId];
         groupMember.msgStatus = status;
         group.msgStatus = status;
         [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
@@ -306,7 +306,7 @@ static char BJGroupMamagerDelegateKey;
             return ;
         }
         User *owner = [IMEnvironment shareInstance].owner;
-        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:groupId userRole:owner.userId groupId:owner.userRole];
+        GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:groupId];
         groupMember.pushStatus = status;
         [weakSelf.imStorage.groupDao load:groupId].pushStatus = status;
         [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];

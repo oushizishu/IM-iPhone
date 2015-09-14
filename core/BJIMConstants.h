@@ -115,6 +115,7 @@ static const int MESSAGE_PAGE_COUNT = 30;
 static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 #pragma mark - delegates
+
 @protocol IMConversationChangedDelegate <NSObject>
 
 - (void)didConversationDidChanged;
@@ -184,6 +185,16 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 @protocol IMDisconnectionDelegate <NSObject>
 
 - (void)didDisconnectionServer:(IMErrorType)code errMsg:(NSString *)errorMessage;
+
+@end
+
+/**
+ *  主动处理登陆退出回调
+ */
+@protocol IMLoginLogoutDelegate <NSObject>
+
+- (void)didIMManagerLoginFinish;
+- (void)didIMManagerLogoutFinish;
 
 @end
 

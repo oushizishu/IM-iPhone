@@ -120,6 +120,7 @@
 - (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
 - (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
+- (void)addLoginLogoutDelegate:(id<IMLoginLogoutDelegate>)delegate;
 
 @end
 

@@ -66,6 +66,8 @@
         // 重复登录，节省资源
         [IMEnvironment shareInstance].owner.name = userName;
         [IMEnvironment shareInstance].owner.avatar = userAvatar;
+        
+        [self.imService notifyIMLoginFinish];
         return;
     }
     
@@ -80,12 +82,14 @@
     [[IMEnvironment shareInstance] loginWithOauthToken:OauthToken owner:owner];
     
     [self.imService startServiceWithOwner:owner];
+    [self.imService notifyIMLoginFinish];
 }
 
 - (void)logout
 {
     [self.imService stopService];
     [[IMEnvironment shareInstance] logout];
+    [self.imService notifyIMLogoutFinish];
 }
 
 #pragma mark - 消息操作
@@ -375,6 +379,11 @@
 - (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate
 {
     [self.imService addDisconnectionDelegate:delegate];
+}
+
+- (void)addLoginLogoutDelegate:(id<IMLoginLogoutDelegate>)delegate
+{
+    [self.imService addLoginLogoutDelegate:delegate];
 }
 
 @end;

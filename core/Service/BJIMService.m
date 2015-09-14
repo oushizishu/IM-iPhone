@@ -46,6 +46,7 @@
 @property (nonatomic, strong) NSHashTable *userInfoDelegates;
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
+@property (nonatomic, strong) NSHashTable *imLoginLogoutDelegates;
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
@@ -827,6 +828,41 @@
     id<IMDisconnectionDelegate> delegate = nil;
     while (delegate = [enumerator nextObject]) {
         [delegate didDisconnectionServer:code errMsg:msg];
+    }
+}
+
+- (void)addLoginLogoutDelegate:(id<IMLoginLogoutDelegate>)delegate
+{
+    if (self.imLoginLogoutDelegates == nil)
+    {
+        self.imLoginLogoutDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    [self.imLoginLogoutDelegates addObject:delegate];
+}
+
+- (void)notifyIMLoginFinish
+{
+    NSEnumerator *enumerator = [self.imLoginLogoutDelegates objectEnumerator];
+    id<IMLoginLogoutDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(didIMManagerLoginFinish)])
+        {
+            [delegate didIMManagerLoginFinish];
+        }
+    }
+}
+
+- (void)notifyIMLogoutFinish
+{
+    NSEnumerator *enumerator = [self.imLoginLogoutDelegates objectEnumerator];
+    id<IMLoginLogoutDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(didIMManagerLogoutFinish)])
+        {
+            [delegate didIMManagerLogoutFinish];
+        }
     }
 }
 

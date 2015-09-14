@@ -38,10 +38,14 @@
     {
         Group *group = [self.imService.imStorage.groupDao load:self.conversation.toId];
         
-        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [group.lastMessageId doubleValue] + 0.0001] : self.minMsgId;
+        NSString *minConversationMsgId = [self.imService.imStorage.messageDao queryMinMsgIdInConversation:self.conversationId];
+        NSString *maxConversationMsgId = [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid];
+        
+        group.lastMessageId = maxConversationMsgId;
+        
+        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
         self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
         
-        NSString *minConversationMsgId = [self.imService.imStorage.messageDao queryMinMsgIdInConversation:self.conversationId];
         if (self.model == nil)
         {
             //getMsg 失败. 只从本地加载更多数据
