@@ -103,7 +103,7 @@ static char BJGroupMamagerDelegateKey;
         if (!err) {
             User *owner = [IMEnvironment shareInstance].owner;
             Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
-            if ([weakSelf deleteConversation:conv owner:[IMEnvironment shareInstance].owner]) {
+            if (conv && [weakSelf deleteConversation:conv owner:[IMEnvironment shareInstance].owner]) {
                 [weakSelf notifyConversationChanged];
             }
             else
