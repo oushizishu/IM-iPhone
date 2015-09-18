@@ -16,6 +16,8 @@
 #import "BJTimer.h"
 #import "NSString+Json.h"
 #import "NSError+BJIM.h"
+#import "NSUserDefaults+Device.h"
+#import "NSString+MD5Addition.h"
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -32,7 +34,48 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define SOCKET_API_RESPONSE_HEART_BEAT      @"heart_beat"
 #define SOCKET_API_RESPONSE_MESSAGE_NEW     @"message_new"
 
-#define SOCKET_HOST_TEST  @""
+#define SOCKET_HOST_TEST                    @"ws://test-im-proxy.genshuixue.com"
+#define SOCKET_HOST_BETA                    @"ws://beta-im-proxy.genshuixue.com:8080"
+#define SOCKET_HOST_WWW                     @"ws://im-proxy.genshuixue.com"
+#define SOCKET_HOST_APIS                    @[SOCKET_HOST_TEST, SOCKET_HOST_BETA, SOCKET_HOST_WWW]
+#define SOCKET_HOST                         SOCKET_HOST_APIS[[IMEnvironment shareInstance].debugMode]
+
+/**
+ 每次请求的参数封装
+ */
+@interface RequestItem : NSObject
+
+- (instancetype)initWithRequestPostMessage:(IMMessage *)message;
+- (instancetype)initWithRequestPullMessage;
+
+@property (nonatomic, copy, readonly) NSString *requestType;
+@property (nonatomic, strong, readonly) IMMessage *message;
+
+@end
+
+@implementation RequestItem
+
+- (instancetype)initWithRequestPostMessage:(IMMessage *)message
+{
+    self = [super init];
+    if (self)
+    {
+        _requestType = SOCKET_API_REQUEST_MESSAGE_SEND;
+        _message = message;
+    }
+    return self;
+}
+
+- (instancetype)initWithRequestPullMessage
+{
+    self = [super init];
+    if (self)
+    {
+        _requestType = SOCKET_API_REQUEST_MESSAGE_PULL;
+    }
+    return self;
+}
+@end
 
 
 @interface NSDictionary (SocketParams)
@@ -55,6 +98,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             [ret appendFormat:@"&"];
         }
     }
+    
     return ret;
 }
 
@@ -80,6 +124,8 @@ public:
 @property (nonatomic, strong) BJTimer *heartBeatTimer;
 @property (nonatomic, strong) NSMutableDictionary *requestQueue;
 @property (nonatomic, assign) NSInteger retryConnectCount;
+@property (nonatomic, copy) NSString *device;
+@property (nonatomic, copy) NSString *token;
 
 @end
 
@@ -115,10 +161,17 @@ public:
     }
     
     [self stop];
+    
+    self.device = [NSUserDefaults deviceString];
+    self.token = [NSString stringWithFormat:@"%@Hermes%lld%ld", self.device, [IMEnvironment shareInstance].owner.userId, (long)[IMEnvironment shareInstance].owner.userRole];
+    self.token = [self.token stringFromMD5];
+    
     webSocket = network::WebSocketInterface::createWebsocket();
     socketDelegate = new IMSocketDelegate();
     socketDelegate->engine = self;
-    webSocket->init(*socketDelegate, "ws://192.168.19.102:3021");
+    
+    std::string url([SOCKET_HOST UTF8String]);
+    webSocket->init(*socketDelegate, url);
     _retryConnectCount = 0;
 }
 
@@ -160,7 +213,8 @@ public:
     std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
     webSocket->send(data);
     
-    [self.requestQueue setObject:message forKey:uuid];
+    RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
+    [self.requestQueue setObject:item forKey:uuid];
     
 }
 
@@ -191,6 +245,10 @@ public:
     NSString *uuid = [self uuidString];
     std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid];
     webSocket->send(data);
+    
+    // 所有请求都需要临时缓存起来
+    RequestItem *item = [[RequestItem alloc] initWithRequestPullMessage];
+    [self.requestQueue setObject:item forKey:uuid];
 }
 
 - (void)didReciveMessage:(NSString *)message
@@ -216,7 +274,7 @@ public:
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_PULL])
     { // 拉消息回调
-        [self dealPullMessage:[response jsonValue]];
+        [self dealPullMessage:[response jsonValue] sign:sign];
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_SEND])
     { // 发消息回调
@@ -249,7 +307,7 @@ public:
     [self.requestQueue removeObjectForKey:uuid];
 }
 
-- (void)dealPullMessage:(NSDictionary *)response
+- (void)dealPullMessage:(NSDictionary *)response sign:(NSString *)uuid
 {
     NSError *error;
     BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -262,6 +320,9 @@ public:
     {
         [self callbackErrorCode:result.code errMsg:result.msg];
     }
+    
+    // 从缓存中清除请求
+    [self.requestQueue removeObjectForKey:uuid];
 }
 
 /**
@@ -278,10 +339,40 @@ public:
  */
 - (void)reconnect
 {
+
     [self stop];
     [self start];
     
+    if (_retryConnectCount > 5)
+    { //重连了五次没有成功
+        if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+        {
+            [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
+        }
+        DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
+    }
+    
     _retryConnectCount ++ ;
+    
+}
+
+- (void)cancelAllRequest
+{
+    NSArray *array = [self.requestQueue allValues];
+    
+    for (NSInteger index = 0; index < array.count; ++ index)
+    {
+        RequestItem *item = [array objectAtIndex:index];
+        if ([item.requestType isEqualToString:SOCKET_API_REQUEST_MESSAGE_SEND])
+        {
+            [self.postMessageDelegate onPostMessageFail:item.message error:[NSError bjim_errorWithReason:@"网络异常" code:404]];
+        }
+        else if ([item.requestType isEqualToString:SOCKET_API_REQUEST_MESSAGE_PULL])
+        {
+        }
+    }
+    
+    [self.requestQueue removeAllObjects];
 }
 
 - (void)doLogin
@@ -298,6 +389,7 @@ public:
                           @"message_type":SOCKET_API_REQUEST_LOGIN,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
+                          @"uuid":self.device
                           };
     
     
@@ -312,6 +404,7 @@ public:
                           @"message_type":SOCKET_API_REQUEST_HEART_BEAT,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
+                          @"token":self.token
                           };
     
     
@@ -327,7 +420,8 @@ public:
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
                           @"param":[params socketParamsString],
-                          @"sign":uuid
+                          @"sign":uuid,
+                          @"token":self.token
                           };
     
     NSString *str = [dic jsonString];
@@ -370,13 +464,15 @@ void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network:
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
 //    [engine reconnect];
+    [engine cancelAllRequest];
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
 {
     [engine reconnect];
+    // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
+    [engine cancelAllRequest];
 }
-
 
 @end
 

@@ -151,4 +151,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 - (void)unregisterErrorCode:(IMErrorType)code;
 - (void)callbackErrorCode:(NSInteger)errCode  errMsg:(NSString *)errMsg;
 
+#pragma mark - net request time.
+- (void)recordHttpRequestTime:(NSTimeInterval)time;
+- (NSTimeInterval)getAverageRequestTime;
 @end

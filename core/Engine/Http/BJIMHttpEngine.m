@@ -60,7 +60,11 @@ static int ddLogLevel = DDLogLevelVerbose;
 - (void)syncConfig
 {
     __WeakSelf__ weakSelf = self;
+    NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
+        
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
@@ -72,11 +76,13 @@ static int ddLogLevel = DDLogLevelVerbose;
         else
         {
             DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Sync Config Fail [%@]", error.userInfo);
         
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
     }];
 }
 
@@ -84,7 +90,10 @@ static int ddLogLevel = DDLogLevelVerbose;
 - (void)postMessage:(IMMessage *)message
 {
     __WeakSelf__ weakSelf = self;
+    NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
@@ -94,15 +103,21 @@ static int ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
             NSError *error = [[NSError alloc] initWithDomain:params.url code:result.code userInfo:@{@"msg":result.msg}];
             [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
             DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
         }
+        [weakSelf checkNetworkQuality];
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
         NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
         [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
+        
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
+        
+        [weakSelf checkNetworkQuality];
     }];
 }
 
@@ -112,7 +127,12 @@ static int ddLogLevel = DDLogLevelVerbose;
               currentGroup:(int64_t)groupId
 {
     __WeakSelf__ weakSelf = self;
+    NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
+        
         _bIsPollingRequesting = NO;
         
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
@@ -149,13 +169,20 @@ static int ddLogLevel = DDLogLevelVerbose;
         {
             DDLogWarn(@"Post Polling Fail [url:%@][msg:%@]", params.url, params.urlPostParams);
             [weakSelf nextPollingAt];
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
+        
+        [weakSelf checkNetworkQuality];
         
     } failure:^(NSError *error, RequestParams *params) {
         _bIsPollingRequesting = NO;
         DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
         [weakSelf nextPollingAt];
+        
+        NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
+        [weakSelf recordHttpRequestTime:endTime - startTime];
+        
+        [weakSelf checkNetworkQuality];
     }];
 
 }
@@ -204,6 +231,34 @@ static int ddLogLevel = DDLogLevelVerbose;
     }
     
     return _pollingTimer;
+}
+
+/**
+ *  检查网络质量
+ */
+- (void)checkNetworkQuality
+{
+    NSTimeInterval requestAverageTime = [self getAverageRequestTime];
+    IMNetworkEfficiency quality = IMNetwork_Efficiency_Normal;
+    
+    if (requestAverageTime < 2.0)
+    {
+        quality = IMNetwork_Efficiency_High;
+    }
+    else if (requestAverageTime < 10)
+    {
+        quality = IMNetwork_Efficiency_Normal;
+    }
+    else
+    {
+        quality = IMNetwork_Efficiency_Low;
+    }
+    
+    if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+    {
+        [self.networkEfficiencyDelegate networkEfficiencyChanged:quality engine:self];
+    }
+        
 }
 
 @end

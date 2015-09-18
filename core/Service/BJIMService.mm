@@ -26,6 +26,7 @@
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
 
+#import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
 #import "BJIMSocketEngine.h"
 
@@ -33,7 +34,8 @@
                          IMEngineSynContactDelegate,
                          IMEnginePollingDelegate,
                          IMEngineGetMessageDelegate,
-                         IMEngineSyncConfigDelegate>
+                         IMEngineSyncConfigDelegate,
+                         IMEngineNetworkEfficiencyDelegate>
 
 
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
@@ -62,13 +64,29 @@
 - (void)startServiceWithOwner:(User *)owner
 {
     self.bIsServiceActive = YES;
+   
+    [self.imStorage.userDao insertOrUpdateUser:owner];
+    [self startEngine];
+   
+    // bugfix
+    /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
+     修复过一次以后就不再需要了*/
+    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
+    {
+        ResetMsgIdOperation *operation = [[ResetMsgIdOperation alloc] init];
+        operation.imService = self;
+        [self.writeOperationQueue addOperation:operation];
+    }
+}
+
+- (void)startEngine
+{
     self.imEngine.pollingDelegate = self;
     self.imEngine.postMessageDelegate = self;
     self.imEngine.getMsgDelegate = self;
     self.imEngine.synContactDelegate = self;
     self.imEngine.syncConfigDelegate = self;
-    
-    [self.imStorage.userDao insertOrUpdateUser:owner];
+    self.imEngine.networkEfficiencyDelegate = self;
     
     [self.imEngine start];
     
@@ -81,16 +99,21 @@
     };
     
     [self.imEngine registerErrorCode:eError_token_invalid];
+}
+
+- (void)stopEngine
+{
+    [self.imEngine stop];
     
-    // bugfix
-    /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
-     修复过一次以后就不再需要了*/
-    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
-    {
-        ResetMsgIdOperation *operation = [[ResetMsgIdOperation alloc] init];
-        operation.imService = self;
-        [self.writeOperationQueue addOperation:operation];
-    }
+    self.imEngine.pollingDelegate = nil;
+    self.imEngine.postMessageDelegate = nil;
+    self.imEngine.getMsgDelegate = nil;
+    self.imEngine.synContactDelegate = nil;
+    self.imEngine.syncConfigDelegate = nil;
+    self.imEngine.networkEfficiencyDelegate = nil;
+    
+    [self.imEngine unregisterErrorCode:eError_token_invalid];
+    self.imEngine.errCodeFilterCallback = nil;
 }
 
 - (void)stopService
@@ -99,20 +122,11 @@
     [self.writeOperationQueue cancelAllOperations];
     self.bIsServiceActive = NO;
     
-    [self.imEngine stop];
-    
-    self.imEngine.pollingDelegate = nil;
-    self.imEngine.postMessageDelegate = nil;
-    self.imEngine.getMsgDelegate = nil;
-    self.imEngine.synContactDelegate = nil;
-    self.imEngine.syncConfigDelegate = nil;
+    [self stopEngine];
     
     self.systemSecretary = nil;
     self.customeWaiter = nil;
-    
-    [self.imEngine unregisterErrorCode:eError_token_invalid];
-    self.imEngine.errCodeFilterCallback = nil;
-    
+   
     [self.imStorage clearSession];
 }
 
@@ -264,6 +278,31 @@
     User *waiter = [self getCustomWaiter];
     waiter.userId = model.customWaiter.number;
     waiter.userRole = (IMUserRole)model.customWaiter.role;
+}
+
+#pragma mark - network efficiency delegate
+- (void)networkEfficiencyChanged:(IMNetworkEfficiency)efficiency engine:(BJIMAbstractEngine *)engine
+{
+    if ([engine isKindOfClass:[BJIMHttpEngine class]])
+    {
+        if (efficiency == IMNetwork_Efficiency_High || efficiency == IMNetwork_Efficiency_Normal)
+        {
+            // 短连接模式下，网络速率良好. 改用 socket 连接
+            [self stopEngine];
+            _imEngine = [[BJIMSocketEngine alloc] init];
+            [self startEngine];
+        }
+    }
+    else
+    {
+        if (efficiency == IMNetwork_Efficiency_Low)
+        {
+            // 长连接模式下，网络连接效率底下。改为短链接
+            [self stopEngine];
+            _imEngine = [[BJIMHttpEngine alloc] init];
+            [self startEngine];
+        }
+    }
 }
 
 
@@ -535,9 +574,6 @@
     {
         //默认使用 Socket Engine.
         _imEngine = [[BJIMSocketEngine alloc] init];
-//        _imEngine = [bjimso];
-//        _imEngine = [[BJIMHttpEngine alloc] init];
-//        _imEngine.synContactDelegate = self;
     }
     return _imEngine;
 }
