@@ -622,13 +622,15 @@
     
     [self.conversationDelegates addObject:delegate];
 }
+
 - (void)notifyConversationChanged
 {
     NSEnumerator *enumerator = [self.conversationDelegates objectEnumerator];
     id<IMConversationChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didConversationDidChanged];
+        if ([delegate respondsToSelector:@selector(didConversationDidChanged)])
+             [delegate didConversationDidChanged];
     }
 }
 
@@ -647,7 +649,8 @@
     id<IMReceiveNewMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didReceiveNewMessages:newMessages];
+        if ([delegate respondsToSelector:@selector(didReceiveNewMessages:)])
+            [delegate didReceiveNewMessages:newMessages];
     }
 }
 
@@ -667,7 +670,8 @@
     id<IMDeliveredMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate willDeliveryMessage:message];
+        if ([delegate respondsToSelector:@selector(willDeliveryMessage:)])
+            [delegate willDeliveryMessage:message];
     }
 }
 
@@ -679,7 +683,8 @@
     id<IMDeliveredMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didDeliveredMessage:message errorCode:errorCode error:errorMsg];
+        if ([delegate respondsToSelector:@selector(didDeliveredMessage:errorCode:error:)])
+            [delegate didDeliveredMessage:message errorCode:errorCode error:errorMsg];
     }
 }
 
@@ -699,7 +704,8 @@
     id<IMCmdMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didReceiveCommand:cmdMessages];
+        if ([delegate respondsToSelector:@selector(didReceiveCommand:)])
+            [delegate didReceiveCommand:cmdMessages];
     }
 }
 
@@ -718,7 +724,8 @@
     id<IMContactsChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didMyContactsChanged];
+        if ([delegate respondsToSelector:@selector(didMyContactsChanged)])
+            [delegate didMyContactsChanged];
     }
 }
 
@@ -738,7 +745,8 @@
     id<IMLoadMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didPreLoadMessages:messages conversation:conversation];
+        if ([delegate respondsToSelector:@selector(didPreLoadMessages:conversation:)])
+            [delegate didPreLoadMessages:messages conversation:conversation];
     }
 }
 
@@ -748,7 +756,8 @@
     id<IMLoadMessageDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didLoadMessages:messages conversation:conversation hasMore:hasMore];
+        if ([delegate respondsToSelector:@selector(didLoadMessages:conversation:hasMore:)])
+            [delegate didLoadMessages:messages conversation:conversation hasMore:hasMore];
     }
 }
 
@@ -768,7 +777,8 @@
     id<IMRecentContactsDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didLoadRecentContacts:contacts];
+        if ([delegate respondsToSelector:@selector(didLoadRecentContacts:)])
+            [delegate didLoadRecentContacts:contacts];
     }
 }
 
@@ -789,7 +799,8 @@
     id<IMUserInfoChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didUserInfoChanged:user];
+        if ([delegate respondsToSelector:@selector(didUserInfoChanged:)])
+            [delegate didUserInfoChanged:user];
     }
 }
 
@@ -809,7 +820,8 @@
     id<IMGroupProfileChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        [delegate didGroupProfileChanged:group];
+        if ([delegate respondsToSelector:@selector(didGroupProfileChanged:)])
+            [delegate didGroupProfileChanged:group];
     }
 }
 
@@ -827,7 +839,8 @@
     NSEnumerator *enumerator = [self.disconnectionStateDelegates objectEnumerator];
     id<IMDisconnectionDelegate> delegate = nil;
     while (delegate = [enumerator nextObject]) {
-        [delegate didDisconnectionServer:code errMsg:msg];
+        if ([delegate respondsToSelector:@selector(didDisconnectionServer:errMsg:)])
+            [delegate didDisconnectionServer:code errMsg:msg];
     }
 }
 
@@ -848,7 +861,8 @@
     {
         if ([delegate respondsToSelector:@selector(didIMManagerLoginFinish)])
         {
-            [delegate didIMManagerLoginFinish];
+            if ([delegate respondsToSelector:@selector(didIMManagerLoginFinish)])
+                [delegate didIMManagerLoginFinish];
         }
     }
 }
@@ -861,7 +875,8 @@
     {
         if ([delegate respondsToSelector:@selector(didIMManagerLogoutFinish)])
         {
-            [delegate didIMManagerLogoutFinish];
+            if ([delegate respondsToSelector:@selector(didIMManagerLogoutFinish)])
+                [delegate didIMManagerLogoutFinish];
         }
     }
 }
