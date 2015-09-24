@@ -25,7 +25,7 @@
     
     conversation.lastMessageId = self.message.msgId;
     
-    if (self.message.msg_t == eChatType_GroupChat)
+    if (self.message.chat_t == eChatType_GroupChat)
     {
         Group *group = [self.imService.imStorage.groupDao load:self.message.receiver];
         group.lastMessageId = self.message.msgId;
