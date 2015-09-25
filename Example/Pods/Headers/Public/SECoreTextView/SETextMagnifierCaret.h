@@ -1,1 +1,0 @@
-../../../SECoreTextView/Lib/SETextMagnifierCaret.h

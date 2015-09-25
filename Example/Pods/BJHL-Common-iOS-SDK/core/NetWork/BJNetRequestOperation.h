@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <AFHTTPRequestOperation.h>
+#import <AFNetworking/AFHTTPRequestOperation.h>
 
 @interface BJNetRequestOperation : NSObject
 

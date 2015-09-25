@@ -44,7 +44,7 @@
         return NO;
     }
     self.originAudioCategory = [[AVAudioSession sharedInstance] category];
-    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayAndRecord error:NULL];
+    [[AVAudioSession sharedInstance] setCategory: AVAudioSessionCategoryPlayback error:NULL];
     [[AVAudioSession sharedInstance] overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:nil];
     
     [[AVAudioSession sharedInstance] setActive:YES error:nil];

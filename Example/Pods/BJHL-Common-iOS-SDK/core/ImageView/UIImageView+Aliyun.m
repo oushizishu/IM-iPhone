@@ -39,12 +39,23 @@
         if (radius){
             param = [param stringByAppendingFormat:@"_%ld-2ci", (long)radius];
         }*/
-        
+       
+        NSString *pathExtension = @"";
+        if (url.absoluteString.pathExtension.length>0) {
+            pathExtension = [NSString stringWithFormat:@".%@",url.absoluteString.pathExtension];
+        }
         NSRange r = [url.absoluteString rangeOfString:@"?"];
         if (r.location == NSNotFound){
-            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@", url.absoluteString, param]];
+            url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@%@", url.absoluteString, param,pathExtension]];
         } else {
-            NSString *urlStr = [NSString stringWithFormat:@"%@%@?%@", [url.absoluteString substringToIndex:r.location], param, [url.absoluteString substringFromIndex:r.location]];
+            NSString *urlStr = @"";
+            if (pathExtension.length>0) {
+                urlStr = [NSString stringWithFormat:@"%@%@%@", [url.absoluteString substringToIndex:r.location], param, pathExtension];
+            }
+            else
+            {
+                urlStr = [NSString stringWithFormat:@"%@%@%@", [url.absoluteString substringToIndex:r.location], param, [url.absoluteString substringFromIndex:r.location]];
+            }
             url = [NSURL URLWithString:urlStr];
         }
         [self sd_setImageWithURL:url placeholderImage:placeholder options:SDWebImageRetryFailed completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
