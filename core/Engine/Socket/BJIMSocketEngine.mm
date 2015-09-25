@@ -188,25 +188,39 @@ public:
     self.engineActive = NO;
 }
 
+- (NSString *)URLEncodedString:(NSString*)str
+{
+    __autoreleasing NSString *encodedString;
+    NSString *originalString = (NSString *)str;
+    encodedString = (__bridge_transfer NSString *)CFURLCreateStringByAddingPercentEscapes(
+        NULL,
+        (__bridge CFStringRef)originalString,
+        NULL,
+        (CFStringRef)@":!*();@/&?#[]+$,='%’\"",
+        kCFStringEncodingUTF8
+        );
+    return encodedString;
+}
+
 - (void)postMessage:(IMMessage *)message
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;
     
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    [dic setObject:[NSString stringWithFormat:@"%lld", message.sender] forKey:@"sender"];
-    [dic setObject:[NSString stringWithFormat:@"%ld", message.senderRole] forKey:@"sender_r"];
-    [dic setObject:[NSString stringWithFormat:@"%lld", message.receiver] forKey:@"receiver"];
-    [dic setObject:[NSString stringWithFormat:@"%ld", message.receiverRole] forKey:@"receiver_r"];
-    [dic setObject:[message.messageBody description] forKey:@"body"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.senderRole]] forKey:@"sender_r"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.receiver]] forKey:@"receiver"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.receiverRole]] forKey:@"receiver_r"];
+    [dic setObject:[self URLEncodedString:[message.messageBody description]] forKey:@"body"];
     if (message.ext)
     {
         NSString *ext = [message.ext jsonString];
         if (ext)
-            [dic setObject:ext forKey:@"ext"];
+            [dic setObject:[self URLEncodedString:ext] forKey:@"ext"];
     }
-    [dic setObject:[NSString stringWithFormat:@"%ld", message.chat_t] forKey:@"chat_t"];
-    [dic setObject:[NSString stringWithFormat:@"%ld", message.msg_t] forKey:@"msg_t"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.chat_t]] forKey:@"chat_t"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.msg_t]] forKey:@"msg_t"];
     [dic setObject:message.sign forKey:@"sign"];
     
     NSString *uuid = [self uuidString];
@@ -389,7 +403,8 @@ public:
                           @"message_type":SOCKET_API_REQUEST_LOGIN,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", [IMEnvironment shareInstance].owner.userRole],
-                          @"uuid":self.device
+                          @"device":self.device,
+                          @"token":self.token
                           };
     
     
