@@ -304,18 +304,18 @@ public:
 {
     NSError *error;
     BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-    IMMessage *msg = [self.requestQueue objectForKey:uuid];
+    RequestItem *item = [self.requestQueue objectForKey:uuid];
     if (result && result.code == RESULT_CODE_SUCC)
     {
         SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
         
-        [self.postMessageDelegate onPostMessageSucc:msg result:model];
+        [self.postMessageDelegate onPostMessageSucc:item.message result:model];
     }
     else
     {
         [self callbackErrorCode:result.code errMsg:result.msg];
         NSError *error = [NSError bjim_errorWithReason:result.msg code:result.code];
-        [self.postMessageDelegate onPostMessageFail:msg error:error];
+        [self.postMessageDelegate onPostMessageFail:item.message error:error];
     }
     
     [self.requestQueue removeObjectForKey:uuid];
