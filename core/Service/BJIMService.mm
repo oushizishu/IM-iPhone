@@ -223,6 +223,8 @@
 {
     if (! self.bIsServiceActive) return;
     
+    if (! model) return;
+    
     HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
     operation.imService = self;
     operation.model = model;

@@ -206,6 +206,13 @@ public:
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;
     
+    
+    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
+    {
+        [self.postMessageDelegate onPostMessageFail:message error:[NSError bjim_errorWithReason:@"连接网络失败" code:404]];
+        return;
+    }
+    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
@@ -238,6 +245,13 @@ public:
            currentGroup:(int64_t)groupId
 {
     if (![[IMEnvironment shareInstance] isLogin]) return;
+    
+    
+    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
+    {
+        [self.pollingDelegate onPollingFinish:nil];
+        return;
+    }
    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
