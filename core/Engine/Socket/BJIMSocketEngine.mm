@@ -40,6 +40,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define SOCKET_HOST_APIS                    @[SOCKET_HOST_TEST, SOCKET_HOST_BETA, SOCKET_HOST_WWW]
 #define SOCKET_HOST                         SOCKET_HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
+#define DISPATCH_ASYNC_MAIN_BEGIN                 dispatch_async(dispatch_get_main_queue(), ^{
+#define DISPATCH_ASYNC_MAIN_END                   });
+
 /**
  每次请求的参数封装
  */
@@ -281,7 +284,9 @@ public:
 
 - (void)didReciveMessage:(NSString *)message
 {
-    if (! self.isEngineActive) return;
+    __WeakSelf__ weakSelf = self;
+    DISPATCH_ASYNC_MAIN_BEGIN
+    if (! weakSelf.isEngineActive) return;
     NSDictionary *result = [message jsonValue];
     if (!result) return;
     
@@ -292,26 +297,28 @@ public:
     if ([messageType isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
 //        登陆成功后再开启心跳
-        self.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
+        weakSelf.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:weakSelf selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
         // 每次登陆完成后，拉一次消息。
-        [self.pollingDelegate onShouldStartPolling];
+        [weakSelf.pollingDelegate onShouldStartPolling];
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_HEART_BEAT])
     { // 心跳回调
-        self.engineActive = YES;
+        weakSelf.engineActive = YES;
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_PULL])
     { // 拉消息回调
-        [self dealPullMessage:[response jsonValue] sign:sign];
+        [weakSelf dealPullMessage:[response jsonValue] sign:sign];
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_SEND])
     { // 发消息回调
-        [self dealPostMessage:[response jsonValue] sign:sign];
+        [weakSelf dealPostMessage:[response jsonValue] sign:sign];
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_NEW])
     { // 有新消息
-        [self.pollingDelegate onShouldStartPolling];
+        [weakSelf.pollingDelegate onShouldStartPolling];
     }
+    
+    DISPATCH_ASYNC_MAIN_END
 }
 
 - (void)dealPostMessage:(NSDictionary *)response sign:(NSString *)uuid
@@ -367,47 +374,57 @@ public:
  */
 - (void)reconnect
 {
+    __WeakSelf__ weakSelf = self;
+    DISPATCH_ASYNC_MAIN_BEGIN
 
-    [self stop];
-    [self start];
+    [weakSelf stop];
+    [weakSelf start];
     
     if (_retryConnectCount > 5)
     { //重连了五次没有成功
-        if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+        if ([weakSelf.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
         {
-            [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
+            [weakSelf.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:weakSelf];
         }
         DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
     }
     
     _retryConnectCount ++ ;
     
+    DISPATCH_ASYNC_MAIN_END
 }
 
 - (void)cancelAllRequest
 {
-    NSArray *array = [self.requestQueue allValues];
+    __WeakSelf__ weakSelf = self;
+    DISPATCH_ASYNC_MAIN_BEGIN
+    NSArray *array = [weakSelf.requestQueue allValues];
     
     for (NSInteger index = 0; index < array.count; ++ index)
     {
         RequestItem *item = [array objectAtIndex:index];
         if ([item.requestType isEqualToString:SOCKET_API_REQUEST_MESSAGE_SEND])
         {
-            [self.postMessageDelegate onPostMessageFail:item.message error:[NSError bjim_errorWithReason:@"网络异常" code:404]];
+            [weakSelf.postMessageDelegate onPostMessageFail:item.message error:[NSError bjim_errorWithReason:@"网络异常" code:404]];
         }
         else if ([item.requestType isEqualToString:SOCKET_API_REQUEST_MESSAGE_PULL])
         {
         }
     }
     
-    [self.requestQueue removeAllObjects];
+    [weakSelf.requestQueue removeAllObjects];
+    
+    DISPATCH_ASYNC_MAIN_END
 }
 
 - (void)doLogin
 {
-    std::string data = [self construct_login_req];
+    __WeakSelf__ weakSelf = self;
+   DISPATCH_ASYNC_MAIN_BEGIN
+    std::string data = [weakSelf construct_login_req];
     webSocket->send(data);
-    self.engineActive = YES;
+    weakSelf.engineActive = YES;
+    DISPATCH_ASYNC_MAIN_END
 }
 
 #pragma mark construct data
@@ -481,36 +498,26 @@ IMSocketDelegate::~IMSocketDelegate()
 
 void IMSocketDelegate::onOpen(network::WebSocketInterface *ws)
 {
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [engine doLogin];
-    });
-    
+    [engine doLogin];
 }
 
 void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network::Data &data)
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        NSString *string = [NSString stringWithUTF8String:data.bytes];
-        [engine didReciveMessage:string];
-    });
+    NSString *string = [NSString stringWithUTF8String:data.bytes];
+    [engine didReciveMessage:string];
 }
 
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [engine reconnect];
-        [engine cancelAllRequest];
-    });
+    [engine reconnect];
+    [engine cancelAllRequest];
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [engine reconnect];
-        // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
-        [engine cancelAllRequest];
-    });
+    [engine reconnect];
+    // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
+    [engine cancelAllRequest];
 }
 
 @end
