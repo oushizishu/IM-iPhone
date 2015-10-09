@@ -212,7 +212,7 @@ public:
         [self.postMessageDelegate onPostMessageFail:message error:[NSError bjim_errorWithReason:@"连接网络失败" code:404]];
         return;
     }
-    
+   
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
@@ -481,26 +481,36 @@ IMSocketDelegate::~IMSocketDelegate()
 
 void IMSocketDelegate::onOpen(network::WebSocketInterface *ws)
 {
-    [engine doLogin];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [engine doLogin];
+    });
+    
 }
 
 void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network::Data &data)
 {
-    NSString *string = [NSString stringWithUTF8String:data.bytes];
-    [engine didReciveMessage:string];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        NSString *string = [NSString stringWithUTF8String:data.bytes];
+        [engine didReciveMessage:string];
+    });
 }
 
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
-//    [engine reconnect];
-    [engine cancelAllRequest];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [engine reconnect];
+        [engine cancelAllRequest];
+    });
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
 {
-    [engine reconnect];
-    // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
-    [engine cancelAllRequest];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [engine reconnect];
+        // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
+        [engine cancelAllRequest];
+    });
 }
 
 @end
