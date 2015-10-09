@@ -297,7 +297,7 @@ public:
     if ([messageType isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
 //        登陆成功后再开启心跳
-        weakSelf.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:2 target:weakSelf selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
+        weakSelf.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:120 target:weakSelf selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
         // 每次登陆完成后，拉一次消息。
         [weakSelf.pollingDelegate onShouldStartPolling];
     }
@@ -365,6 +365,8 @@ public:
  */
 -  (void)doHeartbeat
 {
+    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
+        return;
     std::string data = [self construct_heart_beat];
     webSocket->send(data);
 }
@@ -374,6 +376,7 @@ public:
  */
 - (void)reconnect
 {
+    
     __WeakSelf__ weakSelf = self;
     DISPATCH_ASYNC_MAIN_BEGIN
 
@@ -409,6 +412,7 @@ public:
         }
         else if ([item.requestType isEqualToString:SOCKET_API_REQUEST_MESSAGE_PULL])
         {
+            [weakSelf.pollingDelegate onPollingFinish:nil];
         }
     }
     
