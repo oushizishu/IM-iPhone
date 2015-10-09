@@ -219,9 +219,9 @@ public:
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.senderRole]] forKey:@"sender_r"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.senderRole]] forKey:@"sender_r"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.receiver]] forKey:@"receiver"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.receiverRole]] forKey:@"receiver_r"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.receiverRole]] forKey:@"receiver_r"];
     [dic setObject:[self URLEncodedString:[message.messageBody description]] forKey:@"body"];
     if (message.ext)
     {
@@ -229,8 +229,8 @@ public:
         if (ext)
             [dic setObject:[self URLEncodedString:ext] forKey:@"ext"];
     }
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.chat_t]] forKey:@"chat_t"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", message.msg_t]] forKey:@"msg_t"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.chat_t]] forKey:@"chat_t"];
+    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.msg_t]] forKey:@"msg_t"];
     [dic setObject:message.sign forKey:@"sign"];
     
     NSString *uuid = [self uuidString];

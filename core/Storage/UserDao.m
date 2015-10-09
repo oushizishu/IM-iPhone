@@ -16,10 +16,8 @@
 
 - (User *)loadUser:(int64_t)userId role:(IMUserRole)userRole
 {
-    User *user = [self.identityScope objectByCondition:^BOOL(id key, id item) {
-        User *_user = (User *)item;
-        return (userId == _user.userId && userRole == _user.userRole);
-    } lock:YES];
+    NSString *key = [NSString stringWithFormat:@"%lld-%ld", userId, (long)userRole];
+    User *user = [self.identityScope objectByKey:key lock:YES];
     
     if (! user)
     {
@@ -29,7 +27,7 @@
         
         if (user)
         {
-            [self attachEntityKey:@(user.rowid) entity:user lock:YES];
+            [self attachEntityKey:key entity:user lock:YES];
         }
     }
     else
@@ -84,7 +82,7 @@
         [self.dbHelper insertToDB:user];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[User class]];
     }
-    [self attachEntityKey:@(user.rowid) entity:user lock:YES];
+    [self attachEntityKey:[NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole] entity:user lock:YES];
 }
 
 @end

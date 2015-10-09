@@ -24,6 +24,8 @@
 
 - (void)stopService;
 
+- (void)removeOperationsWhileStopChat;
+
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;
 - (void)retryMessage:(IMMessage *)message;
