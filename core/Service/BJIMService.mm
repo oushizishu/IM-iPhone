@@ -53,6 +53,7 @@
 @property (nonatomic, strong) User *customeWaiter;
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
 @property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
+@property (nonatomic, strong, readonly) NSOperationQueue *receiveMessageOperationQueue; // 接受消息在独立线程上操作
 
 @end
 
@@ -62,6 +63,7 @@
 @synthesize readOperationQueue=_readOperationQueue;
 @synthesize writeOperationQueue=_writeOperationQueue;
 @synthesize sendMessageOperationQueue=_sendMessageOperationQueue;
+@synthesize receiveMessageOperationQueue=_receiveMessageOperationQueue;
 
 - (void)startServiceWithOwner:(User *)owner
 {
@@ -122,6 +124,7 @@
 {
     [self.readOperationQueue cancelAllOperations];
     [self.writeOperationQueue cancelAllOperations];
+    
     self.bIsServiceActive = NO;
     
     [self stopEngine];
@@ -240,8 +243,7 @@
     HandlePollingResultOperation *operation = [[HandlePollingResultOperation alloc] init];
     operation.imService = self;
     operation.model = model;
-//    [self.operationQueue addOperation:operation];
-    [self.writeOperationQueue addOperation:operation];
+    [self.receiveMessageOperationQueue addOperation:operation]; //接收到消息在独立线程上操作
 }
 
 #pragma mark - get Msg Delegate
@@ -254,8 +256,7 @@
     operation.model = model;
     operation.minMsgId = minMsgId;
     operation.endMessageId = newEndMessageId;
-//    [self.operationQueue addOperation:operation];
-    [self.writeOperationQueue addOperation:operation];
+    [self.receiveMessageOperationQueue addOperation:operation];
 }
 
 - (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(NSString *)minMsgId
@@ -266,8 +267,7 @@
     operation.conversationId = conversationId;
     operation.minMsgId = minMsgId;
     
-//    [self.operationQueue addOperation:operation];
-    [self.writeOperationQueue addOperation:operation];
+    [self.receiveMessageOperationQueue addOperation:operation];
 }
 
 #pragma mark syncContact 
@@ -278,7 +278,6 @@
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
     operation.imService = self;
     operation.model = model;
-//    [self.operationQueue addOperation:operation];
     [self.writeOperationQueue addOperation:operation];
 }
 
@@ -384,6 +383,11 @@
     if (userId == [self getCustomWaiter].userId && userRole == [self getCustomWaiter].userRole)
     {
         return [self getCustomWaiter];
+    }
+    
+    User *owner = [IMEnvironment shareInstance].owner;
+    if (owner.userId == userId && owner.userRole == owner.userRole) {
+        return owner;
     }
     
     User *user = [self.imStorage.userDao loadUserAndMarkName:userId role:userRole owner:[IMEnvironment shareInstance].owner];
@@ -629,6 +633,15 @@
         [_sendMessageOperationQueue setMaxConcurrentOperationCount:1];
     }
     return _sendMessageOperationQueue;
+}
+
+- (NSOperationQueue *)receiveMessageOperationQueue
+{
+    if (_receiveMessageOperationQueue == nil) {
+        _receiveMessageOperationQueue = [[NSOperationQueue alloc] init];
+        [_receiveMessageOperationQueue setMaxConcurrentOperationCount:1];
+    }
+    return _receiveMessageOperationQueue;
 }
 
 #pragma mark - application call back

@@ -105,7 +105,7 @@
     
     if (contact)
     {
-        [self detach:@(contact.rowid)];
+        [self detach:key];
     }
 }
 @end

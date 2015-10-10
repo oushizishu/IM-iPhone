@@ -154,13 +154,11 @@ public:
 
 - (void)start
 {
-    if (webSocket && webSocket->getReadyState() == network::State::OPEN)
+    if (webSocket != nullptr && webSocket->getReadyState() == network::State::OPEN)
     {
         // 已经连接上，
         return;
     }
-    
-    [self stop];
     
     self.device = [NSUserDefaults deviceString];
     self.token = [NSString stringWithFormat:@"%@Hermes%lld%ld", self.device, [IMEnvironment shareInstance].owner.userId, (long)[IMEnvironment shareInstance].owner.userRole];
@@ -370,21 +368,20 @@ public:
  */
 - (void)reconnect
 {
-    
-    [self stop];
-    [self start];
-    
     if (_retryConnectCount > 5)
     { //重连了五次没有成功
+        DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
         if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
         {
             [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
+            return; // 重连了5次还没有成功，不再重连了
         }
-        DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
     }
     
     _retryConnectCount ++ ;
     
+    [self stop];
+    [self start];
 }
 
 - (void)cancelAllRequest
@@ -493,16 +490,13 @@ void IMSocketDelegate::onOpen(network::WebSocketInterface *ws)
 void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network::Data &data)
 {
     NSString *string = [NSString stringWithUTF8String:data.bytes];
-//    [engine didReciveMessage:string];
     [engine performSelector:@selector(didReciveMessage:) onThread:[NSThread mainThread] withObject:string waitUntilDone:NO];
 }
 
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
     [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-//    [engine reconnect];
     [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-//    [engine cancelAllRequest];
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
