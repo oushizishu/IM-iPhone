@@ -165,7 +165,7 @@
     [IMEnvironment shareInstance].currentChatToUserRole = eUserRole_Anonymous;
     [IMEnvironment shareInstance].currentChatToGroupId = -1;
     
-    [self.imService removeOperationsWhileStopChat];
+//    [self.imService removeOperationsWhileStopChat];
 }
 
 #pragma mark - setter & getter

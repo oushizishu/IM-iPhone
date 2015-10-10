@@ -139,15 +139,15 @@
 /**
  *  当退出聊天界面时， 队列中的 getMsg 的 operation 可能还没有开始执行。可以将其取消
  */
-- (void)removeOperationsWhileStopChat
-{
-    for (NSOperation *operation in [self.writeOperationQueue operations]) {
-        if ([operation isKindOfClass:[HandleGetMsgOperation class]])
-        {
-            [operation cancel];
-        }
-    }
-}
+//- (void)removeOperationsWhileStopChat
+//{
+//    for (NSOperation *operation in [self.writeOperationQueue operations]) {
+//        if ([operation isKindOfClass:[HandleGetMsgOperation class]])
+//        {
+//            [operation cancel];
+//        }
+//    }
+//}
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message
