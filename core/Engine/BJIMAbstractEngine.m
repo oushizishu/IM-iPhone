@@ -71,7 +71,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         else
         {
             DDLogWarn(@"Sync Contacts Fail [url:%@][params:%@]", params.url, params.urlPostParams);
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {

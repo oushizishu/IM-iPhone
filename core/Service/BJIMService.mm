@@ -52,6 +52,7 @@
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
+@property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
 
 @end
 
@@ -60,6 +61,7 @@
 @synthesize imStorage=_imStorage;
 @synthesize readOperationQueue=_readOperationQueue;
 @synthesize writeOperationQueue=_writeOperationQueue;
+@synthesize sendMessageOperationQueue=_sendMessageOperationQueue;
 
 - (void)startServiceWithOwner:(User *)owner
 {
@@ -151,8 +153,7 @@
     SendMsgOperation *operation = [[SendMsgOperation alloc] init];
     operation.message = message;
     operation.imService = self;
-//    [self.operationQueue addOperation:operation];
-    [self.readOperationQueue addOperation:operation]; //可以放在读的队列中
+    [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
     
     [self notifyWillDeliveryMessage:message];
 }
@@ -164,8 +165,7 @@
     RetryMessageOperation *operation = [[RetryMessageOperation alloc] init];
     operation.message = message;
     operation.imService = self;
-//    [self.operationQueue addOperation:operation];
-    [self.readOperationQueue addOperation:operation]; //可以放在读的队列中
+    [self.sendMessageOperationQueue addOperation:operation]; // 放在发送消息队列中
     
     [self notifyWillDeliveryMessage:message];
 }
@@ -191,8 +191,7 @@
     operation.message = message;
     operation.model = model;
     
-//    [self.operationQueue addOperation:operation];
-    [self.writeOperationQueue addOperation:operation];
+    [self.sendMessageOperationQueue addOperation:operation];
 }
 
 - (void)onPostMessageAchiveSucc:(IMMessage *)message result:(PostAchiveModel *)model
@@ -621,6 +620,15 @@
         [_writeOperationQueue setMaxConcurrentOperationCount:1];
     }
     return _writeOperationQueue;
+}
+
+- (NSOperationQueue *)sendMessageOperationQueue
+{
+    if (_sendMessageOperationQueue == nil) {
+        _sendMessageOperationQueue = [[NSOperationQueue alloc] init];
+        [_sendMessageOperationQueue setMaxConcurrentOperationCount:1];
+    }
+    return _sendMessageOperationQueue;
 }
 
 #pragma mark - application call back
