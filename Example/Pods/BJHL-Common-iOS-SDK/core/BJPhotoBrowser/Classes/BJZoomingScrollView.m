@@ -143,8 +143,10 @@
     weakifyobject(photo);
     [photo loadUnderlyingImageProgress:^(CGFloat process) {
         strongifyself;
-        [self setProgress:process];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self setProgress:process];
+
+        });
     } completed:^(UIImage *image, NSError *error, BOOL finished) {
         strongifyself;
         strongifobject(photo);

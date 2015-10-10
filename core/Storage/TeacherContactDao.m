@@ -26,7 +26,10 @@
     for (NSInteger index = 0; index < [array count]; ++ index)
     {
         TeacherContacts *item = (TeacherContacts *)[array objectAtIndex:index];
-        [self attachEntityKey:@(item.rowid) entity:item lock:NO];
+        
+        NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", userId, item.contactId, (long)contactRole];
+        
+        [self attachEntityKey:key entity:item lock:NO];
         
         User *user = [self.imStroage.userDao loadUser:item.contactId role:item.contactRole];
         user.remarkName = item.remarkName;
@@ -44,10 +47,8 @@
 {
     if (owner.userRole != eUserRole_Teacher) return nil;
     
-    TeacherContacts *contact = (TeacherContacts *)[self.identityScope objectByCondition:^BOOL(id key, id item) {
-        TeacherContacts *_contact = (TeacherContacts *)item;
-        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
-    } lock:YES];
+    NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contactId, (long)contactRole];
+    TeacherContacts *contact = (TeacherContacts *)[self.identityScope objectByKey:key lock:YES];
     
     if (! contact)
     {
@@ -58,7 +59,7 @@
         
         if (contact)
         {
-            [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
+            [self attachEntityKey:key entity:contact lock:YES];
         }
     }
     else
@@ -74,7 +75,8 @@
     if ([self loadContactId:contact.contactId contactRole:contact.contactRole owner:owner] == nil)
     {
         [self.dbHelper insertToDB:contact];
-        [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
+        NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contact.contactId, (long)contact.contactRole];
+        [self attachEntityKey:key entity:contact lock:YES];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[TeacherContacts class]];
     }
 }
@@ -98,14 +100,12 @@
     
     [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[TeacherContacts class]];
     
-    TeacherContacts *contact = [self.identityScope objectByCondition:^BOOL(id key, id item) {
-        TeacherContacts *_contact = (TeacherContacts *)item;
-        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
-    } lock:YES];
+    NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contactId, (long)contactRole];
+    TeacherContacts *contact = [self.identityScope objectByKey:key lock:YES];
     
     if (contact)
     {
-        [self detach:@(contact.rowid)];
+        [self detach:key];
     }
 }
 @end

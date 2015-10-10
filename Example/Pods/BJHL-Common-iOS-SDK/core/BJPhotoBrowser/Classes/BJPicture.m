@@ -162,11 +162,15 @@
                 [[SDImageCache sharedImageCache] queryDiskCacheForKey:[manager cacheKeyForURL:_photoURL] done:^(UIImage *image, SDImageCacheType cacheType) {
                     if (cacheType == SDImageCacheTypeNone) {
                         NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorFileDoesNotExist userInfo:nil];
-                        [self imageLoadingComplete:completedBlock error:error finished:NO];
-                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                             [self imageLoadingComplete:completedBlock error:error finished:NO];
+                        });
                     } else {
                         self.underlyingImage = image;
-                        [self imageLoadingComplete:completedBlock error:nil finished:YES];
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self imageLoadingComplete:completedBlock error:nil finished:YES];
+
+                        });
                     }
                 }];
             } else {
@@ -177,9 +181,11 @@
                                                               progress:^(NSInteger receivedSize, NSInteger expectedSize) {
                                                                   if (expectedSize > 0) {
                                                                       float progress = receivedSize / (float)expectedSize;
-                                                                      if (progressBlock) {
-                                                                          progressBlock(progress);
-                                                                      }
+                                                                      dispatch_async(dispatch_get_main_queue(), ^{
+                                                                          if (progressBlock) {
+                                                                              progressBlock(progress);
+                                                                          }
+                                                                      });
                                                                   }
                                                               }
                                                              completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
@@ -188,14 +194,18 @@
                                                                  }
                                                                  _webImageOperation = nil;
                                                                  self.underlyingImage = image;
-                                                                 [self imageLoadingComplete:completedBlock error:error finished:finished];
                                                                  
+                                                                 dispatch_async(dispatch_get_main_queue(), ^{
+                                                                     [self imageLoadingComplete:completedBlock error:error finished:finished];
+                                                                 });
                                                              }];
                 } @catch (NSException *e) {
                     MWLog(@"Photo from web: %@", e);
                     _webImageOperation = nil;
                     NSError *error = [NSError errorWithDomain:NSURLErrorDomain code:NSURLErrorBadURL userInfo:@{NSLocalizedFailureReasonErrorKey:e.reason}];
-                    [self imageLoadingComplete:completedBlock error:error finished:NO];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self imageLoadingComplete:completedBlock error:error finished:NO];
+                    });
                 }
             }
         }

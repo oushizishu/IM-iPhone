@@ -111,17 +111,19 @@
     }
     else
     {
+        
+        if (self.minMsgId == nil && [self.preMessages count] > 0)
+        {
+            [self.imService notifyPreLoadMessages:self.preMessages conversation:self.conversation];
+        }
+        
         [self.imService.imEngine getMsgConversation:self.conversation.rowid
                                            minMsgId:self.minMsgId
                                             groupId:self.conversation.toId
                                              userId:0
                                          excludeIds:[self.excludeIds copy]
                                      startMessageId:self.endMessageId];
-        
-        if (self.minMsgId == nil && [self.preMessages count] > 0)
-        {
-            [self.imService notifyPreLoadMessages:self.preMessages conversation:self.conversation];
-        }
+       
     }
 }
 

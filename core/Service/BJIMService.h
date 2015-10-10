@@ -8,15 +8,15 @@
 
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
-#import "BJIMEngine.h"
 #import "BJIMStorage.h"
 #import "IMMessage.h"
+#import "BJIMAbstractEngine.h"
 
 
 @class BaseResponse;
 @interface BJIMService : NSObject
 @property (nonatomic, assign) BOOL bIsServiceActive;
-@property (nonatomic, strong, readonly) BJIMEngine *imEngine;
+@property (nonatomic, strong, readonly) BJIMAbstractEngine *imEngine;
 @property (nonatomic, strong, readonly) BJIMStorage *imStorage;
 
 @property (nonatomic, strong, readonly) NSOperationQueue *writeOperationQueue; // DB 写操作线程
@@ -24,6 +24,8 @@
 - (void)startServiceWithOwner:(User *)owner;
 
 - (void)stopService;
+
+- (void)removeOperationsWhileStopChat;
 
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message;

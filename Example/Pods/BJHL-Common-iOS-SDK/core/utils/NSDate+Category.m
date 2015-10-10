@@ -60,7 +60,31 @@
 	}
 }
 
-
+/**
+ *  @author LiangZhao, 15-09-23 16:09:17
+ *
+ *  测试代码
+ *   
+    NSArray *testList = @[@"2014-09-20 23:20:10",@"2015-09-20 23:20:10", @"2015-09-21 23:20:10",@"2015-09-21 00:20:10",@"2015-09-21 01:20:10",@"2015-09-21 00:00:00",@"2015-09-22 23:20:10",@"2015-09-22 00:20:10",@"2015-09-22 01:20:10",@"2015-09-22 00:00:00",@"2015-09-23 00:20:10",@"2015-09-23 23:20:10",@"2015-09-23 01:20:10",@"2015-09-23 00:00:00"];
+    for (NSString *oneStr in testList)
+    {
+        NSDate *date = [[NSDateFormatter defaultDateFormatter] dateFromString:oneStr];
+        NSLog(@"date:%@ 转换：%@",oneStr,[date formattedTime]);
+    }
+ *
+ */
+- (NSInteger) maxHoursAfterDate:(NSDate *)date
+{
+    NSTimeInterval ti = [self timeIntervalSinceDate:date];
+    NSInteger hour = 0;
+    NSTimeInterval hi = ti / D_HOUR;
+    if (ti>=0) {
+        hour = ceil(hi);
+    }
+    else
+        hour = -ceil(fabs(hi));
+    return hour;
+}
 
 /*标准时间日期描述*/
 -(NSString *)formattedTime{
@@ -78,7 +102,7 @@
     NSDate *date = [gregorian dateFromComponents:components]; //今天 0点时间
  
     
-    NSInteger hour = [self hoursAfterDate:date];
+    NSInteger hour = [self maxHoursAfterDate:date];
     NSDateFormatter *dateFormatter = nil;
     NSString *ret = @"";
     

@@ -24,7 +24,9 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '6.1'
   s.requires_arc = true
 
-  s.source_files = 'core/**/*.{h,m}'
+  s.source_files = 'core/**/*.{h,m,cpp,mm}'
+  s.vendored_libraries = 'core/lib/*.a'
+
   s.resource_bundles = {
     'BJHL-IM-iOS-SDK' => ['Resources/*']
   }
@@ -34,7 +36,7 @@ Pod::Spec.new do |s|
   s.dependency 'AFNetworking', '~> 2.5'
   s.dependency 'Mantle', '~>2.0.2'
   s.dependency 'CocoaLumberjack', '~> 2.0.1'
-  s.dependency 'BJHL-Common-iOS-SDK', '~>0.5.4'
+  s.dependency 'BJHL-Common-iOS-SDK', '~>0.6.3'
   s.dependency 'LKDBHelper', '~>2.1.3'
   s.dependency 'YLGIFImage', '~> 0.11'
 end

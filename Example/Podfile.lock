@@ -1,23 +1,12 @@
 PODS:
   - AFNetworking (2.5.4):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
-  - AFNetworking (2.6.0):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-    - AFNetworking/UIKit
+    - AFNetworking/NSURLConnection (= 2.5.4)
+    - AFNetworking/NSURLSession (= 2.5.4)
+    - AFNetworking/Reachability (= 2.5.4)
+    - AFNetworking/Security (= 2.5.4)
+    - AFNetworking/Serialization (= 2.5.4)
+    - AFNetworking/UIKit (= 2.5.4)
   - AFNetworking/NSURLConnection (2.5.4):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
-  - AFNetworking/NSURLConnection (2.6.0):
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
@@ -25,217 +14,205 @@ PODS:
     - AFNetworking/Reachability
     - AFNetworking/Security
     - AFNetworking/Serialization
-  - AFNetworking/NSURLSession (2.6.0):
-    - AFNetworking/Reachability
-    - AFNetworking/Security
-    - AFNetworking/Serialization
   - AFNetworking/Reachability (2.5.4)
-  - AFNetworking/Reachability (2.6.0)
   - AFNetworking/Security (2.5.4)
-  - AFNetworking/Security (2.6.0)
   - AFNetworking/Serialization (2.5.4)
-  - AFNetworking/Serialization (2.6.0)
   - AFNetworking/UIKit (2.5.4):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
-  - AFNetworking/UIKit (2.6.0):
-    - AFNetworking/NSURLConnection
-    - AFNetworking/NSURLSession
-  - BJHL-Common-iOS-SDK (0.5.8):
+  - BJHL-Common-iOS-SDK (0.6.3):
     - AFNetworking (~> 2.5.3)
-    - BJHL-Common-iOS-SDK/BJAction
-    - BJHL-Common-iOS-SDK/BJPhotoBrowser
-    - BJHL-Common-iOS-SDK/FileCache
-    - BJHL-Common-iOS-SDK/ImageView
-    - BJHL-Common-iOS-SDK/JLPermissions
-    - BJHL-Common-iOS-SDK/MediaRecorder
-    - BJHL-Common-iOS-SDK/NetWork
-    - BJHL-Common-iOS-SDK/SSKeychain
-    - BJHL-Common-iOS-SDK/UIView
-    - BJHL-Common-iOS-SDK/utils
-    - BJHL-Common-iOS-SDK/view
+    - BJHL-Common-iOS-SDK/BJAction (= 0.6.3)
+    - BJHL-Common-iOS-SDK/BJPhotoBrowser (= 0.6.3)
+    - BJHL-Common-iOS-SDK/FileCache (= 0.6.3)
+    - BJHL-Common-iOS-SDK/ImageView (= 0.6.3)
+    - BJHL-Common-iOS-SDK/JLPermissions (= 0.6.3)
+    - BJHL-Common-iOS-SDK/MediaRecorder (= 0.6.3)
+    - BJHL-Common-iOS-SDK/NetWork (= 0.6.3)
+    - BJHL-Common-iOS-SDK/SSKeychain (= 0.6.3)
+    - BJHL-Common-iOS-SDK/UIView (= 0.6.3)
+    - BJHL-Common-iOS-SDK/utils (= 0.6.3)
+    - BJHL-Common-iOS-SDK/view (= 0.6.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/BJAction (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/BJAction (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/BJPhotoBrowser (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/BJPhotoBrowser (0.6.3):
     - AFNetworking (~> 2.5.3)
-    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Classess
-    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries
+    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Classess (= 0.6.3)
+    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries (= 0.6.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Classess (0.5.8):
-    - AFNetworking (~> 2.5.3)
-    - MBProgressHUD (~> 0.9.0)
-    - PureLayout (~> 1.0)
-    - SDWebImage (~> 3.7.0)
-    - TKAlert&TKActionSheet (~> 1.0.4)
-    - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries (0.5.8):
-    - AFNetworking (~> 2.5.3)
-    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries/DACircularProgress
-    - MBProgressHUD (~> 0.9.0)
-    - PureLayout (~> 1.0)
-    - SDWebImage (~> 3.7.0)
-    - TKAlert&TKActionSheet (~> 1.0.4)
-    - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries/DACircularProgress (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Classess (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/FileCache (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries (0.6.3):
+    - AFNetworking (~> 2.5.3)
+    - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries/DACircularProgress (= 0.6.3)
+    - MBProgressHUD (~> 0.9.0)
+    - PureLayout (~> 1.0)
+    - SDWebImage (~> 3.7.0)
+    - TKAlert&TKActionSheet (~> 1.0.4)
+    - TMCache (~> 1.2)
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/BJPhotoBrowser/Libraries/DACircularProgress (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/ImageView (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/FileCache (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/JLPermissions (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/ImageView (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/MediaRecorder (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/JLPermissions (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/NetWork (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/MediaRecorder (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/SSKeychain (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/NetWork (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/UIView (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/SSKeychain (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/utils (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/UIView (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
-  - BJHL-Common-iOS-SDK/view (0.5.8):
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/utils (0.6.3):
     - AFNetworking (~> 2.5.3)
     - MBProgressHUD (~> 0.9.0)
     - PureLayout (~> 1.0)
     - SDWebImage (~> 3.7.0)
     - TKAlert&TKActionSheet (~> 1.0.4)
     - TMCache (~> 1.2)
-    - UMengAnalytics-NO-IDFA (= 3.4.7)
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
+  - BJHL-Common-iOS-SDK/view (0.6.3):
+    - AFNetworking (~> 2.5.3)
+    - MBProgressHUD (~> 0.9.0)
+    - PureLayout (~> 1.0)
+    - SDWebImage (~> 3.7.0)
+    - TKAlert&TKActionSheet (~> 1.0.4)
+    - TMCache (~> 1.2)
+    - UMengAnalytics-NO-IDFA (= 3.5.11)
   - BJHL-IM-iOS-SDK (1.0.0):
     - AFNetworking (~> 2.5)
-    - BJHL-Common-iOS-SDK (~> 0.5.4)
+    - BJHL-Common-iOS-SDK (~> 0.6.3)
     - CocoaLumberjack (~> 2.0.1)
     - LKDBHelper (~> 2.1.3)
     - Mantle (~> 2.0.2)
     - YLGIFImage (~> 0.11)
   - CocoaLumberjack (2.0.1):
-    - CocoaLumberjack/Default
-    - CocoaLumberjack/Extensions
+    - CocoaLumberjack/Default (= 2.0.1)
+    - CocoaLumberjack/Extensions (= 2.0.1)
   - CocoaLumberjack/Core (2.0.1)
   - CocoaLumberjack/Default (2.0.1):
     - CocoaLumberjack/Core
   - CocoaLumberjack/Extensions (2.0.1):
     - CocoaLumberjack/Default
   - FMDB (2.5):
-    - FMDB/standard
+    - FMDB/standard (= 2.5)
   - FMDB/common (2.5)
   - FMDB/standard (2.5):
     - FMDB/common
   - LKDBHelper (2.1.4):
     - FMDB
-  - MagicalRecord (2.2):
-    - MagicalRecord/Core
-  - MagicalRecord/Core (2.2)
+  - MagicalRecord (2.3.0)
   - Mantle (2.0.5):
-    - Mantle/extobjc
+    - Mantle/extobjc (= 2.0.5)
   - Mantle/extobjc (2.0.5)
   - MBProgressHUD (0.9.1)
   - PureLayout (1.1.0)
   - SDWebImage (3.7.3):
-    - SDWebImage/Core
+    - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
   - TKAlert&TKActionSheet (1.0.12)
   - TMCache (1.2.4)
-  - UMengAnalytics-NO-IDFA (3.4.7)
+  - UMengAnalytics-NO-IDFA (3.5.11)
   - YLGIFImage (0.11)
 
 DEPENDENCIES:
   - BJHL-IM-iOS-SDK (from `../`)
-  - MagicalRecord (= 2.2)
+  - MagicalRecord
 
 EXTERNAL SOURCES:
   BJHL-IM-iOS-SDK:
-    :path: ../
+    :path: "../"
 
 SPEC CHECKSUMS:
   AFNetworking: 05edc0ac4c4c8cf57bcf4b84be5b0744b6d8e71e
-  BJHL-Common-iOS-SDK: 7b1f42f4a1fc7827634d04b87daf935be704c941
-  BJHL-IM-iOS-SDK: bd01e371af9fe1f75acc35b94b70f0fa3d9ac08d
+  BJHL-Common-iOS-SDK: ce91ad8f5b0ec664ffcb34f93ef2e41e751fc223
+  BJHL-IM-iOS-SDK: a0f17d996225de7bbf7cca51476a517e1d9543ee
   CocoaLumberjack: 019d1361244274a6138c788c6cb80baabc13fb8f
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   LKDBHelper: 6bde14a7d8d1915dd6f1a960176cc868175dd14d
-  MagicalRecord: f8a56bb87ab6552f20c4bb8681a1958a197ea3cd
+  MagicalRecord: 89eb7d7ead39fb37f01c3d010665ee94d17f8dba
   Mantle: 1912395033f601de5adc8ee91e48f46e4c7051ad
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   PureLayout: 461724f6da2da366709e5fe6e6006f6039b7c2dd
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   TKAlert&TKActionSheet: ea739fc2ac91c3d401d1e4421cf904a993598895
   TMCache: a93984b045a5ee84bd8941bd5e0b54296059cc52
-  UMengAnalytics-NO-IDFA: 68a71671c10067315339fc3fd1283be416f02a8b
+  UMengAnalytics-NO-IDFA: e41024644de702e450093ef043af20b5fbe06cbc
   YLGIFImage: c0ae132fe80e5282b2762a97d14e23ba71a748ae
 
-COCOAPODS: 0.34.4
+COCOAPODS: 0.38.2

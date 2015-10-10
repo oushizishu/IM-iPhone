@@ -28,7 +28,8 @@
     for (NSInteger index = 0; index < [array count]; ++ index)
     {
         InstitutionContacts *item = (InstitutionContacts *)[array objectAtIndex:index];
-        [self attachEntityKey:@(item.rowid) entity:item lock:NO];
+        NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", userId, item.contactId, (long)item.contactRole];
+        [self attachEntityKey:key entity:item lock:NO];
         
         User *user = [self.imStroage.userDao loadUser:item.contactId role:item.contactRole];
         user.remarkName = item.remarkName;
@@ -46,10 +47,14 @@
 {
     if (owner.userRole != eUserRole_Institution) return nil;
     
-    InstitutionContacts *contact = (InstitutionContacts *)[self.identityScope objectByCondition:^BOOL(id key, id item) {
-        InstitutionContacts *_contact = (InstitutionContacts *)item;
-        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
-    } lock:YES];
+    NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contactId, (long)contactRole];
+    
+//    InstitutionContacts *contact = (InstitutionContacts *)[self.identityScope objectByCondition:^BOOL(id key, id item) {
+//        InstitutionContacts *_contact = (InstitutionContacts *)item;
+//        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
+//    } lock:YES];
+//    
+    InstitutionContacts *contact = [self.identityScope objectByKey:key lock:YES];
     
     if (! contact)
     {
@@ -58,7 +63,7 @@
         [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[InstitutionContacts class]];
         if (contact)
         {
-            [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
+            [self attachEntityKey:key entity:contact lock:YES];
         }
     }
     else
@@ -75,7 +80,8 @@
     {
         [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert " class:[InstitutionContacts class]];
         [self.dbHelper insertToDB:contact];
-        [self attachEntityKey:@(contact.rowid) entity:contact lock:YES];
+        NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contact.contactId, (long)contact.contactRole];
+        [self attachEntityKey:key entity:contact lock:YES];
     }
 }
 
@@ -97,14 +103,13 @@
     
     [[DaoStatistics sharedInstance] logDBOperationSQL:@" delete " class:[InstitutionContacts class]];
     
-    InstitutionContacts *contact = [self.identityScope objectByCondition:^BOOL(id key, id item) {
-        InstitutionContacts *_contact = (InstitutionContacts *)item;
-        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
-    } lock:YES];
+    NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contactId, (long)contactRole];
+   
+    InstitutionContacts *contact = [self.identityScope objectByKey:key lock:YES];
     
     if (contact)
     {
-        [self detach:@(contact.rowid)];
+        [self detach:key];
     }
 }
 @end

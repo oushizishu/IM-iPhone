@@ -146,7 +146,10 @@
 - (void)performLayout {
     
     // Setup pages
-    [_visiblePages removeAllObjects];
+    @synchronized(self)
+    {
+        [_visiblePages removeAllObjects];
+    }
     [_recycledPages removeAllObjects];
     
     // Content offset
@@ -285,17 +288,19 @@
 
     
     // Adjust frames and configuration of each visible page
-    for (BJZoomingScrollView *page in _visiblePages) {
-        NSUInteger index = page.index;
-        page.frame = [self frameForPageAtIndex:index];
-        if (page.captionView) {
-            page.captionView.frame = [self frameForCaptionView:page.captionView atIndex:index];
-        }
-        // Adjust scales if bounds has changed since last time
-        if (!CGRectEqualToRect(_previousLayoutBounds, self.view.bounds)) {
-            // Update zooms for new bounds
-            [page adjustMaxMinZoomScalesForCurrentBounds];
-            _previousLayoutBounds = self.view.bounds;
+    @synchronized(_visiblePages) {
+        for (BJZoomingScrollView *page in _visiblePages) {
+            NSUInteger index = page.index;
+            page.frame = [self frameForPageAtIndex:index];
+            if (page.captionView) {
+                page.captionView.frame = [self frameForCaptionView:page.captionView atIndex:index];
+            }
+            // Adjust scales if bounds has changed since last time
+            if (!CGRectEqualToRect(_previousLayoutBounds, self.view.bounds)) {
+                // Update zooms for new bounds
+                [page adjustMaxMinZoomScalesForCurrentBounds];
+                _previousLayoutBounds = self.view.bounds;
+            }
         }
     }
     
@@ -457,22 +462,27 @@
                     weakifyobject(photo);
                     [photo loadUnderlyingImageProgress:^(CGFloat process) {
                         strongifobject(photo);
-                        BJZoomingScrollView *page = [self pageDisplayingPhoto:photo];
-                        [page setProgress:process];
                         
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            BJZoomingScrollView *page = [self pageDisplayingPhoto:photo];
+                            [page setProgress:process];
+                        });
                     } completed:^(UIImage *image, NSError *error, BOOL finished) {
                         strongifobject(photo);
-                        BJZoomingScrollView *page = [self pageDisplayingPhoto:photo];
-                        if (page) {
-                            if ([photo underlyingImage]) {
-                                // Successful load
-                                [page displayImage];
-                                [self loadAdjacentPhotosIfNecessary:photo];
-                            } else {
-                                // Failed to load
-                                [page displayImageFailure];
+                        
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            BJZoomingScrollView *page = [self pageDisplayingPhoto:photo];
+                            if (page) {
+                                if ([photo underlyingImage]) {
+                                    // Successful load
+                                    [page displayImage];
+                                    [self loadAdjacentPhotosIfNecessary:photo];
+                                } else {
+                                    // Failed to load
+                                    [page displayImageFailure];
+                                }
                             }
-                        }
+                        });
                     }];
                     MWLog(@"Pre-loading image at index %lu", (unsigned long)pageIndex-1);
                 }
@@ -524,19 +534,22 @@
     
     // Recycle no longer needed pages
     NSInteger pageIndex;
-    for (BJZoomingScrollView *page in _visiblePages) {
-        pageIndex = page.index;
-        if (pageIndex < (NSUInteger)iFirstIndex || pageIndex > (NSUInteger)iLastIndex) {
-            [_recycledPages addObject:page];
-            [page.captionView removeFromSuperview];
-            [page.selectedButton removeFromSuperview];
-            [page prepareForReuse];
-            [page removeFromSuperview];
-            MWLog(@"Removed page at index %lu", (unsigned long)pageIndex);
+    @synchronized(_visiblePages)
+    {
+        for (BJZoomingScrollView *page in _visiblePages) {
+            pageIndex = page.index;
+            if (pageIndex < (NSUInteger)iFirstIndex || pageIndex > (NSUInteger)iLastIndex) {
+                [_recycledPages addObject:page];
+                [page.captionView removeFromSuperview];
+                [page.selectedButton removeFromSuperview];
+                [page prepareForReuse];
+                [page removeFromSuperview];
+                MWLog(@"Removed page at index %lu", (unsigned long)pageIndex);
+            }
         }
+        [_visiblePages minusSet:_recycledPages];
     }
-    [_visiblePages minusSet:_recycledPages];
-    while (_recycledPages.count > 2) // Only keep 2 recycled pages
+     while (_recycledPages.count > 2) // Only keep 2 recycled pages
         [_recycledPages removeObject:[_recycledPages anyObject]];
     
     // Add missing pages
@@ -550,7 +563,10 @@
                 page = [[BJZoomingScrollView alloc] init];
                 page.photoBrowser = self;
             }
-            [_visiblePages addObject:page];
+            @synchronized(_visiblePages)
+            {
+                [_visiblePages addObject:page];
+            }
             [self configurePage:page forIndex:index];
             
             [_pagingScrollView addSubview:page];
@@ -579,37 +595,51 @@
 }
 
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index {
-    	for (BJZoomingScrollView *page in _visiblePages)
-    		if (page.index == index) return YES;
-    return NO;
+    @synchronized(_visiblePages)
+    {
+        for (BJZoomingScrollView *page in _visiblePages)
+            if (page.index == index) return YES;
+        return NO;
+    }
 }
 
 - (BJZoomingScrollView *)pageDisplayedAtIndex:(NSUInteger)index {
 
     BJZoomingScrollView *thePage = nil;
-    for (BJZoomingScrollView *page in _visiblePages) {
-        if (page.index == index) {
-            thePage = page; break;
+    //加锁防止多线程同时访问
+    @synchronized(_visiblePages)
+    {
+        for (BJZoomingScrollView *page in _visiblePages) {
+            if (page.index == index) {
+                thePage = page; break;
+            }
         }
     }
     return thePage;
+
 }
 
 - (BJZoomingScrollView *)pageDisplayingThumbPhoto:(id<BJPicture>)thumbPhoto {
     
     BJZoomingScrollView *thePage = nil;
-    for (BJZoomingScrollView *page in _visiblePages) {
-        if (page.photo == thumbPhoto) {
-            thePage = page; break;
+    @synchronized(_visiblePages)
+    {
+        for (BJZoomingScrollView *page in _visiblePages) {
+            if (page.photo == thumbPhoto) {
+                thePage = page; break;
+            }
         }
     }
     return thePage;
 }
 - (BJZoomingScrollView *)pageDisplayingPhoto:(id<BJPicture>)photo {
     BJZoomingScrollView *thePage = nil;
-    for (BJZoomingScrollView *page in _visiblePages) {
-        if (page.photo == photo) {
-            thePage = page; break;
+    @synchronized(_visiblePages)
+    {
+        for (BJZoomingScrollView *page in _visiblePages) {
+            if (page.photo == photo) {
+                thePage = page; break;
+            }
         }
     }
     return thePage;
