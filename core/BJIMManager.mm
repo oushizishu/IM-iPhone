@@ -41,7 +41,7 @@
     NSDateComponents *dateComponents = [greCalendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit fromDate:[NSDate date]];
     
     
-    NSString *logDir = [NSString stringWithFormat:@"%@/%ld-%ld-%ld", [BJFileManagerTool docDir], dateComponents.year, dateComponents.month, dateComponents.day];
+    NSString *logDir = [NSString stringWithFormat:@"%@/%ld-%ld-%ld", [BJFileManagerTool docDir], (long)dateComponents.year, (long)dateComponents.month, (long)dateComponents.day];
     
     [DDLog addLogger:[[DDFileLogger alloc] initWithLogFileManager:[[DDLogFileManagerDefault alloc] initWithLogsDirectory:logDir]]];
     // And we also enable colors
@@ -114,15 +114,6 @@
     [self.imService retryMessage:message];
 }
 
-//- (void)loadMoreMessages:(Conversation *)conversation
-//{
-//    if (! [[IMEnvironment shareInstance] isLogin])
-//    {
-//        return;
-//    }
-//    [self.imService loadMoreMessages:conversation];
-//}
-
 - (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation
 {
     if (! [[IMEnvironment shareInstance] isLogin])
@@ -155,8 +146,6 @@
     [IMEnvironment shareInstance].currentChatToUserId = -1;
     [IMEnvironment shareInstance].currentChatToUserRole = eUserRole_Anonymous;
     [IMEnvironment shareInstance].currentChatToGroupId = groupId;
-    // clear message cache
-    [self.imService.imStorage.messageDao clear];
 }
 
 - (void)stopChat
@@ -166,6 +155,8 @@
     [IMEnvironment shareInstance].currentChatToGroupId = -1;
     
 //    [self.imService removeOperationsWhileStopChat];
+    // clear message cache
+    [self.imService.imStorage.messageDao clear];
 }
 
 #pragma mark - setter & getter

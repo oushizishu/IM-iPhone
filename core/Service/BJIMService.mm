@@ -30,6 +30,9 @@
 #import "BJIMHttpEngine.h"
 #import "BJIMSocketEngine.h"
 
+#import "NetWorkTool.h"
+#import "BaseResponse.h"
+
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
                          IMEnginePollingDelegate,
