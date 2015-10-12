@@ -181,7 +181,10 @@
                 
                 message.conversationId = conversation.rowid;
 //                conversation.lastMessageId = message.msgId;
-                conversation.unReadNum += 1;
+                if (message.msg_t != eMessageType_NOTIFICATION) {
+                    // 通知消息未读数不增加
+                    conversation.unReadNum += 1;
+                }
                 conversation.status = 0;// 会话状态回归正常
                 
                 //如果当前正处于这个聊天室， 消息数不增加
@@ -190,7 +193,9 @@
                         conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole &&
                         conversation.status == 0)
                     {
-                        conversation.unReadNum -= 1;
+                        if (message.msg_t != eMessageType_NOTIFICATION) {
+                            conversation.unReadNum -= 1;
+                        }
                     }
                 }
                 
