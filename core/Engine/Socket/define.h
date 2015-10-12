@@ -64,8 +64,8 @@ namespace network {
      */
     enum class ErrorCode
     {
-        TIME_OUT,
-        CONNECTION_FAILURE,
+        CONNECTION_FAILURE,  //客户端连接失败
+        CONNECTION_CLOSED_BY_SERVER, //连接被服务器关闭
         UNKNOWN,
     };
 }

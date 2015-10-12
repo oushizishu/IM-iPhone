@@ -495,8 +495,8 @@ void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network:
 
 void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
 {
-    [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-    [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+//    [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+//    [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
 
 void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)

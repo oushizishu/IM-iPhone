@@ -53,6 +53,7 @@ namespace network {
     , _delegate(NULL)
     , _SSLConnection(0)
     , _wsProtocols(NULL)
+    ,err(ErrorCode::CONNECTION_FAILURE)
     {
     }
     
@@ -251,7 +252,7 @@ namespace network {
         
         if(nullptr != _wsContext)
         {
-            _readyState = State::CONNECTING;
+//            _readyState = State::CONNECTING;
             std::string name;
             for (int i = 0; _wsProtocols[i].callback != nullptr; ++i)
             {
@@ -264,10 +265,7 @@ namespace network {
                                                       name.c_str(), -1);
             
             if(nullptr == _wsInstance) {
-                WsMessage* msg = new (std::nothrow) WsMessage();
-                msg->what = WS_MSG_TO_UITHREAD_ERROR;
                 _readyState = State::CLOSING;
-                _wsHelper->sendMessageToUIThread(msg);
             }
         }
     }
@@ -321,7 +319,6 @@ namespace network {
                 break;
             case WS_MSG_TO_UITHREAD_ERROR:
             {
-                ErrorCode err = ErrorCode::CONNECTION_FAILURE;
                 _delegate->onError(this, err);
             }
                 break;
@@ -345,14 +342,12 @@ namespace network {
                     || (reason == LWS_CALLBACK_DEL_POLL_FD && _readyState == State::CONNECTING)
                     )
                 {
-                    msg = new (std::nothrow) WsMessage();
-                    msg->what = WS_MSG_TO_UITHREAD_ERROR;
                     _readyState = State::CLOSING;
                 }
                 else if (reason == LWS_CALLBACK_PROTOCOL_DESTROY && _readyState == State::CLOSING)
                 {
                     msg = new (std::nothrow) WsMessage();
-                    msg->what = WS_MSG_TO_UITHREAD_CLOSE;
+                    msg->what = WS_MSG_TO_UITHREAD_ERROR;
                 }
                 
                 if (msg)
@@ -472,9 +467,11 @@ namespace network {
                 
                 if (_readyState != State::CLOSED)
                 {
+                    err = ErrorCode::CONNECTION_CLOSED_BY_SERVER;
+                    
                     WsMessage* msg = new (std::nothrow) WsMessage();
                     _readyState = State::CLOSED;
-                    msg->what = WS_MSG_TO_UITHREAD_CLOSE;
+                    msg->what = WS_MSG_TO_UITHREAD_ERROR;
                     _wsHelper->sendMessageToUIThread(msg);
                 }
 

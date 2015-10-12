@@ -1,5 +1,5 @@
-LIB_WEBSOCKETS_INC="../../../libwebsockets/include"
-LIB_WEBSOCKETS_LIB="../../../libwebsockets/lib"
+LIB_WEBSOCKETS_INC="../../../../../thirdparty/libwebsockets/ios/include"
+LIB_WEBSOCKETS_LIB="../../../../../thirdparty/libwebsockets/ios/lib"
 
 CFLAGS  += -I$(LIB_WEBSOCKETS_INC)
 LDFLAGS += -fpic -shared 

@@ -72,6 +72,8 @@ namespace network {
         Delegate* _delegate;
         int _SSLConnection;
         struct libwebsocket_protocols* _wsProtocols;
+        
+        ErrorCode err;
     };
 }
 
