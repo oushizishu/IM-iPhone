@@ -24,6 +24,8 @@
 
 @property (nonatomic, assign) NSInteger status; // 0 正常， 1 已删除
 
+@property (nonatomic, copy) NSString *firstMsgId; // 该会话在系统中得第一个 msgId
+
 - (instancetype)initWithOwnerId:(int64_t)ownerId
                       ownerRole:(IMUserRole)ownerRole
                            toId:(int64_t)toId

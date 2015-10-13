@@ -114,13 +114,28 @@
     [self.imService retryMessage:message];
 }
 
-- (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation
+//Deprate
+//- (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation
+//{
+//    if (! [[IMEnvironment shareInstance] isLogin])
+//    {
+//        return ;
+//    }
+//    [self.imService loadMessages:conversation minMsgId:minMsgId];
+//}
+
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId withUser:(User *)user
 {
-    if (! [[IMEnvironment shareInstance] isLogin])
-    {
-        return ;
-    }
-    [self.imService loadMessages:conversation minMsgId:minMsgId];
+    if (![[IMEnvironment shareInstance] isLogin]) return;
+    if (! user) return;
+    [self.imService loadMessagesUser:user orGroup:nil minMsgId:minMsgId];
+}
+
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId withGroup:(Group *)group
+{
+    if (![[IMEnvironment shareInstance] isLogin]) return;
+    if (! group) return;
+    [self.imService loadMessagesUser:nil orGroup:group minMsgId:minMsgId];
 }
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole

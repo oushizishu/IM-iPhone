@@ -130,6 +130,7 @@
 + (BJNetRequestOperation *)hermesGetMsg:(int64_t)eid
                                 groupId:(int64_t)groupId
                                     uid:(int64_t)uid
+                               userRole:(IMUserRole)userRole
                           excludeMsgIds:(NSString *)excludeMsgIds
                                    succ:(onSuccess)succ
                                 failure:(onFailure)failure
@@ -142,8 +143,14 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_MSG method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", eid] forKey:@"eid"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld",uid] forKey:@"uid"];
+    
+    if (groupId > 0) {
+        [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    } else {
+        [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld",uid] forKey:@"user_number"];
+        [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    }
+    
     if ([excludeMsgIds length] > 0)
     {
         [requestParams appendPostParamValue:excludeMsgIds forKey:@"exclude_msgs"];

@@ -7,11 +7,13 @@
 //
 
 #import "HandlePollingResultOperation.h"
+#import "BJIMConstants.h"
 
 @interface HandleGetMsgOperation : HandlePollingResultOperation
 
-@property (nonatomic, assign) NSInteger conversationId;
-@property (nonatomic, assign) NSString *minMsgId;
-@property (nonatomic, copy) NSString *endMessageId;
+@property (nonatomic, copy) NSString *minMsgId;
+@property (nonatomic, assign) int64_t userId;
+@property (nonatomic, assign) IMUserRole userRole;
+@property (nonatomic, assign) int64_t groupId;
 
 @end

@@ -26,7 +26,6 @@
         _toRole = toRole;
         _lastMessageId = lastMessageId;
         _chat_t = chatType;
-        NSLog(@"Conversation  ownerId=%lld  toId=%lld chatT=%ld", _ownerId, _toId, _chat_t);
     }
 
     return self;
@@ -47,6 +46,7 @@
              @"chat_t":@"chat_t",
              @"unReadNum":@"unReadNum",
              @"status":@"status",
+             @"firstMsgId":@"firstMsgId"
              };
 }
 

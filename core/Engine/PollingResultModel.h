@@ -16,6 +16,11 @@
 
 @end
 
+@interface Info  : MTLModel<MTLJSONSerializing>
+
+@property (nonatomic, assign) NSString *firstMsgId;
+@end
+
 @interface PollingResultModel :MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, strong) NSArray *msgs;
@@ -23,5 +28,6 @@
 @property (nonatomic, strong) NSArray *groups;
 @property (nonatomic, strong) NSArray *unread_number;
 @property (nonatomic, strong) NSArray *ops;
+@property (nonatomic, strong) Info    *info;
 
 @end

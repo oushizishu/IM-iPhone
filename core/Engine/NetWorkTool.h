@@ -37,6 +37,7 @@
 + (BJNetRequestOperation *)hermesGetMsg:(int64_t)eid
                                 groupId:(int64_t)groupId
                                     uid:(int64_t)uid
+                               userRole:(IMUserRole)userRole
                           excludeMsgIds:(NSString *)excludeMsgIds
                                    succ:(onSuccess)succ
                                 failure:(onFailure)failure;

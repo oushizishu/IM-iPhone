@@ -53,8 +53,8 @@ typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
 
 @protocol  IMEngineGetMessageDelegate <NSObject>
 
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(NSString *)minMsgId newEndMessageId:(NSString *)newEndMessageId result:(PollingResultModel *)model;
-- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(NSString *)minMsgId;
+- (void)onGetMsgSuccMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId result:(PollingResultModel *)model;
+- (void)onGetMsgFailMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId;
 
 @end
 
@@ -112,6 +112,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
               currentGroup:(int64_t)groupId;
 
 /**
+ @deprecate
  *  获取更多消息，主要在群聊中
  *
  *  @param conversationId <#conversationId description#>
@@ -121,12 +122,27 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
  *  @param excludeIds     <#excludeIds description#>
  *  @param startMessageId <#startMessageId description#>
  */
-- (void)getMsgConversation:(NSInteger)conversationId
-                  minMsgId:(NSString *)eid
-                   groupId:(int64_t)groupId
-                    userId:(int64_t)userId
-                excludeIds:(NSString *)excludeIds
-            startMessageId:(NSString *)startMessageId;
+//- (void)getMsgConversation:(NSInteger)conversationId
+//                  minMsgId:(NSString *)eid
+//                   groupId:(int64_t)groupId
+//                    userId:(int64_t)userId
+//                excludeIds:(NSString *)excludeIds
+//            startMessageId:(NSString *)startMessageId;
+
+/**
+ *  getMsg 方法
+ *
+ *  @param lastMessageId 当前需要获取的最大msgId
+ *  @param groupId       <#groupId description#>
+ *  @param userId        <#userId description#>
+ *  @param userRole      <#userRole description#>
+ *  @param excludeIds    <#excludeIds description#>
+ */
+- (void)postGetMsgLastMsgId:(NSString *)lastMessageId
+                    groupId:(int64_t)groupId
+                     userId:(int64_t)userId
+                   userRole:(IMUserRole)userRole
+                 excludeIds:(NSString *)excludeIds;
 
 - (void)postChangeRemarkName:(NSString *)remarkName
                       userId:(int64_t)userId

@@ -22,6 +22,27 @@
 
 @end
 
+@implementation Info
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey
+{
+    return @{
+             @"firstMsgId":@"fid"
+             };
+}
+
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"fid"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            NSString *result = [NSString stringWithFormat:@"%011ld", (long)[value integerValue]];
+            return result;
+        }];
+    }
+    return nil;
+}
+@end
+
 @implementation PollingResultModel
 
 + (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
@@ -82,7 +103,8 @@
              @"users":@"users",
              @"groups":@"groups",
              @"unread_number":@"unread_number",
-             @"ops":@"ops"
+             @"ops":@"ops",
+             @"info":@"info"
              };
 }
 

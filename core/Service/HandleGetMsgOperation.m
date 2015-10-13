@@ -11,6 +11,7 @@
 #import "BJIMService.h"
 #import "Group.h"
 #import "IMMessage+DB.h"
+#import "IMEnvironment.h"
 
 @interface HandleGetMsgOperation()
 
@@ -29,51 +30,26 @@
         [super doOperationOnBackground];
     }
     
-    self.conversation = [self.imService.imStorage.conversationDao loadWithConversationId:self.conversationId];
+    IMChatType chatType = self.groupId > 0 ? eChatType_GroupChat : eChatType_Chat;
+    User *owner = [IMEnvironment shareInstance].owner;
     
-    if (self.conversation == nil) return;
-    
+    self.conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:chatType == eChatType_Chat?self.userId : self.groupId userRole:self.userRole chatType:chatType];
     self.conversation.imService = self.imService;
-    if (self.conversation.chat_t == eChatType_GroupChat)
-    {
-        Group *group = [self.imService.imStorage.groupDao load:self.conversation.toId];
-        
-        NSString *minConversationMsgId = [self.imService.imStorage.messageDao queryMinMsgIdInConversation:self.conversationId];
-        NSString *maxConversationMsgId = [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid];
-        
-        group.lastMessageId = maxConversationMsgId;
-        
-        NSString *__minMsgId = self.minMsgId == nil ? [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001] : self.minMsgId;
-        self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversationId minMsgId:__minMsgId];
-        
-        if (self.model == nil)
-        {
-            //getMsg 失败. 只从本地加载更多数据
-            
-            if ([self.messages count] > 0 && ([[[self.messages objectAtIndex:0] msgId] doubleValue] > [minConversationMsgId doubleValue]))
-            {
-                self.hasMore = YES;
-            }
-        }
-        else
-        {
-            group.endMessageId = self.endMessageId;
-            
-            NSArray *list = [self.imService.imStorage.messageDao loadMoreMessagesConversation:self.conversationId minMsgId:group.startMessageId maxMsgId:group.endMessageId];
-            
-            if ([list count] == 0)
-            {
-                // 没有空洞了
-                group.endMessageId = group.lastMessageId;
-                group.startMessageId = group.lastMessageId;
-                self.hasMore = NO;
-                [self.imService.imStorage.groupDao insertOrUpdate:group];
-            }
-            else
-            { // 还存在空洞
-                self.hasMore = YES;
-            }
-        }
+    
+    NSString *__minMsgId = self.minMsgId == nil ? [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid] : self.minMsgId;
+    if (self.model != nil) {
+        self.conversation.firstMsgId = self.model.info.firstMsgId;
+        [self.imService.imStorage.conversationDao update:self.conversation];
+    }
+    
+    self.messages = [self.imService.imStorage.messageDao loadMoreMessageWithConversationId:self.conversation.rowid minMsgId:__minMsgId];
+    
+    if ([self.messages count] == 0) {
+        self.hasMore = NO;
+    } else if ([self.messages count] > 0 && [[[self.messages objectAtIndex:0] msgId] isEqualToString:self.conversation.firstMsgId]) {
+        self.hasMore = NO;
+    } else {
+        self.hasMore = YES;
     }
     
     [self.messages enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {

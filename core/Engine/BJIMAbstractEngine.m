@@ -171,16 +171,21 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
  *  @param excludeIds     <#excludeIds description#>
  *  @param startMessageId <#startMessageId description#>
  */
-- (void)getMsgConversation:(NSInteger)conversationId
-                  minMsgId:(NSString *)eid
-                   groupId:(int64_t)groupId
-                    userId:(int64_t)userId
-                excludeIds:(NSString *)excludeIds
-            startMessageId:(NSString *)startMessageId
+//- (void)getMsgConversation:(NSInteger)conversationId
+//                  minMsgId:(NSString *)eid
+//                   groupId:(int64_t)groupId
+//                    userId:(int64_t)userId
+//                excludeIds:(NSString *)excludeIds
+//            startMessageId:(NSString *)startMessageId
+- (void)postGetMsgLastMsgId:(NSString *)lastMessageId
+                    groupId:(int64_t)groupId
+                     userId:(int64_t)userId
+                   userRole:(IMUserRole)userRole
+                 excludeIds:(NSString *)excludeIds
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesGetMsg:[eid longLongValue] groupId:groupId uid:userId excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetMsg:[lastMessageId longLongValue] groupId:groupId uid:userId userRole:userRole excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -190,18 +195,18 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         {
             NSError *error;
             PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:&error];
-            [weakSelf.getMsgDelegate onGetMsgSucc:conversationId minMsgId:eid newEndMessageId:startMessageId result:model];
+            [weakSelf.getMsgDelegate onGetMsgSuccMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId result:model];
         }
         else
         {
             DDLogWarn(@"Get MSG FAIL [url:%@][%@]", params.url, params.urlPostParams);
-            [weakSelf.getMsgDelegate onGetMsgFail:conversationId minMsgId:eid];
+            [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId];
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Get MSG FAIL [url:%@][%@]", params.url, error.userInfo);
-        [weakSelf.getMsgDelegate onGetMsgFail:conversationId minMsgId:eid];
+        [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId];
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];

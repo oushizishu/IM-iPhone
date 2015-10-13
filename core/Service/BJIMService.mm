@@ -177,15 +177,15 @@
     [self notifyWillDeliveryMessage:message];
 }
 
-- (void)loadMessages:(Conversation *)conversation minMsgId:(NSString *)minMsgId
+- (void)loadMessagesUser:(User *)user orGroup:(Group *)group minMsgId:(NSString *)minMsgId
 {
-    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
-    
-    operation.minMsgId = minMsgId;
-    operation.imService = self;
-    operation.conversation = conversation;
-//    [self.operationQueue addOperation:operation];
-    [self.readOperationQueue addOperation:operation];
+//    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
+//    
+//    operation.minMsgId = minMsgId;
+//    operation.imService = self;
+//    operation.conversation = conversation;
+////    [self.operationQueue addOperation:operation];
+//    [self.readOperationQueue addOperation:operation];
 }
 
 #pragma mark - Post Message Delegate
@@ -251,25 +251,36 @@
 }
 
 #pragma mark - get Msg Delegate
-- (void)onGetMsgSucc:(NSInteger)conversationId minMsgId:(NSString *)minMsgId newEndMessageId:(NSString *)newEndMessageId result:(PollingResultModel *)model
+- (void)onGetMsgSuccMinMsgId:(NSString *)minMsgId
+                      userId:(int64_t)userId
+                    userRole:(IMUserRole)userRole
+                     groupId:(int64_t)groupId
+                      result:(PollingResultModel *)model
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
     operation.imService = self;
-    operation.conversationId = conversationId;
     operation.model = model;
     operation.minMsgId = minMsgId;
-    operation.endMessageId = newEndMessageId;
+    operation.userId = userId;
+    operation.userRole = userRole;
+    operation.groupId = groupId;
+    
     [self.receiveMessageOperationQueue addOperation:operation];
 }
 
-- (void)onGetMsgFail:(NSInteger)conversationId minMsgId:(NSString *)minMsgId
+- (void)onGetMsgFailMinMsgId:(NSString *)minMsgId
+                      userId:(int64_t)userId
+                    userRole:(IMUserRole)userRole
+                     groupId:(int64_t)groupId
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
     operation.imService = self;
-    operation.conversationId = conversationId;
     operation.minMsgId = minMsgId;
+    operation.groupId = groupId;
+    operation.userId = userId;
+    operation.userRole = userRole;
     
     [self.receiveMessageOperationQueue addOperation:operation];
 }

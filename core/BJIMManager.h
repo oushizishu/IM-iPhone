@@ -59,7 +59,8 @@
 - (void)retryMessage:(IMMessage *)message;
 //- (void)loadMoreMessages:(Conversation *)conversation;
 // 初始化以及加载会话消息
-- (void)loadMessageFromMinMsgId:(NSString *)minMsgId inConversation:(Conversation *)conversation;
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId withUser:(User *)user; // 加载单聊会话消息
+- (void)loadMessageFromMinMsgId:(NSString *)minMsgId withGroup:(Group *)group; // 加载群聊会话消息
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
