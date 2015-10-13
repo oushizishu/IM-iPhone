@@ -24,11 +24,6 @@ const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
 const NSString *const IMStudentContactTabaleName = @"STUDENTCONTACTS";
 const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS";
 
-@interface BJIMStorage()
-@property (nonatomic, strong) LKDBHelper *dbHelper;
-
-@end
-
 @implementation BJIMStorage
 
 - (instancetype)init
@@ -113,7 +108,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     }
     else if (owner.userRole == eUserRole_Teacher)
     {
-        return ([self.teacherDao loadContactId:contact.userId contactRole:contact.userRole owner:owner]);
+        return ([self.teacherDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
     }
     return NO;
 }

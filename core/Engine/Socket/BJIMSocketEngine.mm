@@ -170,7 +170,6 @@ public:
     
     std::string url([SOCKET_HOST UTF8String]);
     webSocket->init(*socketDelegate, url);
-    _retryConnectCount = 0;
 }
 
 - (void)stop
@@ -410,6 +409,7 @@ public:
     std::string data = [self construct_login_req];
     webSocket->send(data);
     self.engineActive = YES;
+    _retryConnectCount = 0; // 连上之后标志位重置
 }
 
 #pragma mark construct data
