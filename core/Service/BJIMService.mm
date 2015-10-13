@@ -58,6 +58,7 @@
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
 @property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
 @property (nonatomic, strong, readonly) NSOperationQueue *receiveMessageOperationQueue; // 接受消息在独立线程上操作
+@property (nonatomic, strong, readonly) NSOperationQueue *syncContactsOperationQueue; // 联系人数据量比较大， 放在单独线程中
 
 @end
 
@@ -68,6 +69,7 @@
 @synthesize writeOperationQueue=_writeOperationQueue;
 @synthesize sendMessageOperationQueue=_sendMessageOperationQueue;
 @synthesize receiveMessageOperationQueue=_receiveMessageOperationQueue;
+@synthesize syncContactsOperationQueue=_syncContactsOperationQueue;
 
 - (void)startServiceWithOwner:(User *)owner
 {
@@ -179,13 +181,14 @@
 
 - (void)loadMessagesUser:(User *)user orGroup:(Group *)group minMsgId:(NSString *)minMsgId
 {
-//    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
-//    
-//    operation.minMsgId = minMsgId;
-//    operation.imService = self;
-//    operation.conversation = conversation;
-////    [self.operationQueue addOperation:operation];
-//    [self.readOperationQueue addOperation:operation];
+    LoadMoreMessagesOperation *operation = [[LoadMoreMessagesOperation alloc] init];
+    
+    operation.minMsgId = minMsgId;
+    operation.imService = self;
+    operation.chatToGroup = group;
+    operation.chatToUser = user;
+//    [self.operationQueue addOperation:operation];
+    [self.readOperationQueue addOperation:operation];
 }
 
 #pragma mark - Post Message Delegate
@@ -293,7 +296,7 @@
     SyncContactOperation *operation = [[SyncContactOperation alloc]init];
     operation.imService = self;
     operation.model = model;
-    [self.writeOperationQueue addOperation:operation];
+    [self.syncContactsOperationQueue addOperation:operation];
 }
 
 #pragma mark - syncConfigDelegate
@@ -686,6 +689,16 @@
         [_receiveMessageOperationQueue setMaxConcurrentOperationCount:1];
     }
     return _receiveMessageOperationQueue;
+}
+
+- (NSOperationQueue *)syncContactsOperationQueue
+{
+    if (_syncContactsOperationQueue == nil) {
+        _syncContactsOperationQueue = [[NSOperationQueue alloc] init];
+        [_syncContactsOperationQueue setMaxConcurrentOperationCount:1];
+    }
+    return _syncContactsOperationQueue;
+
 }
 
 #pragma mark - application call back

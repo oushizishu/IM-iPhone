@@ -34,6 +34,10 @@
     User *owner = [IMEnvironment shareInstance].owner;
     
     self.conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:chatType == eChatType_Chat?self.userId : self.groupId userRole:self.userRole chatType:chatType];
+    
+    if (! self.conversation)
+        return;
+    
     self.conversation.imService = self.imService;
     
     NSString *__minMsgId = self.minMsgId == nil ? [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid] : self.minMsgId;
@@ -61,6 +65,7 @@
 
 - (void)doAfterOperationOnMain
 {
-    [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
+    if (self.conversation)
+        [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
 }
 @end

@@ -33,7 +33,7 @@
 
 + (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
 {
-    if ([key isEqualToString:@"fid"]) {
+    if ([key isEqualToString:@"firstMsgId"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             NSString *result = [NSString stringWithFormat:@"%011ld", (long)[value integerValue]];
             return result;
@@ -90,6 +90,17 @@
                NSArray *array = [MTLJSONAdapter modelsOfClass:[UnReadNum class] fromJSONArray:value error:nil];
                return array;
            }
+            return nil;
+        }];
+    }
+    else if ([key isEqualToString:@"info"])
+    {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            if ([value isKindOfClass:[NSDictionary class]])
+            {
+                Info *info = [MTLJSONAdapter modelOfClass:[Info class] fromJSONDictionary:value error:nil];
+                return info;
+            }
             return nil;
         }];
     }

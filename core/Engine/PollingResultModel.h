@@ -18,7 +18,7 @@
 
 @interface Info  : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) NSString *firstMsgId;
+@property (nonatomic, copy) NSString *firstMsgId;
 @end
 
 @interface PollingResultModel :MTLModel<MTLJSONSerializing>
