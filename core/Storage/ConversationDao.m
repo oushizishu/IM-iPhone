@@ -56,7 +56,7 @@
         NSString  *queryString = [NSString stringWithFormat:@"ownerId=%lld\
                                   AND ownerRole=%ld\
                                   AND toId=%lld %@\
-                                  AND chat_t=%ld and status=0",ownerId, (long)ownerRole,userId,query,(long)chatType];
+                                  AND chat_t=%ld",ownerId, (long)ownerRole,userId,query,(long)chatType];
         conversation = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
         
         [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
