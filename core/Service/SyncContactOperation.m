@@ -87,6 +87,7 @@
 
 - (void)executorContacts:(NSArray *)userList deleteContactRole:(IMUserRole)contactRole
 {
+    if ([userList count] == 0) return;
     User *currentUser = [IMEnvironment shareInstance].owner;
     NSString *contactTableName = [self contactsTableName:currentUser];
     
@@ -155,7 +156,7 @@
                            owner.userId,
                            contact.userId,
                           (long long)[[NSDate date] timeIntervalSince1970],
-                           contact.remarkHeader];
+                           contact.remarkHeader==nil?@"":contact.remarkHeader];
 
     NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) values%@";
     sql = [NSString stringWithFormat:sql, tableName, arguments];
@@ -190,8 +191,8 @@
                            (int)groupMember.userRole,
                            groupMember.createTime,
                            groupMember.canDisband,
-                           groupMember.remarkHeader,
-                           groupMember.remarkName,
+                           groupMember.remarkHeader==nil?@"":groupMember.remarkHeader,
+                           groupMember.remarkName==nil?@"":groupMember.remarkName,
                            groupMember.groupId];
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
                     pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values%@";
