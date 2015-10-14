@@ -25,6 +25,7 @@
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
+#import "LoadContactsOperation.h"
 
 #import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
@@ -76,8 +77,15 @@
     self.bIsServiceActive = YES;
    
     [self.imStorage.userDao insertOrUpdateUser:owner];
-    [self startEngine];
+    
+    // 在获取联系人的队列中，提前插入一个加载联系人的操作。 联系人的写入操作肯定在加载完成之后。提高后面操作的效率
+    LoadContactsOperation *operation = [[LoadContactsOperation alloc] init];
+    operation.imService = self;
+    operation.owner = owner;
+    [self.syncContactsOperationQueue addOperation:operation];
    
+    [self startEngine];
+    
     // bugfix
     /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
      修复过一次以后就不再需要了*/
