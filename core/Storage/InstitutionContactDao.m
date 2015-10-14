@@ -16,17 +16,19 @@
 - (NSArray *)loadAll:(int64_t)userId role:(IMUserRole)contactRole
 {
     
-    [self.identityScope lock];
+    //千万不要加这个锁， 会和 FMDB 中得 ThreadLock 相互造成死锁
+//    [self.identityScope lock];
     
     NSMutableArray *users = [[NSMutableArray alloc] init];
     
-    // 采用内级联查询
-    NSString *insTableName = [InstitutionContacts getTableName];
-    NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
-                       INSTITUTIONCONTACTS.remarkName, INSTITUTIONCONTACTS.remarkHeader \
-                       from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
-                       USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
     [self.dbHelper executeDB:^(FMDatabase *db) {
+        // 采用内级联查询
+        NSString *insTableName = [InstitutionContacts getTableName];
+        NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
+                           INSTITUTIONCONTACTS.remarkName, INSTITUTIONCONTACTS.remarkHeader \
+                           from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
+                           USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
+        
         FMResultSet *set = [db executeQuery:query];
         
         while ([set next]) {
@@ -68,7 +70,7 @@
 //        [users addObject:user];
 //    }
     
-    [self.identityScope unlock];
+//    [self.identityScope unlock];
     return users;
 }
 

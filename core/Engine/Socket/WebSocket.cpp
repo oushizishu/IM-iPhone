@@ -178,6 +178,7 @@ namespace network {
     
     void WebSocket::send(const std::string &message)
     {
+        usleep(15000);
         if (_readyState == State::OPEN)
         {
             WsMessage* msg = new (std::nothrow) WsMessage();
@@ -193,6 +194,7 @@ namespace network {
     
     void WebSocket::send(const unsigned char* binaryMsg, unsigned int len)
     {
+        usleep(15000);
         if (_readyState == State::OPEN)
         {
             WsMessage* msg = new (std::nothrow) WsMessage();
@@ -285,7 +287,7 @@ namespace network {
             libwebsocket_service(_wsContext, 0);
         }
         
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(15));
         
         return 0;
     }
@@ -454,6 +456,9 @@ namespace network {
                             LOG("WebSocket::onSocketCallback, client send one message to ws server !");
 #endif
                         }
+                        
+                        printf("wsHelper->_subThreadWsMessageQueue size: %u\n",_wsHelper->_subThreadWsMessageQueue->size());
+                        break;
                     }
                 }
 
