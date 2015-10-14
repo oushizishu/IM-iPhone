@@ -69,18 +69,27 @@
     // 更新机构联系人
     NSArray *organizationList = self.model.organizationList;
     //    [self executorContacts:organizationList deleteContactRole:eUserRole_Institution];
-    [self batchWriteContacts:organizationList contactRole:eUserRole_Institution];
+    [self batchWriteContacts:organizationList contactRole:eUserRole_Institution needRefresh:NO];
     
     // 更新老师联系人
     NSArray *teacherList = self.model.teacherList;
     //    [self executorContacts:teacherList deleteContactRole:eUserRole_Teacher];
-    [self batchWriteContacts:teacherList contactRole:eUserRole_Teacher];
+    [self batchWriteContacts:teacherList contactRole:eUserRole_Teacher needRefresh:NO];
     
     //更新学生联系人
     NSArray *studentList = self.model.studentList;
     // 分批写入, 这样就不需要长时间占用 FMDB 中 threadLock.
     //    [self executorContacts:studentList deleteContactRole:eUserRole_Student];
-    [self batchWriteContacts:studentList contactRole:eUserRole_Student];
+    __block BOOL needRefreshUI = NO;
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", [self contactsTableName:currentUser], currentUser.userId, (long)eUserRole_Student];
+        
+        FMResultSet *set = [db executeQuery:sql];
+        needRefreshUI = [set longForColumnIndex:0] == 0; // 如果初始化时本地没有数据，中途动态刷新界面
+        [set close];
+        
+    }];
+    [self batchWriteContacts:studentList contactRole:eUserRole_Student needRefresh:needRefreshUI];
 }
 
 - (void)doAfterOperationOnMain
@@ -89,11 +98,13 @@
 }
 
 #define SYNC_CONTACT_BATCH_COUNT 30 // 每批次同步联系人，批次数量
-- (void)batchWriteContacts:(NSArray *)userList contactRole:(IMUserRole)userRole
+- (void)batchWriteContacts:(NSArray *)userList contactRole:(IMUserRole)userRole needRefresh:(BOOL)needRefresh
 {
     User *currentUser = [[IMEnvironment shareInstance] owner];
     
-    NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", [self contactsTableName:currentUser], currentUser.userId, (long)userRole];
+    NSString *tableName = [self contactsTableName:currentUser];
+    
+    NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", tableName, currentUser.userId, (long)userRole];
     
     NSInteger count = [userList count];
     NSInteger batchCount = count/SYNC_CONTACT_BATCH_COUNT + 1;
@@ -102,19 +113,23 @@
         [db executeUpdate:deleteSQL withArgumentsInArray:nil];
     }];
     
-    //    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     for (NSInteger index = 0; index < batchCount; ++ index) {
         NSInteger start = SYNC_CONTACT_BATCH_COUNT * index;
         NSInteger len = MIN(SYNC_CONTACT_BATCH_COUNT, count - start);
         NSArray *array = [userList objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(start, len)]];
         
         [self executorContacts:array deleteContactRole:userRole];
-        [NSThread sleepForTimeInterval:0.1]; // 让线程等待一会执行, 避免数据量太大的情况下 CPU 占用率持续太高
+        [NSThread sleepForTimeInterval:0.2]; // 让线程等待一会执行, 避免数据量太大的情况下 CPU 占用率持续太高
         
-        //        dispatch_sync(dispatch_get_main_queue(), ^{
-        //            // 每批次完成执行一次刷新
-        //            [weakSelf doAfterOperationOnMain];
-        //        });
+        if (index != 0 && batchCount > 20) { // 加载中途刷新一次界面，避免等待时间过长
+            if (index % 20 == 0 && needRefresh) {
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    // 每批次完成执行一次刷新
+                    [weakSelf doAfterOperationOnMain];
+                });
+            }
+        }
     }
     
 }

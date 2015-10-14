@@ -25,7 +25,6 @@
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
-#import "LoadContactsOperation.h"
 
 #import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
@@ -78,12 +77,6 @@
    
     [self.imStorage.userDao insertOrUpdateUser:owner];
     
-    // 在获取联系人的队列中，提前插入一个加载联系人的操作。 联系人的写入操作肯定在加载完成之后。提高后面操作的效率
-    LoadContactsOperation *operation = [[LoadContactsOperation alloc] init];
-    operation.imService = self;
-    operation.owner = owner;
-    [self.syncContactsOperationQueue addOperation:operation];
-   
     [self startEngine];
     
     // bugfix
