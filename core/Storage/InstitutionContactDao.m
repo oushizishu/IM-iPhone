@@ -26,30 +26,27 @@
                        INSTITUTIONCONTACTS.remarkName, INSTITUTIONCONTACTS.remarkHeader \
                        from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
                        USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
-    [self.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-       [helper executeDB:^(FMDatabase *db) {
-           FMResultSet *set = [db executeQuery:query];
-           
-           while ([set next]) {
-               User *user = [[User alloc] init];
-               user.rowid = [set longForColumnIndex:0];
-               user.userId = [set longLongIntForColumnIndex:1];
-               user.userRole = [set longForColumnIndex:2];
-               user.name = [set stringForColumnIndex:3];
-               user.avatar = [set stringForColumnIndex:4];
-               user.nameHeader = [set stringForColumnIndex:5];
-               user.remarkName = [set stringForColumnIndex:6];
-               user.remarkHeader = [set stringForColumnIndex:7];
-               
-               NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-               [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-               
-               [users addObject:user];
-           }
-           
-           [set close];
-       }];
-        return YES;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        FMResultSet *set = [db executeQuery:query];
+        
+        while ([set next]) {
+            User *user = [[User alloc] init];
+            user.rowid = [set longForColumnIndex:0];
+            user.userId = [set longLongIntForColumnIndex:1];
+            user.userRole = [set longForColumnIndex:2];
+            user.name = [set stringForColumnIndex:3];
+            user.avatar = [set stringForColumnIndex:4];
+            user.nameHeader = [set stringForColumnIndex:5];
+            user.remarkName = [set stringForColumnIndex:6];
+            user.remarkHeader = [set stringForColumnIndex:7];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            
+            [users addObject:user];
+        }
+        
+        [set close];
     }];
     
 //    NSString *query = [NSString stringWithFormat:@" userId=%lld and contactRole=%ld", userId, (long)contactRole];
@@ -83,11 +80,6 @@
     
     NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId, contactId, (long)contactRole];
     
-//    InstitutionContacts *contact = (InstitutionContacts *)[self.identityScope objectByCondition:^BOOL(id key, id item) {
-//        InstitutionContacts *_contact = (InstitutionContacts *)item;
-//        return (_contact.contactId == contactId && _contact.contactRole == contactRole && _contact.userId == owner.userId);
-//    } lock:YES];
-//    
     InstitutionContacts *contact = [self.identityScope objectByKey:key lock:YES];
     
     if (! contact)

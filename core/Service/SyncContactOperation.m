@@ -95,49 +95,28 @@
     
     NSInteger count = [userList count];
     __weak typeof(self) weakSelf = self;
-    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-        @try {
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        
+        [db executeUpdate:deleteSQL withArgumentsInArray:nil];
+        
+        for (NSInteger index = 0; index < count; ++ index) {
+            User *user = [userList objectAtIndex:index];
+            [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
             
-            [helper executeSQL:deleteSQL arguments:nil];
-            
-            for (NSInteger index = 0; index < count; ++ index) {
-                User *user = [userList objectAtIndex:index];
-                    [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
-                
-                if (index == 0) {
-                    [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-                } else {
-                    NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
-                    [helper executeSQL:sql arguments:nil];
-                }
-                
-                // 插入用户，如果已经存在则不插入
-//                if (index != 0) {
-//                    [helper executeDB:^(FMDatabase *db) {
-//                        NSString *query = [NSString stringWithFormat:@"select * from %@ where userId=%lld and userRole=%ld", [User getTableName], user.userId, (long)user.userRole];
-//                        FMResultSet *set = [db executeQuery:query];
-//                        if (! [set next]) {
-//                            // 数据库中没有这个用户
-//                            NSString *sql = [weakSelf generatorUserSql:user];
-//                            [helper executeSQL:sql arguments:nil];
-//                        }
-//                        [set close];
-//                    }];
-//                }
-//                
-               
+            if (index == 0) {
+                [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
+            } else {
+                NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
+                [db executeUpdate:sql withArgumentsInArray:nil];
             }
-            return YES;
-        }
-        @catch (NSException *exception) {
-            return NO;
+            
         }
     }];
 }
 
 - (NSString *)generatorUserSql:(User *)user
 {
-
+    
     NSString *arguments = [NSString stringWithFormat:@"(%lld,'%@','%@',%ld)",
                            user.userId,
                            user.name == nil ? @"":user.name,

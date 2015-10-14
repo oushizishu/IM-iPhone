@@ -14,9 +14,9 @@
 
 - (void)doOperationOnBackground
 {
-    [self.imService getStudentContactsWithUser:self.owner];
-    [self.imService getTeacherContactsWithUser:self.owner];
-    [self.imService getInstitutionContactsWithUser:self.owner];
+//    [self.imService getStudentContactsWithUser:self.owner];
+//    [self.imService getTeacherContactsWithUser:self.owner];
+//    [self.imService getInstitutionContactsWithUser:self.owner];
 }
 
 - (void)doAfterOperationOnMain
