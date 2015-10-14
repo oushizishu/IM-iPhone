@@ -66,103 +66,18 @@
     
     
     // 更新机构联系人
-    NSString *contactTablename = [self contactsTableName:currentUser];
-    [excutorSQLs removeAllObjects];
     NSArray *organizationList = self.model.organizationList;
-    count = organizationList.count;
-    
-    for (NSInteger index = 0; index < count; ++index) {
-        User *user = [organizationList objectAtIndex:index];
-        if (index == 0) {
-            [self.imService.imStorage.userDao insertOrUpdateUser:user];
-            [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        }
-        
-        NSString *sql = [self generatorUserSql:user];
-        [excutorSQLs addObject:sql];
-        
-        sql = [self generatorContactSql:user inTable:contactTablename owner:currentUser];
-        [excutorSQLs addObject:sql];
-    }
-    
-    NSString *deleteOrganizationContactsSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", contactTablename, currentUser.userId, (long)eUserRole_Institution];
-    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-        @try {
-            [helper executeSQL:deleteOrganizationContactsSql arguments:nil];
-            NSInteger count = [excutorSQLs count];
-            for (NSInteger index = 0; index < count; ++ index) {
-                [helper executeSQL:[excutorSQLs objectAtIndex:index] arguments:nil];
-            }
-                
-            return YES;
-        }
-        @catch (NSException *exception) {
-            return NO;
-        }
-    }];
-    
+    [self executorContacts:organizationList deleteContactRole:eUserRole_Institution];
+   
+   
     //更新学生联系人
-    [excutorSQLs removeAllObjects];
     NSArray *studentList = self.model.studentList;
-    count = [studentList count];
-    for (NSInteger index = 0; index < count; ++ index) {
-        User *user = [studentList objectAtIndex:index];
-        if (index == 0) {
-            [self.imService.imStorage.userDao insertOrUpdateUser:user];
-            [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        }
-        NSString *sql = [self generatorUserSql:user];
-        [excutorSQLs addObject:sql];
-        
-        sql = [self generatorContactSql:user inTable:contactTablename owner:currentUser];
-        [excutorSQLs addObject:sql];
-    }
-    NSString *deleteStudentContactsSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", contactTablename, currentUser.userId, (long)eUserRole_Student];
-    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-        @try {
-            [helper executeSQL:deleteStudentContactsSql arguments:nil];
-            NSInteger count = [excutorSQLs count];
-            for (NSInteger index = 0; index < count; ++ index) {
-                [helper executeSQL:[excutorSQLs objectAtIndex:index] arguments:nil];
-            }
-            return YES;
-        }
-        @catch (NSException *exception) {
-            return NO;
-        }
-    }];
+    [self executorContacts:studentList deleteContactRole:eUserRole_Student];
     
     // 更新老师联系人
-    [excutorSQLs removeAllObjects];
     NSArray *teacherList = self.model.teacherList;
-    count = [teacherList count];
-    for (NSInteger index = 0; index < count; ++ index) {
-        User *user = [teacherList objectAtIndex:index];
-        if (index == 0) {
-            [self.imService.imStorage.userDao insertOrUpdateUser:user];
-            [self.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
-        }
-        
-        NSString *sql = [self generatorUserSql:user];
-        [excutorSQLs addObject:sql];
-        
-        sql = [self generatorContactSql:user inTable:contactTablename owner:currentUser];
-        [excutorSQLs addObject:sql];
-    }
-    NSString *deleteTeacherContactsSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", contactTablename, currentUser.userId, (long)eUserRole_Teacher];
-    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-        @try {
-            [helper executeSQL:deleteTeacherContactsSql arguments:nil];
-            NSInteger count = [excutorSQLs count];
-            for (NSInteger index = 0; index < count; ++index) {
-                [helper executeSQL:[excutorSQLs objectAtIndex:index] arguments:nil];
-            }
-            return YES;
-        }
-        @catch (NSException *exception) {
-            return NO;
-        }
-    }];
+    [self executorContacts:teacherList deleteContactRole:eUserRole_Teacher];
+    
 }
 
 - (void)doAfterOperationOnMain
@@ -170,24 +85,73 @@
     [self.imService notifyContactChanged];
 }
 
+- (void)executorContacts:(NSArray *)userList deleteContactRole:(IMUserRole)contactRole
+{
+    User *currentUser = [IMEnvironment shareInstance].owner;
+    NSString *contactTableName = [self contactsTableName:currentUser];
+    
+    NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", contactTableName, currentUser.userId, (long)contactRole];
+    
+    NSInteger count = [userList count];
+    __weak typeof(self) weakSelf = self;
+    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
+        @try {
+            
+            [helper executeSQL:deleteSQL arguments:nil];
+            
+            for (NSInteger index = 0; index < count; ++ index) {
+                User *user = [userList objectAtIndex:index];
+                
+                if (index == 0) {
+                    [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
+                    [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
+                }
+                
+                // 插入用户，如果已经存在则不插入
+                if (index != 0) {
+                    [helper executeDB:^(FMDatabase *db) {
+                        NSString *query = [NSString stringWithFormat:@"select * from %@ where userId=%lld and userRole=%ld", [User getTableName], user.userId, (long)user.userRole];
+                        FMResultSet *set = [db executeQuery:query];
+                        if (! [set next]) {
+                            // 数据库中没有这个用户
+                            NSString *sql = [weakSelf generatorUserSql:user];
+                            [helper executeSQL:sql arguments:nil];
+                        }
+                        [set close];
+                    }];
+                }
+                
+                
+                NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
+                [helper executeSQL:sql arguments:nil];
+                
+            }
+            return YES;
+        }
+        @catch (NSException *exception) {
+            return NO;
+        }
+    }];
+}
+
 - (NSString *)generatorUserSql:(User *)user
 {
 
     NSString *arguments = [NSString stringWithFormat:@"(%lld,'%@','%@',%ld)",
                            user.userId,
-                           user.name,
-                           user.avatar,
+                           user.name == nil ? @"":user.name,
+                           user.avatar == nil ? @"":user.avatar,
                            (long)user.userRole];
     NSString *sql = @"replace into %@(userId,name,avatar,userRole) values%@";
-    sql = [NSString stringWithFormat:sql, arguments];
-    return nil;
+    sql = [NSString stringWithFormat:sql, [User getTableName], arguments];
+    return sql;
 }
 
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
     NSString *arguments = [NSString stringWithFormat:@"(%ld,'%@',%lld,%lld,%lld,'%@')",
                            (long)contact.userRole,
-                           contact.remarkName,
+                           contact.remarkName == nil ? @"":contact.remarkName,
                            owner.userId,
                            contact.userId,
                           (long long)[[NSDate date] timeIntervalSince1970],
