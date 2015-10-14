@@ -39,7 +39,7 @@
     User *owner = [IMEnvironment shareInstance].owner;
     
     // 获取对应的 conversation
-    self.conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:chatType==eChatType_Chat?self.chatToUser.userId:self.chatToGroup.groupId userRole:self.chatToUser.userRole chatType:chatType];
+    self.conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:(chatType==eChatType_Chat?self.chatToUser.userId:self.chatToGroup.groupId) userRole:self.chatToUser.userRole chatType:chatType];
     
     if (chatType == eChatType_Chat) {
         [self doLoadChatMessageOperation];
