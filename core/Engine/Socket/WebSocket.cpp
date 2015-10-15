@@ -178,7 +178,6 @@ namespace network {
     
     void WebSocket::send(const std::string &message)
     {
-        usleep(15000);
         if (_readyState == State::OPEN)
         {
             WsMessage* msg = new (std::nothrow) WsMessage();
@@ -194,7 +193,6 @@ namespace network {
     
     void WebSocket::send(const unsigned char* binaryMsg, unsigned int len)
     {
-        usleep(15000);
         if (_readyState == State::OPEN)
         {
             WsMessage* msg = new (std::nothrow) WsMessage();
@@ -250,6 +248,11 @@ namespace network {
         info.uid = -1;
         info.user = (void*)this;    //**
         
+        //添加tcp keeplive机制
+        info.ka_time = 4000;
+        info.ka_interval = 500;
+        info.ka_probes = 2;
+        
         _wsContext = libwebsocket_create_context(&info);
         
         if(nullptr != _wsContext)
@@ -262,6 +265,7 @@ namespace network {
                 
                 if (_wsProtocols[i+1].callback != nullptr) name += ", ";
             }
+            
             _wsInstance = libwebsocket_client_connect(_wsContext, _host.c_str(), _port, _SSLConnection,
                                                       _path.c_str(), _host.c_str(), _host.c_str(),
                                                       name.c_str(), -1);
@@ -287,7 +291,7 @@ namespace network {
             libwebsocket_service(_wsContext, 0);
         }
         
-        std::this_thread::sleep_for(std::chrono::milliseconds(15));
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
         
         return 0;
     }
@@ -455,10 +459,9 @@ namespace network {
 #ifdef ANDROID
                             LOG("WebSocket::onSocketCallback, client send one message to ws server !");
 #endif
+//                            printf("wsHelper->_subThreadWsMessageQueue size: %u\n",_wsHelper->_subThreadWsMessageQueue->size());
+                            break;
                         }
-                        
-                        printf("wsHelper->_subThreadWsMessageQueue size: %u\n",_wsHelper->_subThreadWsMessageQueue->size());
-                        break;
                     }
                 }
 
