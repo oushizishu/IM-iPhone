@@ -25,6 +25,7 @@
 @property (nonatomic, assign) NSInteger status; // 0 保留 1 开放 2删除
 @property (nonatomic, assign) int64_t createTime;
 @property (nonatomic, assign) NSInteger pushStatus;
+@property (nonatomic, assign) BOOL isAdmin; // 是否为群组
 
 @property (nonatomic, assign) IMGroupMsgStatus msgStatus;
 @property (nonatomic, assign) BOOL canLeave;//是否能退出

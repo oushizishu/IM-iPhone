@@ -66,7 +66,8 @@
              @"canLeave":@"can_quit",
              @"canDisband":@"can_dismiss",
              @"msgStatus":@"msg_status",
-             @"pushStatus":@"push_status"
+             @"pushStatus":@"push_status",
+             @"isAdmin":@"is_admin"
              };
 }
 
@@ -86,6 +87,7 @@
              @"status":@"status",
              @"createTime":@"createTime",
              @"nameHeader":@"nameHeader",
+             @"isAdmin":@"isAdmin"
              };
 }
 

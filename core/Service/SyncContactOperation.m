@@ -26,35 +26,36 @@
         Group *group = [groupList objectAtIndex:index];
         [self.imService.imStorage.groupDao insertOrUpdate:group];
         
-        GroupMember *_groupMember = [[GroupMember alloc] init];
-        _groupMember.userId = currentUser.userId;
-        _groupMember.userRole = currentUser.userRole;
-        _groupMember.groupId = group.groupId;
-        _groupMember.msgStatus = group.msgStatus;
-        _groupMember.canDisband = group.canDisband;
-        _groupMember.canLeave = group.canLeave;
-        _groupMember.remarkHeader = group.remarkHeader;
-        _groupMember.remarkName = group.remarkName;
-        _groupMember.pushStatus = group.pushStatus;
-        
         if (index == 0) {
+            GroupMember *_groupMember = [[GroupMember alloc] init];
+            _groupMember.userId = currentUser.userId;
+            _groupMember.userRole = currentUser.userRole;
+            _groupMember.groupId = group.groupId;
+            _groupMember.msgStatus = group.msgStatus;
+            _groupMember.canDisband = group.canDisband;
+            _groupMember.canLeave = group.canLeave;
+            _groupMember.remarkHeader = group.remarkHeader;
+            _groupMember.remarkName = group.remarkName;
+            _groupMember.pushStatus = group.pushStatus;
+            _groupMember.isAdmin = group.isAdmin;
+            
             // 第一次调用 LKDBHelper，为了能够自动建表
             [self.imService.imStorage.groupMemberDao insertOrUpdate:_groupMember];
         }
         
         //还是需要先清除掉所有的关系，然后再重新添加
-        NSString *sql = [self generatorGroupMmeberSql:_groupMember];
-        NSArray *arguments = @[@(_groupMember.msgStatus),
-                               @(_groupMember.isAdmin),
-                               @(_groupMember.canLeave),
-                               @(_groupMember.userId),
-                               @(_groupMember.pushStatus),
-                               @(_groupMember.userRole),
-                               @(_groupMember.createTime),
-                               @(_groupMember.canDisband),
-                               _groupMember.remarkHeader==nil?@"":_groupMember.remarkHeader,
-                               _groupMember.remarkName==nil?@"":_groupMember.remarkName,
-                               @(_groupMember.groupId)];
+        NSString *sql = [self generatorGroupMmeberSql];
+        NSArray *arguments = @[@(group.msgStatus),
+                               @(group.isAdmin),
+                               @(group.canLeave),
+                               @(currentUser.userId),
+                               @(group.pushStatus),
+                               @(currentUser.userRole),
+                               @(group.createTime),
+                               @(group.canDisband),
+                               group.remarkHeader==nil?@"":group.remarkHeader,
+                               group.remarkName==nil?@"":group.remarkName,
+                               @(group.groupId)];
         [groupArguments addObject:arguments];
        
         [excutorSQLs addObject:sql];
@@ -219,7 +220,7 @@
     return nil;
 }
 
-- (NSString *)generatorGroupMmeberSql:(GroupMember *)groupMember
+- (NSString *)generatorGroupMmeberSql
 {
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
                     pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values(?,?,?,?,?,?,?,?,?,?,?)";
