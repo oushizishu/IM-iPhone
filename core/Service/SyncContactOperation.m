@@ -74,18 +74,15 @@
     
     // 更新机构联系人
     NSArray *organizationList = self.model.organizationList;
-    //    [self executorContacts:organizationList deleteContactRole:eUserRole_Institution];
     [self batchWriteContacts:organizationList contactRole:eUserRole_Institution needRefresh:NO];
     
     // 更新老师联系人
     NSArray *teacherList = self.model.teacherList;
-    //    [self executorContacts:teacherList deleteContactRole:eUserRole_Teacher];
     [self batchWriteContacts:teacherList contactRole:eUserRole_Teacher needRefresh:NO];
     
     //更新学生联系人
     NSArray *studentList = self.model.studentList;
     // 分批写入, 这样就不需要长时间占用 FMDB 中 threadLock.
-    //    [self executorContacts:studentList deleteContactRole:eUserRole_Student];
     __block BOOL needRefreshUI = NO;
     [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", [self contactsTableName:currentUser], currentUser.userId, (long)eUserRole_Student];
