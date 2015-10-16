@@ -107,7 +107,10 @@
     NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", tableName, currentUser.userId, (long)userRole];
     
     NSInteger count = [userList count];
-    NSInteger batchCount = count/SYNC_CONTACT_BATCH_COUNT + 1;
+    NSInteger batchCount = count/SYNC_CONTACT_BATCH_COUNT;
+    if (count % SYNC_CONTACT_BATCH_COUNT > 0) {
+        batchCount += 1;
+    }
     
     [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
         [db executeUpdate:deleteSQL withArgumentsInArray:nil];

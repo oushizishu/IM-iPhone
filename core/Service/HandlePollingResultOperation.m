@@ -110,10 +110,6 @@
             {
                 [self.imService.imStorage.messageDao insert:message];
             }
-            else
-            {
-                continue;
-            }
             
             conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
             
@@ -123,6 +119,13 @@
                 
                 [self.imService insertConversation:conversation];
             }
+            else
+            {
+                if ([_message.msgId doubleValue] > [conversation.lastMessageId doubleValue]) {
+                    conversation.lastMessageId = _message.msgId;
+                    [self.imService.imStorage.conversationDao update:conversation];
+                }
+            }
             
 //            conversation.status = 0;// 会话状态回归正常
             message.status = eMessageStatus_Send_Succ;
@@ -130,6 +133,8 @@
             message.played = 1;
             
             message.conversationId = conversation.rowid;
+            
+
             
             [self.imService.imStorage.messageDao update:message];
         }

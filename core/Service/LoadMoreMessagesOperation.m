@@ -24,7 +24,7 @@
 @property (nonatomic, assign) BOOL needGetMsg;
 
 @property (nonatomic, copy) NSString *excludeIds;
-@property (nonatomic, copy) NSString *endMessageId;
+//@property (nonatomic, copy) NSString *endMessageId;
 @property (nonatomic, strong) Conversation *conversation;
 
 @end

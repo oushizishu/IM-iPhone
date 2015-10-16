@@ -40,7 +40,12 @@
     
     self.conversation.imService = self.imService;
     
-    NSString *__minMsgId = self.minMsgId == nil ? [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid] : self.minMsgId;
+    NSString *__minMsgId = self.minMsgId;
+    if (__minMsgId == nil) {
+        NSString *maxConversationMsgId = [self.imService.imStorage.messageDao queryMaxMsgIdInConversation:self.conversation.rowid];
+        __minMsgId = [NSString stringWithFormat:@"%015.4lf", [maxConversationMsgId doubleValue] + 0.0001];
+    }
+    
     if (self.model != nil) {
         self.conversation.firstMsgId = self.model.info.firstMsgId;
         [self.imService.imStorage.conversationDao update:self.conversation];
