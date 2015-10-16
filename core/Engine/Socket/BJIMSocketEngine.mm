@@ -117,6 +117,7 @@ public:
 
 @interface BJIMSocketEngine()
 {
+    NSTimeInterval _receiveMessageNewTime; // 用于标识收到 messageNew 信号的时间。 屏蔽调同时收到大量的 messageNew 信号
 @private
     IMSocketDelegate *socketDelegate;
 }
@@ -241,6 +242,7 @@ public:
        groupsLastMsgIds:(NSString *)group_last_msg_ids
            currentGroup:(int64_t)groupId
 {
+    _receiveMessageNewTime = 0;
     if (![[IMEnvironment shareInstance] isLogin]) return;
     
     
@@ -307,7 +309,11 @@ public:
     }
     else if ([messageType isEqualToString:SOCKET_API_RESPONSE_MESSAGE_NEW])
     { // 有新消息
-        [self.pollingDelegate onShouldStartPolling];
+        NSTimeInterval currentTime = [[NSDate date] timeIntervalSince1970];
+        if (_receiveMessageNewTime == 0 || (currentTime - _receiveMessageNewTime) > 5) { // 保险起见， 5s 内如果标志位都没有置回来，则可以继续发送
+            _receiveMessageNewTime = currentTime;
+            [self.pollingDelegate onShouldStartPolling];
+        }
     }
     
 }

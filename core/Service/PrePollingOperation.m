@@ -26,6 +26,8 @@
 {
     if (self.imService == nil) return;
     
+    [NSThread sleepForTimeInterval:0.3]; // 线程休眠 300ms， 为了防止 messageNew 在同一时刻大量下发，降低服务器压力.
+    
     User *owner = [IMEnvironment shareInstance].owner;
     
     self.max_msg_id = [self.imService.imStorage.messageDao queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
