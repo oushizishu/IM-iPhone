@@ -20,6 +20,7 @@
     
     // 构建 sql 语句。
     NSMutableArray *excutorSQLs = [[NSMutableArray alloc] initWithCapacity:count];
+    NSMutableArray *groupArguments = [[NSMutableArray alloc] initWithCapacity:count];
     for (NSInteger index = 0; index < count; ++ index)
     {
         Group *group = [groupList objectAtIndex:index];
@@ -43,28 +44,32 @@
         
         //还是需要先清除掉所有的关系，然后再重新添加
         NSString *sql = [self generatorGroupMmeberSql:_groupMember];
+        NSArray *arguments = @[@(_groupMember.msgStatus),
+                               @(_groupMember.isAdmin),
+                               @(_groupMember.canLeave),
+                               @(_groupMember.userId),
+                               @(_groupMember.pushStatus),
+                               @(_groupMember.userRole),
+                               @(_groupMember.createTime),
+                               @(_groupMember.canDisband),
+                               _groupMember.remarkHeader==nil?@"":_groupMember.remarkHeader,
+                               _groupMember.remarkName==nil?@"":_groupMember.remarkName,
+                               @(_groupMember.groupId)];
+        [groupArguments addObject:arguments];
+       
         [excutorSQLs addObject:sql];
     }
     
     // 直接执行sql， 不走缓存层。提升效率
     NSString *deleteGroupSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld", [GroupMember getTableName],currentUser.userId, (long)currentUser.userRole];
-    [self.imService.imStorage.dbHelper executeForTransaction:^BOOL(LKDBHelper *helper) {
-        
-        @try {
-            [helper executeSQL:deleteGroupSql arguments:nil];
-            NSInteger count = excutorSQLs.count;
-            for (NSInteger index = 0; index < count; ++ index) {
-                NSString *sql = [excutorSQLs objectAtIndex:index];
-                [helper executeSQL:sql arguments:nil];
-            }
-            return YES;
-        }
-        @catch (NSException *exception) {
-            return NO;
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        [db executeUpdate:deleteGroupSql];
+        NSInteger count = excutorSQLs.count;
+        for (NSInteger index = 0; index < count; ++ index) {
+            NSString *sql = [excutorSQLs objectAtIndex:index];
+            [db executeUpdate:sql withArgumentsInArray:[groupArguments objectAtIndex:index]];
         }
     }];
-    
-    
     
     // 更新机构联系人
     NSArray *organizationList = self.model.organizationList;
@@ -155,38 +160,45 @@
                 [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
             } else {
                 NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
-                [db executeUpdate:sql withArgumentsInArray:nil];
+                NSArray *arguments = @[@(user.userRole),
+                                       user.remarkName==nil?@"":user.remarkName,
+                                       @(currentUser.userId),
+                                       @(user.userId),
+                                       @((long long)[[NSDate date] timeIntervalSince1970]),
+                                       user.remarkHeader==nil?@"":user.remarkHeader];
+                
+                [db executeUpdate:sql withArgumentsInArray:arguments];
             }
             
         }
     }];
 }
 
-- (NSString *)generatorUserSql:(User *)user
-{
-    
-    NSString *arguments = [NSString stringWithFormat:@"(%lld,'%@','%@',%ld)",
-                           user.userId,
-                           user.name == nil ? @"":user.name,
-                           user.avatar == nil ? @"":user.avatar,
-                           (long)user.userRole];
-    NSString *sql = @"replace into %@(userId,name,avatar,userRole) values%@";
-    sql = [NSString stringWithFormat:sql, [User getTableName], arguments];
-    return sql;
-}
+//- (NSString *)generatorUserSql:(User *)user
+//{
+//    
+//    NSString *arguments = [NSString stringWithFormat:@"(%lld,'%@','%@',%ld)",
+//                           user.userId,
+//                           user.name == nil ? @"":user.name,
+//                           user.avatar == nil ? @"":user.avatar,
+//                           (long)user.userRole];
+//    NSString *sql = @"replace into %@(userId,name,avatar,userRole) values%@";
+//    sql = [NSString stringWithFormat:sql, [User getTableName], arguments];
+//    return sql;
+//}
 
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
-    NSString *arguments = [NSString stringWithFormat:@"(%ld,'%@',%lld,%lld,%lld,'%@')",
-                           (long)contact.userRole,
-                           contact.remarkName == nil ? @"":contact.remarkName,
-                           owner.userId,
-                           contact.userId,
-                          (long long)[[NSDate date] timeIntervalSince1970],
-                           contact.remarkHeader==nil?@"":contact.remarkHeader];
-
-    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) values%@";
-    sql = [NSString stringWithFormat:sql, tableName, arguments];
+//    NSString *arguments = [NSString stringWithFormat:@"(%ld,'%@',%lld,%lld,%lld,'%@')",
+//                           (long)contact.userRole,
+//                           contact.remarkName == nil ? @"":contact.remarkName,
+//                           owner.userId,
+//                           contact.userId,
+//                          (long long)[[NSDate date] timeIntervalSince1970],
+//                           contact.remarkHeader==nil?@"":contact.remarkHeader];
+//
+    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) values(?,?,?,?,?,?)";
+    sql = [NSString stringWithFormat:sql, tableName];
     return sql;
 }
 
@@ -209,21 +221,9 @@
 
 - (NSString *)generatorGroupMmeberSql:(GroupMember *)groupMember
 {
-    NSString *arguments = [NSString stringWithFormat:@"(%d,%d,%d,%lld,%d,%d,%lld,%d,'%@','%@',%lld)",
-                            (int)groupMember.msgStatus,
-                            (int)groupMember.isAdmin,
-                           (int)groupMember.canLeave,
-                           groupMember.userId,
-                           (int)groupMember.pushStatus,
-                           (int)groupMember.userRole,
-                           groupMember.createTime,
-                           groupMember.canDisband,
-                           groupMember.remarkHeader==nil?@"":groupMember.remarkHeader,
-                           groupMember.remarkName==nil?@"":groupMember.remarkName,
-                           groupMember.groupId];
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
-                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values%@";
-    sql = [NSString stringWithFormat:sql, [GroupMember getTableName],arguments];
+                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values(?,?,?,?,?,?,?,?,?,?,?)";
+    sql = [NSString stringWithFormat:sql, [GroupMember getTableName]];
     return sql;
 }
 @end
