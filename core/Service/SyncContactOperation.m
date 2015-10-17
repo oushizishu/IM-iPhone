@@ -88,7 +88,9 @@
         NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", [self contactsTableName:currentUser], currentUser.userId, (long)eUserRole_Student];
         
         FMResultSet *set = [db executeQuery:sql];
-        needRefreshUI = [set longForColumnIndex:0] == 0; // 如果初始化时本地没有数据，中途动态刷新界面
+        if ([set next]) {
+            needRefreshUI = [set longForColumnIndex:0] == 0; // 如果初始化时本地没有数据，中途动态刷新界面
+        }
         [set close];
         
     }];
@@ -129,7 +131,7 @@
         [NSThread sleepForTimeInterval:0.2]; // 让线程等待一会执行, 避免数据量太大的情况下 CPU 占用率持续太高
         
         if (index != 0 && batchCount > 20) { // 加载中途刷新一次界面，避免等待时间过长
-            if (index % 20 == 0 && needRefresh) {
+            if ((index == 2 || index % 20 == 0) && needRefresh) {
                 dispatch_sync(dispatch_get_main_queue(), ^{
                     // 每批次完成执行一次刷新
                     [weakSelf doAfterOperationOnMain];
