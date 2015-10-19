@@ -56,7 +56,7 @@
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
 @property (nonatomic, strong) User *stanger;
-@property (nonatomic, strong) User *newFans;
+@property (nonatomic, strong) User *nFans;
 
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
 @property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
@@ -654,16 +654,16 @@
 
 - (User *)getNewFans
 {
-    if (self.newFans == nil) {
-        self.newFans = [self.imStorage.userDao loadUser:-1000200 role:eUserRole_Fans];
-        if (self.newFans == nil) {
-            self.newFans = [[User alloc] init];
-            self.newFans.userId = -1000200;
-            self.newFans.userRole = eUserRole_Fans;
-            self.newFans.name = @"新粉丝";
+    if (self.nFans == nil) {
+        self.nFans = [self.imStorage.userDao loadUser:-1000200 role:eUserRole_Fans];
+        if (self.nFans == nil) {
+            self.nFans = [[User alloc] init];
+            self.nFans.userId = -1000200;
+            self.nFans.userRole = eUserRole_Fans;
+            self.nFans.name = @"新粉丝";
         }
     }
-    return self.newFans;
+    return self.nFans;
 }
 
 - (BJIMAbstractEngine *)imEngine
