@@ -23,4 +23,6 @@
 - (void)deleteContactId:(int64_t)contactId
             contactRole:(IMUserRole)contactRole
                   owner:(User *)owner;
+
+- (BOOL)isStanger:(User *)contact withOwner:(User *)owner;
 @end
