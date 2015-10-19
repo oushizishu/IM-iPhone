@@ -68,6 +68,10 @@
 // 新粉丝
 - (User *)getNewFans;
 
+//添加关注
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole;
+//取消关注
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole;
 
 
 #pragma mark - remark name
@@ -90,7 +94,7 @@
 
 #pragma mark - add Delegates
 - (void)addAttentionStateDelegate:(id<IMConversationChangedDelegate>)delegate;
-- (void)notifyAttentionState:(NSArray*)array;
+- (void)notifyAttentionState:(User*)array;
 
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
 - (void)notifyConversationChanged;

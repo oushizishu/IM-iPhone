@@ -667,6 +667,24 @@
     return self.nFans;
 }
 
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postAddAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+        
+        [weakSelf notifyAttentionState:user];
+    }];
+}
+
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postCancelAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+        
+        [weakSelf notifyAttentionState:user];
+    }];
+}
+
 - (BJIMAbstractEngine *)imEngine
 {
     if (_imEngine == nil)
