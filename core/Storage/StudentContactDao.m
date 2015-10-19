@@ -54,6 +54,120 @@
     return users;
 }
 
+- (NSArray *)loadMyAttions:(int64_t)userId role:(IMUserRole)contactRole
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *insTableName = [StudentContacts getTableName];
+        NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
+                           STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
+                           from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
+                           USERS.userRole=%@.contactRole where %@.userId=%lld and \
+                           %@.contactRole=%ld and %@.blackStatus!=%ld and %@.focusType=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId,insTableName,(long)contactRole,insTableName, eIMBlackStatus_Active,insTableName, eIMFocusType_Active];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        
+        while ([set next]) {
+            User *user = [[User alloc] init];
+            user.rowid = [set longForColumnIndex:0];
+            user.userId = [set longLongIntForColumnIndex:1];
+            user.userRole = [set longForColumnIndex:2];
+            user.name = [set stringForColumnIndex:3];
+            user.avatar = [set stringForColumnIndex:4];
+            user.nameHeader = [set stringForColumnIndex:5];
+            user.remarkName = [set stringForColumnIndex:6];
+            user.remarkHeader = [set stringForColumnIndex:7];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            
+            [users addObject:user];
+        }
+        
+        [set close];
+    }];
+    return users;
+}
+
+- (NSArray *)loadMyFans:(int64_t)userId role:(IMUserRole)contactRole
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *insTableName = [StudentContacts getTableName];
+        NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
+                           STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
+                           from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
+                           USERS.userRole=%@.contactRole where %@.userId=%lld and \
+                           %@.contactRole=%ld and %@.blackStatus!=%ld and %@.focusType=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId,insTableName,(long)contactRole,insTableName, eIMBlackStatus_Passive,insTableName, eIMFocusType_Passive];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        
+        while ([set next]) {
+            User *user = [[User alloc] init];
+            user.rowid = [set longForColumnIndex:0];
+            user.userId = [set longLongIntForColumnIndex:1];
+            user.userRole = [set longForColumnIndex:2];
+            user.name = [set stringForColumnIndex:3];
+            user.avatar = [set stringForColumnIndex:4];
+            user.nameHeader = [set stringForColumnIndex:5];
+            user.remarkName = [set stringForColumnIndex:6];
+            user.remarkHeader = [set stringForColumnIndex:7];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            
+            [users addObject:user];
+        }
+        
+        [set close];
+    }];
+    return users;
+}
+
+- (NSArray *)loadMyBlackList:(int64_t)userId role:(IMUserRole)contactRole
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *insTableName = [StudentContacts getTableName];
+        NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
+                           STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
+                           from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
+                           USERS.userRole=%@.contactRole where %@.userId=%lld and \
+                           %@.contactRole=%ld and %@.blackStatus=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId,insTableName,(long)contactRole,insTableName, eIMBlackStatus_Active];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        
+        while ([set next]) {
+            User *user = [[User alloc] init];
+            user.rowid = [set longForColumnIndex:0];
+            user.userId = [set longLongIntForColumnIndex:1];
+            user.userRole = [set longForColumnIndex:2];
+            user.name = [set stringForColumnIndex:3];
+            user.avatar = [set stringForColumnIndex:4];
+            user.nameHeader = [set stringForColumnIndex:5];
+            user.remarkName = [set stringForColumnIndex:6];
+            user.remarkHeader = [set stringForColumnIndex:7];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            
+            [users addObject:user];
+        }
+        
+        [set close];
+    }];
+    return users;
+}
+
 - (StudentContacts *)loadContactId:(int64_t)contactId
                            contactRole:(IMUserRole)contactRole
                                  owner:(User *)owner
