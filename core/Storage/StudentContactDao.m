@@ -127,4 +127,19 @@
         [self detach:key];
     }
 }
+
+
+- (BOOL)isStanger:(User *)contact withOwner:(User *)owner
+{
+    StudentContacts *student = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    if (student == nil) {
+        return YES;
+    }
+    
+    if ((student.focusType == eIMFocusType_None && student.tinyFoucs == eIMTinyFocus_None) ||
+        (student.focusType == eIMFocusType_Passive && student.tinyFoucs == eIMTinyFocus_None)) {
+        return YES;
+    }
+    return NO;
+}
 @end
