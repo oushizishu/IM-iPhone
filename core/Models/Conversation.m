@@ -46,7 +46,8 @@
              @"chat_t":@"chat_t",
              @"unReadNum":@"unReadNum",
              @"status":@"status",
-             @"firstMsgId":@"firstMsgId"
+             @"firstMsgId":@"firstMsgId",
+             @"relation":@"relation"
              };
 }
 
