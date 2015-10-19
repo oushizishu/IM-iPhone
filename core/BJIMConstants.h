@@ -116,7 +116,8 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
 #pragma mark - 黑名单关系
 typedef NS_ENUM(NSInteger, IMBlackStatus) {
     eIMBlackStatus_Normal = 0, // 正常
-    eIMBlackStatus_Black = 1 // 黑名单
+    eIMBlackStatus_Passive = 1, // 被拉黑
+    eIMBlackStatus_Active = 2, // 我拉黑ta
 };
 
 #pragma mark - 来源类型
