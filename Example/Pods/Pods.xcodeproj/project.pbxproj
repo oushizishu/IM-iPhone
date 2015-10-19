@@ -322,6 +322,8 @@
 		93B6B3A3B1427E7103AB9CF29C27EA17 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C81CDC4CD7004E72E6514AB1BD75BE7 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		93FB717DC31B59760CD4F30C19AD1A09 /* IMTxtMessageBody.h in Headers */ = {isa = PBXBuildFile; fileRef = B3502E78032A6BAA5A7D02C0863E5435 /* IMTxtMessageBody.h */; };
 		946491C581C28990BDD25967C711757B /* DDAssertMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 770BE67D47756C974D0D515C6E77B34A /* DDAssertMacros.h */; };
+		955249311BD4D08E0012F224 /* NewFansContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552492F1BD4D08E0012F224 /* NewFansContact.h */; };
+		955249321BD4D08E0012F224 /* NewFansContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 955249301BD4D08E0012F224 /* NewFansContact.m */; };
 		95B26073C2E900C7647EAF5FE296369C /* PictureBrowserCollectionViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 9995AD1E84A6A02037D5ED6403B24C61 /* PictureBrowserCollectionViewCell.h */; };
 		95C418D65011B675D1FB6083036EC592 /* JLMicrophonePermission.h in Headers */ = {isa = PBXBuildFile; fileRef = 638D01BF41EAC850AFE58FB82725829E /* JLMicrophonePermission.h */; };
 		960B18882C017B11E5B29877EDE3D8B8 /* StudentContacts.m in Sources */ = {isa = PBXBuildFile; fileRef = 2B68331A47094CF059AC65765B0AFE6E /* StudentContacts.m */; };
@@ -1252,6 +1254,8 @@
 		945BE1828F27E50B8C468E09AE3BA2C4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		951760258FE9F09C52F999AD572148FE /* DDLegacyMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLegacyMacros.h; path = Classes/DDLegacyMacros.h; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9552492F1BD4D08E0012F224 /* NewFansContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NewFansContact.h; sourceTree = "<group>"; };
+		955249301BD4D08E0012F224 /* NewFansContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NewFansContact.m; sourceTree = "<group>"; };
 		95BF345F8E09B8A47987D3CDEB141B07 /* BJAudioPlayer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = BJAudioPlayer.h; path = core/MediaRecorder/BJAudioPlayer.h; sourceTree = "<group>"; };
 		96581125457E2AE29E0941504912892F /* YLGIFImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YLGIFImage.xcconfig; sourceTree = "<group>"; };
 		96D7F739884A9FB4CC645B7ECF6B4E8B /* NSDictionary+Json.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+Json.h"; sourceTree = "<group>"; };
@@ -2360,6 +2364,8 @@
 				9909CE38360A2CFFCD8D386DA40031A1 /* TeacherContacts.m */,
 				5909F64674A4A56B1FC40806455DC28F /* User.h */,
 				A2DF6201ADE95D3CDE079F33BFB7C7B7 /* User.m */,
+				9552492F1BD4D08E0012F224 /* NewFansContact.h */,
+				955249301BD4D08E0012F224 /* NewFansContact.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -2936,6 +2942,7 @@
 				F1B4F92183F46E2C5BAAC17FAF08263E /* AFHTTPRequestOperationManager.h in Headers */,
 				13E5A39C77D60251055F948BA941CF15 /* AFHTTPSessionManager.h in Headers */,
 				6024F8E47237430686CF9FE779BFE0F6 /* AFNetworkActivityIndicatorManager.h in Headers */,
+				955249311BD4D08E0012F224 /* NewFansContact.h in Headers */,
 				AD7AB4AD2ED1475BA6C53EA8A6BBC3CE /* AFNetworkReachabilityManager.h in Headers */,
 				498ED85830511D57D65A8E05B5CB77C0 /* AFNetworking.h in Headers */,
 				563FAB54464A6B10C371E94D82CB40E8 /* AFSecurityPolicy.h in Headers */,
@@ -3683,6 +3690,7 @@
 				7E15674F029E58FF605FC25E783578E0 /* AFHTTPRequestOperation.m in Sources */,
 				EAA99BCF15FDDE9A4973A6795570E9BC /* AFHTTPRequestOperationManager.m in Sources */,
 				29E5095A2A8F57E210A86B6E7E80070C /* AFHTTPSessionManager.m in Sources */,
+				955249321BD4D08E0012F224 /* NewFansContact.m in Sources */,
 				5D59714006C38E54EDAF15F53EAF1F28 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				5D414A0304F96AB5A37EC7F7E38A15B1 /* AFNetworkReachabilityManager.m in Sources */,
 				60E0B3DBA3E2C33A2DAECCCF180D2DD7 /* AFNetworking-dummy.m in Sources */,

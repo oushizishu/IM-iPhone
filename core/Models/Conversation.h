@@ -26,6 +26,8 @@
 
 @property (nonatomic, copy) NSString *firstMsgId; // 该会话在系统中得第一个 msgId
 
+@property (nonatomic, assign) NSInteger relation; // 标记用户之间关系 1 为陌生人
+
 - (instancetype)initWithOwnerId:(int64_t)ownerId
                       ownerRole:(IMUserRole)ownerRole
                            toId:(int64_t)toId
