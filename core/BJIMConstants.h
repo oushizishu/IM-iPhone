@@ -111,6 +111,33 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
     eError_token_invalid = 510005, //token 失效
 };
 
+#pragma mark - 黑名单关系
+typedef NS_ENUM(NSInteger, IMBlackStatus) {
+    eIMBlackStatus_Normal = 0, // 正常
+    eIMBlackStatus_Black = 1 // 黑名单
+};
+
+#pragma mark - 来源类型
+typedef NS_ENUM(NSInteger, IMOriginType) {
+    eIMOriginType_Attention = 0, //关注
+    eIMOriginType_Order = 1, //订单
+};
+
+#pragma mark - 关注类型
+typedef NS_ENUM(NSInteger, IMFocusType) {
+    eIMFocusType_None = 0, // 未设置
+    eIMFocusType_Active = 1, // 主动关注， 我关注TA
+    eIMFocusType_Passive = 2, // 被关注， TA 关注我
+    eIMFocusType_Both = 3, // 互相关注
+};
+
+#pragma mark - 浅关注类型
+typedef NS_ENUM(NSInteger, IMTinyFocus) {
+    eIMTinyFocus_None = 0, // 为浅关注
+    eIMTinyFocus_Been = 1, // 已浅关注
+};
+
+
 static const int MESSAGE_PAGE_COUNT = 30;
 static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
