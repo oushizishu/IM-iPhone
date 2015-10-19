@@ -146,6 +146,14 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 #pragma mark - delegates
 
+@class User;
+
+@protocol IMAttentionStateDelegate <NSObject>
+
+- (void)didAttentionState:(User*)user;
+
+@end
+
 @protocol IMConversationChangedDelegate <NSObject>
 
 - (void)didConversationDidChanged;

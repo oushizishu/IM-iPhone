@@ -41,6 +41,7 @@
                          IMEngineNetworkEfficiencyDelegate>
 
 
+@property (nonatomic, strong) NSHashTable *attentionStateDelegates;
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
 @property (nonatomic, strong) NSHashTable *deliveredMessageDelegates;
@@ -744,6 +745,28 @@
 - (void)applicationEnterBackground
 {
     [self.imEngine stop];
+}
+
+#pragma mark - attention Delegates
+- (void)addAttentionStateDelegate:(id<IMAttentionStateDelegate>)delegate
+{
+    if (self.attentionStateDelegates == nil)
+    {
+        self.attentionStateDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    
+    [self.attentionStateDelegates addObject:delegate];
+}
+
+- (void)notifyAttentionState:(User*)user
+{
+    NSEnumerator *enumerator = [self.attentionStateDelegates objectEnumerator];
+    id<IMAttentionStateDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(didAttentionState:)])
+            [delegate didAttentionState:user];
+    }
 }
 
 #pragma mark - add Delegates

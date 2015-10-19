@@ -54,7 +54,7 @@
     return users;
 }
 
-- (NSArray *)loadMyAttions:(int64_t)userId role:(IMUserRole)contactRole
+- (NSArray *)loadMyAttentions:(int64_t)userId role:(IMUserRole)contactRole
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
