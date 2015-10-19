@@ -27,14 +27,8 @@
 
 @implementation HandlePollingResultOperation
 
-- (void)doOperationOnBackground
+- (void)updateUsers:(User *)owner users:(NSArray *)users
 {
-    
-    if (self.imService == nil) return;
-    User *owner = [IMEnvironment shareInstance].owner;
-    
-    NSArray *users = self.model.users;
-    
     for (NSInteger index = 0; index < [users count]; ++ index)
     {
         User *user = [users objectAtIndex:index];
@@ -47,8 +41,10 @@
             owner.avatar = user.avatar;
         }
     }
-    
-    NSArray *groups = self.model.groups;
+}
+
+- (void)updateGroups:(User *)owner groups:(NSArray *)groups
+{
     for (NSInteger index = 0; index < [groups count]; ++ index)
     {
         Group *group = [groups objectAtIndex:index];
@@ -65,6 +61,156 @@
             [self.imService.imStorage.groupMemberDao insertOrUpdate:member];
         }
     }
+}
+
+- (Conversation *)dealSendedMessage:(IMMessage *)message
+{
+    Conversation *conversation = nil;
+    if (message.chat_t == eChatType_Chat) {
+        if (! [self checkHasUser:message.receiver role:message.receiverRole array:self.model.users])
+        {
+            //垃圾消息
+            return nil;
+        }
+    }
+    else
+    {
+        if (! [self checkhasGroup:message.receiver array:self.model.groups])
+        {
+            // 垃圾消息
+            return nil;
+        }
+    }
+    
+    //如果更换设备登陆，消息链中可能会有之前自己发送的消息
+    //判断 message 表中是否已有这条消息，如果没有则入库
+    IMMessage *_message = [self.imService.imStorage.messageDao loadWithMessageId:message.msgId];
+    if (_message == nil)
+    {
+        [self.imService.imStorage.messageDao insert:message];
+    }
+    
+    conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
+    
+    if (conversation == nil)
+    {// 创建新的 conversation，unreadnumber 不增加
+        conversation = [[Conversation alloc] initWithOwnerId:message.sender ownerRole:message.senderRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
+        
+        [self.imService insertConversation:conversation];
+    }
+    else
+    {
+        if ([_message.msgId doubleValue] > [conversation.lastMessageId doubleValue]) {
+            conversation.lastMessageId = _message.msgId;
+            [self.imService.imStorage.conversationDao update:conversation];
+        }
+    }
+    
+    //conversation.status = 0;// 会话状态回归正常
+    message.status = eMessageStatus_Send_Succ;
+    message.read = 1;
+    message.played = 1;
+    
+    message.conversationId = conversation.rowid;
+    
+    [self.imService.imStorage.messageDao update:message];
+    return conversation;
+}
+
+- (Conversation *)dealReceiveChatMessage:(IMMessage *)message
+{
+    Conversation *conversation = nil;
+    conversation = [self.imService getConversationUserOrGroupId:message.sender userRole:message.senderRole ownerId:message.receiver ownerRole:message.receiverRole chat_t:message.chat_t];
+    
+    if (conversation == nil)
+    {
+        conversation = [[Conversation alloc] initWithOwnerId:message.receiver ownerRole:message.receiverRole toId:message.sender toRole:message.senderRole lastMessageId:message.msgId chatType:message.chat_t];
+        
+        [self.imService insertConversation:conversation];
+    }
+    else
+    {
+        if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
+        {
+            conversation.lastMessageId = message.msgId;
+        }
+    }
+    
+    message.conversationId = conversation.rowid;
+    //                conversation.lastMessageId = message.msgId;
+    if (message.msg_t != eMessageType_NOTIFICATION) {
+        // 通知消息未读数不增加
+        conversation.unReadNum += 1;
+    }
+    conversation.status = 0;// 会话状态回归正常
+    
+    //如果当前正处于这个聊天室， 消息数不增加
+    if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
+        if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
+            conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole &&
+            conversation.status == 0)
+        {
+            if (message.msg_t != eMessageType_NOTIFICATION) {
+                conversation.unReadNum -= 1;
+            }
+        }
+    }
+    
+    [self.imService.imStorage.messageDao update:message];
+    [self.imService.imStorage.conversationDao update:conversation];
+    return conversation;
+}
+
+- (Conversation *)dealReceiveGroupChatMessage:(IMMessage *)message owner:(User *)owner
+{
+    Conversation *conversation = nil;
+    conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:owner.userId ownerRole:owner.userRole chat_t:message.chat_t];
+    
+    Group *chatToGroup = [self.imService.imStorage.groupDao load:message.receiver];
+    if (conversation == nil)
+    {
+        conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
+        
+        chatToGroup.startMessageId = message.msgId;
+        chatToGroup.endMessageId = message.msgId;
+        [self.imService insertConversation:conversation];
+    }
+    else
+    {
+        //  IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
+        if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
+        {
+            conversation.lastMessageId = message.msgId;
+        }
+    }
+    conversation.status = 0;// 会话状态回归正常
+    
+    // 处理群消息空洞
+    if ([message.msgId doubleValue]> [chatToGroup.lastMessageId doubleValue])
+    {
+        chatToGroup.lastMessageId = message.msgId;
+    }
+    
+    message.conversationId = conversation.rowid;
+    
+    [self.imService.imStorage.messageDao update:message];
+    [self.imService.imStorage.conversationDao update:conversation];
+    [self.imService.imStorage.groupDao insertOrUpdate:chatToGroup];
+    return conversation;
+}
+
+- (void)doOperationOnBackground
+{
+    
+    if (self.imService == nil) return;
+    User *owner = [IMEnvironment shareInstance].owner;
+    
+    NSArray *users = self.model.users;
+    
+    [self updateUsers:owner users:users];
+    
+    NSArray *groups = self.model.groups;
+    [self updateGroups:owner groups:groups];
     
     NSArray *msgs = self.model.msgs;
     
@@ -87,56 +233,7 @@
         if (message.sender == owner.userId && message.senderRole == owner.userRole)
         {
             
-            if (message.chat_t == eChatType_Chat) {
-                if (! [self checkHasUser:message.receiver role:message.receiverRole array:self.model.users])
-                {
-                    //垃圾消息
-                    continue;
-                }
-            }
-            else
-            {
-                if (! [self checkhasGroup:message.receiver array:self.model.groups])
-                {
-                    // 垃圾消息
-                    continue;
-                }
-            }
-            
-            //如果更换设备登陆，消息链中可能会有之前自己发送的消息
-            //判断 message 表中是否已有这条消息，如果没有则入库
-            IMMessage *_message = [self.imService.imStorage.messageDao loadWithMessageId:message.msgId];
-            if (_message == nil)
-            {
-                [self.imService.imStorage.messageDao insert:message];
-            }
-            
-            conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:message.sender ownerRole:message.senderRole chat_t:message.chat_t];
-            
-            if (conversation == nil)
-            {// 创建新的 conversation，unreadnumber 不增加
-                conversation = [[Conversation alloc] initWithOwnerId:message.sender ownerRole:message.senderRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
-                
-                [self.imService insertConversation:conversation];
-            }
-            else
-            {
-                if ([_message.msgId doubleValue] > [conversation.lastMessageId doubleValue]) {
-                    conversation.lastMessageId = _message.msgId;
-                    [self.imService.imStorage.conversationDao update:conversation];
-                }
-            }
-            
-//            conversation.status = 0;// 会话状态回归正常
-            message.status = eMessageStatus_Send_Succ;
-            message.read = 1;
-            message.played = 1;
-            
-            message.conversationId = conversation.rowid;
-            
-
-            
-            [self.imService.imStorage.messageDao update:message];
+            conversation = [self dealSendedMessage:message];
         }
         else
         { // 接收到的消息
@@ -168,79 +265,11 @@
         
             if (message.chat_t == eChatType_Chat)
             { // 单聊
-                conversation = [self.imService getConversationUserOrGroupId:message.sender userRole:message.senderRole ownerId:message.receiver ownerRole:message.receiverRole chat_t:message.chat_t];
-                
-                if (conversation == nil)
-                {
-                    conversation = [[Conversation alloc] initWithOwnerId:message.receiver ownerRole:message.receiverRole toId:message.sender toRole:message.senderRole lastMessageId:message.msgId chatType:message.chat_t];
-                    
-                    [self.imService insertConversation:conversation];
-                }
-                else
-                {
-                    if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
-                    {
-                        conversation.lastMessageId = message.msgId;
-                    }
-                }
-                
-                message.conversationId = conversation.rowid;
-//                conversation.lastMessageId = message.msgId;
-                if (message.msg_t != eMessageType_NOTIFICATION) {
-                    // 通知消息未读数不增加
-                    conversation.unReadNum += 1;
-                }
-                conversation.status = 0;// 会话状态回归正常
-                
-                //如果当前正处于这个聊天室， 消息数不增加
-                if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
-                    if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
-                        conversation.toRole == [IMEnvironment shareInstance].currentChatToUserRole &&
-                        conversation.status == 0)
-                    {
-                        if (message.msg_t != eMessageType_NOTIFICATION) {
-                            conversation.unReadNum -= 1;
-                        }
-                    }
-                }
-                
-                [self.imService.imStorage.messageDao update:message];
-                [self.imService.imStorage.conversationDao update:conversation];
+                conversation = [self dealReceiveChatMessage:message];
             }
             else
             { // 群聊
-                conversation = [self.imService getConversationUserOrGroupId:message.receiver userRole:message.receiverRole ownerId:owner.userId ownerRole:owner.userRole chat_t:message.chat_t];
-                
-                Group *chatToGroup = [self.imService.imStorage.groupDao load:message.receiver];
-                if (conversation == nil)
-                {
-                    conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
-                    
-                    chatToGroup.startMessageId = message.msgId;
-                    chatToGroup.endMessageId = message.msgId;
-                    [self.imService insertConversation:conversation];
-                }
-                else
-                {
-//                    IMMessage *_lastMsg = [self.imService.imStorage queryMessageWithMessageId:conversation.lastMessageId];
-                    if ([conversation.lastMessageId doubleValue] < [message.msgId doubleValue])
-                    {
-                        conversation.lastMessageId = message.msgId;
-                    }
-                }
-                conversation.status = 0;// 会话状态回归正常
-                
-                // 处理群消息空洞
-                if ([message.msgId doubleValue]> [chatToGroup.lastMessageId doubleValue])
-                {
-                    chatToGroup.lastMessageId = message.msgId;
-                }
-                
-                message.conversationId = conversation.rowid;
-                
-                [self.imService.imStorage.messageDao update:message];
-                [self.imService.imStorage.conversationDao update:conversation];
-                [self.imService.imStorage.groupDao insertOrUpdate:chatToGroup];
+                conversation = [self dealReceiveGroupChatMessage:message owner:owner];
             }
             
             if (self.receiveNewMessages == nil)
