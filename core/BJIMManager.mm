@@ -303,6 +303,18 @@
     return [self.imService getCustomWaiter];
 }
 
+- (User *)getStanger
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getStanger];
+}
+
+- (User *)getNewFans
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getNewFans];
+}
+
 - (BOOL)isMyTeacher:(int64_t)teacherId
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return NO;

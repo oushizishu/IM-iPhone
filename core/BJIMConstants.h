@@ -40,6 +40,8 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Kefu = 7,
     eUserRole_System = 100, //系统通知
     eUserRole_Anonymous = -1,
+    eUserRole_Stanger = -2, //陌生人
+    eUserRole_Fans = -3 // 新粉丝
 };
 
 #pragma mark - 消息类型

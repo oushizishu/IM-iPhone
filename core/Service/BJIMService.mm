@@ -55,6 +55,9 @@
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
+@property (nonatomic, strong) User *stanger;
+@property (nonatomic, strong) User *newFans;
+
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
 @property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
 @property (nonatomic, strong, readonly) NSOperationQueue *receiveMessageOperationQueue; // 接受消息在独立线程上操作
@@ -632,6 +635,35 @@
         self.customeWaiter.name = @"客服";
     }
     return self.customeWaiter;
+}
+
+- (User *)getStanger
+{
+    if (self.stanger == nil) {
+        self.stanger = [self.imStorage.userDao loadUser:-1000100 role:eUserRole_Stanger];
+        if (self.stanger == nil) {
+            self.stanger = [[User alloc] init];
+            self.stanger.userId = -1000100;
+            self.stanger.userRole = eUserRole_Stanger;
+            self.stanger.name = @"陌生人消息";
+            [self.imStorage.userDao insertOrUpdateUser:self.stanger];
+        }
+    }
+    return self.stanger;
+}
+
+- (User *)getNewFans
+{
+    if (self.newFans == nil) {
+        self.newFans = [self.imStorage.userDao loadUser:-1000200 role:eUserRole_Fans];
+        if (self.newFans == nil) {
+            self.newFans = [[User alloc] init];
+            self.newFans.userId = -1000200;
+            self.newFans.userRole = eUserRole_Fans;
+            self.newFans.name = @"新粉丝";
+        }
+    }
+    return self.newFans;
 }
 
 - (BJIMAbstractEngine *)imEngine

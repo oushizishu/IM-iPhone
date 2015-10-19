@@ -63,6 +63,13 @@
 // 客服
 - (User *)getCustomWaiter;
 
+// 陌生人消息
+- (User*)getStanger;
+// 新粉丝
+- (User *)getNewFans;
+
+
+
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user

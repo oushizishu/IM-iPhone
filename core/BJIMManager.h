@@ -98,6 +98,11 @@
 // 客服 
 - (User *)getCustomWaiter;
 
+// 陌生人消息
+- (User*)getStanger;
+// 新粉丝
+- (User *)getNewFans;
+
 #pragma mark - utils
 // 判断该老师是否为我的老师（to学生端）
 - (BOOL)isMyTeacher:(int64_t)teacherId;
