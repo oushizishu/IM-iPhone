@@ -10,6 +10,7 @@
 #import "IMEnvironment.h"
 #import "BJIMService.h"
 #import "GroupMember.h"
+
 @implementation SyncContactOperation
 - (void)doOperationOnBackground
 {
@@ -72,6 +73,8 @@
         }
     }];
     
+    NSString *tableName = [self contactsTableName:currentUser];
+    
     // 更新机构联系人
     NSArray *organizationList = self.model.organizationList;
     [self batchWriteContacts:organizationList contactRole:eUserRole_Institution needRefresh:NO];
@@ -85,7 +88,7 @@
     // 分批写入, 这样就不需要长时间占用 FMDB 中 threadLock.
     __block BOOL needRefreshUI = NO;
     [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", [self contactsTableName:currentUser], currentUser.userId, (long)eUserRole_Student];
+        NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", tableName, currentUser.userId, (long)eUserRole_Student];
         
         FMResultSet *set = [db executeQuery:sql];
         if ([set next]) {
@@ -95,6 +98,30 @@
         
     }];
     [self batchWriteContacts:studentList contactRole:eUserRole_Student needRefresh:needRefreshUI];
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf doAfterOperationOnMain];
+    });
+    
+    //更新我的关注
+    NSArray *focusUserList = self.model.focusList;
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        [db executeUpdate:[self generatorDeleteFocusSql:currentUser] withArgumentsInArray:nil];
+    }];
+    [self executorContacts:focusUserList];
+    
+    NSArray *fansUserList = self.model.fansList;
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        [db executeUpdate:[self generatorDeleteFansSql:currentUser] withArgumentsInArray:nil];
+    }];
+    [self executorContacts:fansUserList];
+    
+    NSArray *blackList = self.model.blackList;
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        [db executeUpdate:[self generatorDeleteBlackSql:currentUser] withArgumentsInArray:nil];
+    }];
+    [self executorContacts:blackList];
 }
 
 - (void)doAfterOperationOnMain
@@ -127,7 +154,7 @@
         NSInteger len = MIN(SYNC_CONTACT_BATCH_COUNT, count - start);
         NSArray *array = [userList objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(start, len)]];
         
-        [self executorContacts:array deleteContactRole:userRole];
+        [self executorContacts:array];
         [NSThread sleepForTimeInterval:0.2]; // 让线程等待一会执行, 避免数据量太大的情况下 CPU 占用率持续太高
         
         if (index != 0 && batchCount > 20) { // 加载中途刷新一次界面，避免等待时间过长
@@ -142,7 +169,7 @@
     
 }
 
-- (void)executorContacts:(NSArray *)userList deleteContactRole:(IMUserRole)contactRole
+- (void)executorContacts:(NSArray *)userList
 {
     if ([userList count] == 0) return;
     User *currentUser = [IMEnvironment shareInstance].owner;
@@ -160,12 +187,20 @@
                 [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
             } else {
                 NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
+                
                 NSArray *arguments = @[@(user.userRole),
                                        user.remarkName==nil?@"":user.remarkName,
                                        @(currentUser.userId),
                                        @(user.userId),
                                        @((long long)[[NSDate date] timeIntervalSince1970]),
-                                       user.remarkHeader==nil?@"":user.remarkHeader];
+                                       user.remarkHeader==nil?@"":user.remarkHeader,
+                                       @(user.blackStatus),
+                                       @(user.originType),
+                                       @(user.focusType),
+                                       @(user.tinyFocus),
+                                       user.focusTime,
+                                       user.fansTime
+                                       ];
                 
                 [db executeUpdate:sql withArgumentsInArray:arguments];
             }
@@ -174,30 +209,11 @@
     }];
 }
 
-//- (NSString *)generatorUserSql:(User *)user
-//{
-//    
-//    NSString *arguments = [NSString stringWithFormat:@"(%lld,'%@','%@',%ld)",
-//                           user.userId,
-//                           user.name == nil ? @"":user.name,
-//                           user.avatar == nil ? @"":user.avatar,
-//                           (long)user.userRole];
-//    NSString *sql = @"replace into %@(userId,name,avatar,userRole) values%@";
-//    sql = [NSString stringWithFormat:sql, [User getTableName], arguments];
-//    return sql;
-//}
-
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
-//    NSString *arguments = [NSString stringWithFormat:@"(%ld,'%@',%lld,%lld,%lld,'%@')",
-//                           (long)contact.userRole,
-//                           contact.remarkName == nil ? @"":contact.remarkName,
-//                           owner.userId,
-//                           contact.userId,
-//                          (long long)[[NSDate date] timeIntervalSince1970],
-//                           contact.remarkHeader==nil?@"":contact.remarkHeader];
-//
-    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) values(?,?,?,?,?,?)";
+    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader, \
+                                                blackStatus,originType,focusType,tinyFoucs,focusTime,fansTime) \
+                               values(?,?,?,?,?,?,?,?,?,?,?,?)";
     sql = [NSString stringWithFormat:sql, tableName];
     return sql;
 }
@@ -224,6 +240,24 @@
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
                     pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values(?,?,?,?,?,?,?,?,?,?,?)";
     sql = [NSString stringWithFormat:sql, [GroupMember getTableName]];
+    return sql;
+}
+
+- (NSString *)generatorDeleteFocusSql:(User *)owner
+{
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[self contactsTableName:owner], owner.userId, (long)eIMFocusType_Active, (long)eIMFocusType_Both];
+    return sql;
+}
+
+- (NSString *)generatorDeleteFansSql:(User *)owner
+{
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[self contactsTableName:owner], owner.userId, (long)eIMFocusType_Passive, (long)eIMFocusType_Both];
+    return sql;
+}
+
+- (NSString *)generatorDeleteBlackSql:(User *)owner
+{
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld blackStatus=%ld",[self contactsTableName:owner], owner.userId, (long)eIMBlackStatus_Active];
     return sql;
 }
 @end
