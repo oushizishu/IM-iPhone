@@ -90,12 +90,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     __block NSInteger num = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
-        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld", ownerId, (long)userRole];
+        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and relation=%ld", ownerId, (long)userRole, (long)eConverastion_Relation_Normal];
         FMResultSet *result = [db executeQuery: query];
         while ([result next])
         {
             num = [result longForColumnIndex:0];
         }
+        [result close];
     }];
     return num;
 }

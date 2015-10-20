@@ -12,6 +12,12 @@
 #import "Group.h"
 #import "LKDBHelper.h"
 
+typedef NS_ENUM(NSInteger, CONVERSATION_RELATION) {
+    eConverastion_Relation_Normal = 0, // 会话人/群 关系正常
+    eConversation_Relation_Stranger = 1, // 会话人为 陌生人
+    eConversation_Relation_Group_Closed = 2 // 会话群已开启免打扰
+};
+
 @interface Conversation : NSObject
 
 @property (nonatomic, assign) int64_t ownerId;
@@ -26,7 +32,7 @@
 
 @property (nonatomic, copy) NSString *firstMsgId; // 该会话在系统中得第一个 msgId
 
-@property (nonatomic, assign) NSInteger relation; // 标记用户之间关系 1 为陌生人
+@property (nonatomic, assign) CONVERSATION_RELATION relation; // 标记用户之间关系 1 为陌生人
 
 - (instancetype)initWithOwnerId:(int64_t)ownerId
                       ownerRole:(IMUserRole)ownerRole

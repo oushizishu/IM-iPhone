@@ -89,9 +89,10 @@
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
 {
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
-                              AND ownerRole=%ld and status=0  ORDER BY lastMessageId DESC",ownerId,(long)ownerRole];
+                              AND ownerRole=%ld and status=0 relation<>%ld ORDER BY lastMessageId DESC",ownerId,(long)ownerRole, eConversation_Relation_Stranger];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
+    
     [self.identityScope lock];
     for (NSInteger index = 0; index < array.count; ++ index) {
         Conversation *_conv = [array objectAtIndex:index];
@@ -99,6 +100,41 @@
         [self attachEntityKey:@(_conv.rowid) entity:_conv lock:NO];
     }
     [self.identityScope unlock];
+    
     return array;
+}
+
+- (NSArray *)loadAllStrangerWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
+{
+    NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
+                              AND ownerRole=%ld and status=0 and relation=%ld ORDER BY lastMessageId DESC",ownerId,(long)ownerRole, (long)eConversation_Relation_Stranger];
+    
+    NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
+    
+    [self.identityScope lock];
+    for (NSInteger index = 0; index < array.count; ++ index) {
+        Conversation *_conv = [array objectAtIndex:index];
+        
+        [self attachEntityKey:@(_conv.rowid) entity:_conv lock:NO];
+    }
+    [self.identityScope unlock];
+    
+    return array;
+}
+
+- (NSInteger)countOfStrangerCovnersationAndUnreadNumNotZero:(int64_t)ownerId userRole:(IMUserRole)ownerRole
+{
+    __block NSInteger count = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"select count(*) where ownerId=%lld \
+                         AND ownerRole=%ld and status=0 and relation=%ld", ownerId, (long)ownerRole, (long)eConversation_Relation_Stranger];
+        FMResultSet *set = [db executeQuery:sql];
+        if ([set next]) {
+            count = [set longForColumnIndex:0];
+        }
+        [set close];
+    }];
+    return count;
 }
 @end
