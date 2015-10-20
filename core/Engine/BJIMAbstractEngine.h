@@ -153,6 +153,12 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 
 - (void)postGetGroupProfile:(int64_t)groupId callback:(void(^)(Group *result))callback;
 
+//添加关注关系
+- (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
+
+//取消关注关系
+- (void)postCancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
+
 #pragma mark - group
 - (void)postGetGroupMembersWithModel:(GetGroupMemberModel *)model callback:(void (^)(GroupMemberListData *members, NSError *err))callback;
 - (void)postGetGroupMembers:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index callback:(void (^)(GroupMemberListData *members, NSError *err))callback;
