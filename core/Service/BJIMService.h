@@ -93,8 +93,8 @@
 - (void)applicationEnterForeground;
 
 #pragma mark - add Delegates
-- (void)addAttentionStateDelegate:(id<IMConversationChangedDelegate>)delegate;
-- (void)notifyAttentionState:(User*)array;
+- (void)addContactStateChangedDelegate:(id<IMContactStateChangedDelegate>)delegate;
+- (void)notifyContactStateChanged:(NSArray*)array;
 
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
 - (void)notifyConversationChanged;

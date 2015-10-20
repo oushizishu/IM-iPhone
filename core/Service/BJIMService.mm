@@ -41,7 +41,7 @@
                          IMEngineNetworkEfficiencyDelegate>
 
 
-@property (nonatomic, strong) NSHashTable *attentionStateDelegates;
+@property (nonatomic, strong) NSHashTable *contactStateDelegates;
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
 @property (nonatomic, strong) NSHashTable *deliveredMessageDelegates;
@@ -671,8 +671,17 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddAttention:userId role:userRole callback:^(NSError *err ,User *user) {
-        
-        [weakSelf notifyAttentionState:user];
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
     }];
 }
 
@@ -680,8 +689,17 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:userId role:userRole callback:^(NSError *err ,User *user) {
-        
-        [weakSelf notifyAttentionState:user];
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
     }];
 }
 
@@ -766,24 +784,24 @@
 }
 
 #pragma mark - attention Delegates
-- (void)addAttentionStateDelegate:(id<IMAttentionStateDelegate>)delegate
+- (void)addContactStateChangedDelegate:(id<IMContactStateChangedDelegate>)delegate
 {
-    if (self.attentionStateDelegates == nil)
+    if (self.contactStateDelegates == nil)
     {
-        self.attentionStateDelegates = [NSHashTable weakObjectsHashTable];
+        self.contactStateDelegates = [NSHashTable weakObjectsHashTable];
     }
     
-    [self.attentionStateDelegates addObject:delegate];
+    [self.contactStateDelegates addObject:delegate];
 }
 
-- (void)notifyAttentionState:(User*)user
+- (void)notifyContactStateChanged:(NSArray*)array
 {
-    NSEnumerator *enumerator = [self.attentionStateDelegates objectEnumerator];
-    id<IMAttentionStateDelegate> delegate = nil;
+    NSEnumerator *enumerator = [self.contactStateDelegates objectEnumerator];
+    id<IMContactStateChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        if ([delegate respondsToSelector:@selector(didAttentionState:)])
-            [delegate didAttentionState:user];
+        if ([delegate respondsToSelector:@selector(didContactStateDidChanged:)])
+            [delegate didContactStateDidChanged:[NSArray arrayWithObjects:array, nil]];
     }
 }
 

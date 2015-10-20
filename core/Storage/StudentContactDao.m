@@ -256,4 +256,66 @@
     }
     return NO;
 }
+
+- (BOOL)isAttention:(User *)contact withOwner:(User *)owner
+{
+    StudentContacts *student = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    if (student != nil) {
+        if (student.focusType == eIMFocusType_Active || student.focusType == eIMFocusType_Both) {
+            return YES;
+        }
+    }
+    
+    return NO;
+}
+
+- (BOOL)isBeAttention:(User *)contact withOwner:(User *)owner
+{
+    StudentContacts *student = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    if (student != nil) {
+        if (student.focusType == eIMFocusType_Passive &&  student.focusType == eIMFocusType_Both ) {
+            return YES;
+        }
+    }
+    return NO;
+}
+
+- (void)setContactTinyFoucs:(BOOL)opType userID:(int64_t)userId role:(IMUserRole)contactRole  owner:(User *)owner
+{
+    StudentContacts *contract = [self loadContactId:userId contactRole:contactRole owner:owner];
+    if (contract != nil) {
+        if (opType) {
+            contract.tinyFoucs = eIMTinyFocus_Been;
+        }else
+        {
+            contract.tinyFoucs = eIMTinyFocus_None;
+        }
+        [self insertOrUpdateContact:contract owner:owner];
+    }
+}
+
+- (void)setContactFocusType:(BOOL)opType userID:(int64_t)userId role:(IMUserRole)contactRole owner:(User *)owner
+{
+    StudentContacts *contract = [self loadContactId:userId contactRole:contactRole owner:owner];
+    if (contract != nil) {
+        if (opType) {
+            if (contract.focusType == eIMFocusType_None || contract.focusType == eIMFocusType_Active) {
+                contract.focusType = eIMFocusType_Active;
+            }else
+            {
+                contract.focusType = eIMFocusType_Both;
+            }
+        }else
+        {
+            if (contract.focusType == eIMFocusType_Both || contract.focusType == eIMFocusType_Passive) {
+                contract.focusType = eIMFocusType_Passive;
+            }else
+            {
+                contract.focusType = eIMFocusType_None;
+            }
+        }
+        [self insertOrUpdateContact:contract owner:owner];
+    }
+}
+
 @end

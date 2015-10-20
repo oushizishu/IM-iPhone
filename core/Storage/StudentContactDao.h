@@ -32,5 +32,15 @@
             contactRole:(IMUserRole)contactRole
                   owner:(User *)owner;
 
+//判断陌生人
 - (BOOL)isStanger:(User *)contact withOwner:(User *)owner;
+//判断是否关注对方
+- (BOOL)isAttention:(User *)contact withOwner:(User *)owner;
+//判断是否被对方关注
+- (BOOL)isBeAttention:(User *)contact withOwner:(User *)owner;
+//设置浅关注状态
+- (void)setContactTinyFoucs:(BOOL)opType userID:(int64_t)userId role:(IMUserRole)contactRole owner:(User *)owner;
+//设置黑名单状态
+- (void)setContactFocusType:(BOOL)opType userID:(int64_t)userId role:(IMUserRole)contactRole owner:(User *)owner;
+
 @end
