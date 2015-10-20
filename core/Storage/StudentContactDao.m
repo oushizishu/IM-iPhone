@@ -58,11 +58,13 @@
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
-        
+       
         // 采用内级联查询
         NSString *insTableName = [StudentContacts getTableName];
         NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
                            STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
+                           STUDENTCONTACTS.blackStatus, STUDENTCONTACTS.originType, STUDENTCONTACTS.focusType \
+                          STUDENTCONTACTS.tinyFoucs, STUDENTCONTACTS.focusTime,STUDENTCONTACTS.fansTime \
                            from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
                            USERS.userRole=%@.contactRole where %@.userId=%lld and \
                            %@.contactRole=%ld and %@.blackStatus!=%ld and %@.focusType=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId,insTableName,(long)contactRole,insTableName, eIMBlackStatus_Active,insTableName, eIMFocusType_Active];
@@ -80,6 +82,13 @@
             user.nameHeader = [set stringForColumnIndex:5];
             user.remarkName = [set stringForColumnIndex:6];
             user.remarkHeader = [set stringForColumnIndex:7];
+            
+            user.blackStatus = [set longForColumnIndex:8];
+            user.originType = [set longForColumnIndex:9];
+            user.focusType = [set longForColumnIndex:10];
+            user.tinyFocus = [set longForColumnIndex:11];
+            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
+            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
             
             NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
             [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
