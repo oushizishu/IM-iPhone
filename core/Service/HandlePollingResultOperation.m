@@ -153,7 +153,7 @@
         
         if(message.chat_t == eChatType_Chat)
         {
-            User *user = [self.imService getUser:message.receiver role:message.receiverRole];
+            User *user = [self.imService getUser:message.sender role:message.senderRole];
             //判断会话对象是否为陌生人
             if ([self.imService getIsStanger:user]) {
                 conversation.relation = 1;
