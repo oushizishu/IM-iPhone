@@ -146,11 +146,11 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 #pragma mark - delegates
 
-@class User;
+//关注关系接口
+@protocol IMContactStateChangedDelegate <NSObject>
 
-@protocol IMAttentionStateDelegate <NSObject>
-
-- (void)didAttentionState:(User*)user;
+//通知已修改的用户列表
+- (void)didContactStateDidChanged:(NSArray*)users;
 
 @end
 

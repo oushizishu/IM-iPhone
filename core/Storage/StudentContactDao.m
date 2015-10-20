@@ -256,4 +256,49 @@
     }
     return NO;
 }
+
+- (IMFocusType)getAttentionState:(User *)contact withOwner:(User *)owner;
+{
+    StudentContacts *student = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    return student.focusType;
+}
+
+- (IMTinyFocus)getTinyFoucsState:(User *)contact withOwner:(User *)owner
+{
+    StudentContacts *student = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    return student.tinyFoucs;
+}
+
+- (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact  owner:(User *)owner
+{
+    contact.tinyFocus = type;
+    StudentContacts *scontract = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    scontract.tinyFoucs = contact.tinyFocus;
+    [self insertOrUpdateContact:scontract owner:owner];
+}
+
+- (void)setContactFocusType:(BOOL)opType contact:(User*)contact owner:(User *)owner
+{
+    if (opType) {
+        if (contact.focusType == eIMFocusType_None || contact.focusType == eIMFocusType_Active) {
+            contact.focusType = eIMFocusType_Active;
+        }else
+        {
+            contact.focusType = eIMFocusType_Both;
+        }
+    }else
+    {
+        if (contact.focusType == eIMFocusType_Both || contact.focusType == eIMFocusType_Passive) {
+            contact.focusType = eIMFocusType_Passive;
+        }else
+        {
+            contact.focusType = eIMFocusType_None;
+        }
+    }
+    
+    StudentContacts *scontract = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
+    scontract.focusType = contact.focusType;
+    [self insertOrUpdateContact:scontract owner:owner];
+}
+
 @end

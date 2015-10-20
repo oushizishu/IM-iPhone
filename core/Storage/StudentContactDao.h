@@ -32,5 +32,16 @@
             contactRole:(IMUserRole)contactRole
                   owner:(User *)owner;
 
+//判断陌生人
 - (BOOL)isStanger:(User *)contact withOwner:(User *)owner;
+//获取关注关系
+- (IMFocusType)getAttentionState:(User *)contact withOwner:(User *)owner;
+//获取浅关注状态
+- (IMTinyFocus)getTinyFoucsState:(User *)contact withOwner:(User *)owner;
+
+//设置浅关注状态
+- (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact owner:(User *)owner;
+//设置关注关系
+- (void)setContactFocusType:(BOOL)opType contact:(User*)contact owner:(User *)owner;
+
 @end

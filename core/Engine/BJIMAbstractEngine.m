@@ -311,7 +311,10 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     //__WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesAddAttention:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-            callback(nil,nil);
+            NSError *error;
+            BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
+            callback(nil,user);
         } failure:^(NSError *error, RequestParams *params) {
             callback(nil,nil);
     }];
@@ -323,11 +326,42 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     //__WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesCancelAttention:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-        callback(nil,nil);
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
+        callback(nil,user);
     } failure:^(NSError *error, RequestParams *params) {
         callback(nil,nil);
     }];
     
+}
+
+- (void)postAddBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback
+{
+    //__WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesAddBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
+        callback(nil,user);
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(nil,nil);
+    }];
+}
+
+- (void)postCancelBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback
+{
+    //__WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesCancelBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
+        callback(nil,user);
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(nil,nil);
+    }];
 }
 
 #pragma mark - Group manager

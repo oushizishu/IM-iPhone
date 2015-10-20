@@ -41,7 +41,7 @@
                          IMEngineNetworkEfficiencyDelegate>
 
 
-@property (nonatomic, strong) NSHashTable *attentionStateDelegates;
+@property (nonatomic, strong) NSHashTable *contactStateDelegates;
 @property (nonatomic, strong) NSHashTable *conversationDelegates;
 @property (nonatomic, strong) NSHashTable *receiveNewMessageDelegates;
 @property (nonatomic, strong) NSHashTable *deliveredMessageDelegates;
@@ -205,6 +205,36 @@
     operation.imService = self;
     operation.message = message;
     operation.model = model;
+    
+    //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
+    User *user = [IMEnvironment shareInstance].owner;
+    User *contact = nil;
+    BOOL isStanger = NO;
+    if (user.userRole == eUserRole_Teacher) {
+        
+    }else if(user.userRole == eUserRole_Student)
+    {
+        isStanger = [self.imStorage.studentDao isStanger:contact withOwner:user];
+    }else if(user.userRole == eUserRole_Institution)
+    {
+        
+    }
+    
+    if (isStanger) {
+        if (user.userRole == eUserRole_Teacher) {
+            
+        }else if(user.userRole == eUserRole_Student)
+        {
+            IMTinyFocus tinyFocus = [self.imStorage.studentDao getTinyFoucsState:contact withOwner:user];
+            if (tinyFocus == eIMTinyFocus_None) {
+                [self.imStorage.studentDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
+                [self notifyContactStateChanged:[NSArray arrayWithObjects:contact, nil]];
+            }
+        }else if(user.userRole == eUserRole_Institution)
+        {
+            
+        }
+    }
     
     [self.sendMessageOperationQueue addOperation:operation];
 }
@@ -667,6 +697,76 @@
     return self.nFans;
 }
 
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postAddAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            [weakSelf.imStorage.studentDao setContactFocusType:YES contact:user owner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
+}
+
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postCancelAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            [weakSelf.imStorage.studentDao setContactFocusType:NO contact:user owner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
+}
+
+- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postAddBlacklist:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
+}
+
+- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postCancelBlacklist:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
+}
+
 - (BJIMAbstractEngine *)imEngine
 {
     if (_imEngine == nil)
@@ -748,24 +848,24 @@
 }
 
 #pragma mark - attention Delegates
-- (void)addAttentionStateDelegate:(id<IMAttentionStateDelegate>)delegate
+- (void)addContactStateChangedDelegate:(id<IMContactStateChangedDelegate>)delegate
 {
-    if (self.attentionStateDelegates == nil)
+    if (self.contactStateDelegates == nil)
     {
-        self.attentionStateDelegates = [NSHashTable weakObjectsHashTable];
+        self.contactStateDelegates = [NSHashTable weakObjectsHashTable];
     }
     
-    [self.attentionStateDelegates addObject:delegate];
+    [self.contactStateDelegates addObject:delegate];
 }
 
-- (void)notifyAttentionState:(User*)user
+- (void)notifyContactStateChanged:(NSArray*)array
 {
-    NSEnumerator *enumerator = [self.attentionStateDelegates objectEnumerator];
-    id<IMAttentionStateDelegate> delegate = nil;
+    NSEnumerator *enumerator = [self.contactStateDelegates objectEnumerator];
+    id<IMContactStateChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        if ([delegate respondsToSelector:@selector(didAttentionState:)])
-            [delegate didAttentionState:user];
+        if ([delegate respondsToSelector:@selector(didContactStateDidChanged:)])
+            [delegate didContactStateDidChanged:[NSArray arrayWithObjects:array, nil]];
     }
 }
 

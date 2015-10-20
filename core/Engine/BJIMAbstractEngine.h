@@ -155,9 +155,13 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 
 //添加关注关系
 - (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
-
 //取消关注关系
 - (void)postCancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
+
+//添加黑名单
+- (void)postAddBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
+//取消黑名单
+- (void)postCancelBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,User *user))callback;
 
 #pragma mark - group
 - (void)postGetGroupMembersWithModel:(GetGroupMemberModel *)model callback:(void (^)(GroupMemberListData *members, NSError *err))callback;

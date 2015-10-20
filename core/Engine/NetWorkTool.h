@@ -75,6 +75,16 @@
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesAddBlacklist:(int64_t)userId
+                                     userRole:(IMUserRole)userRole
+                                         succ:(onSuccess)succ
+                                      failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesCancelBlacklist:(int64_t)userId
+                                        userRole:(IMUserRole)userRole
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesAddRecentContactId:(int64_t)userId
                                                role:(IMUserRole)userRole
                                                succ:(onSuccess)succ
