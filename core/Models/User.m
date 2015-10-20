@@ -48,7 +48,8 @@
       @"focusType":@"focus_type",
       @"tinyFocus":@"tiny_focus",
       @"focusTime":@"focus_time",
-      @"fansTime":@"fans_time"
+      @"fansTime":@"fans_time",
+      @"blackStatus":@"black_status"
       };
 }
 
