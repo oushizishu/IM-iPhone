@@ -28,6 +28,26 @@
         User *owner = [IMEnvironment shareInstance].owner;
         conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:@"" chatType:self.message.chat_t];
         
+        if(self.message.chat_t == eChatType_Chat)
+        {
+            User *user = [self.imService getUser:self.message.receiver role:self.message.receiverRole];
+            //判断会话对象是否为陌生人
+            if ([self.imService getIsStanger:user]) {
+                conversation.relation = 1;
+                
+                //获取陌生人会话
+                Conversation *stangerConversation = [self.imService getConversationUserOrGroupId:-1000100 userRole:-2 ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
+                if (stangerConversation == nil) {
+                    stangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:-1000100 toRole:-2 lastMessageId:self.message.msgId chatType:eChatType_Chat];
+                    [self.imService.imStorage.conversationDao insert:stangerConversation];
+                }else
+                {
+                    stangerConversation.lastMessageId = self.message.msgId;
+                    [self.imService.imStorage.conversationDao update:stangerConversation];
+                }
+            }
+        }
+        
         [self.imService insertConversation:conversation];
     }
     

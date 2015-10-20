@@ -68,15 +68,18 @@
 // 新粉丝
 - (User *)getNewFans;
 
+//判断陌生人关系
+- (BOOL)getIsStanger:(User*)contact;
+
 //添加关注
-- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole;
+- (void)addAttention:(User*)contact;
 //取消关注
-- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole;
+- (void)cancelAttention:(User*)contact;
 
 //添加黑名单
-- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole;
+- (void)addBlacklist:(User*)contact;
 //取消黑名单
-- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole;
+- (void)cancelBlacklist:(User*)contact;
 
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName

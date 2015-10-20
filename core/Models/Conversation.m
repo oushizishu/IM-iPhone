@@ -26,6 +26,7 @@
         _toRole = toRole;
         _lastMessageId = lastMessageId;
         _chat_t = chatType;
+        _relation = 0;
     }
 
     return self;
