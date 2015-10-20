@@ -16,6 +16,7 @@
 #import "IMMessage+DB.h"
 
 #import "IMEnvironment.h"
+#import "HandleGetMsgOperation.h"
 
 @interface HandlePollingResultOperation()
 
@@ -142,7 +143,10 @@
         // 通知消息未读数不增加
         conversation.unReadNum += 1;
     }
-    conversation.status = 0;// 会话状态回归正常
+    
+    if (! [self isKindOfClass:[HandleGetMsgOperation class]]) {
+        conversation.status = 0;// 会话状态回归正常
+    }
     
     //如果当前正处于这个聊天室， 消息数不增加
     if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
@@ -183,7 +187,10 @@
             conversation.lastMessageId = message.msgId;
         }
     }
-    conversation.status = 0;// 会话状态回归正常
+    
+    if (! [self isKindOfClass:[HandleGetMsgOperation class]]) {
+        conversation.status = 0;// 会话状态回归正常
+    }
     
     // 处理群消息空洞
     if ([message.msgId doubleValue]> [chatToGroup.lastMessageId doubleValue])

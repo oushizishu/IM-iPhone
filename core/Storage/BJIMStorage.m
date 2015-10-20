@@ -63,6 +63,10 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         self.conversationDao = [[ConversationDao alloc] init];
         self.conversationDao.dbHelper = self.dbHelper;
         self.conversationDao.imStroage = self;
+        
+        self.newFansContactDao = [[NewFansContactDao alloc] init];
+        self.newFansContactDao.dbHelper = self.dbHelper;
+        self.newFansContactDao.imStroage = self;
     }
     return self;
 }
@@ -77,6 +81,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     [self.groupMemberDao clear];
     [self.messageDao clear];
     [self.conversationDao clear];
+    [self.newFansContactDao clear];
 }
 
 #pragma mark conversation
