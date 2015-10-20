@@ -73,6 +73,10 @@
 //取消关注
 - (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole;
 
+//添加黑名单
+- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole;
+//取消黑名单
+- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole;
 
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName

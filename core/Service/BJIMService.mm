@@ -703,6 +703,29 @@
     }];
 }
 
+- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postAddAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
+}
+
+- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole
+{
+    
+}
+
 - (BJIMAbstractEngine *)imEngine
 {
     if (_imEngine == nil)
