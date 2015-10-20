@@ -128,7 +128,7 @@
     __block NSInteger count = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"select count(*) where ownerId=%lld \
-                         AND ownerRole=%ld and status=0 and relation=%ld", ownerId, (long)ownerRole, (long)eConversation_Relation_Stranger];
+                         AND ownerRole=%ld and status=0 and relation=%ld and unReadNum>0", ownerId, (long)ownerRole, (long)eConversation_Relation_Stranger];
         FMResultSet *set = [db executeQuery:sql];
         if ([set next]) {
             count = [set longForColumnIndex:0];
