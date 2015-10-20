@@ -206,6 +206,36 @@
     operation.message = message;
     operation.model = model;
     
+    //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
+    User *user = [IMEnvironment shareInstance].owner;
+    User *contact = nil;
+    BOOL isStanger = NO;
+    if (user.userRole == eUserRole_Teacher) {
+        
+    }else if(user.userRole == eUserRole_Student)
+    {
+        isStanger = [self.imStorage.studentDao isStanger:contact withOwner:user];
+    }else if(user.userRole == eUserRole_Institution)
+    {
+        
+    }
+    
+    if (isStanger) {
+        if (user.userRole == eUserRole_Teacher) {
+            
+        }else if(user.userRole == eUserRole_Student)
+        {
+            IMTinyFocus tinyFocus = [self.imStorage.studentDao getTinyFoucsState:contact withOwner:user];
+            if (tinyFocus == eIMTinyFocus_None) {
+                [self.imStorage.studentDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
+                [self notifyContactStateChanged:[NSArray arrayWithObjects:contact, nil]];
+            }
+        }else if(user.userRole == eUserRole_Institution)
+        {
+            
+        }
+    }
+    
     [self.sendMessageOperationQueue addOperation:operation];
 }
 
@@ -676,7 +706,7 @@
             
         }else if(owner.userRole == eUserRole_Student)
         {
-            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
+            [weakSelf.imStorage.studentDao setContactFocusType:YES contact:user owner:owner];
         }else if(owner.userRole == eUserRole_Institution)
         {
             
@@ -694,7 +724,7 @@
             
         }else if(owner.userRole == eUserRole_Student)
         {
-            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
+            [weakSelf.imStorage.studentDao setContactFocusType:NO contact:user owner:owner];
         }else if(owner.userRole == eUserRole_Institution)
         {
             
@@ -706,13 +736,12 @@
 - (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole
 {
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postAddAttention:userId role:userRole callback:^(NSError *err ,User *user) {
+    [self.imEngine postAddBlacklist:userId role:userRole callback:^(NSError *err ,User *user) {
         User *owner = [IMEnvironment shareInstance].owner;
         if (owner.userRole == eUserRole_Teacher) {
             
         }else if(owner.userRole == eUserRole_Student)
         {
-            [weakSelf.imStorage.studentDao setContactFocusType:NO userID:userId role:userRole owner:owner];
         }else if(owner.userRole == eUserRole_Institution)
         {
             
@@ -723,7 +752,19 @@
 
 - (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole
 {
-    
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postCancelBlacklist:userId role:userRole callback:^(NSError *err ,User *user) {
+        User *owner = [IMEnvironment shareInstance].owner;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+    }];
 }
 
 - (BJIMAbstractEngine *)imEngine
