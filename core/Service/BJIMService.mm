@@ -185,33 +185,39 @@
         
         //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
         User *user = [IMEnvironment shareInstance].owner;
-        BOOL isStanger = NO;
-        if (user.userRole == eUserRole_Teacher) {
-            
-        }else if(user.userRole == eUserRole_Student)
-        {
-            isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
-        }else if(user.userRole == eUserRole_Institution)
-        {
-            
-        }
+        BOOL isStanger = isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
         
         if (isStanger) {
-            if (user.userRole == eUserRole_Teacher) {
-                
-            }else if(user.userRole == eUserRole_Student)
+            [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
+            
+            Conversation *conversation = [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+            if(conversation != nil)
             {
-                IMTinyFocus tinyFocus = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:user];
-                if (tinyFocus == eIMTinyFocus_None) {
-                    [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
-                    //联系人状态修改通知
+                if(conversation.relation == eConversation_Relation_Stranger)
+                {
+                    conversation.relation = eConverastion_Relation_Normal;
+                    [self.imStorage.conversationDao update:conversation];
+                    
+                    Conversation *stangerConversation = [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                    if(stangerConversation != nil)
+                    {
+                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
+                        {
+                            NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                            if(conversationArray!=nil && [conversationArray count]>0)
+                            {
+                                Conversation *lastConversation = [conversationArray firstObject];
+                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
+                            }else
+                            {
+                                stangerConversation.lastMessageId = 0;
+                            }
+                            [self.imStorage.conversationDao update:stangerConversation];
+                        }
+                    }
                 }
-            }else if(user.userRole == eUserRole_Institution)
-            {
-                
             }
         }
-        
         [self notifyWillDeliveryMessage:message];
     }
     
