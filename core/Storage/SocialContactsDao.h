@@ -17,6 +17,7 @@
                           ownerId:(int64_t)ownerId
                         ownerRole:(IMUserRole)ownerRole;
 
+- (void)update:(SocialContacts *)socialContact;
 /**
  *  判断陌生人
  *
@@ -36,8 +37,15 @@
 
 //设置浅关注状态
 - (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact owner:(User *)owner;
-//设置关注关系
-- (void)setContactFocusType:(BOOL)opType contact:(User*)contact owner:(User *)owner;
+
+/**
+ *  设置关注关系
+ *
+ *  @param bAddFocus true  添加关注， false 取消关注
+ *  @param contact   <#contact description#>
+ *  @param owner     <#owner description#>
+ */
+- (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)contact owner:(User *)owner;
 //设置黑名单
 - (void)setContactBacklist:(IMBlackStatus)status contact:(User*)contact owner:(User*)owner;
 

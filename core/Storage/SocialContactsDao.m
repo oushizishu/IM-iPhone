@@ -41,6 +41,12 @@
     return contact;
 }
 
+- (void)update:(SocialContacts *)socialContact
+{
+    NSString *key = [self getKeyContactId:socialContact.contactId contactRole:socialContact.contactRole ownerId:socialContact.userId ownerRole:socialContact.userRole];
+    [self attachEntityKey:key entity:socialContact lock:YES];
+    [socialContact updateToDB];
+}
 
 - (BOOL)isStanger:(User *)contact withOwner:(User *)owner
 {
@@ -82,28 +88,49 @@
     [social updateToDB];
 }
 
-- (void)setContactFocusType:(BOOL)opType contact:(User*)contact owner:(User *)owner
+- (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)contact owner:(User *)owner
 {
-    if (opType) {
+    if (bAddFocus) {
         if (contact.focusType == eIMFocusType_None || contact.focusType == eIMFocusType_Active) {
             contact.focusType = eIMFocusType_Active;
-        }else
-        {
+        } else {
             contact.focusType = eIMFocusType_Both;
         }
-    }else
-    {
+    } else {
         if (contact.focusType == eIMFocusType_Both || contact.focusType == eIMFocusType_Passive) {
             contact.focusType = eIMFocusType_Passive;
-        }else
-        {
+        } else {
             contact.focusType = eIMFocusType_None;
         }
     }
     
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    if (! social) return;
+    
+    //更新关系字段
     social.focusType = contact.focusType;
-    [social updateToDB];
+    [self update:social];
+    
+    // 修改对应会话的陌生人 relation 属性
+    if ([self isStanger:contact withOwner:owner]) {
+        Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+        
+        if (conversation && conversation.relation != eConversation_Relation_Stranger) {
+            conversation.relation = eConversation_Relation_Stranger;
+            [self.imStroage.conversationDao update:conversation];
+        }
+    }
+    
+    // 修改“陌生人消息”会话的 lastMsgId 和 unReadNum
+    Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+    if (strangerConversation) {
+        NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+        if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
+            strangerConversation.lastMessageId = maxMsgId;
+        }
+        strangerConversation.unReadNum = [self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+        [self.imStroage.conversationDao update:strangerConversation];
+    }
 }
 
 - (void)setContactBacklist:(IMBlackStatus)status contact:(User*)contact owner:(User*)owner

@@ -137,4 +137,16 @@
     }];
     return count;
 }
+
+
+- (NSString *)queryStrangerConversationsMaxMsgId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole
+{
+    NSString *queryString = [NSString stringWithFormat:@" ownerId=%lld and ownerRole=%ld and relation=%ld order by lastMessageId desc ", ownerId, ownerRole, eConversation_Relation_Stranger];
+    
+    Conversation *conversation = [self.dbHelper searchSingle:[Conversation class] where:queryString orderBy:nil];
+    if (conversation) {
+        [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
+    }
+    return conversation.lastMessageId;
+}
 @end

@@ -53,4 +53,6 @@
  *  @return <#return value description#>
  */
 - (NSInteger)countOfStrangerCovnersationAndUnreadNumNotZero:(int64_t)ownerId userRole:(IMUserRole)ownerRole;
+
+- (NSString *)queryStrangerConversationsMaxMsgId:(int64_t)ownerId ownerRole:(IMUserRole)ownerRole;
 @end

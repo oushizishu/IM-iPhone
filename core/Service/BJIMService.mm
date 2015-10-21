@@ -691,34 +691,6 @@
         {
             User *owner = [IMEnvironment shareInstance].owner;
             [weakSelf.imStorage.socialContactsDao setContactFocusType:YES contact:user owner:owner];
-            
-            Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-            if(conversation != nil)
-            {
-                if(conversation.relation == eConversation_Relation_Stranger)
-                {
-                    conversation.relation = eConverastion_Relation_Normal;
-                    [weakSelf.imStorage.conversationDao update:conversation];
-                    
-                    Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
-                    if(stangerConversation != nil)
-                    {
-                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
-                        {
-                            NSArray *conversationArray = [weakSelf.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
-                            if(conversationArray!=nil && [conversationArray count]>0)
-                            {
-                                Conversation *lastConversation = [conversationArray firstObject];
-                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
-                            }else
-                            {
-                                stangerConversation.lastMessageId = nil;
-                            }
-                            [weakSelf.imStorage.conversationDao update:stangerConversation];
-                        }
-                    }
-                }
-            }
         }
         if (callback)
             callback(err,user);
@@ -731,33 +703,6 @@
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
         User *owner = [IMEnvironment shareInstance].owner;
         [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
-        IMTinyFocus tinyFocus = [weakSelf.imStorage.socialContactsDao getTinyFoucsState:user withOwner:owner];
-        
-        if (tinyFocus == eIMTinyFocus_None) {
-            Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-            if(conversation != nil)
-            {
-                if(conversation.relation == eConverastion_Relation_Normal)
-                {
-                    conversation.relation = eConversation_Relation_Stranger;
-                    [weakSelf.imStorage.conversationDao update:conversation];
-                    
-                    Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
-                    if(stangerConversation != nil)
-                    {
-                        NSArray *conversationArray = [weakSelf.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
-                        if(conversationArray!=nil && [conversationArray count]>0)
-                        {
-                            Conversation *lastConversation = [conversationArray firstObject];
-                            if (lastConversation == conversation) {
-                                stangerConversation.lastMessageId = conversation.lastMessageId;
-                                [weakSelf.imStorage.conversationDao update:stangerConversation];
-                            }
-                        }
-                    }
-                }
-            }
-        }
         
         if (callback)
             callback(err,user);
