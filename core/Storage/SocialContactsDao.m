@@ -86,6 +86,32 @@
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
     social.tinyFoucs = contact.tinyFocus;
     [social updateToDB];
+    
+    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+    if (conversation != nil) {
+        BOOL ifUpdateConversation = NO;
+        if ([self isStanger:contact withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
+            ifUpdateConversation = YES;
+            conversation.relation = eConversation_Relation_Stranger;
+        }else if(![self isStanger:contact withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
+            ifUpdateConversation = YES;
+            conversation.relation = eConverastion_Relation_Normal;
+        }
+        if(ifUpdateConversation)
+        {
+            [self.imStroage.conversationDao update:conversation];
+            
+            Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+            if (strangerConversation) {
+                NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+                if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
+                    strangerConversation.lastMessageId = maxMsgId;
+                }
+                strangerConversation.unReadNum = [self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                [self.imStroage.conversationDao update:strangerConversation];
+            }
+        }
+    }
 }
 
 - (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)contact owner:(User *)owner
@@ -111,25 +137,30 @@
     social.focusType = contact.focusType;
     [self update:social];
     
-    // 修改对应会话的陌生人 relation 属性
-    if ([self isStanger:contact withOwner:owner]) {
-        Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-        
-        if (conversation && conversation.relation != eConversation_Relation_Stranger) {
+    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+    if (conversation != nil) {
+        BOOL ifUpdateConversation = NO;
+        if ([self isStanger:contact withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
+            ifUpdateConversation = YES;
             conversation.relation = eConversation_Relation_Stranger;
+        }else if(![self isStanger:contact withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
+            ifUpdateConversation = YES;
+            conversation.relation = eConverastion_Relation_Normal;
+        }
+        if(ifUpdateConversation)
+        {
             [self.imStroage.conversationDao update:conversation];
+            
+            Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+            if (strangerConversation) {
+                NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+                if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
+                    strangerConversation.lastMessageId = maxMsgId;
+                }
+                strangerConversation.unReadNum = [self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                [self.imStroage.conversationDao update:strangerConversation];
+            }
         }
-    }
-    
-    // 修改“陌生人消息”会话的 lastMsgId 和 unReadNum
-    Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
-    if (strangerConversation) {
-        NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
-        if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
-            strangerConversation.lastMessageId = maxMsgId;
-        }
-        strangerConversation.unReadNum = [self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
-        [self.imStroage.conversationDao update:strangerConversation];
     }
 }
 
