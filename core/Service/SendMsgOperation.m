@@ -17,6 +17,7 @@
 {
     self.message.read = 1;
     self.message.played = 1;
+    self.ifRefuse = NO;
     
     
     [self.imService.imStorage.messageDao insert:self.message];
@@ -67,21 +68,89 @@
         [self.imService.imStorage.groupDao insertOrUpdate:group];
     }
     
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
+    
+    IMBlackStatus blackStatus = [self.imService.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
+    
+    //拉黑对方后，不能给对方发送消息
+    if (blackStatus == eIMBlackStatus_Active) {
+        
+        self.message.status = eMessageStatus_Send_Fail;
+        self.ifRefuse = YES;
+        
+        //插入无法发送消息提示消息
+        IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
+        messageBody.content = @"";
+        IMMessage *message = [[IMMessage alloc] init];
+        message.messageBody = messageBody;
+        message.createAt = [NSDate date].timeIntervalSince1970;
+        message.chat_t = eChatType_Chat;
+        message.msg_t = eMessageType_TXT;
+        message.receiver = owner.userId;
+        message.receiverRole = owner.userRole;
+        
+    }else
+    {
+        //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
+        BOOL isStanger = isStanger = [self.imService.imStorage.socialContactsDao isStanger:contact withOwner:owner];
+        
+        if (isStanger) {
+            [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
+            
+            Conversation *conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+            if(conversation != nil)
+            {
+                if(conversation.relation == eConversation_Relation_Stranger)
+                {
+                    conversation.relation = eConverastion_Relation_Normal;
+                    [self.imService.imStorage.conversationDao update:conversation];
+                    
+                    Conversation *stangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                    if(stangerConversation != nil)
+                    {
+                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
+                        {
+                            NSArray *conversationArray = [self.imService.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                            if(conversationArray!=nil && [conversationArray count]>0)
+                            {
+                                Conversation *lastConversation = [conversationArray firstObject];
+                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
+                            }else
+                            {
+                                stangerConversation.lastMessageId = 0;
+                            }
+                            [self.imService.imStorage.conversationDao update:stangerConversation];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    
     [self.imService.imStorage.conversationDao update:conversation];
     [self.imService.imStorage.messageDao update:self.message];
 }
 
 - (void)doAfterOperationOnMain
 {
-    [self.imService notifyConversationChanged];
-    if (self.message.msg_t == eMessageType_IMG || self.message.msg_t == eMessageType_AUDIO)
+    if (self.ifRefuse) {
+        
+    }else
     {
-        [self.imService.imEngine postMessageAchive:self.message];
-    }
-    else
-    {
-        [self.imService.imEngine postMessage:self.message];
+        [self.imService notifyConversationChanged];
+        if (self.message.msg_t == eMessageType_IMG || self.message.msg_t == eMessageType_AUDIO)
+        {
+            [self.imService.imEngine postMessageAchive:self.message];
+        }
+        else
+        {
+            [self.imService.imEngine postMessage:self.message];
+        }
     }
 }
+
+
 
 @end
