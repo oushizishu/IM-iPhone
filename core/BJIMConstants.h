@@ -136,7 +136,7 @@ typedef NS_ENUM(NSInteger, IMFocusType) {
 
 #pragma mark - 浅关注类型
 typedef NS_ENUM(NSInteger, IMTinyFocus) {
-    eIMTinyFocus_None = 0, // 为浅关注
+    eIMTinyFocus_None = 0, // 未浅关注
     eIMTinyFocus_Been = 1, // 已浅关注
 };
 

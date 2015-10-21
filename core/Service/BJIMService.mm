@@ -735,14 +735,23 @@
                 if(conversation.relation == eConversation_Relation_Stranger)
                 {
                     conversation.relation = eConverastion_Relation_Normal;
-                    [weakSelf.imStorage.conversationDao insert:conversation];
+                    [weakSelf.imStorage.conversationDao update:conversation];
                     
                     Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
                     if(stangerConversation != nil)
                     {
                         if(stangerConversation.lastMessageId == conversation.lastMessageId)
                         {
-                            
+                            NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                            if(conversationArray!=nil && [conversationArray count]>0)
+                            {
+                                Conversation *lastConversation = [conversationArray firstObject];
+                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
+                            }else
+                            {
+                                stangerConversation.lastMessageId = 0;
+                            }
+                            [self.imStorage.conversationDao update:stangerConversation];
                         }
                     }
                 }
@@ -757,15 +766,44 @@
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
         User *owner = [IMEnvironment shareInstance].owner;
+        IMTinyFocus tinyFocus = eIMTinyFocus_Been;
         if (owner.userRole == eUserRole_Teacher) {
             
         }else if(owner.userRole == eUserRole_Student)
         {
             [weakSelf.imStorage.studentDao setContactFocusType:NO contact:user owner:owner];
+            tinyFocus = [weakSelf.imStorage.studentDao getTinyFoucsState:user withOwner:owner];
         }else if(owner.userRole == eUserRole_Institution)
         {
             
         }
+        
+        if (tinyFocus == eIMTinyFocus_None) {
+            Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+            if(conversation != nil)
+            {
+                if(conversation.relation == eConverastion_Relation_Normal)
+                {
+                    conversation.relation = eConversation_Relation_Stranger;
+                    [weakSelf.imStorage.conversationDao update:conversation];
+                    
+                    Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                    if(stangerConversation != nil)
+                    {
+                        NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                        if(conversationArray!=nil && [conversationArray count]>0)
+                        {
+                            Conversation *lastConversation = [conversationArray firstObject];
+                            if (lastConversation == conversation) {
+                                stangerConversation.lastMessageId = conversation.lastMessageId;
+                                [self.imStorage.conversationDao update:stangerConversation];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
         callback(err,user);
     }];
 }
