@@ -800,8 +800,8 @@
     [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
         if (err == nil) {
             User *owner = [IMEnvironment shareInstance].owner;
-            [weakSelf.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_None contact:contact owner:owner];
-            [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
+            //[weakSelf.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_None contact:contact owner:owner];
+            //[weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
             [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
         }
         if (callback)
