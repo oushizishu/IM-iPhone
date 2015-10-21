@@ -697,7 +697,7 @@
             operation.contact = user;
             operation.bAddFocus = YES;
             
-            [self.writeOperationQueue addOperation:operation];
+            [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
             callback(err,user);
@@ -715,7 +715,7 @@
         operation.contact = user;
         operation.bAddFocus = NO;
         
-        [self.writeOperationQueue addOperation:operation];
+        [weakSelf.writeOperationQueue addOperation:operation];
         
         if (callback)
             callback(err,user);
