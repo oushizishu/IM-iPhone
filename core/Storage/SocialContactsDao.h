@@ -31,6 +31,8 @@
 - (IMFocusType)getAttentionState:(User *)contact withOwner:(User *)owner;
 //获取浅关注状态
 - (IMTinyFocus)getTinyFoucsState:(User *)contact withOwner:(User *)owner;
+//获取黑名单状态
+- (IMBlackStatus)getBlacklistState:(User *)contact witOwner:(User *)owner;
 
 //设置浅关注状态
 - (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact owner:(User *)owner;

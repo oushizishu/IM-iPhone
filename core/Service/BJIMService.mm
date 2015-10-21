@@ -162,44 +162,59 @@
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message
 {
-    message.status = eMessageStatus_Sending;
-    message.imService = self;
-    SendMsgOperation *operation = [[SendMsgOperation alloc] init];
-    operation.message = message;
-    operation.imService = self;
-    [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *contact = [self.imStorage.userDao loadUser:message.receiver role:message.receiverRole];
     
-    //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
-    User *user = [IMEnvironment shareInstance].owner;
-    User *contact = nil;
-    BOOL isStanger = NO;
-    if (user.userRole == eUserRole_Teacher) {
-        
-    }else if(user.userRole == eUserRole_Student)
-    {
-        isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
-    }else if(user.userRole == eUserRole_Institution)
-    {
-        
-    }
+    IMBlackStatus blackStatus = [self.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
+    NSError *err;
     
-    if (isStanger) {
+    //拉黑对方后，不能给对方发送消息
+    if (blackStatus == eIMBlackStatus_Active) {
+        
+        [self onPostMessageFail:message error:err];
+        //插入无法发送消息提示消息
+        
+    }else
+    {
+        message.status = eMessageStatus_Sending;
+        message.imService = self;
+        SendMsgOperation *operation = [[SendMsgOperation alloc] init];
+        operation.message = message;
+        operation.imService = self;
+        [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
+        
+        //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
+        User *user = [IMEnvironment shareInstance].owner;
+        BOOL isStanger = NO;
         if (user.userRole == eUserRole_Teacher) {
             
         }else if(user.userRole == eUserRole_Student)
         {
-            IMTinyFocus tinyFocus = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:user];
-            if (tinyFocus == eIMTinyFocus_None) {
-                [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
-                //联系人状态修改通知
-            }
+            isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
         }else if(user.userRole == eUserRole_Institution)
         {
             
         }
+        
+        if (isStanger) {
+            if (user.userRole == eUserRole_Teacher) {
+                
+            }else if(user.userRole == eUserRole_Student)
+            {
+                IMTinyFocus tinyFocus = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:user];
+                if (tinyFocus == eIMTinyFocus_None) {
+                    [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
+                    //联系人状态修改通知
+                }
+            }else if(user.userRole == eUserRole_Institution)
+            {
+                
+            }
+        }
+        
+        [self notifyWillDeliveryMessage:message];
     }
     
-    [self notifyWillDeliveryMessage:message];
 }
 
 - (void)retryMessage:(IMMessage *)message

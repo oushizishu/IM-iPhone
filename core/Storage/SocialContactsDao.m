@@ -68,6 +68,12 @@
     return social.tinyFoucs;
 }
 
+- (IMBlackStatus)getBlacklistState:(User *)contact witOwner:(User *)owner
+{
+    SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    return social.blackStatus;
+}
+
 - (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact  owner:(User *)owner
 {
     contact.tinyFocus = type;
