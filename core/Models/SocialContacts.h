@@ -24,7 +24,8 @@
 @property (nonatomic, assign) IMOriginType originType;
 @property (nonatomic, assign) IMFocusType focusType;
 @property (nonatomic, assign) IMTinyFocus tinyFoucs;
-@property (nonatomic, assign) NSDate *focusTime;
-@property (nonatomic, assign) NSDate *fansTime;
+@property (nonatomic, copy) NSDate *focusTime;
+@property (nonatomic, copy) NSDate *fansTime;
+@property (nonatomic, copy) NSDate *blackTime;
 
 @end
