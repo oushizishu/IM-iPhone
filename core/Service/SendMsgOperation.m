@@ -29,26 +29,6 @@
         User *owner = [IMEnvironment shareInstance].owner;
         conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:@"" chatType:self.message.chat_t];
         
-        if(self.message.chat_t == eChatType_Chat)
-        {
-            User *user = [self.imService getUser:self.message.receiver role:self.message.receiverRole];
-            //判断会话对象是否为陌生人
-            if ([self.imService getIsStanger:user]) {
-                conversation.relation = 1;
-                
-                //获取陌生人会话
-                Conversation *stangerConversation = [self.imService getConversationUserOrGroupId:-1000100 userRole:eUserRole_Stanger ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
-                if (stangerConversation == nil) {
-                    stangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:-1000100 toRole:-2 lastMessageId:self.message.msgId chatType:eChatType_Chat];
-                    [self.imService.imStorage.conversationDao insert:stangerConversation];
-                }else
-                {
-                    stangerConversation.lastMessageId = self.message.msgId;
-                    [self.imService.imStorage.conversationDao update:stangerConversation];
-                }
-            }
-        }
-        
         [self.imService insertConversation:conversation];
     }
     
@@ -68,74 +48,50 @@
         [self.imService.imStorage.groupDao insertOrUpdate:group];
     }
     
+    [self.imService.imStorage.conversationDao update:conversation];
+    [self.imService.imStorage.messageDao update:self.message];
+    
+    
     User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
     
+    if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
+        [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
+    }
+    
     IMBlackStatus blackStatus = [self.imService.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
     
-    //拉黑对方后，不能给对方发送消息
     if (blackStatus == eIMBlackStatus_Active) {
         
         self.message.status = eMessageStatus_Send_Fail;
+        [self.imService.imStorage.messageDao update:self.message];
         self.ifRefuse = YES;
         
         //插入无法发送消息提示消息
         IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
-        messageBody.content = @"";
-        IMMessage *message = [[IMMessage alloc] init];
-        message.messageBody = messageBody;
-        message.createAt = [NSDate date].timeIntervalSince1970;
-        message.chat_t = eChatType_Chat;
-        message.msg_t = eMessageType_TXT;
-        message.receiver = owner.userId;
-        message.receiverRole = owner.userRole;
+        messageBody.content = @"您已拉黑对方，请先取消黑名单。";
+        self.remindMessage = [[IMMessage alloc] init];
+        self.remindMessage.messageBody = messageBody;
+        self.remindMessage.createAt = [NSDate date].timeIntervalSince1970;
+        self.remindMessage.chat_t = eChatType_Chat;
+        self.remindMessage.msg_t = eMessageType_NOTIFICATION;
+        self.remindMessage.receiver = owner.userId;
+        self.remindMessage.receiverRole = owner.userRole;
+        self.remindMessage.sender = USER_SYSTEM_SECRETARY;
+        self.remindMessage.senderRole = eUserRole_System;
+        self.remindMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
         
-    }else
-    {
-        //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
-        BOOL isStanger = isStanger = [self.imService.imStorage.socialContactsDao isStanger:contact withOwner:owner];
-        
-        if (isStanger) {
-            [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
-            
-            Conversation *conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-            if(conversation != nil)
-            {
-                if(conversation.relation == eConversation_Relation_Stranger)
-                {
-                    conversation.relation = eConverastion_Relation_Normal;
-                    [self.imService.imStorage.conversationDao update:conversation];
-                    
-                    Conversation *stangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
-                    if(stangerConversation != nil)
-                    {
-                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
-                        {
-                            NSArray *conversationArray = [self.imService.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
-                            if(conversationArray!=nil && [conversationArray count]>0)
-                            {
-                                Conversation *lastConversation = [conversationArray firstObject];
-                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
-                            }else
-                            {
-                                stangerConversation.lastMessageId = nil;
-                            }
-                            [self.imService.imStorage.conversationDao update:stangerConversation];
-                        }
-                    }
-                }
-            }
-        }
+        [self.imService.imStorage.messageDao insert:self.remindMessage];
     }
     
-    
-    [self.imService.imStorage.conversationDao update:conversation];
-    [self.imService.imStorage.messageDao update:self.message];
 }
 
 - (void)doAfterOperationOnMain
 {
     if (self.ifRefuse) {
+        [self.imService notifyDeliverMessage:self.message errorCode:-1 error:nil];
+        [self.imService notifyReceiveNewMessages:[NSArray arrayWithObjects:self.remindMessage, nil]];
+        [self.imService notifyConversationChanged];
         
     }else
     {
