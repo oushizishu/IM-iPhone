@@ -177,7 +177,7 @@
         
     }else if(user.userRole == eUserRole_Student)
     {
-        isStanger = [self.imStorage.studentDao isStanger:contact withOwner:user];
+        isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
     }else if(user.userRole == eUserRole_Institution)
     {
         
@@ -188,9 +188,9 @@
             
         }else if(user.userRole == eUserRole_Student)
         {
-            IMTinyFocus tinyFocus = [self.imStorage.studentDao getTinyFoucsState:contact withOwner:user];
+            IMTinyFocus tinyFocus = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:user];
             if (tinyFocus == eIMTinyFocus_None) {
-                [self.imStorage.studentDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
+                [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
                 //联系人状态修改通知
             }
         }else if(user.userRole == eUserRole_Institution)
@@ -705,7 +705,7 @@
         
     }else if(owner.userRole == eUserRole_Student)
     {
-        isStanger = [self.imStorage.studentDao isStanger:contact withOwner:owner];
+        isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:owner];
     }else if(owner.userRole == eUserRole_Institution)
     {
         
@@ -724,7 +724,7 @@
                 
             }else if(owner.userRole == eUserRole_Student)
             {
-                [weakSelf.imStorage.studentDao setContactFocusType:YES contact:user owner:owner];
+                [weakSelf.imStorage.socialContactsDao setContactFocusType:YES contact:user owner:owner];
             }else if(owner.userRole == eUserRole_Institution)
             {
                 
@@ -757,7 +757,8 @@
                 }
             }
         }
-        callback(err,user);
+        if (callback)
+            callback(err,user);
     }];
 }
 
@@ -771,8 +772,8 @@
             
         }else if(owner.userRole == eUserRole_Student)
         {
-            [weakSelf.imStorage.studentDao setContactFocusType:NO contact:user owner:owner];
-            tinyFocus = [weakSelf.imStorage.studentDao getTinyFoucsState:user withOwner:owner];
+            [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
+            tinyFocus = [weakSelf.imStorage.socialContactsDao getTinyFoucsState:user withOwner:owner];
         }else if(owner.userRole == eUserRole_Institution)
         {
             
@@ -804,7 +805,8 @@
             }
         }
         
-        callback(err,user);
+        if (callback)
+            callback(err,user);
     }];
 }
 

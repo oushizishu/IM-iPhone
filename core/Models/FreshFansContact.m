@@ -6,13 +6,13 @@
 //
 //
 
-#import "NewFansContact.h"
+#import "FreshFansContact.h"
 
-@implementation NewFansContact
+@implementation FreshFansContact
 
 + (NSString *)getTableName
 {
-    return @"NEWFANSCONTACT";
+    return @"FRESHFANSCONTACT";
 }
 
 @end
