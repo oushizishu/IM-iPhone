@@ -128,13 +128,15 @@
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
-                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld",
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
+                           or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Active, eIMFocusType_Both];
         
         if (contactRole > 0) {
-            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ", (long)contactRole];
+            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
         }
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.focusTime desc", query];
         
         
         FMResultSet *set = [db executeQuery:query];
@@ -182,7 +184,7 @@
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
                            SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld;",
+                           or SOCIALCONTACTS.focusType=%ld order by SOCIALCONTACTS.fansTime desc;",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
         
         
@@ -230,7 +232,8 @@
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
-                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus=%ld;",
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus=%ld \
+                           order by SOCIALCONTACTS.blackTime desc;",
                            owner.userId, owner.userRole, eIMBlackStatus_Active];
         
         FMResultSet *set = [db executeQuery:query];
@@ -297,6 +300,7 @@
     contact.tinyFoucs = user.tinyFocus;
     contact.focusTime = user.focusTime;
     contact.fansTime = user.fansTime;
+    contact.blackTime = user.blackTime;
     
     NSString *key = [self getKeyContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
     [contact updateToDB];

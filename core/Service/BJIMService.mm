@@ -619,7 +619,7 @@
     if (self.systemSecretary == nil)
     {
         self.systemSecretary = [[User alloc] init];
-        self.systemSecretary.userId = 100000100;
+        self.systemSecretary.userId = USER_SYSTEM_SECRETARY;
         self.systemSecretary.userRole = eUserRole_System;
         self.systemSecretary.name = @"系统小秘书";
     }
@@ -631,20 +631,20 @@
     if (self.customeWaiter == nil)
     {
         self.customeWaiter = [[User alloc] init];
-        self.customeWaiter.userId = 100000110;
+        self.customeWaiter.userId = USER_CUSTOM_WAITER;
         self.customeWaiter.userRole = eUserRole_Kefu;
         self.customeWaiter.name = @"客服";
     }
     return self.customeWaiter;
 }
 
-- (User *)getStanger
+- (User *)getStranger
 {
     if (self.stanger == nil) {
-        self.stanger = [self.imStorage.userDao loadUser:-1000100 role:eUserRole_Stanger];
+        self.stanger = [self.imStorage.userDao loadUser:USER_STRANGER role:eUserRole_Stanger];
         if (self.stanger == nil) {
             self.stanger = [[User alloc] init];
-            self.stanger.userId = -1000100;
+            self.stanger.userId = USER_STRANGER;
             self.stanger.userRole = eUserRole_Stanger;
             self.stanger.name = @"陌生人消息";
             [self.imStorage.userDao insertOrUpdateUser:self.stanger];
@@ -656,10 +656,10 @@
 - (User *)getNewFans
 {
     if (self.nFans == nil) {
-        self.nFans = [self.imStorage.userDao loadUser:-1000200 role:eUserRole_Fans];
+        self.nFans = [self.imStorage.userDao loadUser:USER_FRESH_FANS role:eUserRole_Fans];
         if (self.nFans == nil) {
             self.nFans = [[User alloc] init];
-            self.nFans.userId = -1000200;
+            self.nFans.userId = USER_FRESH_FANS;
             self.nFans.userRole = eUserRole_Fans;
             self.nFans.name = @"新粉丝";
         }

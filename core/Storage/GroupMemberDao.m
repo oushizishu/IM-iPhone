@@ -130,7 +130,7 @@
     
     NSMutableArray *groups = [NSMutableArray array];
     
-    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
+    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld order by joinTime desc ", user.userId, (long)user.userRole];
     NSArray *array = [self.dbHelper search:[GroupMember class] where:query orderBy:nil offset:0 count:0];
     
     [[DaoStatistics sharedInstance] logDBOperationSQL:@"loadAll  userId and userRole" class:[GroupMemberDao class]];

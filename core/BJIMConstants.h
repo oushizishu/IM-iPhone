@@ -21,6 +21,15 @@
 #pragma mark - 接口返回成功码
 #define RESULT_CODE_SUCC 0
 
+#pragma mark - 自定义角色id
+typedef NS_ENUM(NSInteger, IMSDKUSer) {
+    USER_SYSTEM_SECRETARY = 100000100, // 系统小秘书
+    USER_CUSTOM_WAITER    =   100000110, // 客服
+    USER_STRANGER         =   -1000100, // 陌生人
+    USER_FRESH_FANS       =   -1000200, // 新粉丝
+};
+
+
 
 #pragma mark - 服务器环境
 typedef NS_ENUM(NSInteger, IMSERVER_ENVIRONMENT)

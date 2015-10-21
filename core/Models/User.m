@@ -22,7 +22,7 @@
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             return @([value longLongValue]);
         }];
-    } else if ([key isEqualToString:@"focusTime"] || [key isEqualToString:@"fansTime"]) {
+    } else if ([key isEqualToString:@"focusTime"] || [key isEqualToString:@"fansTime"] || [key isEqualToString:@"blackTime"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             NSTimeInterval timestamp = [value doubleValue];
             return [NSDate dateWithTimeIntervalSince1970:timestamp];
@@ -49,7 +49,8 @@
       @"tinyFocus":@"tiny_focus",
       @"focusTime":@"focus_time",
       @"fansTime":@"fans_time",
-      @"blackStatus":@"black_status"
+      @"blackStatus":@"black_status",
+      @"blackTime":@"black_time"
       };
 }
 
