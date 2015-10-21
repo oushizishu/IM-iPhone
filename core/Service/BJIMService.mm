@@ -756,7 +756,7 @@
                     {
                         if(stangerConversation.lastMessageId == conversation.lastMessageId)
                         {
-                            NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                            NSArray *conversationArray = [weakSelf.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
                             if(conversationArray!=nil && [conversationArray count]>0)
                             {
                                 Conversation *lastConversation = [conversationArray firstObject];
@@ -765,7 +765,7 @@
                             {
                                 stangerConversation.lastMessageId = 0;
                             }
-                            [self.imStorage.conversationDao update:stangerConversation];
+                            [weakSelf.imStorage.conversationDao update:stangerConversation];
                         }
                     }
                 }
@@ -796,13 +796,13 @@
                     Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
                     if(stangerConversation != nil)
                     {
-                        NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+                        NSArray *conversationArray = [weakSelf.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
                         if(conversationArray!=nil && [conversationArray count]>0)
                         {
                             Conversation *lastConversation = [conversationArray firstObject];
                             if (lastConversation == conversation) {
                                 stangerConversation.lastMessageId = conversation.lastMessageId;
-                                [self.imStorage.conversationDao update:stangerConversation];
+                                [weakSelf.imStorage.conversationDao update:stangerConversation];
                             }
                         }
                     }
