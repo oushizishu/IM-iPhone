@@ -712,7 +712,7 @@
                                 stangerConversation.lastMessageId = lastConversation.lastMessageId;
                             }else
                             {
-                                stangerConversation.lastMessageId = 0;
+                                stangerConversation.lastMessageId = nil;
                             }
                             [weakSelf.imStorage.conversationDao update:stangerConversation];
                         }

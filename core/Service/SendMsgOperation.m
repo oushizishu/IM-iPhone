@@ -118,7 +118,7 @@
                                 stangerConversation.lastMessageId = lastConversation.lastMessageId;
                             }else
                             {
-                                stangerConversation.lastMessageId = 0;
+                                stangerConversation.lastMessageId = nil;
                             }
                             [self.imService.imStorage.conversationDao update:stangerConversation];
                         }
