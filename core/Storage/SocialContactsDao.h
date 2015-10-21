@@ -36,6 +36,8 @@
 - (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact owner:(User *)owner;
 //设置关注关系
 - (void)setContactFocusType:(BOOL)opType contact:(User*)contact owner:(User *)owner;
+//设置黑名单
+- (void)setContactBacklist:(IMBlackStatus)status contact:(User*)contact owner:(User*)owner;
 
 //我的关注
 - (NSArray *)loadAllAttentions:(User *)owner;

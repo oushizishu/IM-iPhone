@@ -720,15 +720,8 @@
         if(err == nil)
         {
             User *owner = [IMEnvironment shareInstance].owner;
-            if (owner.userRole == eUserRole_Teacher) {
-                
-            }else if(owner.userRole == eUserRole_Student)
-            {
-                [weakSelf.imStorage.socialContactsDao setContactFocusType:YES contact:user owner:owner];
-            }else if(owner.userRole == eUserRole_Institution)
-            {
-                
-            }
+            [weakSelf.imStorage.socialContactsDao setContactFocusType:YES contact:user owner:owner];
+            
             Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
             if(conversation != nil)
             {
@@ -767,17 +760,8 @@
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
         User *owner = [IMEnvironment shareInstance].owner;
-        IMTinyFocus tinyFocus = eIMTinyFocus_Been;
-        if (owner.userRole == eUserRole_Teacher) {
-            
-        }else if(owner.userRole == eUserRole_Student)
-        {
-            [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
-            tinyFocus = [weakSelf.imStorage.socialContactsDao getTinyFoucsState:user withOwner:owner];
-        }else if(owner.userRole == eUserRole_Institution)
-        {
-            
-        }
+        [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
+        IMTinyFocus tinyFocus = [weakSelf.imStorage.socialContactsDao getTinyFoucsState:user withOwner:owner];
         
         if (tinyFocus == eIMTinyFocus_None) {
             Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
@@ -814,16 +798,14 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
-        User *owner = [IMEnvironment shareInstance].owner;
-        if (owner.userRole == eUserRole_Teacher) {
-            
-        }else if(owner.userRole == eUserRole_Student)
-        {
-        }else if(owner.userRole == eUserRole_Institution)
-        {
-            
+        if (err == nil) {
+            User *owner = [IMEnvironment shareInstance].owner;
+            [weakSelf.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_None contact:contact owner:owner];
+            [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
+            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
         }
-        callback(err,user);
+        if (callback)
+            callback(err,user);
     }];
 }
 
@@ -831,16 +813,13 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
-        User *owner = [IMEnvironment shareInstance].owner;
-        if (owner.userRole == eUserRole_Teacher) {
-            
-        }else if(owner.userRole == eUserRole_Student)
+        if(err == nil)
         {
-        }else if(owner.userRole == eUserRole_Institution)
-        {
-            
+            User *owner = [IMEnvironment shareInstance].owner;
+            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
         }
-        callback(err,user);
+        if (callback)
+            callback(err,user);
     }];
 }
 

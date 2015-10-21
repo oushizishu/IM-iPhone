@@ -100,6 +100,14 @@
     [social updateToDB];
 }
 
+- (void)setContactBacklist:(IMBlackStatus)status contact:(User*)contact owner:(User*)owner
+{
+    contact.blackStatus = status;
+    SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    social.blackStatus = contact.blackStatus;
+    [social updateToDB];
+}
+
 
 - (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole;
 {
