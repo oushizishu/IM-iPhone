@@ -40,6 +40,7 @@
             _groupMember.remarkName = group.remarkName;
             _groupMember.pushStatus = group.pushStatus;
             _groupMember.isAdmin = group.isAdmin;
+            _groupMember.joinTime = group.joinTime;
             
             // 第一次调用 LKDBHelper，为了能够自动建表
             [self.imService.imStorage.groupMemberDao insertOrUpdate:_groupMember];
@@ -57,7 +58,8 @@
                                @(group.canDisband),
                                group.remarkHeader==nil?@"":group.remarkHeader,
                                group.remarkName==nil?@"":group.remarkName,
-                               @(group.groupId)];
+                               @(group.groupId),
+                               group.joinTime];
         [groupArguments addObject:arguments];
        
         [excutorSQLs addObject:sql];
@@ -247,7 +249,7 @@
 - (NSString *)generatorGroupMmeberSql
 {
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
-                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId) values(?,?,?,?,?,?,?,?,?,?,?)";
+                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId, joinTime) values(?,?,?,?,?,?,?,?,?,?,?, ?)";
     sql = [NSString stringWithFormat:sql, [GroupMember getTableName]];
     return sql;
 }

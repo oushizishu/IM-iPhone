@@ -64,7 +64,7 @@
 - (User *)getCustomWaiter;
 
 // 陌生人消息
-- (User*)getStanger;
+- (User*)getStranger;
 // 新粉丝
 - (User *)getNewFans;
 

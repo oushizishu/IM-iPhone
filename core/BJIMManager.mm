@@ -303,10 +303,10 @@
     return [self.imService getCustomWaiter];
 }
 
-- (User *)getStanger
+- (User *)getStranger
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getStanger];
+    return [self.imService getStranger];
 }
 
 - (User *)getNewFans
