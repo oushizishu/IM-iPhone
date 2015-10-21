@@ -10,6 +10,7 @@
 #import "IMEnvironment.h"
 #import "BJIMService.h"
 #import "GroupMember.h"
+#import "SocialContacts.h"
 
 @implementation SyncContactOperation
 - (void)doOperationOnBackground
@@ -105,23 +106,31 @@
     });
     
     //更新我的关注
+    [self.imService.imStorage.socialContactsDao clearAll:currentUser];
     NSArray *focusUserList = self.model.focusList;
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
-        [db executeUpdate:[self generatorDeleteFocusSql:currentUser] withArgumentsInArray:nil];
-    }];
-    [self executorContacts:focusUserList];
+    count = [focusUserList count];
+    for (NSInteger index = count; index < count; ++ index) {
+        User *user = [focusUserList objectAtIndex:index];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
+        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+    }
+    
     
     NSArray *fansUserList = self.model.fansList;
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
-        [db executeUpdate:[self generatorDeleteFansSql:currentUser] withArgumentsInArray:nil];
-    }];
-    [self executorContacts:fansUserList];
+    count = [fansUserList count];
+    for (NSInteger index = count; index < count; ++ index) {
+        User *user = [fansUserList objectAtIndex:index];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
+        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+    }
     
     NSArray *blackList = self.model.blackList;
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
-        [db executeUpdate:[self generatorDeleteBlackSql:currentUser] withArgumentsInArray:nil];
-    }];
-    [self executorContacts:blackList];
+    count = [blackList count];
+    for (NSInteger index = count; index < count; ++ index) {
+        User *user = [blackList objectAtIndex:index];
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
+        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+    }
 }
 
 - (void)doAfterOperationOnMain

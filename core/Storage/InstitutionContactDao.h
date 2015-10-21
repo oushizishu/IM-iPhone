@@ -24,13 +24,4 @@
             contactRole:(IMUserRole)contactRole
                   owner:(User *)owner;
 
-/**
- *  判断两个人是否为陌生人关系
- *
- *  @param contact 对方
- *  @param owner   当前用户
- *
- *  @return true 
- */
-- (BOOL)isStanger:(User *)contact withOwner:(User *)owner;
 @end

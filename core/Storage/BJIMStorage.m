@@ -17,6 +17,7 @@
 #import "StudentContacts.h"
 #import "InstitutionContacts.h"
 #import "RecentContacts.h"
+#import "SocialContactsDao.h"
 
 
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
@@ -64,9 +65,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         self.conversationDao.dbHelper = self.dbHelper;
         self.conversationDao.imStroage = self;
         
-        self.nFansContactDao = [[NewFansContactDao alloc] init];
+        self.nFansContactDao = [[FreshFansContactDao alloc] init];
         self.nFansContactDao.dbHelper = self.dbHelper;
         self.nFansContactDao.imStroage = self;
+        
+        self.socialContactsDao = [[SocialContactsDao alloc] init];
+        self.socialContactsDao.dbHelper = self.dbHelper;
+        self.socialContactsDao.imStroage = self;
     }
     return self;
 }

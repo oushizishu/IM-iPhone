@@ -26,8 +26,6 @@
         NSString *insTableName = [InstitutionContacts getTableName];
         NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
                            INSTITUTIONCONTACTS.remarkName, INSTITUTIONCONTACTS.remarkHeader \
-                           INSTITUTIONCONTACTS.blackStatus, INSTITUTIONCONTACTS.originType, INSTITUTIONCONTACTS.focusType \
-                           INSTITUTIONCONTACTS.tinyFoucs, INSTITUTIONCONTACTS.focusTime,INSTITUTIONCONTACTS.fansTime \
                            from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
                            USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
         
@@ -43,13 +41,7 @@
             user.nameHeader = [set stringForColumnIndex:5];
             user.remarkName = [set stringForColumnIndex:6];
             user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
+           
             
             NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
             [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
@@ -59,25 +51,6 @@
         
         [set close];
     }];
-    
-//    NSString *query = [NSString stringWithFormat:@" userId=%lld and contactRole=%ld", userId, (long)contactRole];
-//    
-//    NSArray *array = [self.dbHelper search:[InstitutionContacts class] where:query orderBy:nil offset:0 count:0];
-//    
-//    [[DaoStatistics sharedInstance] logDBOperationSQL:query class:[InstitutionContacts class]];
-//    
-//    NSMutableArray *users = [[NSMutableArray alloc] initWithCapacity:[array count]];
-//    for (NSInteger index = 0; index < [array count]; ++ index)
-//    {
-//        InstitutionContacts *item = (InstitutionContacts *)[array objectAtIndex:index];
-//        NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", userId, item.contactId, (long)item.contactRole];
-//        [self attachEntityKey:key entity:item lock:NO];
-//        
-//        User *user = [self.imStroage.userDao loadUser:item.contactId role:item.contactRole];
-//        user.remarkName = item.remarkName;
-//        user.remarkHeader = item.remarkHeader;
-//        [users addObject:user];
-//    }
     
 //    [self.identityScope unlock];
     return users;
@@ -150,17 +123,4 @@
     }
 }
 
-- (BOOL)isStanger:(User *)contact withOwner:(User *)owner
-{
-    InstitutionContacts *institution = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
-    if (institution == nil) {
-        return YES;
-    }
-    
-    if ((institution.focusType == eIMFocusType_None && institution.tinyFoucs == eIMTinyFocus_None) ||
-        (institution.focusType == eIMFocusType_Passive && institution.tinyFoucs == eIMTinyFocus_None)) {
-        return YES;
-    }
-    return NO;
-}
 @end

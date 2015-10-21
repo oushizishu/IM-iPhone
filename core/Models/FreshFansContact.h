@@ -9,7 +9,7 @@
 #import "MTLModel.h"
 #import "BJIMConstants.h"
 
-@interface NewFansContact : MTLModel
+@interface FreshFansContact : MTLModel
 
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) IMUserRole userRole;

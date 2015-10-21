@@ -16,7 +16,8 @@
 #import "GroupMemberDao.h"
 #import "IMMessageDao.h"
 #import "ConversationDao.h"
-#import "NewFansContactDao.h"
+#import "FreshFansContactDao.h"
+#import "SocialContactsDao.h"
 
 @class BJIMConversationDBManager;
 @class User;
@@ -35,7 +36,8 @@
 @property (nonatomic, strong) GroupMemberDao *groupMemberDao;
 @property (nonatomic, strong) IMMessageDao *messageDao;
 @property (nonatomic, strong) ConversationDao *conversationDao;
-@property (nonatomic, strong) NewFansContactDao *nFansContactDao;
+@property (nonatomic, strong) FreshFansContactDao *nFansContactDao;
+@property (nonatomic, strong) SocialContactsDao *socialContactsDao;
 @property (nonatomic, strong) LKDBHelper *dbHelper;
 
 //clear DB cache

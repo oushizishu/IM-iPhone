@@ -23,8 +23,6 @@
         NSString *insTableName = [TeacherContacts getTableName];
         NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
                            TEACHERCONTACTS.remarkName, TEACHERCONTACTS.remarkHeader \
-                           TEACHERCONTACTS.blackStatus, TEACHERCONTACTS.originType, TEACHERCONTACTS.focusType \
-                           TEACHERCONTACTS.tinyFoucs, TEACHERCONTACTS.focusTime,TEACHERCONTACTS.fansTime \
                            from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
                            USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
         
@@ -40,13 +38,6 @@
             user.nameHeader = [set stringForColumnIndex:5];
             user.remarkName = [set stringForColumnIndex:6];
             user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
             
             NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
             [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
@@ -128,17 +119,4 @@
     }
 }
 
-- (BOOL)isStanger:(User *)contact withOwner:(User *)owner
-{
-    TeacherContacts *teacher = [self loadContactId:contact.userId contactRole:contact.userRole owner:owner];
-    if (teacher == nil) {
-        return YES;
-    }
-    
-    if ((teacher.focusType == eIMFocusType_None && teacher.tinyFoucs == eIMTinyFocus_None) ||
-        (teacher.focusType == eIMFocusType_Passive && teacher.tinyFoucs == eIMTinyFocus_None)) {
-        return YES;
-    }
-    return NO;
-}
 @end
