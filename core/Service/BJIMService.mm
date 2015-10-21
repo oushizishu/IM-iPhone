@@ -162,65 +162,14 @@
 #pragma mark - 消息操作
 - (void)sendMessage:(IMMessage *)message
 {
-    User *owner = [IMEnvironment shareInstance].owner;
-    User *contact = [self.imStorage.userDao loadUser:message.receiver role:message.receiverRole];
+    message.status = eMessageStatus_Sending;
+    message.imService = self;
+    SendMsgOperation *operation = [[SendMsgOperation alloc] init];
+    operation.message = message;
+    operation.imService = self;
+    [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
     
-    IMBlackStatus blackStatus = [self.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
-    NSError *err;
-    
-    //拉黑对方后，不能给对方发送消息
-    if (blackStatus == eIMBlackStatus_Active) {
-        
-        [self onPostMessageFail:message error:err];
-        //插入无法发送消息提示消息
-        
-    }else
-    {
-        message.status = eMessageStatus_Sending;
-        message.imService = self;
-        SendMsgOperation *operation = [[SendMsgOperation alloc] init];
-        operation.message = message;
-        operation.imService = self;
-        [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
-        
-        //判断陌生人关系，如果是陌生人关系，判断是否是浅关系，不是浅关系，设置为浅关系
-        User *user = [IMEnvironment shareInstance].owner;
-        BOOL isStanger = isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:user];
-        
-        if (isStanger) {
-            [self.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
-            
-            Conversation *conversation = [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-            if(conversation != nil)
-            {
-                if(conversation.relation == eConversation_Relation_Stranger)
-                {
-                    conversation.relation = eConverastion_Relation_Normal;
-                    [self.imStorage.conversationDao update:conversation];
-                    
-                    Conversation *stangerConversation = [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
-                    if(stangerConversation != nil)
-                    {
-                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
-                        {
-                            NSArray *conversationArray = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
-                            if(conversationArray!=nil && [conversationArray count]>0)
-                            {
-                                Conversation *lastConversation = [conversationArray firstObject];
-                                stangerConversation.lastMessageId = lastConversation.lastMessageId;
-                            }else
-                            {
-                                stangerConversation.lastMessageId = 0;
-                            }
-                            [self.imStorage.conversationDao update:stangerConversation];
-                        }
-                    }
-                }
-            }
-        }
-        [self notifyWillDeliveryMessage:message];
-    }
-    
+    [self notifyWillDeliveryMessage:message];
 }
 
 - (void)retryMessage:(IMMessage *)message

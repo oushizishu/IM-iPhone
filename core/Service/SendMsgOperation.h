@@ -13,5 +13,6 @@
 @interface SendMsgOperation : IMBaseOperation
 @property (nonatomic, weak) BJIMService *imService;
 @property (nonatomic, strong)IMMessage *message;
+@property (nonatomic)BOOL ifRefuse;
 
 @end
