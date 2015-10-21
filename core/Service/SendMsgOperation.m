@@ -36,7 +36,7 @@
                 conversation.relation = 1;
                 
                 //获取陌生人会话
-                Conversation *stangerConversation = [self.imService getConversationUserOrGroupId:-1000100 userRole:-2 ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
+                Conversation *stangerConversation = [self.imService getConversationUserOrGroupId:-1000100 userRole:eUserRole_Stanger ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
                 if (stangerConversation == nil) {
                     stangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:-1000100 toRole:-2 lastMessageId:self.message.msgId chatType:eChatType_Chat];
                     [self.imService.imStorage.conversationDao insert:stangerConversation];

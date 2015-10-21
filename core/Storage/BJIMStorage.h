@@ -35,7 +35,7 @@
 @property (nonatomic, strong) GroupMemberDao *groupMemberDao;
 @property (nonatomic, strong) IMMessageDao *messageDao;
 @property (nonatomic, strong) ConversationDao *conversationDao;
-@property (nonatomic, strong) NewFansContactDao *newFansContactDao;
+@property (nonatomic, strong) NewFansContactDao *nFansContactDao;
 @property (nonatomic, strong) LKDBHelper *dbHelper;
 
 //clear DB cache

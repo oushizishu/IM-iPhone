@@ -72,14 +72,14 @@
 - (BOOL)getIsStanger:(User*)contact;
 
 //添加关注
-- (void)addAttention:(User*)contact;
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
 //取消关注
-- (void)cancelAttention:(User*)contact;
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
 
 //添加黑名单
-- (void)addBlacklist:(User*)contact;
+- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
 //取消黑名单
-- (void)cancelBlacklist:(User*)contact;
+- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
 
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName
@@ -100,9 +100,6 @@
 - (void)applicationEnterForeground;
 
 #pragma mark - add Delegates
-- (void)addContactStateChangedDelegate:(id<IMContactStateChangedDelegate>)delegate;
-- (void)notifyContactStateChanged:(NSArray*)array;
-
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
 - (void)notifyConversationChanged;
 

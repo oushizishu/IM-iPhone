@@ -192,7 +192,6 @@
             if (tinyFocus == eIMTinyFocus_None) {
                 [self.imStorage.studentDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:user];
                 //联系人状态修改通知
-                [self notifyContactStateChanged:[NSArray arrayWithObjects:contact, nil]];
             }
         }else if(user.userRole == eUserRole_Institution)
         {
@@ -714,25 +713,46 @@
     return isStanger;
 }
 
-- (void)addAttention:(User*)contact
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
-        User *owner = [IMEnvironment shareInstance].owner;
-        if (owner.userRole == eUserRole_Teacher) {
-            
-        }else if(owner.userRole == eUserRole_Student)
+        if(err == nil)
         {
-            [weakSelf.imStorage.studentDao setContactFocusType:YES contact:user owner:owner];
-        }else if(owner.userRole == eUserRole_Institution)
-        {
-            
+            User *owner = [IMEnvironment shareInstance].owner;
+            if (owner.userRole == eUserRole_Teacher) {
+                
+            }else if(owner.userRole == eUserRole_Student)
+            {
+                [weakSelf.imStorage.studentDao setContactFocusType:YES contact:user owner:owner];
+            }else if(owner.userRole == eUserRole_Institution)
+            {
+                
+            }
+            Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+            if(conversation != nil)
+            {
+                if(conversation.relation == eConversation_Relation_Stranger)
+                {
+                    conversation.relation = eConverastion_Relation_Normal;
+                    [weakSelf.imStorage.conversationDao insert:conversation];
+                    
+                    Conversation *stangerConversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                    if(stangerConversation != nil)
+                    {
+                        if(stangerConversation.lastMessageId == conversation.lastMessageId)
+                        {
+                            
+                        }
+                    }
+                }
+            }
         }
-        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+        callback(err,user);
     }];
 }
 
-- (void)cancelAttention:(User*)contact
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
@@ -746,11 +766,11 @@
         {
             
         }
-        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+        callback(err,user);
     }];
 }
 
-- (void)addBlacklist:(User*)contact
+- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
@@ -763,11 +783,11 @@
         {
             
         }
-        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+        callback(err,user);
     }];
 }
 
-- (void)cancelBlacklist:(User*)contact
+- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
@@ -780,7 +800,7 @@
         {
             
         }
-        [weakSelf notifyContactStateChanged:[NSArray arrayWithObjects:user, nil]];
+        callback(err,user);
     }];
 }
 
@@ -862,28 +882,6 @@
 - (void)applicationEnterBackground
 {
     [self.imEngine stop];
-}
-
-#pragma mark - attention Delegates
-- (void)addContactStateChangedDelegate:(id<IMContactStateChangedDelegate>)delegate
-{
-    if (self.contactStateDelegates == nil)
-    {
-        self.contactStateDelegates = [NSHashTable weakObjectsHashTable];
-    }
-    
-    [self.contactStateDelegates addObject:delegate];
-}
-
-- (void)notifyContactStateChanged:(NSArray*)array
-{
-    NSEnumerator *enumerator = [self.contactStateDelegates objectEnumerator];
-    id<IMContactStateChangedDelegate> delegate = nil;
-    while (delegate = [enumerator nextObject])
-    {
-        if ([delegate respondsToSelector:@selector(didContactStateDidChanged:)])
-            [delegate didContactStateDidChanged:[NSArray arrayWithObjects:array, nil]];
-    }
 }
 
 #pragma mark - add Delegates
