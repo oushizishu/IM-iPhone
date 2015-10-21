@@ -322,6 +322,8 @@
 		93B6B3A3B1427E7103AB9CF29C27EA17 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 4C81CDC4CD7004E72E6514AB1BD75BE7 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		93FB717DC31B59760CD4F30C19AD1A09 /* IMTxtMessageBody.h in Headers */ = {isa = PBXBuildFile; fileRef = B3502E78032A6BAA5A7D02C0863E5435 /* IMTxtMessageBody.h */; };
 		946491C581C28990BDD25967C711757B /* DDAssertMacros.h in Headers */ = {isa = PBXBuildFile; fileRef = 770BE67D47756C974D0D515C6E77B34A /* DDAssertMacros.h */; };
+		952BC5081BD7BC63002EB3B2 /* SetSocialFocusOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 952BC5061BD7BC63002EB3B2 /* SetSocialFocusOperation.h */; settings = {ASSET_TAGS = (); }; };
+		952BC5091BD7BC63002EB3B2 /* SetSocialFocusOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 952BC5071BD7BC63002EB3B2 /* SetSocialFocusOperation.m */; settings = {ASSET_TAGS = (); }; };
 		955249311BD4D08E0012F224 /* FreshFansContact.h in Headers */ = {isa = PBXBuildFile; fileRef = 9552492F1BD4D08E0012F224 /* FreshFansContact.h */; };
 		955249321BD4D08E0012F224 /* FreshFansContact.m in Sources */ = {isa = PBXBuildFile; fileRef = 955249301BD4D08E0012F224 /* FreshFansContact.m */; };
 		955249351BD6422F0012F224 /* FreshFansContactDao.h in Headers */ = {isa = PBXBuildFile; fileRef = 955249331BD6422F0012F224 /* FreshFansContactDao.h */; };
@@ -1259,6 +1261,8 @@
 		93F3BDDA743230F29402A91DF0AE3B25 /* BJPicture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = BJPicture.m; path = core/BJPhotoBrowser/Classes/BJPicture.m; sourceTree = "<group>"; };
 		945BE1828F27E50B8C468E09AE3BA2C4 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreData.framework; sourceTree = DEVELOPER_DIR; };
 		951760258FE9F09C52F999AD572148FE /* DDLegacyMacros.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = DDLegacyMacros.h; path = Classes/DDLegacyMacros.h; sourceTree = "<group>"; };
+		952BC5061BD7BC63002EB3B2 /* SetSocialFocusOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SetSocialFocusOperation.h; sourceTree = "<group>"; };
+		952BC5071BD7BC63002EB3B2 /* SetSocialFocusOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SetSocialFocusOperation.m; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
 		9552492F1BD4D08E0012F224 /* FreshFansContact.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FreshFansContact.h; sourceTree = "<group>"; };
 		955249301BD4D08E0012F224 /* FreshFansContact.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FreshFansContact.m; sourceTree = "<group>"; };
@@ -2645,6 +2649,8 @@
 				0D584CEFFE99CC58353D8138AA15A0CF /* SendMsgOperation.m */,
 				BDE640A20292964D75241C787E769B4A /* SyncContactOperation.h */,
 				B7C74B885561EBED837EC529ABDBB996 /* SyncContactOperation.m */,
+				952BC5061BD7BC63002EB3B2 /* SetSocialFocusOperation.h */,
+				952BC5071BD7BC63002EB3B2 /* SetSocialFocusOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -2963,6 +2969,7 @@
 				955249311BD4D08E0012F224 /* FreshFansContact.h in Headers */,
 				AD7AB4AD2ED1475BA6C53EA8A6BBC3CE /* AFNetworkReachabilityManager.h in Headers */,
 				498ED85830511D57D65A8E05B5CB77C0 /* AFNetworking.h in Headers */,
+				952BC5081BD7BC63002EB3B2 /* SetSocialFocusOperation.h in Headers */,
 				563FAB54464A6B10C371E94D82CB40E8 /* AFSecurityPolicy.h in Headers */,
 				1839A5EAB1E592FA35416D8579455CC3 /* AFURLConnectionOperation.h in Headers */,
 				77B76DEBC5A1E370DC7987BE01448CC7 /* AFURLRequestSerialization.h in Headers */,
@@ -3726,6 +3733,7 @@
 				33F76D8696A67B14F0B61D2ACC6C75D1 /* UIAlertView+AFNetworking.m in Sources */,
 				49DBB49EFE3A8DF31B51340D90451FB8 /* UIButton+AFNetworking.m in Sources */,
 				8B234DD676733701A4854BC9069E5619 /* UIImageView+AFNetworking.m in Sources */,
+				952BC5091BD7BC63002EB3B2 /* SetSocialFocusOperation.m in Sources */,
 				955249361BD6422F0012F224 /* FreshFansContactDao.m in Sources */,
 				C21FB405B69547507417E7920153F224 /* UIProgressView+AFNetworking.m in Sources */,
 				617C8D9F115D5A221C499A53FEC05301 /* UIRefreshControl+AFNetworking.m in Sources */,

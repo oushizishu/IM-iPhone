@@ -138,7 +138,7 @@
     contact.blackStatus = status;
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
     social.blackStatus = contact.blackStatus;
-    [social updateToDB];
+    [self update:social];
 }
 
 

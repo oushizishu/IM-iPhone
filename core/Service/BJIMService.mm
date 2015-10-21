@@ -25,6 +25,7 @@
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
+#import "SetSocialFocusOperation.h"
 
 #import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
@@ -690,7 +691,13 @@
         if(err == nil)
         {
             User *owner = [IMEnvironment shareInstance].owner;
-            [weakSelf.imStorage.socialContactsDao setContactFocusType:YES contact:user owner:owner];
+            SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
+            operation.imService = weakSelf;
+            operation.owner = owner;
+            operation.contact = user;
+            operation.bAddFocus = YES;
+            
+            [self.writeOperationQueue addOperation:operation];
         }
         if (callback)
             callback(err,user);
@@ -702,7 +709,13 @@
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
         User *owner = [IMEnvironment shareInstance].owner;
-        [weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
+        SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
+        operation.imService = weakSelf;
+        operation.owner = owner;
+        operation.contact = user;
+        operation.bAddFocus = NO;
+        
+        [self.writeOperationQueue addOperation:operation];
         
         if (callback)
             callback(err,user);
