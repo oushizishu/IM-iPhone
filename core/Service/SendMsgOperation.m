@@ -72,8 +72,9 @@
         self.ifRefuse = YES;
         
         //黑名单提示消息
-        IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
+        IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
         messageBody.content = @"您已拉黑对方，请先取消黑名单。";
+        messageBody.type = eTxtMessageContentType_RICH_TXT;
         IMMessage *remindBlacklistMessage = [[IMMessage alloc] init];
         remindBlacklistMessage.messageBody = messageBody;
         remindBlacklistMessage.createAt = [NSDate date].timeIntervalSince1970;
@@ -81,34 +82,39 @@
         remindBlacklistMessage.msg_t = eMessageType_NOTIFICATION;
         remindBlacklistMessage.receiver = owner.userId;
         remindBlacklistMessage.receiverRole = owner.userRole;
-        remindBlacklistMessage.sender = USER_SYSTEM_SECRETARY;
-        remindBlacklistMessage.senderRole = eUserRole_System;
+        remindBlacklistMessage.sender = contact.userId;
+        remindBlacklistMessage.senderRole = contact.userRole;
         remindBlacklistMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
         remindBlacklistMessage.conversationId = conversation.rowid;
         [self.imService.imStorage.messageDao insert:remindBlacklistMessage];
         [self.remindMessageArray addObject:remindBlacklistMessage];
     }else{
-        //未设置对方黑名单，再判断是否为关注对方(浅关注也提示)，插入唯一性提示关注对方消息
-        NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
-        NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
-        
-        if (remindAttentionMsgId == nil) {
-            IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
-            messageBody.content = @"<a href='http://www.baidu.com/'>点击关注对方，</a>可以在我的关注中找到对方哟------唯一标志";
-            IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
-            remindAttentionMessage.messageBody = messageBody;
-            remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
-            remindAttentionMessage.chat_t = eChatType_Chat;
-            remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
-            remindAttentionMessage.receiver = owner.userId;
-            remindAttentionMessage.receiverRole = owner.userRole;
-            remindAttentionMessage.sender = USER_SYSTEM_SECRETARY;
-            remindAttentionMessage.senderRole = eUserRole_System;
-            remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
-            remindAttentionMessage.sign = sign;
-            remindAttentionMessage.conversationId = conversation.rowid;
-            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
-            [self.remindMessageArray addObject:remindAttentionMessage];
+        //未设置对方黑名单，再判断是否关注对方(浅关注也提示)，插入唯一性提示关注对方消息
+        IMFocusType focusType = [self.imService.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
+        if(focusType == eIMFocusType_None || focusType == eIMFocusType_Passive)
+        {
+            NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
+            NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
+            
+            if (remindAttentionMsgId == nil) {
+                IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
+                messageBody.content = @"<a href='http://www.baidu.com/'>点击关注对方，</a>可以在我的关注中找到对方哟------唯一标志";
+                messageBody.type = eTxtMessageContentType_RICH_TXT;
+                IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
+                remindAttentionMessage.messageBody = messageBody;
+                remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
+                remindAttentionMessage.chat_t = eChatType_Chat;
+                remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
+                remindAttentionMessage.receiver = owner.userId;
+                remindAttentionMessage.receiverRole = owner.userRole;
+                remindAttentionMessage.sender = contact.userId;
+                remindAttentionMessage.senderRole = contact.userRole;
+                remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+                remindAttentionMessage.sign = sign;
+                remindAttentionMessage.conversationId = conversation.rowid;
+                [self.imService.imStorage.messageDao insert:remindAttentionMessage];
+                [self.remindMessageArray addObject:remindAttentionMessage];
+            }
         }
     }
     
