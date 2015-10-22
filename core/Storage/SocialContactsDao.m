@@ -114,36 +114,51 @@
     }
 }
 
-- (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)contact owner:(User *)owner
+- (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)user owner:(User *)owner
 {
     if (bAddFocus) {
-        if (contact.focusType == eIMFocusType_None || contact.focusType == eIMFocusType_Active) {
-            contact.focusType = eIMFocusType_Active;
+        if (user.focusType == eIMFocusType_None || user.focusType == eIMFocusType_Active) {
+            user.focusType = eIMFocusType_Active;
         } else {
-            contact.focusType = eIMFocusType_Both;
+            user.focusType = eIMFocusType_Both;
         }
     } else {
-        if (contact.focusType == eIMFocusType_Both || contact.focusType == eIMFocusType_Passive) {
-            contact.focusType = eIMFocusType_Passive;
+        if (user.focusType == eIMFocusType_Both || user.focusType == eIMFocusType_Passive) {
+            user.focusType = eIMFocusType_Passive;
         } else {
-            contact.focusType = eIMFocusType_None;
+            user.focusType = eIMFocusType_None;
         }
     }
     
-    SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    if (! social) return;
+    SocialContacts *social = [self loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    if (! social) {
+        social = [[SocialContacts alloc] init];
+        social.userId = owner.userId;
+        social.userRole = owner.userRole;
+        social.contactId = user.userId;
+        social.contactRole = user.userRole;
+        social.blackStatus = user.blackStatus;
+        social.originType = user.originType;
+        social.focusType = user.focusType;
+        social.tinyFoucs = user.tinyFocus;
+        social.focusTime = user.focusTime;
+        social.fansTime = user.fansTime;
+        social.blackTime = user.blackTime;
+        
+        [self insert:social];
+    } else {
+        //更新关系字段
+        social.focusType = user.focusType;
+        [self update:social];
+    }
     
-    //更新关系字段
-    social.focusType = contact.focusType;
-    [self update:social];
-    
-    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:user.userId userRole:user.userRole chatType:eChatType_Chat];
     if (conversation != nil) {
         BOOL ifUpdateConversation = NO;
-        if ([self isStanger:contact withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
+        if ([self isStanger:user withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
             ifUpdateConversation = YES;
             conversation.relation = eConversation_Relation_Stranger;
-        }else if(![self isStanger:contact withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
+        }else if(![self isStanger:user withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
             ifUpdateConversation = YES;
             conversation.relation = eConverastion_Relation_Normal;
         }
@@ -360,9 +375,15 @@
     contact.fansTime = user.fansTime;
     contact.blackTime = user.blackTime;
     
-    NSString *key = [self getKeyContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    [self insert:contact];
+}
+
+- (void)insert:(SocialContacts *)contact
+{
+    NSString *key = [self getKeyContactId:contact.userId contactRole:contact.userRole ownerId:contact.userId ownerRole:contact.userRole];
     [contact updateToDB];
     [self attachEntityKey:key entity:contact lock:YES];
+
 }
 
 - (void)clearAll:(User *)owner;
