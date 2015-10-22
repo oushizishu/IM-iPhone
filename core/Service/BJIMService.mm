@@ -33,6 +33,7 @@
 
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
+#import "PassiveBlacklistOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
@@ -236,6 +237,16 @@
     [self.imStorage.messageDao update:message];
     
     [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
+    
+    //如果是由于被对方拉黑发送失败，调用PassiveBlacklistOperation。
+    if(false)
+    {
+        PassiveBlacklistOperation *passiveOperation = [[PassiveBlacklistOperation alloc] init];
+        passiveOperation.message = message;
+        passiveOperation.imService = self;
+        
+        [self.writeOperationQueue addOperation:passiveOperation];
+    }
 }
 
 #pragma mark - Polling Delegate

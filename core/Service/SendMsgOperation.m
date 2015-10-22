@@ -86,6 +86,7 @@
         remindBlacklistMessage.senderRole = contact.userRole;
         remindBlacklistMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
         remindBlacklistMessage.conversationId = conversation.rowid;
+        remindBlacklistMessage.status = eMessageStatus_Send_Succ;
         [self.imService.imStorage.messageDao insert:remindBlacklistMessage];
         [self.remindMessageArray addObject:remindBlacklistMessage];
     }else{
@@ -112,6 +113,7 @@
                 remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
                 remindAttentionMessage.sign = sign;
                 remindAttentionMessage.conversationId = conversation.rowid;
+                remindAttentionMessage.status = eMessageStatus_Send_Succ;
                 [self.imService.imStorage.messageDao insert:remindAttentionMessage];
                 [self.remindMessageArray addObject:remindAttentionMessage];
             }

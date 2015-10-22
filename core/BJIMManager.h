@@ -127,7 +127,7 @@
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
 - (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
 - (void)addLoginLogoutDelegate:(id<IMLoginLogoutDelegate>)delegate;
-- (void)addUnReadNumChangedDelegate:(IMUnReadNumChangedDelegate)delegate;
+- (void)addUnReadNumChangedDelegate:(id<IMUnReadNumChangedDelegate>)delegate;
 
 @end
 
