@@ -134,4 +134,7 @@
 - (void)notifyIMLoginFinish;
 - (void)notifyIMLogoutFinish;
 
+- (void)addUnReadNumChangedDelegate:(id<IMUnReadNumChangedDelegate>)delegate;
+- (void)notifyUnReadNumChanged:(NSInteger)unReadNum;
+
 @end

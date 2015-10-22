@@ -406,6 +406,11 @@
     [self.imService addLoginLogoutDelegate:delegate];
 }
 
+- (void)addUnReadNumChangedDelegate:(id)delegate
+{
+    [self.imService addUnReadNumChangedDelegate:delegate];
+}
+
 @end;
 
 @implementation BJIMManager (GroupManager)

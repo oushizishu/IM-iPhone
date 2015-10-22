@@ -24,6 +24,8 @@
 @property (nonatomic, strong) NSMutableArray *receiveNewMessages;
 @property (nonatomic, strong) NSMutableDictionary *groupMinMessage ;
 
+@property (nonatomic, assign) NSInteger allUnReadNum;
+
 @end
 
 @implementation HandlePollingResultOperation
@@ -383,6 +385,7 @@
         __message.imService = _imService;
     }];
 
+    self.allUnReadNum = [self.imService.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
 }
 
 - (void)doAfterOperationOnMain
@@ -397,6 +400,8 @@
     {
         [self.imService notifyCmdMessages:self.cmdMessages];
     }
+    
+    [self.imService notifyUnReadNumChanged:self.allUnReadNum];
 }
 
 - (BOOL)checkHasUser:(int64_t)userId role:(IMUserRole)role array:(NSArray *)array
