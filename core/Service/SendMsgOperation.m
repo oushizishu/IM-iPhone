@@ -109,7 +109,6 @@
             remindAttentionMessage.conversationId = conversation.rowid;
             [self.imService.imStorage.messageDao insert:remindAttentionMessage];
             [self.remindMessageArray addObject:remindAttentionMessage];
-            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
         }
     }
     
