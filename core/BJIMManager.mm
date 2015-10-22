@@ -327,16 +327,19 @@
     return [self.imService getCustomWaiter];
 }
 
-- (User *)getStranger
+- (NSArray*)getMyNewFans
 {
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getStranger];
+    return [self.imService getMyNewFans];
 }
 
-- (User *)getNewFans
+- (NSArray *)getMyFans
 {
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getNewFans];
+    return [self.imService getMyFans];
+}
+
+- (NSArray *)getMyAttentions
+{
+    return [self.imService getMyAttentions];
 }
 
 - (BOOL)isMyTeacher:(int64_t)teacherId
