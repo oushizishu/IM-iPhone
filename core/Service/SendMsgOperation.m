@@ -59,6 +59,7 @@
     if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
         [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
     }
+   
     
     IMBlackStatus blackStatus = [self.imService.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
     
@@ -108,6 +109,7 @@
             remindAttentionMessage.conversationId = conversation.rowid;
             [self.imService.imStorage.messageDao insert:remindAttentionMessage];
             [self.remindMessageArray addObject:remindAttentionMessage];
+            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
         }
     }
     
