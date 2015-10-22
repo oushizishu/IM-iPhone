@@ -7,6 +7,7 @@
 //
 
 #import "IMInnerCMDMessageProcessor.h"
+#import "BJIMConstants.h"
 #import "IMEnvironment.h"
 
 #define ACTION_CMD_INNER_NEW_FANS       @"new_fans"
@@ -50,6 +51,17 @@
         freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
         [imService.imStorage.conversationDao update:freshFansConversation];
     }
+    
+    SocialContacts *contact = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    
+    if (contact) {
+        if (contact.focusType == eIMFocusType_Passive) {
+            contact.focusType = eIMFocusType_None;
+        } else if (contact.focusType == eIMFocusType_Both) {
+            contact.focusType = eIMFocusType_Active;
+        }
+        [imService.imStorage.socialContactsDao update:contact];
+    }
 }
 
 + (void)dealAddFreshFans:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
@@ -58,7 +70,22 @@
     User *user = [User modelWithDictionary:messageBody.payload[@"user"] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.userDao insertOrUpdateUser:user];
-    [imService.imStorage.socialContactsDao insert:user withOwner:owner];
+    
+    SocialContacts *contact = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    
+    if (contact == nil) {
+        [imService.imStorage.socialContactsDao insert:user withOwner:owner];
+    } else {
+        if (contact.focusType == eIMFocusType_None) {
+            contact.focusType = eIMFocusType_Passive;
+        } else if (contact.focusType == eIMFocusType_Active) {
+            contact.focusType = eIMFocusType_Both;
+        }
+        
+        [imService.imStorage.socialContactsDao update:contact];
+    }
+        
+    
     
     // 同时创建“新粉丝”会话
     Conversation *freshFansConversation = [imService getConversationUserOrGroupId:user.userId userRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
