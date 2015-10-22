@@ -30,6 +30,7 @@
         
         FMResultSet *set = [db executeQuery:query];
         
+        [self.imStroage.userDao.identityScope lock];
         while ([set next]) {
             User *user = [[User alloc] init];
             user.rowid = [set longForColumnIndex:0];
@@ -42,10 +43,11 @@
             user.remarkHeader = [set stringForColumnIndex:7];
             
             NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:NO];
             
             [users addObject:user];
         }
+        [self.imStroage.userDao.identityScope unlock];
         
         [set close];
     }];
