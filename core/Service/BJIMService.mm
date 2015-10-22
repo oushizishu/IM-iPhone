@@ -680,6 +680,24 @@
     return self.nFans;
 }
 
+- (NSArray*)getMyNewFans
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllFans:user];
+}
+
+- (NSArray *)getMyFans
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllFans:user];
+}
+
+- (NSArray *)getMyAttentions
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllAttentions:user];
+}
+
 - (BOOL)getIsStanger:(User*)contact
 {
     BOOL isStanger = NO;

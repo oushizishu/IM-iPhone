@@ -77,6 +77,14 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
+
+// 获取新粉丝列表
+- (NSArray*)getMyNewFans;
+// 我的粉丝列表
+- (NSArray *)getMyFans;
+// 我的关注列表
+- (NSArray *)getMyAttentions;
+
 - (void)setUser:(User *)user;
 
 - (void)addRecentContactId:(int64_t)userId
@@ -107,11 +115,6 @@
 - (User *)getSystemSecretary;
 // 客服 
 - (User *)getCustomWaiter;
-
-// 陌生人消息
-- (User*)getStranger;
-// 新粉丝
-- (User *)getNewFans;
 
 #pragma mark - utils
 // 判断该老师是否为我的老师（to学生端）
