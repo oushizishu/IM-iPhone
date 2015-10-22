@@ -227,6 +227,12 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@protocol IMUnReadNumChangedDelegate <NSObject>
+
+- (void)didUnReadNumChanged:(NSInteger)unReadNum;
+
+@end
+
 /**
  *  主动处理登陆退出回调
  */

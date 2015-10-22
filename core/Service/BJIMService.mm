@@ -54,6 +54,7 @@
 @property (nonatomic, strong) NSHashTable *groupInfoDelegates;
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 @property (nonatomic, strong) NSHashTable *imLoginLogoutDelegates;
+@property (nonatomic, strong) NSHashTable *imUnReadNumChangedDelegates;
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
@@ -1094,8 +1095,29 @@
     {
         if ([delegate respondsToSelector:@selector(didIMManagerLogoutFinish)])
         {
-            if ([delegate respondsToSelector:@selector(didIMManagerLogoutFinish)])
-                [delegate didIMManagerLogoutFinish];
+            [delegate didIMManagerLogoutFinish];
+        }
+    }
+}
+
+- (void)addUnReadNumChangedDelegate:(id<IMUnReadNumChangedDelegate>)delegate
+{
+    if (self.imUnReadNumChangedDelegates == nil)
+    {
+        self.imUnReadNumChangedDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    [self.imUnReadNumChangedDelegates addObject:delegate];
+}
+
+- (void)notifyUnReadNumChanged:(NSInteger)unReadNum
+{
+    NSEnumerator *enumerator = [self.imUnReadNumChangedDelegates objectEnumerator];
+    id<IMUnReadNumChangedDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(didUnReadNumChanged:)])
+        {
+            [delegate didUnReadNumChanged:unReadNum];
         }
     }
 }
