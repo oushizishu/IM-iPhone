@@ -44,6 +44,19 @@
             owner.name = user.name;
             owner.avatar = user.avatar;
         }
+        SocialContacts *contacts = [self.imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+        if (contacts != nil) {
+            contacts.remarkName = user.remarkName;
+            contacts.remarkHeader = user.remarkHeader;
+            contacts.blackStatus = user.blackStatus;
+            contacts.originType = user.originType;
+            contacts.focusType = user.focusType;
+            contacts.tinyFoucs = user.tinyFocus;
+            contacts.focusTime = user.focusTime;
+            contacts.fansTime = user.fansTime;
+            
+            [self.imService.imStorage.socialContactsDao update:contacts];
+        }
     }
 }
 
@@ -259,7 +272,6 @@
     User *owner = [IMEnvironment shareInstance].owner;
     
     NSArray *users = self.model.users;
-    
     [self updateUsers:owner users:users];
     
     NSArray *groups = self.model.groups;
