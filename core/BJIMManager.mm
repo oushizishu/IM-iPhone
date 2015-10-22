@@ -251,6 +251,21 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+- (NSArray*)getMyNewFans
+{
+    return [self.imService getMyNewFans];
+}
+
+- (NSArray *)getMyFans
+{
+    return [self.imService getMyFans];
+}
+
+- (NSArray *)getMyAttentions
+{
+    return [self.imService getMyAttentions];
+}
+
 - (void)setUser:(User *)user
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return ;
@@ -325,21 +340,6 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getCustomWaiter];
-}
-
-- (NSArray*)getMyNewFans
-{
-    return [self.imService getMyNewFans];
-}
-
-- (NSArray *)getMyFans
-{
-    return [self.imService getMyFans];
-}
-
-- (NSArray *)getMyAttentions
-{
-    return [self.imService getMyAttentions];
 }
 
 - (BOOL)isMyTeacher:(int64_t)teacherId
