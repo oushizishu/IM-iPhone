@@ -23,10 +23,10 @@
 #define HERMES_API_GET_CHANGE_REMARK_NAME [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
 #define HERMES_API_GET_USER_INFO [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
 #define HERMES_API_GET_GROUP_PROFILE [NSString stringWithFormat:@"%@/hermes/getGroupProfile", HOST_API]
-#define HERMES_API_GET_ADD_ATTENTION [NSString stringWithFormat:@"%@/hermes/addAttention", HOST_API]
-#define HERMES_API_GET_CANCEL_ATTENTION [NSString stringWithFormat:@"%@/hermes/cancelAttention", HOST_API]
-#define HERMES_API_GET_ADD_BLACKLIST [NSString stringWithFormat:@"%@/hermes/addBlacklist", HOST_API]
-#define HERMES_API_GET_CANCEL_BLACKLIST [NSString stringWithFormat:@"%@/hermes/cancelBlacklist", HOST_API]
+#define HERMES_API_GET_ADD_ATTENTION [NSString stringWithFormat:@"%@/focus/addFocus", HOST_API]
+#define HERMES_API_GET_CANCEL_ATTENTION [NSString stringWithFormat:@"%@/focus/removeFocus", HOST_API]
+#define HERMES_API_GET_ADD_BLACKLIST [NSString stringWithFormat:@"%@/hermes/addBlack", HOST_API]
+#define HERMES_API_GET_CANCEL_BLACKLIST [NSString stringWithFormat:@"%@/hermes/removeBlack", HOST_API]
 #define HERMES_API_ADD_RECENT_CONTACT [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
 
 //群组
