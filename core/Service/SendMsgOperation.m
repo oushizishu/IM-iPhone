@@ -54,10 +54,7 @@
     
     User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
-    
-    if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
-        [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
-    }
+   
     
     IMBlackStatus blackStatus = [self.imService.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
     
@@ -68,8 +65,10 @@
         self.ifRefuse = YES;
         
         //插入无法发送消息提示消息
-        IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
+        IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
         messageBody.content = @"您已拉黑对方，请先取消黑名单。";
+        messageBody.type = eTxtMessageContentType_NORMAL;
+        
         self.remindMessage = [[IMMessage alloc] init];
         self.remindMessage.messageBody = messageBody;
         self.remindMessage.createAt = [NSDate date].timeIntervalSince1970;
@@ -77,11 +76,15 @@
         self.remindMessage.msg_t = eMessageType_NOTIFICATION;
         self.remindMessage.receiver = owner.userId;
         self.remindMessage.receiverRole = owner.userRole;
-        self.remindMessage.sender = USER_SYSTEM_SECRETARY;
-        self.remindMessage.senderRole = eUserRole_System;
+        self.remindMessage.sender = contact.userId;
+        self.remindMessage.senderRole = contact.userRole;
         self.remindMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
         
         [self.imService.imStorage.messageDao insert:self.remindMessage];
+    } else {
+        if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
+            [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
+        }
     }
     
 }
