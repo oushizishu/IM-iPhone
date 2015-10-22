@@ -272,6 +272,30 @@
     [self.imService addRecentContactId:userId contactRole:userRole callback:callback];
 }
 
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+{
+    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
+    [self.imService addAttention:user callback:callback];
+}
+
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+{
+    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
+    [self.imService cancelAttention:user callback:callback];
+}
+
+- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+{
+    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
+    [self.imService addBlacklist:user callback:callback];
+}
+
+- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+{
+    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
+    [self.imService cancelBlacklist:user callback:callback];
+}
+
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
