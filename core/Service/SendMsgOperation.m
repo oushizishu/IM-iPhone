@@ -54,12 +54,15 @@
     
     User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
-    
+
+    //只要发消息，必须设置浅关注
     if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
         [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
     }
     
     IMBlackStatus blackStatus = [self.imService.imStorage.socialContactsDao getBlacklistState:contact witOwner:owner];
+    
+    self.remindMessageArray = [[NSMutableArray alloc] init];
     
     if (blackStatus == eIMBlackStatus_Active) {
         
@@ -67,21 +70,45 @@
         [self.imService.imStorage.messageDao update:self.message];
         self.ifRefuse = YES;
         
-        //插入无法发送消息提示消息
+        //黑名单提示消息
         IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
         messageBody.content = @"您已拉黑对方，请先取消黑名单。";
-        self.remindMessage = [[IMMessage alloc] init];
-        self.remindMessage.messageBody = messageBody;
-        self.remindMessage.createAt = [NSDate date].timeIntervalSince1970;
-        self.remindMessage.chat_t = eChatType_Chat;
-        self.remindMessage.msg_t = eMessageType_NOTIFICATION;
-        self.remindMessage.receiver = owner.userId;
-        self.remindMessage.receiverRole = owner.userRole;
-        self.remindMessage.sender = USER_SYSTEM_SECRETARY;
-        self.remindMessage.senderRole = eUserRole_System;
-        self.remindMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+        IMMessage *remindBlacklistMessage = [[IMMessage alloc] init];
+        remindBlacklistMessage.messageBody = messageBody;
+        remindBlacklistMessage.createAt = [NSDate date].timeIntervalSince1970;
+        remindBlacklistMessage.chat_t = eChatType_Chat;
+        remindBlacklistMessage.msg_t = eMessageType_NOTIFICATION;
+        remindBlacklistMessage.receiver = owner.userId;
+        remindBlacklistMessage.receiverRole = owner.userRole;
+        remindBlacklistMessage.sender = USER_SYSTEM_SECRETARY;
+        remindBlacklistMessage.senderRole = eUserRole_System;
+        remindBlacklistMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+        remindBlacklistMessage.conversationId = conversation.rowid;
+        [self.imService.imStorage.messageDao insert:remindBlacklistMessage];
+        [self.remindMessageArray addObject:remindBlacklistMessage];
+    }else{
+        //未设置对方黑名单，再判断是否为关注对方(浅关注也提示)，插入唯一性提示关注对方消息
+        NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
+        NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
         
-        [self.imService.imStorage.messageDao insert:self.remindMessage];
+        if (remindAttentionMsgId == nil) {
+            IMTxtMessageBody *messageBody = [[IMTxtMessageBody alloc] init];
+            messageBody.content = @"<a href='http://www.baidu.com/'>点击关注对方，</a>可以在我的关注中找到对方哟------唯一标志";
+            IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
+            remindAttentionMessage.messageBody = messageBody;
+            remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
+            remindAttentionMessage.chat_t = eChatType_Chat;
+            remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
+            remindAttentionMessage.receiver = owner.userId;
+            remindAttentionMessage.receiverRole = owner.userRole;
+            remindAttentionMessage.sender = USER_SYSTEM_SECRETARY;
+            remindAttentionMessage.senderRole = eUserRole_System;
+            remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+            remindAttentionMessage.sign = sign;
+            remindAttentionMessage.conversationId = conversation.rowid;
+            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
+            [self.remindMessageArray addObject:remindAttentionMessage];
+        }
     }
     
 }
@@ -90,7 +117,6 @@
 {
     if (self.ifRefuse) {
         [self.imService notifyDeliverMessage:self.message errorCode:-1 error:nil];
-        [self.imService notifyReceiveNewMessages:[NSArray arrayWithObjects:self.remindMessage, nil]];
         [self.imService notifyConversationChanged];
         
     }else
@@ -104,6 +130,9 @@
         {
             [self.imService.imEngine postMessage:self.message];
         }
+    }
+    if (self.remindMessageArray != nil && [self.remindMessageArray count]>0) {
+        [self.imService notifyReceiveNewMessages:self.remindMessageArray];
     }
 }
 

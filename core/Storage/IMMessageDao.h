@@ -28,6 +28,8 @@
 - (NSString *)queryMinMsgIdInConversation:(NSInteger)conversationId;
 // 查询会话最大的 msgId
 - (NSString *)queryMaxMsgIdInConversation:(NSInteger)conversationId;
+// 查询会话中特定sign值的msgId
+- (NSString *)querySignMsgIdInConversation:(NSInteger)conversationId withSing:(NSString *)sign;
 - (NSString *)queryAllMessageMaxMsgId;
 
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;

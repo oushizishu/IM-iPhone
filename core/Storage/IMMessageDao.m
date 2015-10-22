@@ -157,6 +157,18 @@
     return message.msgId;
 }
 
+- (NSString *)querySignMsgIdInConversation:(NSInteger)conversationId withSing:(NSString *)sign
+{
+    NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld AND sign='%@'", (long)conversationId,sign];
+    IMMessage *message = [self.dbHelper searchSingle:[IMMessage class] where:queryString orderBy:nil];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[IMMessage class]];
+    if (message)
+    {
+        [self attachEntityKey:@(message.rowid) entity:message lock:YES];
+    }
+    return message.msgId;
+}
+
 - (NSString *)queryAllMessageMaxMsgId
 {
     //    NSString *queryString = [NSString stringWithFormat:@" ORDER BY msgId DESC"];
