@@ -17,6 +17,7 @@
 
 #import "IMEnvironment.h"
 #import "HandleGetMsgOperation.h"
+#import "IMInnerCMDMessageProcessor.h"
 
 @interface HandlePollingResultOperation()
 
@@ -277,7 +278,11 @@
                self.cmdMessages = [[NSMutableArray alloc] init];
            }
             
-            [self.cmdMessages addObject:message];
+            BOOL suc = [IMInnerCMDMessageProcessor processMessage:message withService:self.imService];
+            
+            if (! suc) {
+                [self.cmdMessages addObject:message];
+            }
             continue;
         }
         

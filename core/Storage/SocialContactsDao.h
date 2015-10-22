@@ -69,5 +69,6 @@
 
 - (void)insert:(User *)user withOwner:(User *)owner;
 - (void)clearAll:(User *)owner;
+- (void)deleteFreshFans:(User *)user withOwner:(User *)owner;
 
 @end

@@ -10,6 +10,7 @@
 
 @interface IMCmdMessageBody : IMMessageBody
 
+@property (nonatomic, assign) NSInteger type;
 @property (nonatomic, strong) NSDictionary *payload;
 
 @end

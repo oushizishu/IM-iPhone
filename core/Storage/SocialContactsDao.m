@@ -371,5 +371,14 @@
     [self.dbHelper executeSQL:query arguments:nil];
 }
 
+- (void)deleteFreshFans:(User *)user withOwner:(User *)owner
+{
+    NSString *key = [self getKeyContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    [self detach:key lock:YES];
+    NSString *sql = [NSString stringWithFormat:@" userId=%lld and userRole=%ld and contactId=%lld and contactRole=%ld",
+                     owner.userId, (long)owner.userRole, user.userId, (long)user.userRole];
+    [self.dbHelper deleteWithClass:[SocialContacts class] where:sql callback:nil];
+}
+
 
 @end
