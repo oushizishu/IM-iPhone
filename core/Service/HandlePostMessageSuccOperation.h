@@ -16,5 +16,6 @@
 @property (nonatomic, strong) IMMessage *message;
 @property (nonatomic, weak) BJIMService *imService;
 @property (nonatomic, copy) SendMsgModel *model;
+@property (nonatomic, strong)NSMutableArray *remindMessageArray;
 
 @end
