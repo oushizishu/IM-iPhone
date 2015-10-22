@@ -696,48 +696,48 @@
     return isStanger;
 }
 
-- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
+    [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
         if(err == nil)
         {
             User *owner = [IMEnvironment shareInstance].owner;
             SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
             operation.imService = weakSelf;
             operation.owner = owner;
-            operation.contact = user;
+            operation.contact = contact;
             operation.bAddFocus = YES;
             
             [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
-            callback(err,user);
+            callback(err,result);
     }];
 }
 
-- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
+    [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
         User *owner = [IMEnvironment shareInstance].owner;
         SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
         operation.imService = weakSelf;
         operation.owner = owner;
-        operation.contact = user;
+        operation.contact = contact;
         operation.bAddFocus = NO;
         
         [weakSelf.writeOperationQueue addOperation:operation];
         
         if (callback)
-            callback(err,user);
+            callback(err,result);
     }];
 }
 
-- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
+- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
+    [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
         if (err == nil) {
             User *owner = [IMEnvironment shareInstance].owner;
             //[weakSelf.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_None contact:contact owner:owner];
@@ -745,21 +745,21 @@
             [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
         }
         if (callback)
-            callback(err,user);
+            callback(err,result);
     }];
 }
 
-- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback
+- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     __WeakSelf__ weakSelf = self;
-    [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,User *user) {
+    [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
         if(err == nil)
         {
             User *owner = [IMEnvironment shareInstance].owner;
             [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
         }
         if (callback)
-            callback(err,user);
+            callback(err,result);
     }];
 }
 

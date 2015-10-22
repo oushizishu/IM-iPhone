@@ -72,14 +72,14 @@
 - (BOOL)getIsStanger:(User*)contact;
 
 //添加关注
-- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 //取消关注
-- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 
 //添加黑名单
-- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
+- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 //取消黑名单
-- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,User *user))callback;
+- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName
