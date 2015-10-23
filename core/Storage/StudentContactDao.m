@@ -29,7 +29,6 @@
                            STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
                           from USERS INNER JOIN STUDENTCONTACTS USERS.userId=STUDENTCONTACTS.contactId and \
                            USERS.userRole=STUDENTCONTACTS.contactRole \
-                          INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and USERS.userRole=contactId.contactRole \
                            where STUDENTCONTACTS.userId=%lld and STUDENTCONTACTS.contactRole=%ld", userId, (long)contactRole];
         
         
