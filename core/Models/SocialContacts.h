@@ -8,6 +8,7 @@
 
 #import "MTLModel.h"
 #import "BJIMConstants.h"
+#import "LKDBHelper.h"
 
 @interface SocialContacts : NSObject
 
