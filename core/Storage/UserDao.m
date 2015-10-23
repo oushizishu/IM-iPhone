@@ -73,7 +73,7 @@
         NSInteger rowid = _user.rowid;
         [_user mergeValuesForKeysFromModel:user];
         _user.rowid = rowid;
-        [_user updateToDB];
+        [self update:_user];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" update " class:[User class]];
     }
     else
@@ -82,6 +82,13 @@
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[User class]];
         [self attachEntityKey:[NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole] entity:user lock:YES];
     }
+}
+
+- (void)update:(User *)user {
+    NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+    NSString *string = [NSString stringWithFormat:@" userId=%lld and userRole=%ld", user.userId, (long)user.userRole];
+    [self.dbHelper updateToDB:user where:string];
+    [self attachEntityKey:key entity:user lock:YES];
 }
 
 @end
