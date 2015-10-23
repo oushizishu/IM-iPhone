@@ -14,6 +14,7 @@
 {
     NSInteger unReadNum ;
     NSInteger allUnReadNum;
+    NSInteger otherUnReadNum;
 }
 
 @end
@@ -28,6 +29,10 @@
     
     if (unReadNum > 0) {
         allUnReadNum = [self.imService.imStorage sumOfAllConversationUnReadNumOwnerId:self.conversation.ownerId userRole:self.conversation.ownerRole];
+        
+        User *owner = [self.imService getUser:self.conversation.ownerId role:self.conversation.ownerRole];
+        
+        otherUnReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
     }
 }
 
@@ -36,7 +41,7 @@
     [self.imService notifyConversationChanged];
     
     if (unReadNum > 0) {
-        [self.imService notifyUnReadNumChanged:allUnReadNum];
+        [self.imService notifyUnReadNumChanged:allUnReadNum other:otherUnReadNum];
     }
 }
 

@@ -229,7 +229,7 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @protocol IMUnReadNumChangedDelegate <NSObject>
 
-- (void)didUnReadNumChanged:(NSInteger)unReadNum;
+- (void)didUnReadNumChanged:(NSInteger)unReadNum otherUnReadNum:(NSInteger)otherUnReadNum;
 
 @end
 

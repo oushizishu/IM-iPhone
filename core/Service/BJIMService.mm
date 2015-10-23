@@ -1120,15 +1120,15 @@
     [self.imUnReadNumChangedDelegates addObject:delegate];
 }
 
-- (void)notifyUnReadNumChanged:(NSInteger)unReadNum
+- (void)notifyUnReadNumChanged:(NSInteger)unReadNum other:(NSInteger)otherNum
 {
     NSEnumerator *enumerator = [self.imUnReadNumChangedDelegates objectEnumerator];
     id<IMUnReadNumChangedDelegate> delegate = nil;
     while (delegate = [enumerator nextObject])
     {
-        if ([delegate respondsToSelector:@selector(didUnReadNumChanged:)])
+        if ([delegate respondsToSelector:@selector(didUnReadNumChanged:otherUnReadNum:)])
         {
-            [delegate didUnReadNumChanged:unReadNum];
+            [delegate didUnReadNumChanged:unReadNum otherUnReadNum:otherNum];
         }
     }
 }

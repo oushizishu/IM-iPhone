@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSMutableDictionary *groupMinMessage ;
 
 @property (nonatomic, assign) NSInteger allUnReadNum;
+@property (nonatomic, assign) NSInteger otherUnReadNum;
 
 @end
 
@@ -403,6 +404,7 @@
     }];
 
     self.allUnReadNum = [self.imService.imStorage sumOfAllConversationUnReadNumOwnerId:owner.userId userRole:owner.userRole];
+    self.otherUnReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
 }
 
 - (void)doAfterOperationOnMain
@@ -418,7 +420,7 @@
         [self.imService notifyCmdMessages:self.cmdMessages];
     }
     
-    [self.imService notifyUnReadNumChanged:self.allUnReadNum];
+    [self.imService notifyUnReadNumChanged:self.allUnReadNum other:self.otherUnReadNum];
 }
 
 - (BOOL)checkHasUser:(int64_t)userId role:(IMUserRole)role array:(NSArray *)array

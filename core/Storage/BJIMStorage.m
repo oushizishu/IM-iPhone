@@ -95,7 +95,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 {
     __block NSInteger num = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
-        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and relation=%ld", ownerId, (long)userRole, (long)eConverastion_Relation_Normal];
+        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and relation=%ld and toId<>%ld", ownerId, (long)userRole, (long)eConverastion_Relation_Normal, (long)USER_FRESH_FANS];
         FMResultSet *result = [db executeQuery: query];
         while ([result next])
         {

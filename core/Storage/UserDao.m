@@ -70,47 +70,18 @@
     User *_user = [self loadUser:user.userId role:user.userRole];
     if (_user)
     {
-        _user.name = user.name;
-        _user.avatar = user.avatar;
+        NSInteger rowid = _user.rowid;
+        [_user mergeValuesForKeysFromModel:user];
+        _user.rowid = rowid;
         [_user updateToDB];
-        user.rowid = _user.rowid;
-        
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" update " class:[User class]];
     }
     else
     {
         [self.dbHelper insertToDB:user];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[User class]];
+        [self attachEntityKey:[NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole] entity:user lock:YES];
     }
-    [self attachEntityKey:[NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole] entity:user lock:YES];
 }
-
-//- (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock
-//{
-//    if (lock)
-//    {
-//        [self.identityScope lock];
-//    }
-//    
-//    User *user = [self.identityScope objectByKey:key lock:NO];
-//    if (user)
-//    {
-//        User *_user = (User *)entity;
-//        user.name = _user.name;
-//        user.avatar = _user.avatar;
-//        user.nameHeader = _user.nameHeader;
-//        user.remarkHeader = _user.remarkHeader;
-//        user.remarkName = _user.remarkName;
-//    }
-//    else
-//    {
-//        [self.identityScope appendObject:entity key:key lock:NO];
-//    }
-//    
-//    if (lock)
-//    {
-//        [self.identityScope unlock];
-//    }
-//}
 
 @end
