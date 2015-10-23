@@ -205,12 +205,6 @@
                                        @(user.userId),
                                        @((long long)[[NSDate date] timeIntervalSince1970]),
                                        user.remarkHeader==nil?@"":user.remarkHeader,
-                                       @(user.blackStatus),
-                                       @(user.originType),
-                                       @(user.focusType),
-                                       @(user.tinyFocus),
-                                       user.focusTime,
-                                       user.fansTime
                                        ];
                 
                 [db executeUpdate:sql withArgumentsInArray:arguments];
