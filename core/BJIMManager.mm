@@ -367,6 +367,14 @@
     return member.msgStatus;
 }
 
+- (SocialContacts *)getSocialUser:(User *)user
+{
+if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    
+    return [self.imService getSocialUser:user owner:[IMEnvironment shareInstance].owner];
+    
+}
+
 #pragma mark - 应用进入前后台
 - (void)applicationDidBecomeActive
 {

@@ -14,6 +14,7 @@
 #import "IMEnvironment.h"
 
 #import "BaseResponse.h"
+#import "SocialContacts.h"
 /**
  *  IM 管理类， 与上层交互
  */
@@ -106,6 +107,7 @@
                  user:(User *)user
              callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
 
+
 //- (void)setRemarkName:(NSString *)remarkName
 //                group:(Group *)group
 //             callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
@@ -123,6 +125,7 @@
 - (BOOL)isMyGroup:(int64_t)groupId;
 - (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId;
 
+- (SocialContacts *)getSocialUser:(User *)user;
 
 #pragma mark - 应用进入前后台
 - (void)applicationDidEnterBackgroud;

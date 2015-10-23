@@ -549,6 +549,11 @@
     return member;
 }
 
+- (SocialContacts *)getSocialUser:(User *)user owner:(User *)owner
+{
+    return [self.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+}
+
 
 - (NSArray *)getGroupsWithUser:(User *)user
 {
