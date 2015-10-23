@@ -222,9 +222,8 @@
 
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
-    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader, \
-                                                blackStatus,originType,focusType,tinyFoucs,focusTime,fansTime) \
-                               values(?,?,?,?,?,?,?,?,?,?,?,?)";
+    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) \
+                               values(?,?,?,?,?,?)";
     sql = [NSString stringWithFormat:sql, tableName];
     return sql;
 }
