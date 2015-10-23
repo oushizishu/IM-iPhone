@@ -368,7 +368,15 @@
     }
     
     //添加特殊会话(陌生人，新粉丝，系统消息)
-    
+    Conversation *stangerConversation = [self getStrangerConversation];
+    if(stangerConversation != nil)
+    {
+        [reArray addObject:stangerConversation];
+    }
+    Conversation *nFansConversation = [self getNewFansConversation];
+    if (nFansConversation != nil) {
+        [reArray addObject:nFansConversation];
+    }
     
     __WeakSelf__ weakSelf = self;
     [reArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -707,10 +715,17 @@
     return self.nFans;
 }
 
+- (Conversation *)getNewFansConversation
+{
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *newFans = [self getNewFans];
+    return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:newFans.userId userRole:newFans.userRole chatType:eChatType_Chat];
+}
+
 - (NSArray*)getMyNewFans
 {
     User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllFans:user];
+    return [self.imStorage.socialContactsDao loadALLNewFans:user];
 }
 
 - (NSArray *)getMyFans
