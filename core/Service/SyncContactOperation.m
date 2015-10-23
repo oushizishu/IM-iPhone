@@ -111,7 +111,7 @@
     [self.imService.imStorage.socialContactsDao clearAll:currentUser];
     NSArray *focusUserList = self.model.focusList;
     count = [focusUserList count];
-    for (NSInteger index = count; index < count; ++ index) {
+    for (NSInteger index = 0; index < count; ++ index) {
         User *user = [focusUserList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
@@ -120,7 +120,7 @@
     
     NSArray *fansUserList = self.model.fansList;
     count = [fansUserList count];
-    for (NSInteger index = count; index < count; ++ index) {
+    for (NSInteger index = 0; index < count; ++ index) {
         User *user = [fansUserList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
@@ -128,7 +128,7 @@
     
     NSArray *blackList = self.model.blackList;
     count = [blackList count];
-    for (NSInteger index = count; index < count; ++ index) {
+    for (NSInteger index = 0; index < count; ++ index) {
         User *user = [blackList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
         [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
@@ -249,19 +249,19 @@
 
 - (NSString *)generatorDeleteFocusSql:(User *)owner
 {
-    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[self contactsTableName:owner], owner.userId, (long)eIMFocusType_Active, (long)eIMFocusType_Both];
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[SocialContacts getTableName], owner.userId, (long)eIMFocusType_Active, (long)eIMFocusType_Both];
     return sql;
 }
 
 - (NSString *)generatorDeleteFansSql:(User *)owner
 {
-    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[self contactsTableName:owner], owner.userId, (long)eIMFocusType_Passive, (long)eIMFocusType_Both];
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and focusType=%ld or focusType=%ld",[SocialContacts getTableName], owner.userId, (long)eIMFocusType_Passive, (long)eIMFocusType_Both];
     return sql;
 }
 
 - (NSString *)generatorDeleteBlackSql:(User *)owner
 {
-    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld blackStatus=%ld",[self contactsTableName:owner], owner.userId, (long)eIMBlackStatus_Active];
+    NSString *sql = [NSString stringWithFormat:@"delete from %@ where userId=%lld blackStatus=%ld",[SocialContacts getTableName], owner.userId, (long)eIMBlackStatus_Active];
     return sql;
 }
 @end

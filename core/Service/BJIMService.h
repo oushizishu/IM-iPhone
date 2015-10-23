@@ -73,7 +73,7 @@
 // 获取新粉丝(返回用户对象,新粉丝对象是抽象出来的用户)
 - (User *)getNewFans;
 //获取新粉丝会话(返回会话对象)
-- (Conversation *)getNewFansConversation;
+//- (Conversation *)getNewFansConversation;
 // 获取新粉丝列表(返回用户对象列表)
 - (NSArray*)getMyNewFans;
 
