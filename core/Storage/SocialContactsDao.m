@@ -34,7 +34,7 @@
         contact = [self.dbHelper searchSingle:[SocialContacts class] where:queryString orderBy:nil];
         
         if (contact) {
-            [self attachEntityKey:contact entity:key lock:YES];
+            [self attachEntityKey:key entity:contact lock:YES];
         }
     }
     
