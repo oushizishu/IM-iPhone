@@ -89,7 +89,7 @@
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
 {
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
-                              AND ownerRole=%ld and status=0 relation<>%ld ORDER BY lastMessageId DESC",ownerId,(long)ownerRole, eConversation_Relation_Stranger];
+                              AND ownerRole=%ld and status=0 and relation<>%ld ORDER BY lastMessageId DESC",ownerId,(long)ownerRole, eConversation_Relation_Stranger];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
     

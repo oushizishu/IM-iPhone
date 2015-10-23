@@ -67,6 +67,12 @@
 - (User*)getStranger;
 // 新粉丝
 - (User *)getNewFans;
+// 获取新粉丝列表
+- (NSArray*)getMyNewFans;
+// 我的粉丝列表
+- (NSArray *)getMyFans;
+// 我的关注列表
+- (NSArray *)getMyAttentions;
 
 //判断陌生人关系
 - (BOOL)getIsStanger:(User*)contact;

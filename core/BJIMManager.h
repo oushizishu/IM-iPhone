@@ -77,11 +77,29 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
+
+// 获取新粉丝列表
+- (NSArray*)getMyNewFans;
+// 我的粉丝列表
+- (NSArray *)getMyFans;
+// 我的关注列表
+- (NSArray *)getMyAttentions;
+
 - (void)setUser:(User *)user;
 
 - (void)addRecentContactId:(int64_t)userId
                contactRole:(IMUserRole)userRole
                   callback:(void(^)(BaseResponse *response))callback;
+
+//添加关注
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
+//取消关注
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
+
+//添加黑名单
+- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
+//取消黑名单
+- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
@@ -97,11 +115,6 @@
 - (User *)getSystemSecretary;
 // 客服 
 - (User *)getCustomWaiter;
-
-// 陌生人消息
-- (User*)getStranger;
-// 新粉丝
-- (User *)getNewFans;
 
 #pragma mark - utils
 // 判断该老师是否为我的老师（to学生端）
