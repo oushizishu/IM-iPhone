@@ -707,6 +707,13 @@
     return self.nFans;
 }
 
+- (Conversation *)getNewFansConversation
+{
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *newFans = [self getNewFans];
+    return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:newFans.userId userRole:newFans.userRole chatType:eChatType_Chat];
+}
+
 - (NSArray*)getMyNewFans
 {
     User *user = [IMEnvironment shareInstance].owner;
