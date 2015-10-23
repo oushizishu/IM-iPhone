@@ -196,8 +196,8 @@
         // 采用内级联查询
         NSString *query = [NSString stringWithFormat:@"select \
                            USERS.rowid, USERS.userId, USERS.userRole,  USERS.name,USERS.avatar, USERS.nameHeader, \
-                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader \
-                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType \
+                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader, \
+                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, \
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
@@ -251,8 +251,8 @@
         // 采用内级联查询
         NSString *query = [NSString stringWithFormat:@"select \
                            USERS.rowid, USERS.userId, USERS.userRole,  USERS.name,USERS.avatar, USERS.nameHeader, \
-                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader \
-                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType \
+                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader, \
+                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, \
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
@@ -348,8 +348,8 @@
         // 采用内级联查询
         NSString *query = [NSString stringWithFormat:@"select \
                            USERS.rowid, USERS.userId, USERS.userRole,  USERS.name,USERS.avatar, USERS.nameHeader, \
-                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader \
-                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType \
+                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader, \
+                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, \
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
