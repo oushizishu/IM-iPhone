@@ -359,14 +359,23 @@
 #pragma mark -- conversation
 - (NSArray *)getAllConversationWithOwner:(User *)owner
 {
+    NSMutableArray *reArray;
+    reArray = [[NSMutableArray alloc] init];
     NSArray *list = [self.imStorage.conversationDao loadAllWithOwnerId:owner.userId userRole:owner.userRole];
     
+    if (list != nil) {
+        [reArray addObjectsFromArray:list];
+    }
+    
+    //添加特殊会话(陌生人，新粉丝，系统消息)
+    
+    
     __WeakSelf__ weakSelf = self;
-    [list enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+    [reArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
         Conversation *conversation = (Conversation *)obj;
         conversation.imService = weakSelf;
     }];
-    return list;
+    return reArray;
 }
 
 - (Conversation *)getConversationUserOrGroupId:(int64_t)userOrGroupId
@@ -669,6 +678,19 @@
         }
     }
     return self.stanger;
+}
+
+- (Conversation *)getStrangerConversation
+{
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *stanger = [self getStranger];
+    return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:stanger.userId userRole:stanger.userRole chatType:eChatType_Chat];
+}
+
+- (NSArray *)getMyStrangerConversations
+{
+    User *owner = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
 }
 
 - (User *)getNewFans

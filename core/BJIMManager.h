@@ -47,10 +47,14 @@
  */
 - (void)logout;
 
-#pragma mark - 会话 
+#pragma mark - 会话
+//获取所有消息会话(包括陌生人，新粉丝，系统消息)
 - (NSArray *)getAllConversation;
+//获取会话
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
+//获取群组
 - (Conversation *)getConversationGroupId:(int64_t)groupId;
+//
 - (NSInteger)getAllConversationUnreadNum;
 //删除会话
 - (BOOL)deleteConversation:(Conversation *)conversation;

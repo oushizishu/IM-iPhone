@@ -63,15 +63,23 @@
 // 客服
 - (User *)getCustomWaiter;
 
-// 陌生人消息
+// 获取陌生人(返回用户对象,陌生人对象是抽象出来的用户)
 - (User*)getStranger;
-// 新粉丝
+// 获取陌生人会话(返回会话对象，针对上面陌生人对象，抽象用户的会话)
+- (Conversation *)getStrangerConversation;
+// 获取陌生人会话列表(返回会话对象列表，针对具体用户对象的会话)
+- (NSArray *)getMyStrangerConversations;
+
+// 获取新粉丝(返回用户对象,新粉丝对象是抽象出来的用户)
 - (User *)getNewFans;
-// 获取新粉丝列表
+//获取新粉丝会话(返回会话对象)
+- (Conversation *)getNewFansConversation;
+// 获取新粉丝列表(返回用户对象列表)
 - (NSArray*)getMyNewFans;
-// 我的粉丝列表
+
+// 我的粉丝列表(返回用户对象列表)
 - (NSArray *)getMyFans;
-// 我的关注列表
+// 我的关注列表(返回用户对象列表)
 - (NSArray *)getMyAttentions;
 
 //判断陌生人关系
