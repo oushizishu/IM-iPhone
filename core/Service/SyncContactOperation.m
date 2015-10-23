@@ -91,7 +91,7 @@
     // 分批写入, 这样就不需要长时间占用 FMDB 中 threadLock.
     __block BOOL needRefreshUI = NO;
     [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
-        NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld contactRole=%ld", tableName, currentUser.userId, (long)eUserRole_Student];
+        NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld and contactRole=%ld", tableName, currentUser.userId, (long)eUserRole_Student];
         
         FMResultSet *set = [db executeQuery:sql];
         if ([set next]) {

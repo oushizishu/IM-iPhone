@@ -388,7 +388,7 @@
 
 - (void)clearAll:(User *)owner;
 {
-    NSString *query = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld", [SocialContacts getTableMapping], owner.userId, (long)owner.userRole];
+    NSString *query = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld", [SocialContacts getTableName], owner.userId, (long)owner.userRole];
     [self.dbHelper executeSQL:query arguments:nil];
 }
 
