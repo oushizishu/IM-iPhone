@@ -23,14 +23,11 @@
 //        SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, SOCIALCONTACTS.tinyFocus, SOCIALCONTACTS.focusTime, SOCIALCONTACTS.fansTime, SOCIALCONTACTS.blackTime \
         
         // 采用内级联查询
-//        NSString *insTableName = [StudentContacts getTableName];
-        NSString *query = [NSString stringWithFormat:@"select \
-                           USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
+        NSString *insTableName = [StudentContacts getTableName];
+        NSString *query = [NSString stringWithFormat:@"select USERS.rowid, USERS.userId, USERS.userRole, USERS.name, USERS.avatar, USERS.nameHeader, \
                            STUDENTCONTACTS.remarkName, STUDENTCONTACTS.remarkHeader \
-                          from USERS INNER JOIN STUDENTCONTACTS USERS.userId=STUDENTCONTACTS.contactId and \
-                           USERS.userRole=STUDENTCONTACTS.contactRole \
-                           where STUDENTCONTACTS.userId=%lld and STUDENTCONTACTS.contactRole=%ld", userId, (long)contactRole];
-        
+                           from %@ INNER JOIN %@ ON USERS.userId=%@.contactId and \
+                           USERS.userRole=%@.contactRole where %@.userId=%lld and %@.contactRole=%ld", [User getTableName], insTableName, insTableName, insTableName,insTableName, userId, insTableName, (long)contactRole];
         
         FMResultSet *set = [db executeQuery:query];
         
