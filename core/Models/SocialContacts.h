@@ -9,7 +9,7 @@
 #import "MTLModel.h"
 #import "BJIMConstants.h"
 
-@interface SocialContacts : MTLModel
+@interface SocialContacts : NSObject
 
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) IMUserRole userRole;
