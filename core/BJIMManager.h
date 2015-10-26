@@ -52,8 +52,6 @@
 - (NSArray *)getAllConversation;
 //获取陌生人会话列表(返回会话列表)
 - (NSArray *)getStangerConversation;
-//获取新粉丝列表(返回用户列表)
-- (NSArray *)getMyFreshFans;
 //获取会话
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
 //获取群组
@@ -93,6 +91,14 @@
 - (NSArray *)getMyFans;
 // 我的关注列表
 - (NSArray *)getMyAttentions;
+// 我的互相关注列表
+- (NSArray *)getMyAttentionsOfMutual;
+
+// 我的关注老师列表
+
+// 我的关注同学列表
+
+// 我的关注机构列表
 
 - (void)setUser:(User *)user;
 

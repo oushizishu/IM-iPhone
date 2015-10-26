@@ -194,13 +194,6 @@
     return [self.imService getMyStrangerConversations];
 }
 
-- (NSArray *)getMyFreshFans
-{
-    if (! [[IMEnvironment shareInstance] isLogin])
-        return nil;
-    return [self.imService getMyFreshFans];
-}
-
 - (Conversation *)getConversationGroupId:(int64_t)groupId
 {
     if (! [[IMEnvironment shareInstance] isLogin])
@@ -267,16 +260,19 @@
 
 - (NSArray*)getMyFreshFans
 {
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyFreshFans];
 }
 
 - (NSArray *)getMyFans
 {
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyFans];
 }
 
 - (NSArray *)getMyAttentions
 {
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyAttentions];
 }
 
