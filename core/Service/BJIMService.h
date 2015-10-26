@@ -66,16 +66,16 @@
 // 获取陌生人(返回用户对象,陌生人对象是抽象出来的用户)
 - (User*)getStranger;
 // 获取陌生人会话(返回会话对象，针对上面陌生人对象，抽象用户的会话)
-- (Conversation *)getStrangerConversation;
-// 获取陌生人会话列表(返回会话对象列表，针对具体用户对象的会话)
+//- (Conversation *)getStrangerConversation;
+// 获取陌生人会话列表(返回会话对象列表，针对具体用户对象的会话,不是所有陌生人会话，是已建立的陌生人会话。)
 - (NSArray *)getMyStrangerConversations;
 
 // 获取新粉丝(返回用户对象,新粉丝对象是抽象出来的用户)
-- (User *)getNewFans;
+- (User *)getFreshFans;
 //获取新粉丝会话(返回会话对象)
-//- (Conversation *)getNewFansConversation;
+//- (Conversation *)getFreshFansConversation;
 // 获取新粉丝列表(返回用户对象列表)
-- (NSArray*)getMyNewFans;
+- (NSArray*)getMyFreshFans;
 
 // 我的粉丝列表(返回用户对象列表)
 - (NSArray *)getMyFans;

@@ -54,7 +54,7 @@
 //我的粉丝
 - (NSArray *)loadAllFans:(User *)owner;
 //我的新粉丝
-- (NSArray *)loadALLNewFans:(User *)owner;
+- (NSArray *)loadALLFreshFans:(User *)owner;
 //我的黑名单
 - (NSArray *)loadAllBlacks:(User *)owner;
 

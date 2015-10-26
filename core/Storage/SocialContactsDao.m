@@ -292,7 +292,7 @@
     return users;
 }
 
-- (NSArray *)loadALLNewFans:(User *)owner
+- (NSArray *)loadALLFreshFans:(User *)owner
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {

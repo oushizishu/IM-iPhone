@@ -373,7 +373,7 @@
     {
         [reArray addObject:stangerConversation];
     }
-    Conversation *nFansConversation = [self getNewFansConversation];
+    Conversation *nFansConversation = [self getFreshFansConversation];
     if (nFansConversation != nil) {
         [reArray addObject:nFansConversation];
     }
@@ -701,7 +701,7 @@
     return [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
 }
 
-- (User *)getNewFans
+- (User *)getFreshFans
 {
     if (self.nFans == nil) {
         self.nFans = [self.imStorage.userDao loadUser:USER_FRESH_FANS role:eUserRole_Fans];
@@ -715,17 +715,17 @@
     return self.nFans;
 }
 
-- (Conversation *)getNewFansConversation
+- (Conversation *)getFreshFansConversation
 {
     User *owner = [IMEnvironment shareInstance].owner;
-    User *newFans = [self getNewFans];
+    User *newFans = [self getFreshFans];
     return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:newFans.userId userRole:newFans.userRole chatType:eChatType_Chat];
 }
 
-- (NSArray*)getMyNewFans
+- (NSArray*)getMyFreshFans
 {
     User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadALLNewFans:user];
+    return [self.imStorage.socialContactsDao loadALLFreshFans:user];
 }
 
 - (NSArray *)getMyFans
