@@ -100,12 +100,20 @@
 
 - (void)insertOrUpdateContact:(StudentContacts *)contact owner:(User *)owner
 {
-    if ([self loadContactId:contact.contactId contactRole:contact.contactRole owner:owner] == nil)
+    StudentContacts *_contact = [self loadContactId:contact.contactId contactRole:contact.contactRole owner:owner];
+    if (_contact == nil)
     {
         [self.dbHelper insertToDB:contact];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[StudentContacts class]];
         NSString *key = [NSString stringWithFormat:@"%lld-%lld-%ld", owner.userId,contact.contactId, (long)contact.contactRole];
         [self attachEntityKey:key entity:contact lock:YES];
+    }
+    else
+    {
+        _contact.createTime = contact.createTime;
+        _contact.remarkName = contact.remarkName;
+        _contact.remarkHeader = contact.remarkHeader;
+        [self.dbHelper updateToDB:_contact where:nil];
     }
 }
 
