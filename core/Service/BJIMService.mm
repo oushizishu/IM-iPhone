@@ -238,14 +238,16 @@
     
     [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
     
-    //如果是由于被对方拉黑发送失败，调用PassiveBlacklistOperation。
-    if(false)
+    if(error.code == 510007)//被对方拉黑
     {
         PassiveBlacklistOperation *passiveOperation = [[PassiveBlacklistOperation alloc] init];
         passiveOperation.message = message;
         passiveOperation.imService = self;
         
         [self.writeOperationQueue addOperation:passiveOperation];
+    }else if(error.code == 510008)//自己拉黑对方
+    {
+        
     }
 }
 
