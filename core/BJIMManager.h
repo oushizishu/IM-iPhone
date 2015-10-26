@@ -58,7 +58,7 @@
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
 //获取群组
 - (Conversation *)getConversationGroupId:(int64_t)groupId;
-//
+//未读消息总数
 - (NSInteger)getAllConversationUnreadNum;
 //删除会话
 - (BOOL)deleteConversation:(Conversation *)conversation;
@@ -88,7 +88,7 @@
 - (NSArray *)getMyInstitutionContacts;
 
 // 获取新粉丝列表
-- (NSArray*)getMyNewFans;
+- (NSArray*)getMyFreshFans;
 // 我的粉丝列表
 - (NSArray *)getMyFans;
 // 我的关注列表

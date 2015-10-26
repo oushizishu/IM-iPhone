@@ -265,7 +265,7 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
-- (NSArray*)getMyNewFans
+- (NSArray*)getMyFreshFans
 {
     return [self.imService getMyFreshFans];
 }
