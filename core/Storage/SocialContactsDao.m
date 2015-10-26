@@ -188,7 +188,7 @@
 }
 
 
-- (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole;
+- (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
@@ -243,7 +243,7 @@
     return users;
 }
 
-- (NSArray *)loadAllFans:(User *)owner
+- (NSArray *)loadAllFans:(User *)owner  contactRole:(IMUserRole)contactRole
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
@@ -256,9 +256,15 @@
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
-                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld order by SOCIALCONTACTS.fansTime desc;",
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
+                           or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
+        
+        if (contactRole > 0) {
+            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
+        }
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.fansTime desc", query];
         
         
         FMResultSet *set = [db executeQuery:query];
@@ -406,6 +412,31 @@
 - (NSArray *)loadAllAttentions:(User *)owner
 {
     return [self loadAllAttentions:owner contactRole:-1];
+}
+
+- (NSArray *)loadAllFans:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:-1];
+}
+
+- (NSArray *)loadAllFansStudent:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Student];
+}
+
+- (NSArray *)loadAllFansTeacher:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSArray *)loadAllFansInstitution:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Institution];
+}
+
+- (NSArray *)loadAllMutualUser:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:-1];
 }
 
 - (void)insert:(User *)user withOwner:(User *)owner

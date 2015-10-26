@@ -49,6 +49,8 @@
 //设置黑名单
 - (void)setContactBacklist:(IMBlackStatus)status contact:(User*)contact owner:(User*)owner;
 
+//获取互相关注
+- (NSArray *)loadAllMutualUser:(User *)owner;
 //我的关注
 - (NSArray *)loadAllAttentions:(User *)owner;
 //我的粉丝
@@ -68,6 +70,10 @@
 - (NSArray *)loadAllAttentionsStudent:(User *)owner;
 - (NSArray *)loadAllAttentionsTeacher:(User *)owner;
 - (NSArray *)loadAllAttentionsInstitution:(User *)owner;
+
+- (NSArray *)loadAllFansStudent:(User *)owner;
+- (NSArray *)loadAllFansTeacher:(User *)owner;
+- (NSArray *)loadAllFansInstitution:(User *)owner;
 
 - (void)insert:(User *)user withOwner:(User *)owner;
 - (void)clearAll:(User *)owner;

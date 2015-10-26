@@ -258,6 +258,12 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+- (NSArray *)getMyMutualUsers;
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyMutualUsers];
+}
+
 - (NSArray*)getMyFreshFans
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
@@ -270,10 +276,47 @@
     return [self.imService getMyFans];
 }
 
+- (NSArray *)getMyFansBelongToTeacher
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyFansBelongToTeacher];
+}
+
+- (NSArray *)getMyFansBelongToStudent
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyFansBelongToStudent];
+}
+
+- (NSArray *)getMyFansBelongToInstitution
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyFansBelongToInstitution];
+}
+
+
 - (NSArray *)getMyAttentions
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyAttentions];
+}
+
+- (NSArray *)getMyAttentionsBelongToTeacher
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyAttentionsBelongToTeacher];
+}
+
+- (NSArray *)getMyAttentionsBelongToStudent
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyAttentionsBelongToStudent];
+}
+
+- (NSArray *)getMyAttentionsBelongToInstitution
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyAttentionsBelongToInstitution];
 }
 
 - (void)setUser:(User *)user
