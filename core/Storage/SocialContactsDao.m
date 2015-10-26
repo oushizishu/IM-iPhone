@@ -361,7 +361,7 @@
         if ([set next]) {
             usersCount = [set longForColumnIndex:0];
         }
-                
+        
         [set close];
     }];
     return usersCount;
@@ -432,6 +432,21 @@
     return [self loadAllAttentions:owner contactRole:eUserRole_Institution];
 }
 
+- (NSInteger)getAllAttentionsStudentCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Student];
+}
+
+- (NSInteger)getAllAttentionsTeacherCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSInteger)getAllAttentionsInstitutionCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Institution];
+}
+
 - (NSArray *)loadAllAttentions:(User *)owner
 {
     return [self loadAllAttentions:owner contactRole:-1];
@@ -465,6 +480,21 @@
 - (NSArray *)loadAllFansInstitution:(User *)owner
 {
     return [self loadAllFans:owner contactRole:eUserRole_Institution];
+}
+
+- (NSInteger)getAllFansStudentCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Student];
+}
+
+- (NSInteger)getAllFansTeacherCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSInteger)getAllFansInstitutionCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Institution];
 }
 
 - (NSArray *)loadAllMutualUser:(User *)owner
