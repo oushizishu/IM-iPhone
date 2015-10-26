@@ -183,14 +183,18 @@
 {
     contact.blackStatus = status;
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    social.blackStatus = contact.blackStatus;
-    [self update:social];
+    if (social == nil) {
+        [self insert:contact withOwner:owner];
+    } else {
+        social.blackStatus = contact.blackStatus;
+        [self update:social];
+    }
 }
 
 
 - (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole
 {
-    NSMutableArray *users = [[NSMutableArray alloc] init];
+    __block NSArray *users ;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -214,29 +218,7 @@
         
         FMResultSet *set = [db executeQuery:query];
         
-        while ([set next]) {
-            User *user = [[User alloc] init];
-            user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
-            user.name = [set stringForColumnIndex:3];
-            user.avatar = [set stringForColumnIndex:4];
-            user.nameHeader = [set stringForColumnIndex:5];
-            user.remarkName = [set stringForColumnIndex:6];
-            user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
-            
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-            
-            [users addObject:user];
-        }
+        users = [self loadAllUsersFromResultSet:set];
         
         [set close];
     }];
@@ -245,7 +227,7 @@
 
 - (NSArray *)loadAllFans:(User *)owner  contactRole:(IMUserRole)contactRole
 {
-    NSMutableArray *users = [[NSMutableArray alloc] init];
+    __block NSArray *users ;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -269,29 +251,7 @@
         
         FMResultSet *set = [db executeQuery:query];
         
-        while ([set next]) {
-            User *user = [[User alloc] init];
-            user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
-            user.name = [set stringForColumnIndex:3];
-            user.avatar = [set stringForColumnIndex:4];
-            user.nameHeader = [set stringForColumnIndex:5];
-            user.remarkName = [set stringForColumnIndex:6];
-            user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
-            
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-            
-            [users addObject:user];
-        }
+        users = [self loadAllUsersFromResultSet:set];
         
         [set close];
     }];
@@ -300,7 +260,7 @@
 
 - (NSArray *)loadALLFreshFans:(User *)owner
 {
-    NSMutableArray *users = [[NSMutableArray alloc] init];
+    __block NSArray *users ;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -317,29 +277,10 @@
         
         FMResultSet *set = [db executeQuery:query];
         
-        while ([set next]) {
-            User *user = [[User alloc] init];
-            user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
-            user.name = [set stringForColumnIndex:3];
-            user.avatar = [set stringForColumnIndex:4];
-            user.nameHeader = [set stringForColumnIndex:5];
-            user.remarkName = [set stringForColumnIndex:6];
-            user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
-            
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-            
-            [users addObject:user];
-        }
+        users = [self loadAllUsersFromResultSet:set];
+        
+        [self.imStroage.userDao.identityScope unlock];
+        
         
         [set close];
     }];
@@ -348,7 +289,7 @@
 
 - (NSArray *)loadAllBlacks:(User *)owner
 {
-    NSMutableArray *users = [[NSMutableArray alloc] init];
+    __block NSArray *users ;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -365,29 +306,7 @@
         
         FMResultSet *set = [db executeQuery:query];
         
-        while ([set next]) {
-            User *user = [[User alloc] init];
-            user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
-            user.name = [set stringForColumnIndex:3];
-            user.avatar = [set stringForColumnIndex:4];
-            user.nameHeader = [set stringForColumnIndex:5];
-            user.remarkName = [set stringForColumnIndex:6];
-            user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
-            
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-            
-            [users addObject:user];
-        }
+        users = [self loadAllUsersFromResultSet:set];
         
         [set close];
     }];
@@ -436,7 +355,7 @@
 
 - (NSArray *)loadAllMutualUser:(User *)owner
 {
-    NSMutableArray *users = [[NSMutableArray alloc] init];
+    __block NSArray *users ;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -455,29 +374,10 @@
         
         FMResultSet *set = [db executeQuery:query];
         
-        while ([set next]) {
-            User *user = [[User alloc] init];
-            user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
-            user.name = [set stringForColumnIndex:3];
-            user.avatar = [set stringForColumnIndex:4];
-            user.nameHeader = [set stringForColumnIndex:5];
-            user.remarkName = [set stringForColumnIndex:6];
-            user.remarkHeader = [set stringForColumnIndex:7];
-            
-            user.blackStatus = [set longForColumnIndex:8];
-            user.originType = [set longForColumnIndex:9];
-            user.focusType = [set longForColumnIndex:10];
-            user.tinyFocus = [set longForColumnIndex:11];
-            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
-            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
-            
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
-            
-            [users addObject:user];
-        }
+        users = [self loadAllUsersFromResultSet:set];
+        
+        [self.imStroage.userDao.identityScope unlock];
+        
         
         [set close];
     }];
@@ -525,5 +425,53 @@
     [self.dbHelper deleteWithClass:[SocialContacts class] where:sql callback:nil];
 }
 
+- (NSArray *)loadAllUsersFromResultSet:(FMResultSet *)set
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    
+    [self.imStroage.userDao.identityScope lock];
+    while ([set next]) {
+        
+        User *user = [self loadUserFromResultSet:set];
+        
+        [users addObject:user];
+    }
+    [self.imStroage.userDao.identityScope unlock];
+    
+    return users;
+}
+
+- (User *)loadUserFromResultSet:(FMResultSet *)set
+{
+    int64_t userId = [set longLongIntForColumnIndex:1];
+    IMUserRole userRole = [set longForColumnIndex:2];
+    
+    NSString *key = [NSString stringWithFormat:@"%lld-%ld", userId, (long)userRole];
+    
+    User *user = [self.imStroage.userDao.identityScope objectByKey:key lock:NO];
+    
+    if (! user) {
+        user = [[User alloc] init];
+    }
+    
+    user.rowid = [set longForColumnIndex:0];
+    user.userId = userId;
+    user.userRole = userRole;
+    user.name = [set stringForColumnIndex:3];
+    user.avatar = [set stringForColumnIndex:4];
+    user.nameHeader = [set stringForColumnIndex:5];
+    user.remarkName = [set stringForColumnIndex:6];
+    user.remarkHeader = [set stringForColumnIndex:7];
+    
+    user.blackStatus = [set longForColumnIndex:8];
+    user.originType = [set longForColumnIndex:9];
+    user.focusType = [set longForColumnIndex:10];
+    user.tinyFocus = [set longForColumnIndex:11];
+    user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
+    user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
+    
+    [self.imStroage.userDao attachEntityKey:key entity:user lock:NO];
+    return user;
+}
 
 @end
