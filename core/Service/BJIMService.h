@@ -77,10 +77,27 @@
 // 获取新粉丝列表(返回用户对象列表)
 - (NSArray*)getMyFreshFans;
 
+// 我的互相关注列表
+- (NSArray *)getMyMutualUsers;
+
 // 我的粉丝列表(返回用户对象列表)
 - (NSArray *)getMyFans;
+// 关注我的老师
+- (NSArray *)getMyFansBelongToTeacher;
+// 关注我的学生
+- (NSArray *)getMyFansBelongToStudent;
+// 关注我的机构
+- (NSArray *)getMyFansBelongToInstitution;
+
+
 // 我的关注列表(返回用户对象列表)
 - (NSArray *)getMyAttentions;
+// 我的关注老师列表
+- (NSArray *)getMyAttentionsBelongToTeacher;
+// 我的关注同学列表
+- (NSArray *)getMyAttentionsBelongToStudent;
+// 我的关注机构列表
+- (NSArray *)getMyAttentionsBelongToInstitution;
 
 //判断陌生人关系
 - (BOOL)getIsStanger:(User*)contact;

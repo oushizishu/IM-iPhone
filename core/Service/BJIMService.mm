@@ -728,16 +728,58 @@
     return [self.imStorage.socialContactsDao loadALLFreshFans:user];
 }
 
+- (NSArray *)getMyMutualUsers
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllMutualUser:user];
+}
+
 - (NSArray *)getMyFans
 {
     User *user = [IMEnvironment shareInstance].owner;
     return [self.imStorage.socialContactsDao loadAllFans:user];
 }
 
+- (NSArray *)getMyFansBelongToTeacher
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllFansTeacher:user];
+}
+
+- (NSArray *)getMyFansBelongToStudent
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllFansStudent:user];
+}
+
+- (NSArray *)getMyFansBelongToInstitution
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllFansInstitution:user];
+}
+
 - (NSArray *)getMyAttentions
 {
     User *user = [IMEnvironment shareInstance].owner;
     return [self.imStorage.socialContactsDao loadAllAttentions:user];
+}
+
+- (NSArray *)getMyAttentionsBelongToTeacher
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllAttentionsTeacher:user];
+}
+
+- (NSArray *)getMyAttentionsBelongToStudent
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllAttentionsStudent:user];
+}
+
+- (NSArray *)getMyAttentionsBelongToInstitution
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllAttentionsInstitution:user];
 }
 
 - (BOOL)getIsStanger:(User*)contact

@@ -188,7 +188,7 @@
 }
 
 
-- (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole;
+- (NSArray *)loadAllAttentions:(User *)owner contactRole:(IMUserRole)contactRole
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
@@ -243,7 +243,7 @@
     return users;
 }
 
-- (NSArray *)loadAllFans:(User *)owner
+- (NSArray *)loadAllFans:(User *)owner  contactRole:(IMUserRole)contactRole
 {
     NSMutableArray *users = [[NSMutableArray alloc] init];
     [self.dbHelper executeDB:^(FMDatabase *db) {
@@ -256,9 +256,15 @@
                            SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
-                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld order by SOCIALCONTACTS.fansTime desc;",
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
+                           or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
+        
+        if (contactRole > 0) {
+            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
+        }
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.fansTime desc", query];
         
         
         FMResultSet *set = [db executeQuery:query];
@@ -406,6 +412,76 @@
 - (NSArray *)loadAllAttentions:(User *)owner
 {
     return [self loadAllAttentions:owner contactRole:-1];
+}
+
+- (NSArray *)loadAllFans:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:-1];
+}
+
+- (NSArray *)loadAllFansStudent:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Student];
+}
+
+- (NSArray *)loadAllFansTeacher:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSArray *)loadAllFansInstitution:(User *)owner
+{
+    return [self loadAllFans:owner contactRole:eUserRole_Institution];
+}
+
+- (NSArray *)loadAllMutualUser:(User *)owner
+{
+    NSMutableArray *users = [[NSMutableArray alloc] init];
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select \
+                           USERS.rowid, USERS.userId, USERS.userRole,  USERS.name,USERS.avatar, USERS.nameHeader, \
+                           SOCIALCONTACTS.remarkName, SOCIALCONTACTS.remarkHeader, \
+                           SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, \
+                           SOCIALCONTACTS.tinyFoucs, SOCIALCONTACTS.focusTime,SOCIALCONTACTS.fansTime \
+                           from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
+                           USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld ",
+                           owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Both];
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.focusTime desc", query];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        
+        while ([set next]) {
+            User *user = [[User alloc] init];
+            user.rowid = [set longForColumnIndex:0];
+            user.userId = [set longLongIntForColumnIndex:1];
+            user.userRole = [set longForColumnIndex:2];
+            user.name = [set stringForColumnIndex:3];
+            user.avatar = [set stringForColumnIndex:4];
+            user.nameHeader = [set stringForColumnIndex:5];
+            user.remarkName = [set stringForColumnIndex:6];
+            user.remarkHeader = [set stringForColumnIndex:7];
+            
+            user.blackStatus = [set longForColumnIndex:8];
+            user.originType = [set longForColumnIndex:9];
+            user.focusType = [set longForColumnIndex:10];
+            user.tinyFocus = [set longForColumnIndex:11];
+            user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
+            user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            
+            [users addObject:user];
+        }
+        
+        [set close];
+    }];
+    return users;
 }
 
 - (void)insert:(User *)user withOwner:(User *)owner
