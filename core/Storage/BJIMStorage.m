@@ -176,8 +176,13 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         social.fansTime = contact.fansTime;
         social.blackTime = contact.blackTime;
         
+        social.remarkName = contact.remarkName;
+        social.remarkHeader = contact.remarkHeader;
+        
         [self.socialContactsDao insert:social];
     } else {
+        social.remarkName = contact.remarkName;
+        social.remarkHeader = contact.remarkHeader;
         social.blackStatus = contact.blackStatus;
         social.originType = contact.originType;
         social.focusType = contact.focusType;
