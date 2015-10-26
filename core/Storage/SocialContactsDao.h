@@ -52,14 +52,24 @@
 
 //获取互相关注
 - (NSArray *)loadAllMutualUser:(User *)owner;
+//获取互相关注人数
+- (NSInteger)getAllMutualUserCount:(User *)owner;
 //我的关注
 - (NSArray *)loadAllAttentions:(User *)owner;
+//获取我的关注人数
+- (NSInteger)getAllAttentionsCount:(User *)owner;
 //我的粉丝
 - (NSArray *)loadAllFans:(User *)owner;
+//获取我的粉丝人数
+- (NSInteger)getAllFansCount:(User *)owner;
 //我的新粉丝
 - (NSArray *)loadALLFreshFans:(User *)owner;
+//我的新粉丝数
+- (NSInteger)getALLFreshFansCount:(User *)owner;
 //我的黑名单
 - (NSArray *)loadAllBlacks:(User *)owner;
+//我的黑名单数
+- (NSInteger)getAllBlacksCount:(User *)owner;
 
 /**
  *  我关注的学生、老师、机构
@@ -72,9 +82,17 @@
 - (NSArray *)loadAllAttentionsTeacher:(User *)owner;
 - (NSArray *)loadAllAttentionsInstitution:(User *)owner;
 
+- (NSInteger)getAllAttentionsStudentCount:(User *)owner;
+- (NSInteger)getAllAttentionsTeacherCount:(User *)owner;
+- (NSInteger)getAllAttentionsInstitutionCount:(User *)owner;
+
 - (NSArray *)loadAllFansStudent:(User *)owner;
 - (NSArray *)loadAllFansTeacher:(User *)owner;
 - (NSArray *)loadAllFansInstitution:(User *)owner;
+
+- (NSInteger)getAllFansStudentCount:(User *)owner;
+- (NSInteger)getAllFansTeacherCount:(User *)owner;
+- (NSInteger)getAllFansInstitutionCount:(User *)owner;
 
 - (void)insert:(User *)user withOwner:(User *)owner;
 - (void)clearAll:(User *)owner;
