@@ -18,6 +18,7 @@
                         ownerRole:(IMUserRole)ownerRole;
 
 - (void)update:(SocialContacts *)socialContact;
+- (void)insert:(SocialContacts *)contact;
 /**
  *  判断陌生人
  *

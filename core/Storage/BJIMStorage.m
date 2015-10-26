@@ -159,6 +159,34 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.remarkHeader = contact.remarkHeader;
         [self.institutionDao insertOrUpdateContact:relation owner:owner];
     }
+    
+    // 联系人新增关注表
+    SocialContacts *social = [self.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    if (! social) {
+        social = [[SocialContacts alloc] init];
+        social.userId = owner.userId;
+        social.userRole = owner.userRole;
+        social.contactId = contact.userId;
+        social.contactRole = contact.userRole;
+        social.blackStatus = contact.blackStatus;
+        social.originType = contact.originType;
+        social.focusType = contact.focusType;
+        social.tinyFoucs = contact.tinyFocus;
+        social.focusTime = contact.focusTime;
+        social.fansTime = contact.fansTime;
+        social.blackTime = contact.blackTime;
+        
+        [self.socialContactsDao insert:social];
+    } else {
+        social.blackStatus = contact.blackStatus;
+        social.originType = contact.originType;
+        social.focusType = contact.focusType;
+        social.tinyFoucs = contact.tinyFocus;
+        social.focusTime = contact.focusTime;
+        social.fansTime = contact.fansTime;
+        social.blackTime = contact.blackTime;
+        [self.socialContactsDao update:social];
+    }
 }
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
