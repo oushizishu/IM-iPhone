@@ -183,8 +183,12 @@
 {
     contact.blackStatus = status;
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    social.blackStatus = contact.blackStatus;
-    [self update:social];
+    if (social == nil) {
+        [self insert:contact withOwner:owner];
+    } else {
+        social.blackStatus = contact.blackStatus;
+        [self update:social];
+    }
 }
 
 
@@ -365,11 +369,24 @@
         
         FMResultSet *set = [db executeQuery:query];
         
+        [self.imStroage.userDao.identityScope lock];
+        
         while ([set next]) {
-            User *user = [[User alloc] init];
+            
+            int64_t userId = [set longLongIntForColumnIndex:1];
+            IMUserRole userRole = [set longForColumnIndex:2];
+            
+            NSString *key = [NSString stringWithFormat:@"%lld-%ld", userId, (long)userRole];
+            
+            User *user = [self.imStroage.userDao.identityScope objectByKey:key lock:NO];
+            
+            if (! user) {
+                user = [[User alloc] init];
+            }
+            
             user.rowid = [set longForColumnIndex:0];
-            user.userId = [set longLongIntForColumnIndex:1];
-            user.userRole = [set longForColumnIndex:2];
+            user.userId = userId;
+            user.userRole = userRole;
             user.name = [set stringForColumnIndex:3];
             user.avatar = [set stringForColumnIndex:4];
             user.nameHeader = [set stringForColumnIndex:5];
@@ -383,11 +400,12 @@
             user.focusTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:12]];
             user.fansTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:13]];
             
-            NSString *key = [NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole];
-            [self.imStroage.userDao attachEntityKey:key entity:user lock:YES];
+            [self.imStroage.userDao attachEntityKey:key entity:user lock:NO];
             
             [users addObject:user];
         }
+        
+        [self.imStroage.userDao.identityScope unlock];
         
         [set close];
     }];

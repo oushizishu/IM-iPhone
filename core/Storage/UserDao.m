@@ -71,15 +71,13 @@
     if (_user)
     {
         NSInteger rowid = _user.rowid;
-        [_user mergeValuesForKeysFromModel:user];
+        user = _user;
         _user.rowid = rowid;
         [self update:_user];
-        [[DaoStatistics sharedInstance] logDBOperationSQL:@" update " class:[User class]];
     }
     else
     {
         [self.dbHelper insertToDB:user];
-        [[DaoStatistics sharedInstance] logDBOperationSQL:@" insert " class:[User class]];
         [self attachEntityKey:[NSString stringWithFormat:@"%lld-%ld", user.userId, (long)user.userRole] entity:user lock:YES];
     }
 }
