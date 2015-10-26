@@ -73,7 +73,7 @@
         
         //黑名单提示消息
         IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-        messageBody.content = @"您已拉黑对方，请先取消黑名单。";
+        messageBody.content = [NSString stringWithFormat:@"无法向对方发送消息，请先<a href='hermes:o.c?a=removeBlack&userNumber=%ld&userRole=%ld'>将对方移除黑名单</a>",contact.userId,contact.userRole];
         messageBody.type = eTxtMessageContentType_RICH_TXT;
         IMMessage *remindBlacklistMessage = [[IMMessage alloc] init];
         remindBlacklistMessage.messageBody = messageBody;
@@ -99,7 +99,7 @@
             
             if (remindAttentionMsgId == nil) {
                 IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-                messageBody.content = @"<a href='http://www.baidu.com/'>点击关注对方，</a>可以在我的关注中找到对方哟------唯一标志";
+                messageBody.content = [NSString stringWithFormat:@"<a href='hermes://o.c?a=addAttention@userNumber=%ld&userRole=%ld/'>点此关注对方，</a>可以在我的关注中找到对方哟",contact.userId,contact.userRole];
                 messageBody.type = eTxtMessageContentType_RICH_TXT;
                 IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
                 remindAttentionMessage.messageBody = messageBody;
