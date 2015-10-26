@@ -811,6 +811,12 @@
             operation.contact = contact;
             operation.bAddFocus = YES;
             
+            if (contact.focusType == eIMFocusType_None || contact.focusType == eIMFocusType_Active) {
+                contact.focusType = eIMFocusType_Active;
+            } else {
+                contact.focusType = eIMFocusType_Both;
+            }
+            
             [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
@@ -828,6 +834,12 @@
         operation.owner = owner;
         operation.contact = contact;
         operation.bAddFocus = NO;
+        
+        if (contact.focusType == eIMFocusType_Both || contact.focusType == eIMFocusType_Passive) {
+            contact.focusType = eIMFocusType_Passive;
+        } else {
+            contact.focusType = eIMFocusType_None;
+        }
         
         [weakSelf.writeOperationQueue addOperation:operation];
         

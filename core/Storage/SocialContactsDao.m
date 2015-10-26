@@ -45,7 +45,7 @@
 {
     NSString *key = [self getKeyContactId:socialContact.contactId contactRole:socialContact.contactRole ownerId:socialContact.userId ownerRole:socialContact.userRole];
     [self attachEntityKey:key entity:socialContact lock:YES];
-    [socialContact updateToDB];
+    [self.dbHelper updateToDB:socialContact where:nil];
 }
 
 - (BOOL)isStanger:(User *)contact withOwner:(User *)owner

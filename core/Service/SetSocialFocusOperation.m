@@ -13,7 +13,7 @@
 
 - (void)doOperationOnBackground
 {
-    [self.imService.imStorage.socialContactsDao setContactFocusType:YES contact:self.contact owner:self.owner];
+    [self.imService.imStorage.socialContactsDao setContactFocusType:self.bAddFocus contact:self.contact owner:self.owner];
 }
 
 - (void)doAfterOperationOnMain
