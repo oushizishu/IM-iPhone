@@ -12,5 +12,11 @@
 
 + (instancetype)shareInstance;
 
+/**
+ *  处理 hermes 内的 URL。 因为是 sdk，不会涉及到界面的跳转。
+ *
+ *  @param url <#url description#>
+ */
+- (void)handleUrl:(NSString *)url;
 
 @end
