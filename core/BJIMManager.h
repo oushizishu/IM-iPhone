@@ -52,6 +52,8 @@
 - (NSArray *)getAllConversation;
 //获取陌生人会话列表(返回会话列表)
 - (NSArray *)getStangerConversation;
+//获取陌生人会话，该会话有未读消息的。
+- (NSInteger)getStangerConversationCountHaveNoRead;
 //获取会话
 - (Conversation *)getConversationUserId:(int64_t)userId role:(IMUserRole)userRole;
 //获取群组
@@ -87,26 +89,46 @@
 
 // 我的互相关注列表
 - (NSArray *)getMyMutualUsers;
+// 我的互相关注人数
+- (NSInteger)getMyMutualUsersCount;
 
 // 获取新粉丝列表
 - (NSArray*)getMyFreshFans;
+// 获取新粉丝人数
+- (NSInteger)getMyFreshFansCount;
 // 我的粉丝列表
 - (NSArray *)getMyFans;
+// 我的粉丝人数
+- (NSInteger)getMyFansCount;
 // 关注我的老师
 - (NSArray *)getMyFansBelongToTeacher;
+// 关注我的老师人数
+- (NSInteger)getMyFansBelongToTeacherCount;
 // 关注我的学生
 - (NSArray *)getMyFansBelongToStudent;
+// 关注我的学生人数
+- (NSInteger)getMyFansBelongToStudentCount;
 // 关注我的机构
 - (NSArray *)getMyFansBelongToInstitution;
+// 关注我的机构人数
+- (NSInteger)getMyFansBelongToInstitutionCount;
 
 // 我的关注列表
 - (NSArray *)getMyAttentions;
+// 我的关注人数
+- (NSInteger)getMyAttentionsCount;
 // 我的关注老师列表
 - (NSArray *)getMyAttentionsBelongToTeacher;
+// 我的关注老师人数
+- (NSInteger)getMyAttentionsBelongToTeacherCount;
 // 我的关注同学列表
 - (NSArray *)getMyAttentionsBelongToStudent;
+// 我的关注同学人数
+- (NSInteger)getMyAttentionsBelongToStudentCount;
 // 我的关注机构列表
 - (NSArray *)getMyAttentionsBelongToInstitution;
+// 我的关注机构数
+- (NSInteger)getMyAttentionsBelongToInstitutionCount;
 
 - (void)setUser:(User *)user;
 

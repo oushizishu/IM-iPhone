@@ -69,6 +69,8 @@
 //- (Conversation *)getStrangerConversation;
 // 获取陌生人会话列表(返回会话对象列表，针对具体用户对象的会话,不是所有陌生人会话，是已建立的陌生人会话。)
 - (NSArray *)getMyStrangerConversations;
+// 获取陌生人未读会话数
+- (NSInteger)getMyStrangerConversationsCountHaveNoRead;
 
 // 获取新粉丝(返回用户对象,新粉丝对象是抽象出来的用户)
 - (User *)getFreshFans;
@@ -76,28 +78,48 @@
 //- (Conversation *)getFreshFansConversation;
 // 获取新粉丝列表(返回用户对象列表)
 - (NSArray*)getMyFreshFans;
+// 获取新粉丝数
+- (NSInteger)getMyFreshFansCount;
 
 // 我的互相关注列表
 - (NSArray *)getMyMutualUsers;
+// 我的互相关注人数
+- (NSInteger)getMyMutualUsersCount;
 
 // 我的粉丝列表(返回用户对象列表)
 - (NSArray *)getMyFans;
+// 我的粉丝数
+- (NSInteger)getMyFansCount;
 // 关注我的老师
 - (NSArray *)getMyFansBelongToTeacher;
+// 关注我的老师数
+- (NSInteger)getMyFansBelongToTeacherCount;
 // 关注我的学生
 - (NSArray *)getMyFansBelongToStudent;
+// 关注我的学生数
+- (NSInteger)getMyFansBelongToStudentCount;
 // 关注我的机构
 - (NSArray *)getMyFansBelongToInstitution;
+// 关注我的机构数
+- (NSInteger)getMyFansBelongToInstitutionCount;
 
 
 // 我的关注列表(返回用户对象列表)
 - (NSArray *)getMyAttentions;
+// 我的关注人数
+- (NSInteger)getMyAttentionsCount;
 // 我的关注老师列表
 - (NSArray *)getMyAttentionsBelongToTeacher;
+// 我关注的老师人数
+- (NSInteger)getMyAttentionsBelongToTeacherCount;
 // 我的关注同学列表
 - (NSArray *)getMyAttentionsBelongToStudent;
+// 我关注的同学人数
+- (NSInteger)getMyAttentionsBelongToStudentCount;
 // 我的关注机构列表
 - (NSArray *)getMyAttentionsBelongToInstitution;
+// 我关注的机构数
+- (NSInteger)getMyAttentionsBelongToInstitutionCount;
 
 //判断陌生人关系
 - (BOOL)getIsStanger:(User*)contact;
