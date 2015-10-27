@@ -19,6 +19,7 @@
 @property (nonatomic, strong) Conversation *conversation;
 @property (nonatomic, assign) BOOL hasMore;
 @property (nonatomic, strong) NSMutableArray *remindMessageArray;
+@property (nonatomic, assign) BOOL conversationChanged;
 
 @end
 
@@ -84,7 +85,7 @@
     if (self.conversation)
         [self.imService notifyLoadMoreMessages:self.messages conversation:self.conversation hasMore:self.hasMore];
     
-    if ([self.remindMessageArray count] > 0)
+    if ([self.remindMessageArray count] > 0 || self.conversationChanged)
     {
         [self.imService notifyReceiveNewMessages:self.remindMessageArray];
         [self.imService notifyConversationChanged];
@@ -102,9 +103,9 @@
         if (self.conversation == nil) {
             self.conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:contact.userId toRole:contact.userRole lastMessageId:@"" chatType:eChatType_Chat];
             
-            // TODO 判断陌生人关系，设置 relation 字段
-            
             [self.imService.imStorage.conversationDao insert:self.conversation];
+            
+            self.conversationChanged = YES;
         }
         
         NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
@@ -133,6 +134,23 @@
             [self.imService.imStorage.messageDao insert:remindAttentionMessage];
             [self.imService.imStorage.conversationDao update:self.conversation];
             self.remindMessageArray = [[NSMutableArray alloc] initWithObjects:remindAttentionMessage, nil];
+        }
+        
+        // 判断陌生人关系，设置 relation 字段
+        if ([self.imService getIsStanger:owner withUser:contact]) {
+            self.conversation.relation = eConversation_Relation_Stranger;
+            [self.imService.imStorage.conversationDao update:self.conversation];
+            
+            Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+            if (! strangerConversation) {
+                strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
+                [self.imService.imStorage.conversationDao insert:strangerConversation];
+            }
+            
+            strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+            strangerConversation.unReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
+            [self.imService.imStorage.conversationDao update:strangerConversation];
+            self.conversationChanged = YES;
         }
     }
 }

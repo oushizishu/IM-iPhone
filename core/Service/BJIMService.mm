@@ -373,16 +373,6 @@
         [reArray addObjectsFromArray:list];
     }
     
-    //添加特殊会话(陌生人，新粉丝，系统消息)
-    Conversation *stangerConversation = [self getStrangerConversation];
-    if(stangerConversation != nil)
-    {
-        [reArray addObject:stangerConversation];
-    }
-    Conversation *nFansConversation = [self getFreshFansConversation];
-    if (nFansConversation != nil) {
-        [reArray addObject:nFansConversation];
-    }
     
     __WeakSelf__ weakSelf = self;
     [reArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
@@ -442,6 +432,14 @@
     if (userId == [self getCustomWaiter].userId && userRole == [self getCustomWaiter].userRole)
     {
         return [self getCustomWaiter];
+    }
+    
+    if (userId == USER_STRANGER && userRole == eUserRole_Stanger) {
+        return [self getStranger];
+    }
+    
+    if (userId == USER_FRESH_FANS && userRole == eUserRole_Fans) {
+        return [self getFreshFans];
     }
     
     User *owner = [IMEnvironment shareInstance].owner;
@@ -657,41 +655,41 @@
 //系统小秘书
 - (User *)getSystemSecretary
 {
-    if (self.systemSecretary == nil)
+    if (_systemSecretary == nil)
     {
-        self.systemSecretary = [[User alloc] init];
-        self.systemSecretary.userId = USER_SYSTEM_SECRETARY;
-        self.systemSecretary.userRole = eUserRole_System;
-        self.systemSecretary.name = @"系统小秘书";
+        _systemSecretary = [[User alloc] init];
+        _systemSecretary.userId = USER_SYSTEM_SECRETARY;
+        _systemSecretary.userRole = eUserRole_System;
+        _systemSecretary.name = @"系统小秘书";
     }
-    return self.systemSecretary;
+    return _systemSecretary;
 }
 // 客服
 - (User *)getCustomWaiter
 {
-    if (self.customeWaiter == nil)
+    if (_customeWaiter == nil)
     {
-        self.customeWaiter = [[User alloc] init];
-        self.customeWaiter.userId = USER_CUSTOM_WAITER;
-        self.customeWaiter.userRole = eUserRole_Kefu;
-        self.customeWaiter.name = @"客服";
+        _customeWaiter = [[User alloc] init];
+        _customeWaiter.userId = USER_CUSTOM_WAITER;
+        _customeWaiter.userRole = eUserRole_Kefu;
+        _customeWaiter.name = @"客服";
     }
-    return self.customeWaiter;
+    return _customeWaiter;
 }
 
 - (User *)getStranger
 {
-    if (self.stanger == nil) {
-        self.stanger = [self.imStorage.userDao loadUser:USER_STRANGER role:eUserRole_Stanger];
-        if (self.stanger == nil) {
-            self.stanger = [[User alloc] init];
-            self.stanger.userId = USER_STRANGER;
-            self.stanger.userRole = eUserRole_Stanger;
-            self.stanger.name = @"陌生人消息";
-            [self.imStorage.userDao insertOrUpdateUser:self.stanger];
+    if (_stanger == nil) {
+        _stanger = [self.imStorage.userDao loadUser:USER_STRANGER role:eUserRole_Stanger];
+        if (_stanger == nil) {
+            _stanger = [[User alloc] init];
+            _stanger.userId = USER_STRANGER;
+            _stanger.userRole = eUserRole_Stanger;
+            _stanger.name = @"陌生人消息";
+            [self.imStorage.userDao insertOrUpdateUser:_stanger];
         }
     }
-    return self.stanger;
+    return _stanger;
 }
 
 - (Conversation *)getStrangerConversation
@@ -715,16 +713,17 @@
 
 - (User *)getFreshFans
 {
-    if (self.nFans == nil) {
-        self.nFans = [self.imStorage.userDao loadUser:USER_FRESH_FANS role:eUserRole_Fans];
-        if (self.nFans == nil) {
-            self.nFans = [[User alloc] init];
-            self.nFans.userId = USER_FRESH_FANS;
-            self.nFans.userRole = eUserRole_Fans;
-            self.nFans.name = @"新粉丝";
+    if (_nFans == nil) {
+        _nFans = [self.imStorage.userDao loadUser:USER_FRESH_FANS role:eUserRole_Fans];
+        if (_nFans == nil) {
+            _nFans = [[User alloc] init];
+            _nFans.userId = USER_FRESH_FANS;
+            _nFans.userRole = eUserRole_Fans;
+            _nFans.name = @"新粉丝";
+            [self.imStorage.userDao insertOrUpdateUser:_nFans];
         }
     }
-    return self.nFans;
+    return _nFans;
 }
 
 - (Conversation *)getFreshFansConversation
@@ -857,51 +856,59 @@
 - (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser
 {
     //初始时，设定默认不是陌生人关系。
-    BOOL isStanger = NO;
+    BOOL isStranger = NO;
     User *owner = [IMEnvironment shareInstance].owner;
-    if((fromUser.userId != toUser.userId)
-       && (fromUser.userId == owner.userId || toUser.userId == owner.userId)
-       && (fromUser.userRole == eUserRole_Student || fromUser.userRole == eUserRole_Teacher || fromUser.userRole == eUserRole_Institution)
-       && (toUser.userRole == eUserRole_Student || toUser.userRole == eUserRole_Teacher || toUser.userRole == eUserRole_Institution))
-    {
-        User *contact = nil;
-        if (fromUser.userId == owner.userId) {
-            contact = toUser;
-        }else{
-            contact = fromUser;
-        }
-        IMFocusType focusType = eIMFocusType_None;
-        IMTinyFocus tinyType = eIMTinyFocus_None;
-        if (owner.userRole == eUserRole_Teacher) {
+    
+    if (owner.userId == fromUser.userId && owner.userRole == fromUser.userRole) {
+        // 判断我和对方是不是陌生人关系
+//        if (fromUser.userRole == eUserRole_Student && toUser.userRole != eUserRole_Student) {
+//            // 学生给非学生发消息，都不是陌生人
+//            isStranger = NO;
+//        } else
+        if (toUser.userRole != eUserRole_Student
+                   && toUser.userRole != eUserRole_Teacher
+                   && toUser.userRole != eUserRole_Institution) {
+            // 对方非主要角色，都不是陌生人
+            isStranger = NO;
+        } else {
+            //我是任一角色，对方不是学生，查表判断
+            SocialContacts *social = [self.imStorage.socialContactsDao loadContactId:toUser.userId contactRole:toUser.userRole ownerId:fromUser.userId ownerRole:fromUser.userRole];
             
-        }else if(owner.userRole == eUserRole_Student)
-        {
-            focusType = [self.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
-            tinyType = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner];
-        }else if(owner.userRole == eUserRole_Institution)
-        {
-            
-        }
-        //跳过前面的条件后，默认是陌生人
-        BOOL isStanger = YES;
-        if (fromUser.userRole == eUserRole_Student && (toUser.userRole == eUserRole_Teacher || toUser.userRole == eUserRole_Institution)) {
-            isStanger = NO;
-        }else
-        {
-            if (toUser.userId == owner.userId) {
-                if (focusType == eIMFocusType_Active || focusType == eIMFocusType_Both || tinyType == eIMTinyFocus_Been) {
-                    isStanger = NO;
-                }
-            }else
-            {
-                if (focusType == eIMFocusType_Passive || focusType == eIMFocusType_Both) {
-                    isStanger = NO;
+            if (!social) {
+                isStranger = YES;
+            } else {
+                if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive)
+                    && (social.tinyFoucs == eIMTinyFocus_None)) {
+                    isStranger = YES;
                 }
             }
         }
-        
+    } else if (owner.userId == toUser.userId && owner.userRole == toUser.userRole) {
+        // 判断对方和我是不是陌生人关系
+        if (fromUser.userRole == eUserRole_Student && toUser.userRole != eUserRole_Student) {
+            // 学生发来的消息， 并且我不是学生。不是陌生人
+            isStranger = NO;
+        } else if (fromUser.userRole != eUserRole_Student
+                   && fromUser.userRole != eUserRole_Teacher
+                   && fromUser.userRole != eUserRole_Institution) {
+            // 发送者非主要角色，不是陌生人
+            isStranger = NO;
+        } else {
+           // 对方不是学生，我是任一角色，查表判断
+            SocialContacts *social = [self.imStorage.socialContactsDao loadContactId:fromUser.userId contactRole:fromUser.userRole ownerId:toUser.userId ownerRole:toUser.userRole];
+            
+            if (!social) {
+                isStranger = YES;
+            } else {
+               if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Active)
+                   && (social.tinyFoucs == eIMTinyFocus_None)) {
+                   isStranger = YES;
+               }
+            }
+        }
     }
-    return isStanger;
+    
+    return isStranger;
 }
 
 - (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
