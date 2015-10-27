@@ -194,6 +194,13 @@
     return [self.imService getMyStrangerConversations];
 }
 
+- (NSInteger)getStangerConversationCountHaveNoRead
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+        return 0;
+    return [self.imService getMyStrangerConversationsCountHaveNoRead];
+}
+
 - (Conversation *)getConversationGroupId:(int64_t)groupId
 {
     if (! [[IMEnvironment shareInstance] isLogin])
@@ -264,10 +271,22 @@
     return [self.imService getMyMutualUsers];
 }
 
+- (NSInteger)getMyMutualUsersCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyMutualUsersCount];
+}
+
 - (NSArray*)getMyFreshFans
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyFreshFans];
+}
+
+- (NSInteger)getMyFreshFansCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyFreshFansCount];
 }
 
 - (NSArray *)getMyFans
@@ -276,10 +295,22 @@
     return [self.imService getMyFans];
 }
 
+- (NSInteger)getMyFansCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyFansCount];
+}
+
 - (NSArray *)getMyFansBelongToTeacher
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyFansBelongToTeacher];
+}
+
+- (NSInteger)getMyFansBelongToTeacherCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyFansBelongToTeacherCount];
 }
 
 - (NSArray *)getMyFansBelongToStudent
@@ -288,10 +319,22 @@
     return [self.imService getMyFansBelongToStudent];
 }
 
+- (NSInteger)getMyFansBelongToStudentCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyFansBelongToStudentCount];
+}
+
 - (NSArray *)getMyFansBelongToInstitution
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyFansBelongToInstitution];
+}
+
+- (NSInteger)getMyFansBelongToInstitutionCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyFansBelongToInstitutionCount];
 }
 
 
@@ -301,10 +344,22 @@
     return [self.imService getMyAttentions];
 }
 
+- (NSInteger)getMyAttentionsCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyAttentionsCount];
+}
+
 - (NSArray *)getMyAttentionsBelongToTeacher
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyAttentionsBelongToTeacher];
+}
+
+- (NSInteger)getMyAttentionsBelongToTeacherCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyAttentionsBelongToTeacherCount];
 }
 
 - (NSArray *)getMyAttentionsBelongToStudent
@@ -313,10 +368,22 @@
     return [self.imService getMyAttentionsBelongToStudent];
 }
 
+- (NSInteger)getMyAttentionsBelongToStudentCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyAttentionsBelongToStudentCount];
+}
+
 - (NSArray *)getMyAttentionsBelongToInstitution
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     return [self.imService getMyAttentionsBelongToInstitution];
+}
+
+- (NSInteger)getMyAttentionsBelongToInstitutionCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
+    return [self.imService getMyAttentionsBelongToInstitutionCount];
 }
 
 - (void)setUser:(User *)user
