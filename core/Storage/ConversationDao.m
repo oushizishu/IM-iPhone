@@ -153,7 +153,7 @@
 - (NSInteger)sumOfAllUnReadNumBeenHiden:(User *)owner
 {
     __block NSInteger count = 0;
-    NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where relation=%ld or toId=%ld or toId=%ld", (long)eConversation_Relation_Group_Closed, (long)USER_STRANGER, (long)USER_FRESH_FANS];
+    NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and (relation=%ld or toId=%ld or toId=%ld)", owner.userId, (long)owner.userRole, (long)eConversation_Relation_Group_Closed, (long)USER_STRANGER, (long)USER_FRESH_FANS];
     [self.dbHelper executeDB:^(FMDatabase *db) {
         FMResultSet *set = [db executeQuery:query];
         if ([set next]) {
