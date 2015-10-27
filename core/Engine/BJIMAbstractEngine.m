@@ -182,6 +182,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                      userId:(int64_t)userId
                    userRole:(IMUserRole)userRole
                  excludeIds:(NSString *)excludeIds
+              isFirstGetMsg:(BOOL)isFirstGetMsg
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
@@ -195,18 +196,18 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         {
             NSError *error;
             PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:&error];
-            [weakSelf.getMsgDelegate onGetMsgSuccMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId result:model];
+            [weakSelf.getMsgDelegate onGetMsgSuccMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId result:model isFirstGetMsg:isFirstGetMsg];
         }
         else
         {
             DDLogWarn(@"Get MSG FAIL [url:%@][%@]", params.url, params.urlPostParams);
-            [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId];
+            [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId isFirstGetMsg:isFirstGetMsg];
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, RequestParams *params) {
         DDLogError(@"Get MSG FAIL [url:%@][%@]", params.url, error.userInfo);
-        [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId];
+        [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId isFirstGetMsg:isFirstGetMsg];
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];

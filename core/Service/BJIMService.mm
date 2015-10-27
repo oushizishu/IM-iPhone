@@ -279,6 +279,7 @@
                     userRole:(IMUserRole)userRole
                      groupId:(int64_t)groupId
                       result:(PollingResultModel *)model
+               isFirstGetMsg:(BOOL)isFirstGetMsg
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
@@ -288,6 +289,7 @@
     operation.userId = userId;
     operation.userRole = userRole;
     operation.groupId = groupId;
+    operation.isFirstGetMsg = isFirstGetMsg;
     
     [self.receiveMessageOperationQueue addOperation:operation];
 }
@@ -296,6 +298,7 @@
                       userId:(int64_t)userId
                     userRole:(IMUserRole)userRole
                      groupId:(int64_t)groupId
+               isFirstGetMsg:(BOOL)isFirstGetMsg
 {
     if (!self.bIsServiceActive)return;
     HandleGetMsgOperation *operation = [[HandleGetMsgOperation alloc] init];
@@ -304,6 +307,7 @@
     operation.groupId = groupId;
     operation.userId = userId;
     operation.userRole = userRole;
+    operation.isFirstGetMsg = isFirstGetMsg;
     
     [self.receiveMessageOperationQueue addOperation:operation];
 }

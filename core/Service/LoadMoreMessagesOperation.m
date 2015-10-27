@@ -23,6 +23,8 @@
 @property (nonatomic, assign) BOOL needPreLoad;
 @property (nonatomic, assign) BOOL needGetMsg;
 
+@property (nonatomic, assign) BOOL bIsFristLoad; // 标记第一次进来的加载
+
 @property (nonatomic, copy) NSString *excludeIds;
 //@property (nonatomic, copy) NSString *endMessageId;
 @property (nonatomic, strong) Conversation *conversation;
@@ -37,6 +39,8 @@
     
     IMChatType chatType = self.chatToUser == nil ? eChatType_GroupChat : eChatType_Chat;
     User *owner = [IMEnvironment shareInstance].owner;
+    
+    if (! self.minMsgId) self.bIsFristLoad = YES;
     
     // 获取对应的 conversation
     self.conversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:(chatType==eChatType_Chat?self.chatToUser.userId:self.chatToGroup.groupId) userRole:self.chatToUser.userRole chatType:chatType];
@@ -58,7 +62,7 @@
         }
         
         if (self.needGetMsg) {
-            [self.imService.imEngine postGetMsgLastMsgId:self.minMsgId groupId:self.chatToGroup.groupId userId:self.chatToUser.userId userRole:self.chatToUser.userRole excludeIds:self.excludeIds];
+            [self.imService.imEngine postGetMsgLastMsgId:self.minMsgId groupId:self.chatToGroup.groupId userId:self.chatToUser.userId userRole:self.chatToUser.userRole excludeIds:self.excludeIds isFirstGetMsg:self.bIsFristLoad];
         }
         
         if (! self.needPreLoad && !self.needGetMsg) {
@@ -71,7 +75,7 @@
         }
         
         if (self.needGetMsg) {
-            [self.imService.imEngine postGetMsgLastMsgId:self.minMsgId groupId:self.chatToGroup.groupId userId:self.chatToUser.userId userRole:self.chatToUser.userRole excludeIds:self.excludeIds];
+            [self.imService.imEngine postGetMsgLastMsgId:self.minMsgId groupId:self.chatToGroup.groupId userId:self.chatToUser.userId userRole:self.chatToUser.userRole excludeIds:self.excludeIds isFirstGetMsg:self.bIsFristLoad];
         }
     }
    

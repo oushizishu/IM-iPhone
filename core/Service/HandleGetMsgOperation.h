@@ -15,5 +15,6 @@
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) IMUserRole userRole;
 @property (nonatomic, assign) int64_t groupId;
+@property (nonatomic, assign) BOOL isFirstGetMsg;
 
 @end

@@ -54,8 +54,8 @@ typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
 
 @protocol  IMEngineGetMessageDelegate <NSObject>
 
-- (void)onGetMsgSuccMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId result:(PollingResultModel *)model;
-- (void)onGetMsgFailMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId;
+- (void)onGetMsgSuccMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId result:(PollingResultModel *)model isFirstGetMsg:(BOOL)isFirstGetMsg;
+- (void)onGetMsgFailMinMsgId:(NSString *)minMsgId userId:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId isFirstGetMsg:(BOOL)isFirstGetMsg;
 
 @end
 
@@ -143,7 +143,8 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
                     groupId:(int64_t)groupId
                      userId:(int64_t)userId
                    userRole:(IMUserRole)userRole
-                 excludeIds:(NSString *)excludeIds;
+                 excludeIds:(NSString *)excludeIds
+              isFirstGetMsg:(BOOL)isFirstGetMsg;
 
 - (void)postChangeRemarkName:(NSString *)remarkName
                       userId:(int64_t)userId
