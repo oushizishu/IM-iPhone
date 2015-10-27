@@ -225,6 +225,36 @@
     return users;
 }
 
+- (NSInteger)getAllAttentionsCount:(User *)owner contactRole:(IMUserRole)contactRole
+{
+    __block NSInteger usersCount = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select count(*)\
+                           from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
+                           USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
+                           or SOCIALCONTACTS.focusType=%ld) ",
+                           owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Active, eIMFocusType_Both];
+        
+        if (contactRole > 0) {
+            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
+        }
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.focusTime desc", query];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        if ([set next]) {
+            usersCount = [set longForColumnIndex:0];
+        }
+        
+        [set close];
+    }];
+    return usersCount;
+}
+
 - (NSArray *)loadAllFans:(User *)owner  contactRole:(IMUserRole)contactRole
 {
     __block NSArray *users ;
@@ -258,9 +288,39 @@
     return users;
 }
 
+- (NSInteger)getAllFansCount:(User *)owner  contactRole:(IMUserRole)contactRole
+{
+    __block NSInteger usersCount = 0 ;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select count(*)\
+                           from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
+                           USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
+                           or SOCIALCONTACTS.focusType=%ld) ",
+                           owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
+        
+        if (contactRole > 0) {
+            query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
+        }
+        
+        query = [NSString stringWithFormat:@"%@ order by SOCIALCONTACTS.fansTime desc", query];
+        
+        FMResultSet *set = [db executeQuery:query];
+        if ([set next]) {
+            usersCount = [set longForColumnIndex:0];
+        }
+        
+        [set close];
+    }];
+    return usersCount;
+}
+
 - (NSArray *)loadALLFreshFans:(User *)owner
 {
     __block NSArray *users ;
+
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -279,12 +339,32 @@
         
         users = [self loadAllUsersFromResultSet:set];
         
-        [self.imStroage.userDao.identityScope unlock];
-        
-        
         [set close];
     }];
     return users;
+}
+
+- (NSInteger)getALLFreshFansCount:(User *)owner
+{
+    __block NSInteger *usersCount = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select count(*)\
+                           from (USERS INNER JOIN FRESHFANSCONTACT ON USERS.userId=FRESHFANSCONTACT.fansId and \
+                           USERS.userRole=FRESHFANSCONTACT.fansRole) INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and USERS.userRole=SOCIALCONTACTS.contactRole where FRESHFANSCONTACT.userId=%lld and \
+                           FRESHFANSCONTACT.userRole=%ld order by SOCIALCONTACTS.fansTime desc;",
+                           owner.userId, owner.userRole];
+        
+        
+        FMResultSet *set = [db executeQuery:query];
+        if ([set next]) {
+            usersCount = [set longForColumnIndex:0];
+        }
+        
+        [set close];
+    }];
+    return usersCount;
 }
 
 - (NSArray *)loadAllBlacks:(User *)owner
@@ -313,6 +393,30 @@
     return users;
 }
 
+- (NSInteger)getAllBlacksCount:(User *)owner
+{
+    __block NSInteger *usersCount = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select count(*)\
+                           from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
+                           USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus=%ld \
+                           order by SOCIALCONTACTS.blackTime desc;",
+                           owner.userId, owner.userRole, eIMBlackStatus_Active];
+        
+        FMResultSet *set = [db executeQuery:query];
+        
+        if ([set next]) {
+            usersCount = [set longForColumnIndex:0];
+        }
+        
+        [set close];
+    }];
+    return usersCount;
+}
+
 - (NSArray *)loadAllAttentionsStudent:(User *)owner
 {
     return [self loadAllAttentions:owner contactRole:eUserRole_Student];
@@ -328,14 +432,39 @@
     return [self loadAllAttentions:owner contactRole:eUserRole_Institution];
 }
 
+- (NSInteger)getAllAttentionsStudentCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Student];
+}
+
+- (NSInteger)getAllAttentionsTeacherCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSInteger)getAllAttentionsInstitutionCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Institution];
+}
+
 - (NSArray *)loadAllAttentions:(User *)owner
 {
     return [self loadAllAttentions:owner contactRole:-1];
 }
 
+- (NSInteger)getAllAttentionsCount:(User *)owner
+{
+    return [self getAllAttentionsCount:owner contactRole:-1];
+}
+
 - (NSArray *)loadAllFans:(User *)owner
 {
     return [self loadAllFans:owner contactRole:-1];
+}
+
+- (NSInteger)getAllFansCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:-1];
 }
 
 - (NSArray *)loadAllFansStudent:(User *)owner
@@ -351,6 +480,21 @@
 - (NSArray *)loadAllFansInstitution:(User *)owner
 {
     return [self loadAllFans:owner contactRole:eUserRole_Institution];
+}
+
+- (NSInteger)getAllFansStudentCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Student];
+}
+
+- (NSInteger)getAllFansTeacherCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Teacher];
+}
+
+- (NSInteger)getAllFansInstitutionCount:(User *)owner
+{
+    return [self getAllFansCount:owner contactRole:eUserRole_Institution];
 }
 
 - (NSArray *)loadAllMutualUser:(User *)owner
@@ -382,6 +526,27 @@
         [set close];
     }];
     return users;
+}
+
+- (NSInteger)getAllMutualUserCount:(User *)owner
+{
+    __block NSInteger usersCount = 0;
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        
+        // 采用内级联查询
+        NSString *query = [NSString stringWithFormat:@"select count(*)\
+                           from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
+                           USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
+                           SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and SOCIALCONTACTS.focusType=%ld ",
+                           owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Both];
+        
+        FMResultSet *set = [db executeQuery:query];
+        if ([set next]) {
+            usersCount = [set longForColumnIndex:0];
+        }
+        [set close];
+    }];
+    return usersCount;
 }
 
 - (void)insert:(User *)user withOwner:(User *)owner
