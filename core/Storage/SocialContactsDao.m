@@ -65,19 +65,34 @@
 - (IMFocusType)getAttentionState:(User *)contact withOwner:(User *)owner;
 {
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    return social.focusType;
+    if (social != nil) {
+        return social.focusType;
+    }else
+    {
+        return eIMFocusType_None;
+    }
 }
 
 - (IMTinyFocus)getTinyFoucsState:(User *)contact withOwner:(User *)owner
 {
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    return social.tinyFoucs;
+    if (social != nil) {
+        return social.tinyFoucs;
+    }else
+    {
+        return eIMTinyFocus_None;
+    }
 }
 
 - (IMBlackStatus)getBlacklistState:(User *)contact witOwner:(User *)owner
 {
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    return social.blackStatus;
+    if (social != nil) {
+        return social.blackStatus;
+    }else
+    {
+        return eIMBlackStatus_Normal;
+    }
 }
 
 - (void)setContactTinyFoucs:(IMTinyFocus)type contact:(User*)contact  owner:(User *)owner

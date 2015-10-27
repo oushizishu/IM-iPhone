@@ -121,8 +121,11 @@
 // 我关注的机构数
 - (NSInteger)getMyAttentionsBelongToInstitutionCount;
 
-//判断陌生人关系
-- (BOOL)getIsStanger:(User*)contact;
+/*
+ 判断陌生人关系,判断formUser是否是toUser的陌生人.
+ 参数user对象角色必须是老师，学生机构，且两个参数中，必须有一个是owner。才能进行判断，否则返回no。
+ */
+- (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser;
 
 //添加关注
 - (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
