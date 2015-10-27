@@ -65,34 +65,30 @@
     
     self.remindMessageArray = [[NSMutableArray alloc] init];
     
-    if (focusType == eIMFocusType_None || focusType == eIMFocusType_Active) {
-        //未设置对方黑名单，再判断是否关注对方(浅关注也提示)，插入唯一性提示关注对方消息
-        IMFocusType focusType = [self.imService.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
-        if(focusType == eIMFocusType_None || focusType == eIMFocusType_Passive)
-        {
-            NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
-            NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
-            
-            if (remindAttentionMsgId == nil) {
-                IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-                messageBody.content = @"对方没有关注您，您的消息将会在陌生人中显示。";
-                messageBody.type = eTxtMessageContentType_RICH_TXT;
-                IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
-                remindAttentionMessage.messageBody = messageBody;
-                remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
-                remindAttentionMessage.chat_t = eChatType_Chat;
-                remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
-                remindAttentionMessage.receiver = owner.userId;
-                remindAttentionMessage.receiverRole = owner.userRole;
-                remindAttentionMessage.sender = contact.userId;
-                remindAttentionMessage.senderRole = contact.userRole;
-                remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
-                remindAttentionMessage.sign = sign;
-                remindAttentionMessage.conversationId = conversation.rowid;
-                remindAttentionMessage.status = eMessageStatus_Send_Succ;
-                [self.imService.imStorage.messageDao insert:remindAttentionMessage];
-                [self.remindMessageArray addObject:remindAttentionMessage];
-            }
+    if(focusType == eIMFocusType_None || focusType == eIMFocusType_Passive)
+    {
+        NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
+        NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
+        
+        if (remindAttentionMsgId == nil) {
+            IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
+            messageBody.content = @"<p>对方没有关注您，您的消息将会在陌生人中显示。</p>";
+            messageBody.type = eTxtMessageContentType_RICH_TXT;
+            IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
+            remindAttentionMessage.messageBody = messageBody;
+            remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
+            remindAttentionMessage.chat_t = eChatType_Chat;
+            remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
+            remindAttentionMessage.receiver = owner.userId;
+            remindAttentionMessage.receiverRole = owner.userRole;
+            remindAttentionMessage.sender = contact.userId;
+            remindAttentionMessage.senderRole = contact.userRole;
+            remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+            remindAttentionMessage.sign = sign;
+            remindAttentionMessage.conversationId = conversation.rowid;
+            remindAttentionMessage.status = eMessageStatus_Send_Succ;
+            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
+            [self.remindMessageArray addObject:remindAttentionMessage];
         }
     }
 }
