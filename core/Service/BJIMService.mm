@@ -854,17 +854,51 @@
     return [self.imStorage.socialContactsDao getAllAttentionsInstitutionCount:user];
 }
 
-- (BOOL)getIsStanger:(User*)contact
+- (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser
 {
+    //初始时，设定默认不是陌生人关系。
     BOOL isStanger = NO;
     User *owner = [IMEnvironment shareInstance].owner;
-    if (owner.userRole == eUserRole_Teacher) {
-        
-    }else if(owner.userRole == eUserRole_Student)
+    if((fromUser.userId != toUser.userId)
+       && (fromUser.userId == owner.userId || toUser.userId == owner.userId)
+       && (fromUser.userRole == eUserRole_Student || fromUser.userRole == eUserRole_Teacher || fromUser.userRole == eUserRole_Institution)
+       && (toUser.userRole == eUserRole_Student || toUser.userRole == eUserRole_Teacher || toUser.userRole == eUserRole_Institution))
     {
-        isStanger = [self.imStorage.socialContactsDao isStanger:contact withOwner:owner];
-    }else if(owner.userRole == eUserRole_Institution)
-    {
+        User *contact = nil;
+        if (fromUser.userId == owner.userId) {
+            contact = toUser;
+        }else{
+            contact = fromUser;
+        }
+        IMFocusType focusType = eIMFocusType_None;
+        IMTinyFocus tinyType = eIMTinyFocus_None;
+        if (owner.userRole == eUserRole_Teacher) {
+            
+        }else if(owner.userRole == eUserRole_Student)
+        {
+            focusType = [self.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
+            tinyType = [self.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner];
+        }else if(owner.userRole == eUserRole_Institution)
+        {
+            
+        }
+        //跳过前面的条件后，默认是陌生人
+        BOOL isStanger = YES;
+        if (fromUser.userRole == eUserRole_Student && (toUser.userRole == eUserRole_Teacher || toUser.userRole == eUserRole_Institution)) {
+            isStanger = NO;
+        }else
+        {
+            if (toUser.userId == owner.userId) {
+                if (focusType == eIMFocusType_Active || focusType == eIMFocusType_Both || tinyType == eIMTinyFocus_Been) {
+                    isStanger = NO;
+                }
+            }else
+            {
+                if (focusType == eIMFocusType_Passive || focusType == eIMFocusType_Both) {
+                    isStanger = NO;
+                }
+            }
+        }
         
     }
     return isStanger;

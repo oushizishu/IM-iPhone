@@ -65,7 +65,7 @@
     
     self.remindMessageArray = [[NSMutableArray alloc] init];
     
-    if(focusType == eIMFocusType_None || focusType == eIMFocusType_Passive)
+    if([self.imService getIsStanger:owner withUser:contact])
     {
         NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
         NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];

@@ -120,7 +120,7 @@
         {
             User *user = [self.imService getUser:message.receiver role:message.receiverRole];
             //判断会话对象是否为陌生人
-            if ([self.imService getIsStanger:user]) {
+            if ([self.imService getIsStanger:user withUser:owner]) {
                 conversation.relation = 1;
                 
                 //获取陌生人会话
@@ -199,10 +199,11 @@
         }
     }
     
+    User *owner = [IMEnvironment shareInstance].owner;
     User *toUser = [self.imService.imStorage.userDao loadUser:message.sender role:message.senderRole];
     
     //判断会话对象是否为陌生人, 处理“陌生人消息”会话的maxMsgId, unReadNum
-    if ([self.imService getIsStanger:toUser] && ! [self isKindOfClass:[HandleGetMsgOperation class]]) {
+    if ([self.imService getIsStanger:toUser withUser:owner] && ! [self isKindOfClass:[HandleGetMsgOperation class]]) {
         conversation.relation = eConversation_Relation_Stranger;
         
         //获取陌生人会话
