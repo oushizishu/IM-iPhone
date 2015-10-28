@@ -62,50 +62,52 @@
     
     CONVERSATION_RELATION relation = conversation.relation;
     
-    if([self.imService getIsStanger:owner withUser:contact])
-    {
-        conversation.relation = eConversation_Relation_Stranger;
-        self.remindMessageArray = [[NSMutableArray alloc] init];
-        NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
-        NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
-        
-        if (remindAttentionMsgId == nil) {
-            IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-            messageBody.content = @"<p>对方没有关注您，您的消息将会在陌生人中显示。</p>";
-            messageBody.type = eTxtMessageContentType_RICH_TXT;
-            IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
-            remindAttentionMessage.messageBody = messageBody;
-            remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
-            remindAttentionMessage.chat_t = eChatType_Chat;
-            remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
-            remindAttentionMessage.receiver = owner.userId;
-            remindAttentionMessage.receiverRole = owner.userRole;
-            remindAttentionMessage.sender = contact.userId;
-            remindAttentionMessage.senderRole = contact.userRole;
-            remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
-            remindAttentionMessage.sign = sign;
-            remindAttentionMessage.conversationId = conversation.rowid;
-            remindAttentionMessage.status = eMessageStatus_Send_Succ;
-            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
-            [self.remindMessageArray addObject:remindAttentionMessage];
+    if (conversation.chat_t == eChatType_Chat) {
+        if([self.imService getIsStanger:owner withUser:contact])
+        {
+            conversation.relation = eConversation_Relation_Stranger;
+            self.remindMessageArray = [[NSMutableArray alloc] init];
+            NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
+            NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
+            
+            if (remindAttentionMsgId == nil) {
+                IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
+                messageBody.content = @"<p>对方没有关注您，您的消息将会在陌生人中显示。</p>";
+                messageBody.type = eTxtMessageContentType_RICH_TXT;
+                IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
+                remindAttentionMessage.messageBody = messageBody;
+                remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
+                remindAttentionMessage.chat_t = eChatType_Chat;
+                remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
+                remindAttentionMessage.receiver = owner.userId;
+                remindAttentionMessage.receiverRole = owner.userRole;
+                remindAttentionMessage.sender = contact.userId;
+                remindAttentionMessage.senderRole = contact.userRole;
+                remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+                remindAttentionMessage.sign = sign;
+                remindAttentionMessage.conversationId = conversation.rowid;
+                remindAttentionMessage.status = eMessageStatus_Send_Succ;
+                [self.imService.imStorage.messageDao insert:remindAttentionMessage];
+                [self.remindMessageArray addObject:remindAttentionMessage];
+            }
         }
-    }
-    else
-    {
-        conversation.relation = eConverastion_Relation_Normal;
-    }
-    
-    if (relation != conversation.relation) {
-        Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
-        if (strangerConversation == nil) {
-            strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
-            [self.imService.imStorage.conversationDao insert:strangerConversation];
+        else
+        {
+            conversation.relation = eConverastion_Relation_Normal;
         }
         
-        strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
-        strangerConversation.unReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
-        
-        [self.imService.imStorage.conversationDao update:strangerConversation];
+        if (relation != conversation.relation) {
+            Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+            if (strangerConversation == nil) {
+                strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
+                [self.imService.imStorage.conversationDao insert:strangerConversation];
+            }
+            
+            strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+            strangerConversation.unReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
+            
+            [self.imService.imStorage.conversationDao update:strangerConversation];
+        }
     }
 }
 
