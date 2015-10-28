@@ -361,7 +361,7 @@
 
 - (NSInteger)getALLFreshFansCount:(User *)owner
 {
-    __block NSInteger *usersCount = 0;
+    __block NSInteger usersCount = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -374,7 +374,7 @@
         
         FMResultSet *set = [db executeQuery:query];
         if ([set next]) {
-            usersCount = [set longForColumnIndex:0];
+            usersCount = (NSInteger)[set longForColumnIndex:0];
         }
         
         [set close];
@@ -410,7 +410,7 @@
 
 - (NSInteger)getAllBlacksCount:(User *)owner
 {
-    __block NSInteger *usersCount = 0;
+    __block NSInteger usersCount = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
         // 采用内级联查询
@@ -424,7 +424,7 @@
         FMResultSet *set = [db executeQuery:query];
         
         if ([set next]) {
-            usersCount = [set longForColumnIndex:0];
+            usersCount = (NSInteger)[set longForColumnIndex:0];
         }
         
         [set close];

@@ -59,7 +59,7 @@
                                group.remarkHeader==nil?@"":group.remarkHeader,
                                group.remarkName==nil?@"":group.remarkName,
                                @(group.groupId),
-                               group.joinTime];
+                               group.joinTime==nil?[NSDate date]:group.joinTime];
         [groupArguments addObject:arguments];
        
         [excutorSQLs addObject:sql];
