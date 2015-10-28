@@ -60,13 +60,12 @@
     User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
     
-    //判断对方没有关注我,会话会出现在对方陌生人会话列表中
-    IMFocusType focusType = [self.imService.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
-    
-    self.remindMessageArray = [[NSMutableArray alloc] init];
+    CONVERSATION_RELATION relation = conversation.relation;
     
     if([self.imService getIsStanger:owner withUser:contact])
     {
+        conversation.relation = eConversation_Relation_Stranger;
+        self.remindMessageArray = [[NSMutableArray alloc] init];
         NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
         NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
         
@@ -90,6 +89,23 @@
             [self.imService.imStorage.messageDao insert:remindAttentionMessage];
             [self.remindMessageArray addObject:remindAttentionMessage];
         }
+    }
+    else
+    {
+        conversation.relation = eConverastion_Relation_Normal;
+    }
+    
+    if (relation != conversation.relation) {
+        Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+        if (strangerConversation == nil) {
+            strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
+            [self.imService.imStorage.conversationDao insert:strangerConversation];
+        }
+        
+        strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+        strangerConversation.unReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
+        
+        [self.imService.imStorage.conversationDao update:strangerConversation];
     }
 }
 
