@@ -32,6 +32,13 @@
     
     self.max_msg_id = [self.imService.imStorage.messageDao queryChatLastMsgIdOwnerId:owner.userId ownerRole:owner.userRole];
     
+    NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+    NSString *cmdMaxID = [user objectForKey:[NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId,owner.userRole]];
+    
+    if ([cmdMaxID longLongValue] > [self.max_msg_id longLongValue]) {
+        self.max_msg_id = cmdMaxID;
+    }
+    
     NSArray *excludeUserMsgs = [self.imService.imStorage.messageDao queryChatExludeMessagesMaxMsgId:self.max_msg_id];
     
     NSMutableString *__excludeUserMsgIds = [[NSMutableString alloc] init];

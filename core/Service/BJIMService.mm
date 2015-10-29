@@ -702,7 +702,21 @@
 - (NSArray *)getMyStrangerConversations
 {
     User *owner = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+    
+    NSMutableArray *reArray;
+    reArray = [[NSMutableArray alloc] init];
+    NSArray *list = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
+    
+    if (list != nil) {
+        [reArray addObjectsFromArray:list];
+    }
+    
+    __WeakSelf__ weakSelf = self;
+    [reArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+        Conversation *conversation = (Conversation *)obj;
+        conversation.imService = weakSelf;
+    }];
+    return reArray;
 }
 
 - (NSInteger)getMyStrangerConversationsCountHaveNoRead

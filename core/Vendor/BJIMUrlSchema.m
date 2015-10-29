@@ -55,6 +55,7 @@
 {
     // 关注
     [self.actionManager on:HERMES_ACTION_ADD_ATTENTION perform:^(id target, NSDictionary *payload) {
+        
         [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
             
             if(result.code == 0)

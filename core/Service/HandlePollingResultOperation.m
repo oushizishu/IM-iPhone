@@ -287,6 +287,10 @@
         
         if (message.msg_t == eMessageType_CMD)
         {// CMD 消息，不入库
+            //记录收到的最大cmd消息
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            [user setObject:message.msgId forKey:[NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId,owner.userRole]];
+            
            if (self.cmdMessages == nil)
            {
                self.cmdMessages = [[NSMutableArray alloc] init];
