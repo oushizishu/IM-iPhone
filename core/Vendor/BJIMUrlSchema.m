@@ -8,6 +8,7 @@
 
 #import "BJIMUrlSchema.h"
 #import <BJAction.h>
+#import "BJIMManager.h"
 
 #define HERMES_ACTION_ADD_ATTENTION         @"addAttention"
 #define HERMES_ACTION_REMOVE_BLACK          @"removeBlack"
@@ -54,12 +55,38 @@
 {
     // 关注
     [self.actionManager on:HERMES_ACTION_ADD_ATTENTION perform:^(id target, NSDictionary *payload) {
-        
+        [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
+            
+            if(result.code == 0)
+            {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注成功!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                [alter show];
+            }else
+            {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注失败!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                
+                [alter show];
+            }
+                
+        }];
     }];
     
     // 点击跳转到黑名单列表, 发送广播，外部处理
     [self.actionManager on:HERMES_ACTION_REMOVE_BLACK perform:^(id target, NSDictionary *payload) {
-        
+        [[BJIMManager shareInstance] cancelBlacklist:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
+            
+            if(result.code == 0)
+            {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单成功!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+            
+                [alter show];
+            }else
+            {
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单失败!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                
+                [alter show];
+            }
+        }];
     }];
     
 }
