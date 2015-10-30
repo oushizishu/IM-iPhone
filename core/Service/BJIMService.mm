@@ -757,6 +757,7 @@
 {
     User *user = [IMEnvironment shareInstance].owner;
     [self.imStorage.nFansContactDao deleteAllFreshFans:user];
+    [self notifyConversationChanged];
 }
 
 - (NSInteger)getMyFreshFansCount
