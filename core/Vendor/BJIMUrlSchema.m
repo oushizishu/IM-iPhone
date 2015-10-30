@@ -58,6 +58,18 @@
         
         [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
             
+            
+            NSLog(@"我关注的人数:%ld",[[BJIMManager shareInstance] getMyAttentionsCount]);
+            NSArray *attentions = [[BJIMManager shareInstance] getMyAttentions];
+            NSLog(@"互相关注的人数:%ld",[[BJIMManager shareInstance] getMyMutualUsersCount]);
+            NSArray *attentionMutualUsers = [[BJIMManager shareInstance] getMyMutualUsers];
+            NSLog(@"我关注的老师人数:%ld",[[BJIMManager shareInstance] getMyAttentionsBelongToTeacherCount]);
+            NSArray *attentionTeacherS = [[BJIMManager shareInstance] getMyAttentionsBelongToTeacher];
+            NSLog(@"我关注的学生人数:%ld",[[BJIMManager shareInstance] getMyAttentionsBelongToStudentCount]);
+            NSArray *attentionStudents = [[BJIMManager shareInstance] getMyAttentionsBelongToStudent];
+            NSLog(@"我关注的机构数:%ld",[[BJIMManager shareInstance] getMyAttentionsBelongToInstitutionCount]);
+            NSArray *attentionInstitutions = [[BJIMManager shareInstance] getMyAttentionsBelongToInstitution];
+            
             if(result.code == 0)
             {
                 UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注成功!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];

@@ -224,7 +224,7 @@
                            or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Active, eIMFocusType_Both];
         
-        if (contactRole > 0) {
+        if (contactRole != eUserRole_Anonymous) {
             query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
         }
         
@@ -253,7 +253,7 @@
                            or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Active, eIMFocusType_Both];
         
-        if (contactRole > 0) {
+        if (contactRole !=  eUserRole_Anonymous) {
             query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
         }
         
@@ -287,7 +287,7 @@
                            or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
         
-        if (contactRole > 0) {
+        if (contactRole != eUserRole_Anonymous) {
             query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
         }
         
@@ -316,7 +316,7 @@
                            or SOCIALCONTACTS.focusType=%ld) ",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
         
-        if (contactRole > 0) {
+        if (contactRole != eUserRole_Anonymous) {
             query = [NSString stringWithFormat:@"%@ and SOCIALCONTACTS.contactRole=%ld ",query, (long)contactRole];
         }
         
@@ -464,22 +464,22 @@
 
 - (NSArray *)loadAllAttentions:(User *)owner
 {
-    return [self loadAllAttentions:owner contactRole:-1];
+    return [self loadAllAttentions:owner contactRole:eUserRole_Anonymous];
 }
 
 - (NSInteger)getAllAttentionsCount:(User *)owner
 {
-    return [self getAllAttentionsCount:owner contactRole:-1];
+    return [self getAllAttentionsCount:owner contactRole:eUserRole_Anonymous];
 }
 
 - (NSArray *)loadAllFans:(User *)owner
 {
-    return [self loadAllFans:owner contactRole:-1];
+    return [self loadAllFans:owner contactRole:eUserRole_Anonymous];
 }
 
 - (NSInteger)getAllFansCount:(User *)owner
 {
-    return [self getAllFansCount:owner contactRole:-1];
+    return [self getAllFansCount:owner contactRole:eUserRole_Anonymous];
 }
 
 - (NSArray *)loadAllFansStudent:(User *)owner
