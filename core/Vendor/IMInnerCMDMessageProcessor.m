@@ -47,7 +47,7 @@
     [imService.imStorage.socialContactsDao deleteFreshFans:user withOwner:owner];
     [imService.imStorage.nFansContactDao deleteFreshFans:user owner:owner];
     
-    Conversation *freshFansConversation = [imService getConversationUserOrGroupId:user.userId userRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
+    Conversation *freshFansConversation = [imService getConversationUserOrGroupId:USER_FRESH_FANS userRole:eUserRole_Fans ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
     
     if (freshFansConversation) {
         freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
@@ -92,7 +92,7 @@
     
     
     // 同时创建“新粉丝”会话
-    Conversation *freshFansConversation = [imService getConversationUserOrGroupId:user.userId userRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
+    Conversation *freshFansConversation = [imService getConversationUserOrGroupId:USER_FRESH_FANS userRole:eUserRole_Fans ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
     
     if (! freshFansConversation) {
         freshFansConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_FRESH_FANS toRole:eUserRole_Fans lastMessageId:nil chatType:eChatType_Chat];
