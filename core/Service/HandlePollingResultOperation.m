@@ -216,7 +216,13 @@
         }
         
         strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:message.receiver ownerRole:message.receiverRole];
-        strangerConversation.unReadNum = [self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:message.receiver userRole:message.receiverRole];
+        NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+        if (count != strangerConversation.unReadNum) {
+            strangerConversation.status = 0;
+        }
+
+        strangerConversation.unReadNum = count;
+        
         [self.imService.imStorage.conversationDao update:strangerConversation];
         
     }

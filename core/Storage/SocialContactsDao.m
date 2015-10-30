@@ -122,7 +122,13 @@
                 if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
                     strangerConversation.lastMessageId = maxMsgId;
                 }
-                strangerConversation.unReadNum = [self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                
+                NSInteger count =[self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                if (count != strangerConversation.unReadNum) {
+                    strangerConversation.status = 0;
+                }
+                
+                strangerConversation.unReadNum = count;
                 [self.imStroage.conversationDao update:strangerConversation];
             }
         }

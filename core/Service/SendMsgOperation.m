@@ -34,7 +34,7 @@
     
     self.message.conversationId = conversation.rowid;
     
-    self.message.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+    self.message.msgId = [self.imService.imStorage nextFakeMessageId];
     
     conversation.lastMessageId = self.message.msgId;
     
@@ -82,7 +82,7 @@
         remindBlacklistMessage.receiverRole = owner.userRole;
         remindBlacklistMessage.sender = contact.userId;
         remindBlacklistMessage.senderRole = contact.userRole;
-        remindBlacklistMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [self.message.msgId doubleValue] + 0.001];
+        remindBlacklistMessage.msgId = [self.imService.imStorage nextFakeMessageId];
         remindBlacklistMessage.conversationId = conversation.rowid;
         remindBlacklistMessage.status = eMessageStatus_Send_Succ;
         
