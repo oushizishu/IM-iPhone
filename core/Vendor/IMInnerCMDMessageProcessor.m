@@ -45,6 +45,7 @@
     User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.socialContactsDao deleteFreshFans:user withOwner:owner];
+    [imService.imStorage.nFansContactDao deleteFreshFans:user owner:owner];
     
     Conversation *freshFansConversation = [imService getConversationUserOrGroupId:user.userId userRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
     
@@ -68,10 +69,11 @@
 + (void)dealAddFreshFans:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
 {
     NSError *error;
-    //User *user = [User modelWithDictionary:messageBody.payload[@"user"] error:&error];
     User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.userDao insertOrUpdateUser:user];
+    
+    [imService.imStorage.nFansContactDao addFreshFans:user owner:owner];
     
     SocialContacts *contact = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
     
