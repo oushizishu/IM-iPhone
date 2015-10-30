@@ -83,7 +83,7 @@
             
             if (remindAttentionMsgId == nil) {
                 IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-                messageBody.content = @"<p><a href='http://www.baidu.com/'>点击关注对方，</a>可以在我的关注中找到对方哟</p>";
+                messageBody.content = [NSString stringWithFormat:@"<p><a href=\"hermes://o.c?a=addAttention&amp;userNumber=%lld&amp;userRole=%ld\">点此关注对方，</a>可以在我的关注中找到对方哟</p>",contact.userId,contact.userRole];
                 messageBody.type = eTxtMessageContentType_RICH_TXT;
                 IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
                 remindAttentionMessage.messageBody = messageBody;
