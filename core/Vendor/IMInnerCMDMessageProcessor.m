@@ -101,6 +101,7 @@
     
     // 做一条不存在的 msgId。 为了排序
     freshFansConversation.lastMessageId = [imService.imStorage nextFakeMessageId];
+    freshFansConversation.status = 0; //被删除状态回归正常
     
     freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
     [imService.imStorage.conversationDao update:freshFansConversation];
