@@ -98,7 +98,7 @@
     User *contact = [self.imService.imStorage.userDao loadUser:self.userId role:self.userRole];
     
     SocialContacts *social = [self.imService.imStorage.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    if (! social || social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive) {
+    if (! social || ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive) && (contact.userRole == eUserRole_Student || contact.userRole == eUserRole_Teacher || contact.userRole == eUserRole_Institution))) {
         // 没有关注对方
         if (self.conversation == nil) {
             self.conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:contact.userId toRole:contact.userRole lastMessageId:@"" chatType:eChatType_Chat];
