@@ -94,6 +94,8 @@
 
 // 获取新粉丝列表
 - (NSArray*)getMyFreshFans;
+// 清空新粉丝列表
+- (void)clearMyFreshFans;
 // 获取新粉丝人数
 - (NSInteger)getMyFreshFansCount;
 // 我的粉丝列表

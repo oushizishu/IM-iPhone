@@ -283,6 +283,12 @@
     return [self.imService getMyFreshFans];
 }
 
+- (void)clearMyFreshFans
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return;
+    [self.imService clearMyFreshFans];
+}
+
 - (NSInteger)getMyFreshFansCount
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return 0;

@@ -753,6 +753,12 @@
     return [self.imStorage.socialContactsDao loadALLFreshFans:user];
 }
 
+- (void)clearMyFreshFans
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [self.imStorage.nFansContactDao deleteAllFreshFans:user];
+}
+
 - (NSInteger)getMyFreshFansCount
 {
     User *user = [IMEnvironment shareInstance].owner;
