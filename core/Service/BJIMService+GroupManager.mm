@@ -311,6 +311,18 @@ static char BJGroupMamagerDelegateKey;
         [weakSelf.imStorage.groupDao load:groupId].pushStatus = status;
         [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
         [weakSelf notifyChangeGroupPushStatus:status groupId:groupId error:err];
+        
+        // 设置群会话免打扰标记
+        Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:groupId userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
+        if (! conversation) {
+            if (status == eGroupPushStatus_close) {
+                conversation.relation = eConverastion_Relation_Normal;
+            } else if (status == eGroupPushStatus_open) {
+                conversation.relation = eConversation_Relation_Group_Closed;
+            }
+            [weakSelf.imStorage.conversationDao update:conversation];
+            [weakSelf notifyConversationChanged];
+        }
     }];
 }
 

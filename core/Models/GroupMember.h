@@ -21,7 +21,7 @@
 @property (nonatomic, assign) IMGroupMsgStatus msgStatus;
 @property (nonatomic, assign) BOOL canLeave;//是否能退出
 @property (nonatomic, assign) BOOL canDisband;//是否能解散
-@property (nonatomic, assign) NSInteger pushStatus;
+@property (nonatomic, assign) NSInteger pushStatus; // 0 关闭免打扰， 1 开启免打扰
 
 @property (nonatomic, copy) NSString *remarkName; //备注名
 @property (nonatomic, copy) NSString *remarkHeader; //备注首字母
