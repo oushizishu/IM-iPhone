@@ -9,6 +9,7 @@
 #import "IMInnerCMDMessageProcessor.h"
 #import "BJIMConstants.h"
 #import "IMEnvironment.h"
+#import "NSString+Json.h"
 
 #define ACTION_CMD_INNER_NEW_FANS       @"new_fans"
 #define ACTION_CMD_INNER_REMOVE_FANS    @"remove_fans"
@@ -41,7 +42,7 @@
 + (void)dealRemoveFreshFans:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
 {
     NSError *error;
-    User *user = [User modelWithDictionary:messageBody.payload[@"user"] error:&error];
+    User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.socialContactsDao deleteFreshFans:user withOwner:owner];
     
@@ -67,7 +68,8 @@
 + (void)dealAddFreshFans:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
 {
     NSError *error;
-    User *user = [User modelWithDictionary:messageBody.payload[@"user"] error:&error];
+    //User *user = [User modelWithDictionary:messageBody.payload[@"user"] error:&error];
+    User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.userDao insertOrUpdateUser:user];
     
