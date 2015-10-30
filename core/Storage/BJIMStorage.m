@@ -253,4 +253,11 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" endMessageId='%@'", msgId] where:[NSString stringWithFormat:@" endMessageId='%@'", errMsgId]];
 }
 
+- (NSString *)nextFakeMessageId
+{
+    NSString *maxMessageId = [self.messageDao queryAllMessageMaxMsgId];
+    NSString *nextMsgId = [NSString stringWithFormat:@"%015.3lf", [maxMessageId doubleValue] + 0.001];
+    return nextMsgId;
+}
+
 @end

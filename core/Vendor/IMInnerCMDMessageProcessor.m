@@ -100,7 +100,7 @@
     }
     
     // 做一条不存在的 msgId。 为了排序
-    freshFansConversation.lastMessageId = [NSString stringWithFormat:@"%015.3lf", [[imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole] doubleValue] + 0.001];
+    freshFansConversation.lastMessageId = [imService.imStorage nextFakeMessageId];
     
     freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
     [imService.imStorage.conversationDao update:freshFansConversation];

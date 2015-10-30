@@ -22,7 +22,7 @@
     
     Conversation *conversation = [self.imService getConversationUserOrGroupId:self.message.receiver userRole:self.message.receiverRole ownerId:self.message.sender ownerRole:self.message.senderRole chat_t:self.message.chat_t];
     
-    self.message.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+    self.message.msgId = [self.imService.imStorage nextFakeMessageId];
     
     conversation.lastMessageId = self.message.msgId;
     
@@ -69,7 +69,7 @@
         remindBlacklistMessage.receiverRole = owner.userRole;
         remindBlacklistMessage.sender = contact.userId;
         remindBlacklistMessage.senderRole = contact.userRole;
-        remindBlacklistMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+        remindBlacklistMessage.msgId = [self.imService.imStorage nextFakeMessageId];
         remindBlacklistMessage.conversationId = conversation.rowid;
         [self.imService.imStorage.messageDao insert:remindBlacklistMessage];
         [self.remindMessageArray addObject:remindBlacklistMessage];
@@ -94,7 +94,7 @@
                 remindAttentionMessage.receiverRole = owner.userRole;
                 remindAttentionMessage.sender = contact.userId;
                 remindAttentionMessage.senderRole = contact.userRole;
-                remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+                remindAttentionMessage.msgId = [self.imService.imStorage nextFakeMessageId];
                 remindAttentionMessage.sign = sign;
                 remindAttentionMessage.conversationId = conversation.rowid;
                 [self.imService.imStorage.messageDao insert:remindAttentionMessage];

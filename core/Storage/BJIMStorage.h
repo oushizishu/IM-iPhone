@@ -62,4 +62,11 @@
 - (void)updateConversationWithErrorLastMessageId:(NSString *)errMsgId newMsgId:(NSString *)msgId;
 - (void)updateGroupErrorMsgId:(NSString *)errMsgId newMsgId:(NSString *)msgId;
 
+/**
+ *  生成一个假的 msgId
+ * PS：基于当前表的最大 msgId + 0.001
+ *
+ *  @return <#return value description#>
+ */
+- (NSString *)nextFakeMessageId;
 @end

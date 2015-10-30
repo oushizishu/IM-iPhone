@@ -124,7 +124,7 @@
             remindAttentionMessage.receiverRole = owner.userRole;
             remindAttentionMessage.sender = contact.userId;
             remindAttentionMessage.senderRole = contact.userRole;
-            remindAttentionMessage.msgId = [NSString stringWithFormat:@"%015.3lf", [[self.imService.imStorage.messageDao queryAllMessageMaxMsgId] doubleValue] + 0.001];
+            remindAttentionMessage.msgId = [self.imService.imStorage nextFakeMessageId];
             remindAttentionMessage.sign = sign;
             remindAttentionMessage.conversationId = self.conversation.rowid;
             remindAttentionMessage.status = eMessageStatus_Send_Succ;
@@ -148,7 +148,11 @@
             }
             
             strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
-            strangerConversation.unReadNum = [self.imService.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:owner];
+            NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+            if (count != strangerConversation.unReadNum) {
+                strangerConversation.status = 0;
+            }
+            strangerConversation.unReadNum = count;
             [self.imService.imStorage.conversationDao update:strangerConversation];
             self.conversationChanged = YES;
         }
