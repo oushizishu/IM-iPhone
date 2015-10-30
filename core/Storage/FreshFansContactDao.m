@@ -50,12 +50,20 @@
 
 - (void)deleteAllFreshFans:(User *)owner
 {
+    /*
     [self.dbHelper executeDB:^(FMDatabase *db) {
         NSString *deleteSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld",
                                [FreshFansContact getTableName],
                                owner.userId, (long)owner.userRole];
-        [db executeUpdate:deleteSql];
+        //[db executeUpdate:deleteSql];
+        [self.dbHelper executeSQL:deleteSql arguments:nil];
     }];
+     */
+    
+    NSString *query = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld",
+                       [FreshFansContact getTableName],
+                       owner.userId, (long)owner.userRole];
+    [self.dbHelper executeSQL:query arguments:nil];
 }
 
 @end

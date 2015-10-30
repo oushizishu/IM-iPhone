@@ -114,7 +114,7 @@
     for (NSInteger index = 0; index < count; ++ index) {
         User *user = [focusUserList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
-        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+        [self.imService.imStorage.socialContactsDao insertOrUpdate:user withOwner:currentUser];
     }
     
     
@@ -123,7 +123,7 @@
     for (NSInteger index = 0; index < count; ++ index) {
         User *user = [fansUserList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
-        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+        [self.imService.imStorage.socialContactsDao insertOrUpdate:user withOwner:currentUser];
     }
     
     NSArray *blackList = self.model.blackList;
@@ -131,7 +131,7 @@
     for (NSInteger index = 0; index < count; ++ index) {
         User *user = [blackList objectAtIndex:index];
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
-        [self.imService.imStorage.socialContactsDao insert:user withOwner:currentUser];
+        [self.imService.imStorage.socialContactsDao insertOrUpdate:user withOwner:currentUser];
     }
 }
 

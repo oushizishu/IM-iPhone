@@ -78,7 +78,7 @@
     SocialContacts *contact = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
     
     if (contact == nil) {
-        [imService.imStorage.socialContactsDao insert:user withOwner:owner];
+        [imService.imStorage.socialContactsDao insertOrUpdate:user withOwner:owner];
     } else {
         if (contact.focusType == eIMFocusType_None) {
             contact.focusType = eIMFocusType_Passive;

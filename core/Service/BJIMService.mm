@@ -757,7 +757,12 @@
 {
     User *user = [IMEnvironment shareInstance].owner;
     [self.imStorage.nFansContactDao deleteAllFreshFans:user];
-    [self notifyConversationChanged];
+    Conversation *freshConversation = [self.imStorage.conversationDao loadWithOwnerId:user.userId ownerRole:user.userRole otherUserOrGroupId:USER_FRESH_FANS userRole:eUserRole_Fans chatType:eChatType_Chat];
+    if (freshConversation) {
+        freshConversation.unReadNum = 0;
+        [self.imStorage.conversationDao update:freshConversation];
+        [self notifyConversationChanged];
+    }
 }
 
 - (NSInteger)getMyFreshFansCount

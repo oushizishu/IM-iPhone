@@ -566,6 +566,7 @@
 
 - (void)insert:(User *)user withOwner:(User *)owner
 {
+    
     SocialContacts *contact = [[SocialContacts alloc] init];
     contact.userId = owner.userId;
     contact.userRole = owner.userRole;
@@ -580,6 +581,26 @@
     contact.blackTime = user.blackTime;
     
     [self insert:contact];
+}
+
+- (void)insertOrUpdate:(User *)user withOwner:(User *)owner
+{
+    SocialContacts *social = [self loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    if (! social) {
+        [self insert:user withOwner:owner];
+    } else {
+        social.remarkName = user.remarkName;
+        social.remarkHeader = user.remarkHeader;
+        social.blackStatus = user.blackStatus;
+        social.originType = user.originType;
+        social.focusType = user.focusType;
+        social.tinyFoucs = user.tinyFocus;
+        social.focusTime = user.focusTime;
+        social.fansTime = user.fansTime;
+        social.blackTime = user.blackTime;
+        
+        [self update:social];
+    }
 }
 
 - (void)insert:(SocialContacts *)contact
