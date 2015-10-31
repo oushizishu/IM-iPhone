@@ -72,7 +72,7 @@
             
             if (remindAttentionMsgId == nil) {
                 IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-                messageBody.content = @"<p>对方没有关注您，您的消息将会在陌生人中显示。</p>";
+                messageBody.content = @"<p>对方没有关注你，消息将以陌生人身份发给对方</p>";
                 messageBody.type = eTxtMessageContentType_RICH_TXT;
                 IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
                 remindAttentionMessage.messageBody = messageBody;

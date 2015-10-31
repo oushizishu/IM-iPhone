@@ -9,6 +9,7 @@
 #import "BJIMUrlSchema.h"
 #import <BJAction.h>
 #import "BJIMManager.h"
+#import "MBProgressHUD.h"
 
 #define HERMES_ACTION_ADD_ATTENTION         @"addAttention"
 #define HERMES_ACTION_REMOVE_BLACK          @"removeBlack"
