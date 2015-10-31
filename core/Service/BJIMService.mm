@@ -1012,9 +1012,19 @@
     [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
         if (err == nil) {
             User *owner = [IMEnvironment shareInstance].owner;
-            //[weakSelf.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_None contact:contact owner:owner];
-            //[weakSelf.imStorage.socialContactsDao setContactFocusType:NO contact:user owner:owner];
-            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
+            if (result.code == 0) {
+                [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
+                if (owner.userRole == eUserRole_Teacher) {
+                    
+                }else if(owner.userRole == eUserRole_Student)
+                {
+                    [weakSelf.imStorage.studentDao deleteContactId:contact.userId contactRole:contact.userRole owner:owner];
+                }else if(owner.userRole == eUserRole_Institution)
+                {
+                    
+                }
+                [weakSelf notifyContactChanged];
+            }
         }
         if (callback)
             callback(err,result);
@@ -1028,7 +1038,10 @@
         if(err == nil)
         {
             User *owner = [IMEnvironment shareInstance].owner;
-            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
+            if(result.code == 0)
+            {
+                [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
+            }
         }
         if (callback)
             callback(err,result);
