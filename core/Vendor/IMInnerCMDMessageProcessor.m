@@ -88,7 +88,7 @@
         
         [imService.imStorage.socialContactsDao update:contact];
     }
-        
+    
     
     
     // 同时创建“新粉丝”会话

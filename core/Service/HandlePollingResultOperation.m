@@ -199,6 +199,9 @@
         }
     }
     
+    [self.imService.imStorage.messageDao update:message];
+    [self.imService.imStorage.conversationDao update:conversation];
+    
     User *owner = [IMEnvironment shareInstance].owner;
     User *toUser = [self.imService.imStorage.userDao loadUser:message.sender role:message.senderRole];
     
@@ -227,8 +230,6 @@
         
     }
     
-    [self.imService.imStorage.messageDao update:message];
-    [self.imService.imStorage.conversationDao update:conversation];
     return conversation;
 }
 

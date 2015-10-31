@@ -69,6 +69,8 @@
 //- (Conversation *)getStrangerConversation;
 // 获取陌生人会话列表(返回会话对象列表，针对具体用户对象的会话,不是所有陌生人会话，是已建立的陌生人会话。)
 - (NSArray *)getMyStrangerConversations;
+// 清除陌生人会话的未读消息数为0
+- (void)clearStangerConversationUnreadCount;
 // 获取陌生人未读会话数
 - (NSInteger)getMyStrangerConversationsCountHaveNoRead;
 
@@ -122,6 +124,9 @@
 - (NSArray *)getMyAttentionsBelongToInstitution;
 // 我关注的机构数
 - (NSInteger)getMyAttentionsBelongToInstitutionCount;
+
+// 我的黑名单列表
+- (NSArray *)getMyBlackList;
 
 /*
  判断陌生人关系,判断formUser是否是toUser的陌生人.

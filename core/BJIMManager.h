@@ -52,6 +52,8 @@
 - (NSArray *)getAllConversation;
 //获取陌生人会话列表(返回会话列表)
 - (NSArray *)getStangerConversation;
+//清空陌生人会话的未读消息数
+- (void)clearStangerConversationUnreadCount;
 //获取陌生人会话，该会话有未读消息的。
 - (NSInteger)getStangerConversationCountHaveNoRead;
 //获取会话
@@ -131,6 +133,9 @@
 - (NSArray *)getMyAttentionsBelongToInstitution;
 // 我的关注机构数
 - (NSInteger)getMyAttentionsBelongToInstitutionCount;
+
+// 我的黑名单列表
+- (NSArray *)getMyBlackList;
 
 - (void)setUser:(User *)user;
 

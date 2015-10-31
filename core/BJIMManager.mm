@@ -194,6 +194,12 @@
     return [self.imService getMyStrangerConversations];
 }
 
+- (void)clearStangerConversationUnreadCount
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return;
+    [self.imService clearStangerConversationUnreadCount];
+}
+
 - (NSInteger)getStangerConversationCountHaveNoRead
 {
     if (! [[IMEnvironment shareInstance] isLogin])
@@ -390,6 +396,12 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return 0;
     return [self.imService getMyAttentionsBelongToInstitutionCount];
+}
+
+- (NSArray *)getMyBlackList
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
+    return [self.imService getMyBlackList];
 }
 
 - (void)setUser:(User *)user

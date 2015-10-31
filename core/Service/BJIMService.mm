@@ -716,7 +716,20 @@
         Conversation *conversation = (Conversation *)obj;
         conversation.imService = weakSelf;
     }];
+    
     return reArray;
+}
+
+- (void)clearStangerConversationUnreadCount
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [self.imStorage.nFansContactDao deleteAllFreshFans:user];
+    Conversation *stangerConversation = [self.imStorage.conversationDao loadWithOwnerId:user.userId ownerRole:user.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+    if (stangerConversation) {
+        stangerConversation.unReadNum = 0;
+        [self.imStorage.conversationDao update:stangerConversation];
+        [self notifyConversationChanged];
+    }
 }
 
 - (NSInteger)getMyStrangerConversationsCountHaveNoRead
@@ -877,6 +890,12 @@
 {
     User *user = [IMEnvironment shareInstance].owner;
     return [self.imStorage.socialContactsDao getAllAttentionsInstitutionCount:user];
+}
+
+- (NSArray *)getMyBlackList
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    return [self.imStorage.socialContactsDao loadAllBlacks:user];
 }
 
 - (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser
