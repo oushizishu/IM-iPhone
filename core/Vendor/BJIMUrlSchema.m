@@ -57,36 +57,54 @@
     // 关注
     [self.actionManager on:HERMES_ACTION_ADD_ATTENTION perform:^(id target, NSDictionary *payload) {
         
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window] animated:YES];
+        
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.margin = 10.f;
+        hud.yOffset = 150.f;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud show:YES];
+        
         [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
+            
+            hud.mode = MBProgressHUDModeText;
             
             if(result.code == 0)
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注成功" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
-                [alter show];
+                hud.labelText = @"关注成功";
+                [hud hide:YES afterDelay:1.0f];
             }else
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注失败" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
-                
-                [alter show];
+                hud.labelText = @"关注失败";
+                [hud hide:YES afterDelay:1.0f];
             }
                 
         }];
     }];
     
-    // 点击跳转到黑名单列表, 发送广播，外部处理
+    // 点击调用取消黑名单接口
     [self.actionManager on:HERMES_ACTION_REMOVE_BLACK perform:^(id target, NSDictionary *payload) {
+        
+        MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:[[UIApplication sharedApplication].delegate window] animated:YES];
+        
+        hud.mode = MBProgressHUDModeIndeterminate;
+        hud.margin = 10.f;
+        hud.yOffset = 150.f;
+        hud.removeFromSuperViewOnHide = YES;
+        [hud show:YES];
+        
         [[BJIMManager shareInstance] cancelBlacklist:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
+            
+            hud.mode = MBProgressHUDModeText;
             
             if(result.code == 0)
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单成功" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
-            
-                [alter show];
+                hud.labelText = @"移除成功";
+                [hud hide:YES afterDelay:1.0f];
             }else
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单失败" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
-                
-                [alter show];
+                hud.labelText = @"移除失败";
+                [hud hide:YES afterDelay:1.0f];
             }
         }];
     }];
