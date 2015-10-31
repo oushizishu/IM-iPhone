@@ -60,11 +60,11 @@
             
             if(result.code == 0)
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注成功!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注成功" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
                 [alter show];
             }else
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注失败!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"关注失败" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
                 
                 [alter show];
             }
@@ -78,12 +78,12 @@
             
             if(result.code == 0)
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单成功!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单成功" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
             
                 [alter show];
             }else
             {
-                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单失败!" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
+                UIAlertView *alter = [[UIAlertView alloc] initWithTitle:nil message:@"移除黑名单失败" delegate:nil cancelButtonTitle:@"确认" otherButtonTitles:nil];
                 
                 [alter show];
             }
