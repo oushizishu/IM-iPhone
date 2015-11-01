@@ -19,6 +19,7 @@
 - (void)doAfterOperationOnMain
 {
     [self.imService notifyConversationChanged];
+    [self.imService notifyUserInfoChanged:self.contact];
 }
 
 @end
