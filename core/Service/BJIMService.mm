@@ -533,6 +533,11 @@
             user.remarkName = remarkName;
             user.remarkHeader = remarkHeader;
             [weakSelf.imStorage insertOrUpdateContactOwner:[IMEnvironment shareInstance].owner contact:user];
+            User *owner = owner = [IMEnvironment shareInstance].owner;
+            Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:user.userId userRole:user.userRole chatType:eChatType_Chat];
+            if (conversation && conversation.status == 0) {
+                [weakSelf notifyConversationChanged];
+            }
             callback(remarkName, errCode, errMsg);
         }
         else
