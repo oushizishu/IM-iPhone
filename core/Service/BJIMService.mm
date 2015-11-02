@@ -734,6 +734,10 @@
         stangerConversation.unReadNum = 0;
         [self.imStorage.conversationDao update:stangerConversation];
         [self notifyConversationChanged];
+        
+        NSInteger allUnReadnum = [self.imStorage sumOfAllConversationUnReadNumOwnerId:user.userId userRole:user.userRole];
+        NSInteger otherUnReadNum = [self.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:user];
+        [self notifyUnReadNumChanged:allUnReadnum other:otherUnReadNum];
     }
 }
 
