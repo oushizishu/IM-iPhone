@@ -611,7 +611,7 @@
 
 - (void)insert:(SocialContacts *)contact
 {
-    NSString *key = [self getKeyContactId:contact.userId contactRole:contact.userRole ownerId:contact.userId ownerRole:contact.userRole];
+    NSString *key = [self getKeyContactId:contact.contactId contactRole:contact.contactRole ownerId:contact.userId ownerRole:contact.userRole];
     [self.dbHelper insertToDB:contact];
     [self attachEntityKey:key entity:contact lock:YES];
 

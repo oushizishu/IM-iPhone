@@ -965,7 +965,7 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if(err == nil)
+        if(result.code == 0)
         {
             User *owner = [IMEnvironment shareInstance].owner;
             SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
@@ -989,19 +989,21 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        User *owner = [IMEnvironment shareInstance].owner;
-        SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
-        operation.imService = weakSelf;
-        operation.owner = owner;
-        operation.contact = contact;
-        operation.bAddFocus = NO;
-        
-        contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
-        
-        contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
-        
-        [weakSelf.writeOperationQueue addOperation:operation];
-        
+        if(result.code == 0)
+        {
+            User *owner = [IMEnvironment shareInstance].owner;
+            SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
+            operation.imService = weakSelf;
+            operation.owner = owner;
+            operation.contact = contact;
+            operation.bAddFocus = NO;
+            
+            contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
+            
+            contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
+            
+            [weakSelf.writeOperationQueue addOperation:operation];
+        }
         if (callback)
             callback(err,result);
     }];
@@ -1011,7 +1013,7 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if (err == nil) {
+        if (result.code == 0) {
             User *owner = [IMEnvironment shareInstance].owner;
             if (result.code == 0) {
                 [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
@@ -1036,13 +1038,10 @@
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if(err == nil)
+        if(result.code == 0)
         {
             User *owner = [IMEnvironment shareInstance].owner;
-            if(result.code == 0)
-            {
-                [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
-            }
+            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
         }
         if (callback)
             callback(err,result);
