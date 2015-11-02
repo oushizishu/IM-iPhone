@@ -47,15 +47,10 @@
     NSError *error;
     User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
     User *owner = [IMEnvironment shareInstance].owner;
-    [imService.imStorage.socialContactsDao deleteFreshFans:user withOwner:owner];
+//    [imService.imStorage.socialContactsDao deleteFreshFans:user withOwner:owner];
     [imService.imStorage.nFansContactDao deleteFreshFans:user owner:owner];
     
     Conversation *freshFansConversation = [imService getConversationUserOrGroupId:USER_FRESH_FANS userRole:eUserRole_Fans ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
-    
-    if (freshFansConversation) {
-        freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
-        [imService.imStorage.conversationDao update:freshFansConversation];
-    }
     
     SocialContacts *contact = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
     
@@ -66,6 +61,19 @@
             contact.focusType = eIMFocusType_Active;
         }
         [imService.imStorage.socialContactsDao update:contact];
+    }
+    
+    if (freshFansConversation) {
+        freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
+        [imService.imStorage.conversationDao update:freshFansConversation];
+        
+        if (freshFansConversation.status == 0) {
+            // 新粉丝会话正常显示, 需通知界面刷新
+            __weak typeof(imService) weakIMService = imService;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [weakIMService notifyConversationChanged];
+            });
+        }
     }
 }
 
@@ -108,6 +116,11 @@
     
     freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
     [imService.imStorage.conversationDao update:freshFansConversation];
+    
+    __weak typeof(imService) weakIMService = imService;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakIMService notifyConversationChanged];
+    });
 
 }
 
@@ -126,6 +139,11 @@
     if (social.blackStatus >= eIMBlackStatus_Active) {
         // 拉黑了对方，将其移除联系人
         [imService.imStorage deleteContactId:user.userId contactRole:user.userRole owner:owner];
+        
+        __weak typeof(imService) weakIMService = imService;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakIMService notifyContactChanged];
+        });
     }
 
 }
