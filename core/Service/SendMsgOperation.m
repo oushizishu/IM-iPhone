@@ -71,7 +71,7 @@
         
         //黑名单提示消息
         IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-        messageBody.content = [NSString stringWithFormat:@"<p>无法向对方发送消息，请先<a href=\"hermes:o.c?a=removeBlack&amp;userNumber=%lld&amp;userRole=%ld\">将对方移除黑名单</a></p>",contact.userId,contact.userRole];
+        messageBody.content = [NSString stringWithFormat:@"<p>无法向对方发送消息，请先<a href=\"hermes://o.c?a=removeBlack&amp;userNumber=%lld&amp;userRole=%ld\">将对方移除黑名单</a></p>",contact.userId,contact.userRole];
         messageBody.type = eTxtMessageContentType_RICH_TXT;
         IMMessage *remindBlacklistMessage = [[IMMessage alloc] init];
         remindBlacklistMessage.messageBody = messageBody;
