@@ -227,7 +227,7 @@
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
                            SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld) order by SOCIALCONTACTS.focusTime desc",
+                           or SOCIALCONTACTS.focusType=%ld)",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Active, eIMFocusType_Both];
         
         if (contactRole != eUserRole_Anonymous) {
@@ -290,7 +290,7 @@
                            from USERS INNER JOIN SOCIALCONTACTS ON USERS.userId=SOCIALCONTACTS.contactId and \
                            USERS.userRole=SOCIALCONTACTS.contactRole where SOCIALCONTACTS.userId=%lld and \
                            SOCIALCONTACTS.userRole=%ld and SOCIALCONTACTS.blackStatus<>%ld and (SOCIALCONTACTS.focusType=%ld \
-                           or SOCIALCONTACTS.focusType=%ld) order by SOCIALCONTACTS.fansTime desc",
+                           or SOCIALCONTACTS.focusType=%ld)",
                            owner.userId, owner.userRole, eIMBlackStatus_Active, eIMFocusType_Passive, eIMFocusType_Both];
         
         if (contactRole != eUserRole_Anonymous) {
