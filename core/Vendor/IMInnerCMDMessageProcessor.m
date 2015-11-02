@@ -144,6 +144,13 @@
         dispatch_async(dispatch_get_main_queue(), ^{
             [weakIMService notifyContactChanged];
         });
+    } else if ((social.blackStatus == eIMBlackStatus_Normal || social.blackStatus == eIMBlackStatus_Passive) && social.originType == eIMOriginType_Order) {
+        [imService.imStorage insertOrUpdateContactOwner:owner contact:user];
+        
+        __weak typeof(imService) weakIMService = imService;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [weakIMService notifyContactChanged];
+        });
     }
 
 }
