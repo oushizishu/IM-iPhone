@@ -961,7 +961,7 @@
     return isStranger;
 }
 
-- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
@@ -981,7 +981,7 @@
             [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
-            callback(err,result);
+            callback(err,result, contact);
     }];
 }
 

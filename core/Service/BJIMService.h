@@ -135,7 +135,7 @@
 - (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser;
 
 //添加关注
-- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
+- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback;
 //取消关注
 - (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 

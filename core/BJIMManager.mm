@@ -425,7 +425,7 @@
     [self.imService addRecentContactId:userId contactRole:userRole callback:callback];
 }
 
-- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
 {
     User *user = [self.imService getUser:userId role:userRole];
     [self.imService addAttention:user callback:callback];
