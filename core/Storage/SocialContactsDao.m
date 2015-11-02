@@ -170,6 +170,7 @@
     } else {
         //更新关系字段
         social.focusType = user.focusType;
+        social.focusTime = user.focusTime;
         [self update:social];
     }
     
