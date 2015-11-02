@@ -76,7 +76,17 @@
     {
         Group *group = [groups objectAtIndex:index];
         
-        [self.imService.imStorage.groupDao insertOrUpdate:group];
+        Group *oldgGroup = [self.imService.imStorage.groupDao load:group.groupId];
+        oldgGroup.groupName = group.groupName;
+        oldgGroup.avatar = group.avatar;
+        oldgGroup.descript = group.descript;
+        oldgGroup.isPublic = group.isPublic;
+        oldgGroup.maxusers = group.maxusers;
+        oldgGroup.approval = group.approval;
+        oldgGroup.memberCount = group.memberCount;
+        oldgGroup.status = group.status;
+        
+        [self.imService.imStorage.groupDao insertOrUpdate:oldgGroup];
         
         GroupMember *member = [self.imService.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:group.groupId];
         if (member == nil)
