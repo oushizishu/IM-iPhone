@@ -187,6 +187,13 @@
         conversation.status = 0;// 会话状态回归正常
     }
     
+    User *owner = [IMEnvironment shareInstance].owner;
+    User *toUser = [self.imService.imStorage.userDao loadUser:message.sender role:message.senderRole];
+    
+    if ([self.imService getIsStanger:toUser withUser:owner] && conversation.chat_t == eChatType_Chat && conversation.relation != eConversation_Relation_Stranger) {
+        conversation.relation = eConversation_Relation_Stranger;
+    }
+    
     //如果当前正处于这个聊天室， 消息数不增加
     if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
         if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
@@ -202,12 +209,8 @@
     [self.imService.imStorage.messageDao update:message];
     [self.imService.imStorage.conversationDao update:conversation];
     
-    User *owner = [IMEnvironment shareInstance].owner;
-    User *toUser = [self.imService.imStorage.userDao loadUser:message.sender role:message.senderRole];
-    
     //判断会话对象是否为陌生人, 处理“陌生人消息”会话的maxMsgId, unReadNum
     if ([self.imService getIsStanger:toUser withUser:owner] && ! [self isKindOfClass:[HandleGetMsgOperation class]]) {
-        conversation.relation = eConversation_Relation_Stranger;
         
         //获取陌生人会话
         Conversation *strangerConversation = [self.imService getConversationUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger ownerId:message.receiver ownerRole:message.receiverRole chat_t:eChatType_Chat];

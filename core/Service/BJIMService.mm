@@ -974,11 +974,9 @@
             operation.contact = contact;
             operation.bAddFocus = YES;
             
-            if (contact.focusType == eIMFocusType_None || contact.focusType == eIMFocusType_Active) {
-                contact.focusType = eIMFocusType_Active;
-            } else {
-                contact.focusType = eIMFocusType_Both;
-            }
+            contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
+            
+            contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
             
             [weakSelf.writeOperationQueue addOperation:operation];
         }
@@ -998,11 +996,9 @@
         operation.contact = contact;
         operation.bAddFocus = NO;
         
-        if (contact.focusType == eIMFocusType_Both || contact.focusType == eIMFocusType_Passive) {
-            contact.focusType = eIMFocusType_Passive;
-        } else {
-            contact.focusType = eIMFocusType_None;
-        }
+        contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
+        
+        contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
         
         [weakSelf.writeOperationQueue addOperation:operation];
         
