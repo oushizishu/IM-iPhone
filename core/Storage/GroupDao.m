@@ -7,6 +7,8 @@
 //
 
 #import "GroupDao.h"
+#import "BJIMStorage.h"
+#import "IMEnvironment.h"
 
 @implementation GroupDao
 
@@ -18,17 +20,32 @@
     {
         group = [self.dbHelper searchSingle:[Group class] where:[NSString stringWithFormat:@"groupId=%lld", groupId] orderBy:nil];
         
-        [[DaoStatistics sharedInstance] logDBOperationSQL:@"groupId" class:[Group class]];
+        User *owner = [IMEnvironment shareInstance].owner;;
+       GroupMember *member = [self.imStroage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:group.groupId];
+        
+        if (member) {
+            group.remarkName = member.remarkName;
+            group.remarkHeader = member.remarkHeader;
+            group.pushStatus = member.pushStatus;
+            
+            group.isAdmin =  member.isAdmin;
+            group.createTime =  member.createTime;
+            
+            group.msgStatus =  member.msgStatus;
+            group.canLeave =  member.canLeave;//是否能退出
+            group.canDisband =  member.canDisband;//是否能解散
+            
+            group.joinTime =  member.joinTime;
+        }
+        
+    
         
         if (group)
         {
             [self attachEntityKey:@(group.groupId) entity:group lock:YES];
         }
     }
-    else
-    {
-        [[DaoStatistics sharedInstance] logDBCacheSQL:nil class:[Group class]];
-    }
+
     return group;
 }
 

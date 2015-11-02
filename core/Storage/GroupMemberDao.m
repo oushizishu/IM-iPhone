@@ -13,10 +13,8 @@
 
 - (GroupMember *)loadMember:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId
 {
-    GroupMember *member = [self.identityScope objectByCondition:^BOOL(id key, id item) {
-        GroupMember *_member = (GroupMember *)item;
-        return (_member.userId == userId && _member.userRole == userRole && _member.groupId == groupId);
-    } lock:YES];
+    NSString *key = [self getKeyMember:userId userRole:userRole groupId:groupId];
+    GroupMember *member = [self.identityScope objectByKey:key lock:YES];
     
     if (! member)
     {
@@ -26,7 +24,7 @@
         [[DaoStatistics sharedInstance] logDBOperationSQL:@" groupId and userId and userRole" class:[GroupMemberDao class]];
         if (member)
         {
-            [self attachEntityKey:@(member.rowid) entity:member lock:YES];
+            [self attachEntityKey:key entity:member lock:YES];
         }
     }
     else
@@ -51,7 +49,8 @@
         [self.dbHelper insertToDB:groupMember];
         [[DaoStatistics sharedInstance] logDBOperationSQL:@"insert" class:[GroupMemberDao class]];
     }
-    [self attachEntityKey:@(groupMember.rowid) entity:groupMember lock:YES];
+    NSString *key = [self getKeyMember:_member.userId userRole:_member.userRole groupId:_member.groupId];
+    [self attachEntityKey:key entity:groupMember lock:YES];
 }
 
 - (void)deleteGroupMembers:(int64_t)groupId
@@ -74,7 +73,8 @@
     
     for (NSInteger index  = 0; index < [array count]; ++ index) {
         GroupMember *member = [array objectAtIndex:index];
-        [self detach:@(member.rowid) lock:NO];
+        NSString *key = [self getKeyMember:member.userId userRole:member.userRole groupId:member.groupId];
+        [self detach:key lock:NO];
     }
     
     [self.identityScope unlock];
@@ -85,17 +85,9 @@
     NSString *queryString = [NSString stringWithFormat:@" groupId=%lld AND userId=%lld and userRole=%ld",groupId, user.userId, (long)user.userRole];
     [self.dbHelper deleteWithClass:[GroupMember class] where:queryString];
     
-    [[DaoStatistics sharedInstance] logDBOperationSQL:@"delete" class:[GroupMemberDao class]];
-    
-    GroupMember *member = [self.identityScope objectByCondition:^BOOL(id key, id item) {
-        GroupMember *_member = (GroupMember *)item;
-        return (_member.userId == user.userId && _member.userRole == user.userRole && _member.groupId == groupId);
-    } lock:YES];
-    
-    if (member)
-    {
-        [self detach:@(member.rowid)];
-    }
+    NSString *key = [self getKeyMember:user.userId userRole:user.userRole groupId:groupId];
+
+    [self detach:key];
 }
 
 - (void)deleteUserGroupMember:(User *)user
@@ -119,7 +111,8 @@
     
     for (NSInteger index  = 0; index < [array count]; ++ index) {
         GroupMember *member = [array objectAtIndex:index];
-        [self detach:@(member.rowid) lock:NO];
+         NSString *key = [self getKeyMember:member.userId userRole:member.userRole groupId:member.groupId];
+        [self detach:key lock:NO];
     }
     
     [self.identityScope unlock];
@@ -128,31 +121,58 @@
 - (NSArray *)loadAllGroups:(User *)user
 {
     
-    NSMutableArray *groups = [NSMutableArray array];
+    __block NSMutableArray *groups;
     
-    NSString *query = [NSString stringWithFormat:@" userId=%lld and userRole=%ld order by joinTime desc ", user.userId, (long)user.userRole];
-    NSArray *array = [self.dbHelper search:[GroupMember class] where:query orderBy:nil offset:0 count:0];
+    NSString *query = [NSString stringWithFormat:@"select IMGROUPS.rowid, IMGROUPS.groupId, IMGROUPS.groupName, IMGROUPS.avatar, GROUPMEMBER.canDisband, GROUPMEMBER.canLeave, GROUPMEMBER.createTime, GROUPMEMBER.isAdmin, GROUPMEMBER.joinTime, GROUPMEMBER.msgStatus, GROUPMEMBER.pushStatus, GROUPMEMBER.remarkHeader, GROUPMEMBER.remarkName from IMGROUPS INNER JOIN GROUPMEMBER on IMGROUPS.groupId=GROUPMEMBER.groupId where GROUPMEMBER.userId=%lld and GROUPMEMBER.userRole=%ld", user.userId, user.userRole];
     
-    [[DaoStatistics sharedInstance] logDBOperationSQL:@"loadAll  userId and userRole" class:[GroupMemberDao class]];
-    
-    [self.identityScope lock];
-    for (NSInteger index = 0; index < array.count; ++ index)
-    {
-        GroupMember *member = [array objectAtIndex:index];
-        [self attachEntityKey:@(member.rowid) entity:member lock:NO];
-        
-        Group *group = [self.imStroage.groupDao load:member.groupId];
-        if (group)
-        {
-            group.remarkName = member.remarkName;
-            group.remarkHeader = member.remarkHeader;
-            group.pushStatus = member.pushStatus;
-            [groups addObject:group];
-        }
-    }
-    [self.identityScope unlock];
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        FMResultSet *set = [db executeQuery:query];
+        groups = [self loadAllGroupsFromFMResultSet:set];
+        [set close];
+    }];
 
     return groups;
+}
+
+- (NSString *)getKeyMember:(int64_t)userId userRole:(IMUserRole)userRole groupId:(int64_t)groupId
+{
+    return [NSString stringWithFormat:@"%lld-%ld-%lld", userId, (long)userRole, groupId];
+}
+
+- (NSArray *)loadAllGroupsFromFMResultSet:(FMResultSet *)set
+{
+    __block NSMutableArray *array = [[NSMutableArray alloc] init];
+    [self.imStroage.groupDao.identityScope lock];
+    
+    while ([set next]) {
+        Group *group = [self loadGroupFromFMResultSet:set];
+        [array addObject:group];
+    }
+    
+    [self.imStroage.groupDao.identityScope unlock];
+    return array;
+}
+
+- (Group *)loadGroupFromFMResultSet:(FMResultSet *)set
+{
+    Group *group = [[Group alloc] init];
+    group.rowid = (NSInteger)[set longForColumnIndex:0];
+    group.groupId = [set longForColumnIndex:1];
+    group.groupName = [set stringForColumnIndex:2];
+    group.avatar = [set stringForColumnIndex:3];
+    group.canDisband = [set boolForColumnIndex:4];
+    group.canLeave = [set boolForColumnIndex:5];
+    group.createTime = [set longForColumnIndex:6];
+    group.isAdmin = [set longForColumnIndex:7];
+    group.joinTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:8]];
+    group.msgStatus = [set longForColumnIndex:9];
+    group.pushStatus = [set longForColumnIndex:10];
+    group.remarkHeader = [set stringForColumnIndex:11];
+    group.remarkName = [set stringForColumnIndex:12];
+    
+    [self.imStroage.groupDao attachEntityKey:@(group.groupId) entity:group lock:NO];
+   
+    return group;
 }
 
 @end
