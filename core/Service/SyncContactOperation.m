@@ -63,7 +63,16 @@
         [groupArguments addObject:arguments];
        
         [excutorSQLs addObject:sql];
+        
     }
+    
+    // 更新群的会话免打扰状态
+    NSString *sql = @"update CONVERSATION set relation=2  where toId in (select groupId from Conversation inner join GROUPMEMBER on CONVERSATION.toId=GROUPMEMBER.groupId where  CONVERSATION.chat_t=1 and pushStatus=1)";
+    
+    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+        BOOL res = [db executeUpdate:sql];
+        [self.imService.imStorage.conversationDao clear];
+    }];
     
     // 直接执行sql， 不走缓存层。提升效率
     NSString *deleteGroupSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld", [GroupMember getTableName],currentUser.userId, (long)currentUser.userRole];
