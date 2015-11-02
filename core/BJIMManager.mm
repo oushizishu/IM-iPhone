@@ -427,7 +427,7 @@
 
 - (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
-    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
+    User *user = [self.imService getUser:userId role:userRole];
     [self.imService addAttention:user callback:callback];
 }
 
