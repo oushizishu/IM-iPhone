@@ -1006,6 +1006,8 @@
             
             contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
             
+            contact.tinyFocus = eIMTinyFocus_None;
+            
             [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
