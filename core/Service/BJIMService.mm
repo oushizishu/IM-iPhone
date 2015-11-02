@@ -985,7 +985,7 @@
     }];
 }
 
-- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
 {
     __WeakSelf__ weakSelf = self;
     [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
@@ -1005,7 +1005,7 @@
             [weakSelf.writeOperationQueue addOperation:operation];
         }
         if (callback)
-            callback(err,result);
+            callback(err,result, contact);
     }];
 }
 

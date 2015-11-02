@@ -431,7 +431,7 @@
     [self.imService addAttention:user callback:callback];
 }
 
-- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
+- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
 {
     User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
     [self.imService cancelAttention:user callback:callback];

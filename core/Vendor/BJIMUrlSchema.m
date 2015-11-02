@@ -65,7 +65,7 @@
         hud.removeFromSuperViewOnHide = YES;
         [hud show:YES];
         
-        [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result){
+        [[BJIMManager shareInstance] addAttention:[[payload objectForKey:@"userNumber"] integerValue] role:[[payload objectForKey:@"userRole"] integerValue] callback:^(NSError *error ,BaseResponse *result, User *user){
             
             hud.mode = MBProgressHUDModeText;
             

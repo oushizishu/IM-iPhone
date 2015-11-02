@@ -137,7 +137,7 @@
 //添加关注
 - (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback;
 //取消关注
-- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
+- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback;
 
 //添加黑名单
 - (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback;
