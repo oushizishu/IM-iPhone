@@ -69,15 +69,20 @@
             
             hud.mode = MBProgressHUDModeText;
             
-            if(result.code == 0)
-            {
-                hud.labelText = @"关注成功";
-                [hud hide:YES afterDelay:1.0f];
-            }else
-            {
-                hud.labelText = @"关注失败";
-                [hud hide:YES afterDelay:1.0f];
+            NSString *showMsg = result.msg;
+            
+            if (showMsg == nil || showMsg.length == 0) {
+                if(result.code == 0)
+                {
+                    showMsg = @"关注成功";
+                }else
+                {
+                    showMsg = @"关注失败";
+                }
             }
+            
+            hud.labelText = showMsg;
+            [hud hide:YES afterDelay:1.0f];
                 
         }];
     }];
@@ -97,15 +102,20 @@
             
             hud.mode = MBProgressHUDModeText;
             
-            if(result.code == 0)
-            {
-                hud.labelText = @"移除成功";
-                [hud hide:YES afterDelay:1.0f];
-            }else
-            {
-                hud.labelText = @"移除失败";
-                [hud hide:YES afterDelay:1.0f];
+            NSString *showMsg = result.msg;
+            
+            if (showMsg == nil || showMsg.length == 0) {
+                if(result.code == 0)
+                {
+                    showMsg = @"移除成功";
+                }else
+                {
+                    showMsg = @"移除失败";
+                }
             }
+            
+            hud.labelText = showMsg;
+            [hud hide:YES afterDelay:1.0f];
         }];
     }];
     
