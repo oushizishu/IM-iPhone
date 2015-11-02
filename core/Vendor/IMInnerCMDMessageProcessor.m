@@ -13,6 +13,7 @@
 
 #define ACTION_CMD_INNER_NEW_FANS       @"new_fans"
 #define ACTION_CMD_INNER_REMOVE_FANS    @"remove_fans"
+#define ACTION_CMD_CONTACT_INFO_CHANGE  @"contact_info_change"
 
 @implementation IMInnerCMDMessageProcessor
 
@@ -32,6 +33,8 @@
         [IMInnerCMDMessageProcessor dealAddFreshFans:messageBody service:imService];
     } else if ([action isEqualToString:ACTION_CMD_INNER_REMOVE_FANS]) {
         [IMInnerCMDMessageProcessor dealRemoveFreshFans:messageBody service:imService];
+    } else if ([action isEqualToString:ACTION_CMD_CONTACT_INFO_CHANGE]) {
+        [IMInnerCMDMessageProcessor dealContactInfoChange:messageBody service:imService];
     }
     
     
@@ -105,6 +108,25 @@
     
     freshFansConversation.unReadNum = [imService.imStorage.nFansContactDao queryFreshFansCount:owner];
     [imService.imStorage.conversationDao update:freshFansConversation];
+
+}
+
++ (void)dealContactInfoChange:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
+{
+    NSError *error;
+    User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
+    User *owner = [IMEnvironment shareInstance].owner;
+    [imService.imStorage.userDao insertOrUpdateUser:user];
+    
+    [imService.imStorage.socialContactsDao insertOrUpdate:user withOwner:owner];
+    
+    SocialContacts *social = [imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
+    
+    if (social == nil) return;
+    if (social.blackStatus >= eIMBlackStatus_Active) {
+        // 拉黑了对方，将其移除联系人
+        [imService.imStorage deleteContactId:user.userId contactRole:user.userRole owner:owner];
+    }
 
 }
 

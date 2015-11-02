@@ -69,4 +69,8 @@
  *  @return <#return value description#>
  */
 - (NSString *)nextFakeMessageId;
+
+- (void)deleteContactId:(int64_t)contactId
+            contactRole:(IMUserRole)contactRole
+                  owner:(User *)owner;
 @end

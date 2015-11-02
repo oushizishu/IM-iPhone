@@ -234,6 +234,22 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     }
 }
 
+- (void)deleteContactId:(int64_t)contactId contactRole:(IMUserRole)contactRole owner:(User *)owner
+{
+    if (owner.userRole == eUserRole_Teacher)
+    {
+        [self.teacherDao deleteContactId:contactId contactRole:contactRole owner:owner];
+    }
+    else if (owner.userRole == eUserRole_Student)
+    {
+        [self.studentDao deleteContactId:contactId contactRole:contactRole owner:owner];
+    }
+    else if(owner.userRole == eUserRole_Institution)
+    {
+        [self.institutionDao deleteContactId:contactId contactRole:contactRole owner:owner];
+    }
+}
+
 - (NSArray *)queryAllBugMessages
 {
     NSString *query = [NSString stringWithFormat:@" length(msgId)<11"];
