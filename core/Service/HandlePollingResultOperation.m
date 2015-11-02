@@ -280,6 +280,13 @@
     
     message.conversationId = conversation.rowid;
     
+    //设置会话关系，根据群是否开启面打扰
+    if (chatToGroup.pushStatus == eGroupPushStatus_open) {
+        conversation.relation = eConversation_Relation_Group_Closed;
+    } else {
+        conversation.relation = eConverastion_Relation_Normal;
+    }
+    
     [self.imService.imStorage.messageDao update:message];
     [self.imService.imStorage.conversationDao update:conversation];
     [self.imService.imStorage.groupDao insertOrUpdate:chatToGroup];
