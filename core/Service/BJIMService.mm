@@ -236,7 +236,7 @@
     message.status = eMessageStatus_Send_Fail;
     [self.imStorage.messageDao update:message];
     
-    [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
+    [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"NSLocalizedFailureReason"]];
     
     if(error.code == 510007)//被对方拉黑
     {
