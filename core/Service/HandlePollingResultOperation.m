@@ -63,9 +63,6 @@
                 }
                 
                 [self.imService.imStorage.socialContactsDao update:contacts];
-            }else
-            {
-                [self.imService.imStorage.socialContactsDao insert:contacts];
             }
         }
     }
