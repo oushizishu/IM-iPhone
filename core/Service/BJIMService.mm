@@ -953,8 +953,7 @@
             if (!social) {
                 isStranger = YES;
             } else {
-               if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Active)
-                   && (social.tinyFoucs == eIMTinyFocus_None)) {
+               if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Active)) {
                    isStranger = YES;
                }
             }

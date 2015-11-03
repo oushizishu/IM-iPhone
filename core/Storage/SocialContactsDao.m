@@ -99,40 +99,44 @@
 {
     contact.tinyFocus = type;
     SocialContacts *social = [self loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    social.tinyFoucs = contact.tinyFocus;
-    [social updateToDB];
-    
-    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
-    if (conversation != nil) {
-        BOOL ifUpdateConversation = NO;
-        if ([self isStanger:contact withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
-            ifUpdateConversation = YES;
-            conversation.relation = eConversation_Relation_Stranger;
-        }else if(![self isStanger:contact withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
-            ifUpdateConversation = YES;
-            conversation.relation = eConverastion_Relation_Normal;
-        }
-        if(ifUpdateConversation)
-        {
-            [self.imStroage.conversationDao update:conversation];
-            
-            Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
-            if (strangerConversation) {
-                NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
-                if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
-                    strangerConversation.lastMessageId = maxMsgId;
-                }
-                
-                NSInteger count =[self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
-                if (count != strangerConversation.unReadNum) {
-                    strangerConversation.status = 0;
-                }
-                
-                strangerConversation.unReadNum = count;
-                [self.imStroage.conversationDao update:strangerConversation];
-            }
-        }
+    if (social) {
+        social.tinyFoucs = contact.tinyFocus;
+        [self update:social];
+    } else {
+        [self insert:contact withOwner:owner];
     }
+    
+//    Conversation *conversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:contact.userId userRole:contact.userRole chatType:eChatType_Chat];
+//    if (conversation != nil) {
+//        BOOL ifUpdateConversation = NO;
+//        if ([self isStanger:contact withOwner:owner] && conversation.relation != eConversation_Relation_Stranger) {
+//            ifUpdateConversation = YES;
+//            conversation.relation = eConversation_Relation_Stranger;
+//        }else if(![self isStanger:contact withOwner:owner] && conversation.relation != eConverastion_Relation_Normal){
+//            ifUpdateConversation = YES;
+//            conversation.relation = eConverastion_Relation_Normal;
+//        }
+//        if(ifUpdateConversation)
+//        {
+//            [self.imStroage.conversationDao update:conversation];
+//            
+//            Conversation *strangerConversation = [self.imStroage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+//            if (strangerConversation) {
+//                NSString *maxMsgId = [self.imStroage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+//                if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
+//                    strangerConversation.lastMessageId = maxMsgId;
+//                }
+//                
+//                NSInteger count =[self.imStroage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+//                if (count != strangerConversation.unReadNum) {
+//                    strangerConversation.status = 0;
+//                }
+//                
+//                strangerConversation.unReadNum = count;
+//                [self.imStroage.conversationDao update:strangerConversation];
+//            }
+//        }
+//    }
 }
 
 - (void)setContactFocusType:(BOOL)bAddFocus contact:(User*)user owner:(User *)owner

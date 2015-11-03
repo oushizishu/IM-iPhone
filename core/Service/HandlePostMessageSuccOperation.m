@@ -63,9 +63,8 @@
     CONVERSATION_RELATION relation = conversation.relation;
     
     if (conversation.chat_t == eChatType_Chat) {
-        if([self.imService getIsStanger:owner withUser:contact])
+        if([self.imService getIsStanger:contact withUser:owner])
         {
-            conversation.relation = eConversation_Relation_Stranger;
             self.remindMessageArray = [[NSMutableArray alloc] init];
             NSString *sign = @"HERMES_MESSAGE_NOPASSIVE_SIGN";
             NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
@@ -91,10 +90,9 @@
                 [self.remindMessageArray addObject:remindAttentionMessage];
             }
         }
-        else
-        {
-            conversation.relation = eConverastion_Relation_Normal;
-        }
+        
+        conversation.relation = [self.imService getIsStanger:owner withUser:contact]?eConversation_Relation_Stranger:eConverastion_Relation_Normal;
+        
         
         if (relation != conversation.relation) {
             Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];

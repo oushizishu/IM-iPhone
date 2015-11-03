@@ -56,6 +56,8 @@
         //只要发消息，必须设置浅关注
         if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
             [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
+            
+            conversation.relation = [self.imService getIsStanger:owner withUser:contact]?eConversation_Relation_Stranger:eConverastion_Relation_Normal;
         }
     }
     
