@@ -78,7 +78,7 @@
     }else{
         //未设置对方黑名单，再判断是否关注对方(浅关注也提示)，插入唯一性提示关注对方消息
         IMFocusType focusType = [self.imService.imStorage.socialContactsDao getAttentionState:contact withOwner:owner];
-        if(focusType == eIMFocusType_None || focusType == eIMFocusType_Passive)
+        if(conversation.chat_t == eChatType_Chat && (focusType == eIMFocusType_None || focusType == eIMFocusType_Passive))
         {
             NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
             NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:conversation.rowid withSing:sign];
@@ -101,6 +101,26 @@
                 remindAttentionMessage.conversationId = conversation.rowid;
                 [self.imService.imStorage.messageDao insert:remindAttentionMessage];
                 [self.remindMessageArray addObject:remindAttentionMessage];
+            }
+            
+            // 判断陌生人关系，设置 relation 字段
+            if ([self.imService getIsStanger:owner withUser:contact]) {
+                conversation.relation = eConversation_Relation_Stranger;
+                [self.imService.imStorage.conversationDao update:conversation];
+                
+                Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                if (! strangerConversation) {
+                    strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
+                    [self.imService.imStorage.conversationDao insert:strangerConversation];
+                }
+                
+                strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+                NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                if (count != strangerConversation.unReadNum) {
+                    strangerConversation.status = 0;
+                }
+                strangerConversation.unReadNum = count;
+                [self.imService.imStorage.conversationDao update:strangerConversation];
             }
         }
     }
@@ -147,6 +167,7 @@
     }
     if (self.remindMessageArray != nil && [self.remindMessageArray count]>0) {
         [self.imService notifyReceiveNewMessages:self.remindMessageArray];
+        [self.imService notifyConversationChanged];
     }
 }
 
