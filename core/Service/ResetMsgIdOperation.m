@@ -14,6 +14,10 @@
 
 - (void)doOperationOnBackground
 {
+    [self.imService.imStorage checkMessageStatus];
+    
+    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
+        return;
     NSArray *messages = [self.imService.imStorage queryAllBugMessages];
     if ([messages count] == 0)
     {

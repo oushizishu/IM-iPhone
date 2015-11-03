@@ -18,6 +18,7 @@
 
 typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
 {
+    IMNetwork_Efficiency_NONE = 0,  // 不可用
     IMNetwork_Efficiency_High = 1, // 高网络效率
     IMNetwork_Efficiency_Normal = 2,
     IMNetwork_Efficiency_Low = 3

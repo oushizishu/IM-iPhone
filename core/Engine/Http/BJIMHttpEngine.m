@@ -15,6 +15,7 @@
 #import "NSError+BJIM.h"
 #import "GetGroupMemberModel.h"
 #import "GroupMemberListData.h"
+#import <AFNetworkReachabilityManager.h>
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -252,6 +253,10 @@ static int ddLogLevel = DDLogLevelVerbose;
     else
     {
         quality = IMNetwork_Efficiency_Low;
+    }
+    
+    if (![[AFNetworkReachabilityManager sharedManager] isReachable]) {
+        quality = IMNetwork_Efficiency_NONE;
     }
     
     if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])

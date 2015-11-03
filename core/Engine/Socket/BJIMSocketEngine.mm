@@ -373,6 +373,8 @@ public:
  */
 - (void)reconnect
 {
+    if (! self.isEngineActive) return;
+    
     if (_retryConnectCount > 5)
     { //重连了五次没有成功
         DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
