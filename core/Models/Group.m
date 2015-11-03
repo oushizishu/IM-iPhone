@@ -31,6 +31,11 @@
             return date;
         }];
     }
+    else if ([key isEqualToString:@"isAdmin"]) {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            return @([value integerValue] == 0);
+        }];
+    }
     return nil;
 }
 

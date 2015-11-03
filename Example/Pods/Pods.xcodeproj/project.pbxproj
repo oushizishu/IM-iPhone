@@ -329,6 +329,8 @@
 		94DCBF066166E124FAACD5EE5135C42C /* BaseResponse.h in Headers */ = {isa = PBXBuildFile; fileRef = B14D3CACBAE8BA7F9562B44F1E336D1D /* BaseResponse.h */; };
 		95164EDA1BDDD27C001F66F1 /* BJIMUrlSchema.h in Headers */ = {isa = PBXBuildFile; fileRef = 95164ED81BDDD27C001F66F1 /* BJIMUrlSchema.h */; settings = {ASSET_TAGS = (); }; };
 		95164EDB1BDDD27D001F66F1 /* BJIMUrlSchema.m in Sources */ = {isa = PBXBuildFile; fileRef = 95164ED91BDDD27C001F66F1 /* BJIMUrlSchema.m */; settings = {ASSET_TAGS = (); }; };
+		9593EC7A1BE84C9E004B7EA5 /* HandleCmdMessageOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = 9593EC781BE84C9E004B7EA5 /* HandleCmdMessageOperation.h */; settings = {ASSET_TAGS = (); }; };
+		9593EC7B1BE84C9E004B7EA5 /* HandleCmdMessageOperation.m in Sources */ = {isa = PBXBuildFile; fileRef = 9593EC791BE84C9E004B7EA5 /* HandleCmdMessageOperation.m */; settings = {ASSET_TAGS = (); }; };
 		960119C8E22BC46D5EC27E464DB3C75D /* HandleGetMsgOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = F13809C312487D73ABB0817EEBA54811 /* HandleGetMsgOperation.h */; };
 		96AD8B51D3C0E9DB3BAAE7B4700F1AE1 /* GetGroupMemberModel.h in Headers */ = {isa = PBXBuildFile; fileRef = 6C5E996FB9034CE336B106E5366E7CA6 /* GetGroupMemberModel.h */; };
 		9733663AF5C846D98D5C24B82DE945DC /* PureLayout-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = AE33739F4073AC66263D07A93BEA91CA /* PureLayout-dummy.m */; };
@@ -1273,6 +1275,8 @@
 		95164ED81BDDD27C001F66F1 /* BJIMUrlSchema.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BJIMUrlSchema.h; sourceTree = "<group>"; };
 		95164ED91BDDD27C001F66F1 /* BJIMUrlSchema.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BJIMUrlSchema.m; sourceTree = "<group>"; };
 		953BBDE8F7356913021BC41DFF9498C0 /* UIImageExtend.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = UIImageExtend.h; path = "TKAlert&TKActionSheet/Category/UIImageExtend.h"; sourceTree = "<group>"; };
+		9593EC781BE84C9E004B7EA5 /* HandleCmdMessageOperation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HandleCmdMessageOperation.h; sourceTree = "<group>"; };
+		9593EC791BE84C9E004B7EA5 /* HandleCmdMessageOperation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HandleCmdMessageOperation.m; sourceTree = "<group>"; };
 		95EA5C94C0CAC55F83EFF5134716187D /* DDASLLogCapture.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = DDASLLogCapture.m; path = Classes/DDASLLogCapture.m; sourceTree = "<group>"; };
 		96053E4F30B7AC33A5B7487417A9A72F /* MagicalRecordInternal.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MagicalRecordInternal.h; path = MagicalRecord/Core/MagicalRecordInternal.h; sourceTree = "<group>"; };
 		96581125457E2AE29E0941504912892F /* YLGIFImage.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = YLGIFImage.xcconfig; sourceTree = "<group>"; };
@@ -2280,6 +2284,8 @@
 				CA9EC632BC1D39D0DF78EE77C00A312C /* SetSocialFocusOperation.m */,
 				0014E069AA61FAECB43149199315C8F9 /* SyncContactOperation.h */,
 				E05D1005A74A7D69E838BD829E94286E /* SyncContactOperation.m */,
+				9593EC781BE84C9E004B7EA5 /* HandleCmdMessageOperation.h */,
+				9593EC791BE84C9E004B7EA5 /* HandleCmdMessageOperation.m */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -3072,6 +3078,7 @@
 				444A57EFE534FBBC1531144B93E8412D /* AFURLResponseSerialization.h in Headers */,
 				04A99CA316F50B5E188A4859AAAF343C /* AFURLSessionManager.h in Headers */,
 				95164EDA1BDDD27C001F66F1 /* BJIMUrlSchema.h in Headers */,
+				9593EC7A1BE84C9E004B7EA5 /* HandleCmdMessageOperation.h in Headers */,
 				4101D63DA418345AC23F388566CAA31E /* UIActivityIndicatorView+AFNetworking.h in Headers */,
 				B864F752CDDEDC81D7274A82ED6FF04E /* UIAlertView+AFNetworking.h in Headers */,
 				5C76E8B11207CE69F994F7B96B7BE2A3 /* UIButton+AFNetworking.h in Headers */,
@@ -3736,6 +3743,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9593EC7B1BE84C9E004B7EA5 /* HandleCmdMessageOperation.m in Sources */,
 				95164EDB1BDDD27D001F66F1 /* BJIMUrlSchema.m in Sources */,
 				7FD4B7C04C4342A07E4E0ABF819E7E92 /* AFHTTPRequestOperation.m in Sources */,
 				CB02EBA3266592E501556D6469BD3BD5 /* AFHTTPRequestOperationManager.m in Sources */,

@@ -163,7 +163,7 @@
     group.canDisband = [set boolForColumnIndex:4];
     group.canLeave = [set boolForColumnIndex:5];
     group.createTime = [set longForColumnIndex:6];
-    group.isAdmin = [set longForColumnIndex:7];
+    group.isAdmin = [set boolForColumnIndex:7];
     group.joinTime = [NSDate dateWithTimeIntervalSince1970:[set doubleForColumnIndex:8]];
     group.msgStatus = [set longForColumnIndex:9];
     group.pushStatus = [set longForColumnIndex:10];

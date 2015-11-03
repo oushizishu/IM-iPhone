@@ -14,6 +14,7 @@
 
 
 @class BaseResponse;
+@class IMBaseOperation;
 @interface BJIMService : NSObject
 @property (nonatomic, assign) BOOL bIsServiceActive;
 @property (nonatomic, strong, readonly) BJIMAbstractEngine *imEngine;
@@ -162,6 +163,8 @@
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
+
+- (void)appendOperationAfterContacts:(IMBaseOperation *)operation;
 
 #pragma mark - add Delegates
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;

@@ -87,6 +87,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     [self.messageDao clear];
     [self.conversationDao clear];
     [self.nFansContactDao clear];
+    [self.socialContactsDao clear];
 }
 
 #pragma mark conversation

@@ -257,7 +257,6 @@
     if (! self.bIsServiceActive) return;
     PrePollingOperation *operation = [[PrePollingOperation alloc] init];
     operation.imService = self;
-//    [self.operationQueue addOperation:operation];
     [self.readOperationQueue addOperation:operation];
 }
 
@@ -1121,6 +1120,12 @@
     return _syncContactsOperationQueue;
 
 }
+
+- (void)appendOperationAfterContacts:(id)operation
+{
+    [self.syncContactsOperationQueue addOperation:operation];
+}
+
 
 #pragma mark - application call back
 - (void)applicationEnterForeground

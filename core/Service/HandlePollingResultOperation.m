@@ -315,7 +315,12 @@
         {// CMD 消息，不入库
             //记录收到的最大cmd消息
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            [user setObject:message.msgId forKey:[NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId,owner.userRole]];
+            NSString *cmdMsgKey = [NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId, (long)owner.userRole];
+            NSString *oldCmdMsgId = [user objectForKey:cmdMsgKey];
+            if ([oldCmdMsgId longLongValue] < [message.msgId longLongValue]) {
+                [user setObject:message.msgId forKey: cmdMsgKey];
+                [user synchronize];
+            }
             
            if (self.cmdMessages == nil)
            {
