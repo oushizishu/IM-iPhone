@@ -24,6 +24,9 @@
 
 - (void)update:(Conversation *)conversation;
 
+//设置会话relation状态
+- (void)setConversationRelation:(Conversation*)conversation withRelation:(CONVERSATION_RELATION)relation;
+
 /**
  *  返回非陌生人的会话
  *

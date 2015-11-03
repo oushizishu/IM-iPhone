@@ -7,6 +7,7 @@
 //
 
 #import "ConversationDao.h"
+#import "IMEnvironment.h"
 
 @implementation ConversationDao
 
@@ -84,6 +85,30 @@
     [self.dbHelper updateToDB:conversation where:nil];
     [self attachEntityKey:@(conversation.rowid) entity:conversation lock:YES];
     [[DaoStatistics sharedInstance] logDBOperationSQL:@"update" class:[Conversation class]];
+}
+
+- (void)setConversationRelation:(Conversation*)conversation withRelation:(CONVERSATION_RELATION)relation
+{
+    if (conversation.relation != relation) {
+        conversation.relation = relation;
+        [self update:conversation];
+        
+        Conversation *strangerConversation = [self loadWithOwnerId:conversation.ownerId ownerRole:conversation.ownerRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+        if (strangerConversation) {
+            NSString *maxMsgId = [self queryStrangerConversationsMaxMsgId:conversation.ownerId ownerRole:conversation.ownerRole];
+            if (! [strangerConversation.lastMessageId isEqualToString:maxMsgId]) {
+                strangerConversation.lastMessageId = maxMsgId;
+            }
+
+            NSInteger count =[self countOfStrangerCovnersationAndUnreadNumNotZero:conversation.ownerId userRole:conversation.ownerRole];
+            if (count != strangerConversation.unReadNum) {
+                strangerConversation.status = 0;
+            }
+
+            strangerConversation.unReadNum = count;
+            [self update:strangerConversation];
+        }
+    }
 }
 
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole

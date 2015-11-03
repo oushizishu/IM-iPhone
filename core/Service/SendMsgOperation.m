@@ -22,9 +22,9 @@
     
     Conversation *conversation = [self.imService getConversationUserOrGroupId:self.message.receiver userRole:self.message.receiverRole ownerId:self.message.sender ownerRole:self.message.senderRole chat_t:self.message.chat_t];
     
+    User *owner = [IMEnvironment shareInstance].owner;
     if (conversation == nil)
     {
-        User *owner = [IMEnvironment shareInstance].owner;
         conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:self.message.receiver toRole:self.message.receiverRole lastMessageId:@"" chatType:self.message.chat_t];
         
         [self.imService insertConversation:conversation];
@@ -38,7 +38,6 @@
     
     conversation.lastMessageId = self.message.msgId;
     
-    User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
     
     if (self.message.chat_t == eChatType_GroupChat)
@@ -57,7 +56,7 @@
         if ([self.imService.imStorage.socialContactsDao getTinyFoucsState:contact withOwner:owner] == eIMTinyFocus_None) {
             [self.imService.imStorage.socialContactsDao setContactTinyFoucs:eIMTinyFocus_Been contact:contact owner:owner];
             
-            conversation.relation = [self.imService getIsStanger:owner withUser:contact]?eConversation_Relation_Stranger:eConverastion_Relation_Normal;
+            [self.imService.imStorage.conversationDao setConversationRelation:conversation withRelation:[self.imService getIsStanger:owner withUser:contact]?eConversation_Relation_Stranger:eConverastion_Relation_Normal];
         }
     }
     
