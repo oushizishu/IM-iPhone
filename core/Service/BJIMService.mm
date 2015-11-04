@@ -914,11 +914,10 @@
     
     if (owner.userId == fromUser.userId && owner.userRole == fromUser.userRole) {
         // 判断我和对方是不是陌生人关系
-//        if (fromUser.userRole == eUserRole_Student && toUser.userRole != eUserRole_Student) {
-//            // 学生给非学生发消息，都不是陌生人
-//            isStranger = NO;
-//        } else
-        if (toUser.userRole != eUserRole_Student
+        if (fromUser.userRole != eUserRole_Student && toUser.userRole == eUserRole_Student) {
+            // 学生给非学生发消息，都不是陌生人
+            isStranger = NO;
+        } else if (toUser.userRole != eUserRole_Student
                    && toUser.userRole != eUserRole_Teacher
                    && toUser.userRole != eUserRole_Institution) {
             // 对方非主要角色，都不是陌生人
