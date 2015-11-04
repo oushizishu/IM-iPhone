@@ -60,18 +60,22 @@ static char BJGroupMamagerDelegateKey;
             return;
         }
         [group mergeValuesForKeysFromModel:result];
-        GroupMember *_groupMember = [[GroupMember alloc] init];
-        _groupMember.userId = owner.userId;
-        _groupMember.userRole = owner.userRole;
-        _groupMember.groupId = groupId;
-        _groupMember.msgStatus = group.msgStatus;
-        _groupMember.canDisband = group.canDisband;
-        _groupMember.canLeave = group.canLeave;
-        _groupMember.remarkHeader = group.remarkHeader;
-        _groupMember.remarkName = group.remarkName;
-        _groupMember.pushStatus = group.pushStatus;
         
-        [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+        
+        GroupMember *_groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:group.groupId];
+        
+        if(_groupMember != nil)
+        {
+            _groupMember.msgStatus = group.msgStatus;
+            _groupMember.canDisband = group.canDisband;
+            _groupMember.canLeave = group.canLeave;
+            _groupMember.remarkHeader = group.remarkHeader;
+            _groupMember.remarkName = group.remarkName;
+            _groupMember.pushStatus = group.pushStatus;
+            
+            [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+        }
+        
         [weakSelf.imStorage.groupDao insertOrUpdate:group];
         [weakSelf notifyGroupProfileChanged:group];
         [weakSelf notifyGetGroupProfile:groupId group:group error:nil];
@@ -289,9 +293,11 @@ static char BJGroupMamagerDelegateKey;
         }
         User *owner = [IMEnvironment shareInstance].owner;
         GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:groupId];
-        groupMember.msgStatus = status;
-        group.msgStatus = status;
-        [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
+        if (groupMember != nil) {
+            groupMember.msgStatus = status;
+            group.msgStatus = status;
+            [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
+        }
         [weakSelf notifyChangeMsgStatus:status groupId:groupId error:err];
     }];
 }
@@ -307,9 +313,11 @@ static char BJGroupMamagerDelegateKey;
         }
         User *owner = [IMEnvironment shareInstance].owner;
         GroupMember *groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:groupId];
-        groupMember.pushStatus = status;
+        if (groupMember != nil) {
+            groupMember.pushStatus = status;
+            [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
+        }
         [weakSelf.imStorage.groupDao load:groupId].pushStatus = status;
-        [weakSelf.imStorage.groupMemberDao insertOrUpdate:groupMember];
         [weakSelf notifyChangeGroupPushStatus:status groupId:groupId error:err];
         
         // 设置群会话免打扰标记

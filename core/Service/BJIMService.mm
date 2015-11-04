@@ -497,18 +497,20 @@
         [self.imEngine postGetGroupProfile:groupId callback:^(Group *result) {
             if (!weakSelf.bIsServiceActive) return ;
             if (! result) return;
-            GroupMember *_groupMember = [[GroupMember alloc] init];
-            _groupMember.userId = owner.userId;
-            _groupMember.userRole = owner.userRole;
-            _groupMember.groupId = groupId;
-            _groupMember.msgStatus = group.msgStatus;
-            _groupMember.canDisband = group.canDisband;
-            _groupMember.canLeave = group.canLeave;
-            _groupMember.remarkHeader = group.remarkHeader;
-            _groupMember.remarkName = group.remarkName;
-            _groupMember.pushStatus = group.pushStatus;
             
-            [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+            GroupMember *_groupMember = [weakSelf.imStorage.groupMemberDao loadMember:owner.userId userRole:owner.userRole groupId:group.groupId];
+            
+            if(_groupMember != nil)
+            {
+                _groupMember.msgStatus = group.msgStatus;
+                _groupMember.canDisband = group.canDisband;
+                _groupMember.canLeave = group.canLeave;
+                _groupMember.remarkHeader = group.remarkHeader;
+                _groupMember.remarkName = group.remarkName;
+                _groupMember.pushStatus = group.pushStatus;
+                
+                [weakSelf.imStorage.groupMemberDao insertOrUpdate:_groupMember];
+            }
             [group mergeValuesForKeysFromModel:result];
             [weakSelf.imStorage.groupDao insertOrUpdate:group];
             [weakSelf notifyGroupProfileChanged:group];
