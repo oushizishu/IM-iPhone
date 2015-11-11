@@ -633,13 +633,13 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 - (void)recordHttpRequestTime:(NSTimeInterval)time
 {
-    [_httpUsingTimeQueue offer:@(time)];
+    [self.httpUsingTimeQueue offer:@(time)];
 }
 
 - (NSTimeInterval)getAverageRequestTime
 {
     NSArray *array = [_httpUsingTimeQueue toArray];
-    if (array.count == 0) return 0;
+    if (array.count < 10) return 0;
     NSTimeInterval sum = 0;
     for (NSInteger index = 0; index < array.count; ++ index) {
         sum += [[array objectAtIndex:index] doubleValue];

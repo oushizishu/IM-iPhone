@@ -240,6 +240,8 @@ static int ddLogLevel = DDLogLevelVerbose;
 - (void)checkNetworkQuality
 {
     NSTimeInterval requestAverageTime = [self getAverageRequestTime];
+    if (requestAverageTime == 0) return;
+    
     IMNetworkEfficiency quality = IMNetwork_Efficiency_Normal;
     
     if (requestAverageTime < 2.0)

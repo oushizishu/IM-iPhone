@@ -40,6 +40,8 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 #define SOCKET_HOST_APIS                    @[SOCKET_HOST_TEST, SOCKET_HOST_BETA, SOCKET_HOST_WWW]
 #define SOCKET_HOST                         SOCKET_HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
+#define COUNT_SOCKET_MAX_RECONNECT          5
+
 /**
  每次请求的参数封装
  */
@@ -373,22 +375,25 @@ public:
  */
 - (void)reconnect
 {
-    if (! self.isEngineActive) return;
-    
-    if (_retryConnectCount > 5)
+    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT)
     { //重连了五次没有成功
         DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
-        if ([self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
-        {
-            [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
-            return; // 重连了5次还没有成功，不再重连了
-        }
+
+        return;// 重连了5次还没有成功，不再重连了
     }
     
     _retryConnectCount ++ ;
     
     [self stop];
     [self start];
+}
+
+- (void)checkNetworkEfficiency
+{
+    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT && webSocket != nullptr && [self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+    {
+        [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
+    }
 }
 
 - (void)cancelAllRequest
@@ -512,6 +517,7 @@ void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::E
     [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
     // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
     [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+    [engine performSelector:@selector(checkNetworkEfficiency) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
 }
 
 @end
