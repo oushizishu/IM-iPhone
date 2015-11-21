@@ -322,7 +322,7 @@ static char BJGroupMamagerDelegateKey;
         
         // 设置群会话免打扰标记
         Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:groupId userRole:eUserRole_Teacher chatType:eChatType_GroupChat];
-        if (! conversation) {
+        if (conversation) {
             if (status == eGroupPushStatus_close) {
                 conversation.relation = eConverastion_Relation_Normal;
             } else if (status == eGroupPushStatus_open) {
