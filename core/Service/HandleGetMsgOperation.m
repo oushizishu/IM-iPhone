@@ -95,7 +95,7 @@
 - (void)checkAndInsertHintAttentionMessage
 {
     User *owner = [IMEnvironment shareInstance].owner;
-    User *contact = [self.imService.imStorage.userDao loadUser:self.userId role:self.userRole];
+    User *contact = [self.imService getUser:self.userId role:self.userRole];
     
     SocialContacts *social = [self.imService.imStorage.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
     if (! social || ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive) && (contact.userRole == eUserRole_Student || contact.userRole == eUserRole_Teacher || contact.userRole == eUserRole_Institution))) {

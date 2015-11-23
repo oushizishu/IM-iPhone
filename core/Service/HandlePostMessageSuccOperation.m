@@ -58,7 +58,7 @@
     [self.imService.imStorage.conversationDao update:conversation];
     
     User *owner = [IMEnvironment shareInstance].owner;
-    User *contact = [self.imService.imStorage.userDao loadUser:self.message.receiver role:self.message.receiverRole];
+    User *contact = [self.imService getUser:self.message.receiver role:self.message.receiverRole];
     
     CONVERSATION_RELATION relation = conversation.relation;
     
