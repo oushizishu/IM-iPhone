@@ -55,6 +55,9 @@
         return YES;
     }
     
+    if (social.userRole != eUserRole_Student && social.contactRole == eUserRole_Student)
+        return NO;
+    
     if ((social.focusType == eIMFocusType_None && social.tinyFoucs == eIMTinyFocus_None) ||
         (social.focusType == eIMFocusType_Passive && social.tinyFoucs == eIMTinyFocus_None)) {
         return YES;
