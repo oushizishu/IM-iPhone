@@ -72,7 +72,7 @@
         IMMessage *__message = (IMMessage *)obj;
         __message.imService = self.imService;
     }];
-
+    
     // 处理关注提示消息
     if (self.conversation.chat_t == eChatType_Chat && [self.messages count] == 0 && self.isFirstGetMsg) {
         // 单聊，第一次加载并且两人之间没有聊过天。才出现“点击关注”的提示消息。 如果已经聊过， 默认之前已经显示过这个消息了
@@ -97,64 +97,66 @@
     User *owner = [IMEnvironment shareInstance].owner;
     User *contact = [self.imService getUser:self.userId role:self.userRole];
     
-    SocialContacts *social = [self.imService.imStorage.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    if (! social || ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive) && (contact.userRole == eUserRole_Student || contact.userRole == eUserRole_Teacher || contact.userRole == eUserRole_Institution))) {
-        // 没有关注对方
-        if (self.conversation == nil) {
-            self.conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:contact.userId toRole:contact.userRole lastMessageId:@"" chatType:eChatType_Chat];
-            
-            [self.imService.imStorage.conversationDao insert:self.conversation];
-            
-            self.conversationChanged = YES;
-        }
-        
-        NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
-        NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:self.conversation.rowid withSing:sign];
-        
-        if (remindAttentionMsgId == nil) {
-            IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
-            messageBody.content = [NSString stringWithFormat:@"<p><a href=\"hermes://o.c?a=addAttention&amp;userNumber=%lld&amp;userRole=%ld\">点此关注对方，</a>可以在我的关注中找到对方哟</p>",contact.userId,contact.userRole];
-            messageBody.type = eTxtMessageContentType_RICH_TXT;
-            IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
-            remindAttentionMessage.messageBody = messageBody;
-            remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
-            remindAttentionMessage.chat_t = eChatType_Chat;
-            remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
-            remindAttentionMessage.receiver = owner.userId;
-            remindAttentionMessage.receiverRole = owner.userRole;
-            remindAttentionMessage.sender = contact.userId;
-            remindAttentionMessage.senderRole = contact.userRole;
-            remindAttentionMessage.msgId = [self.imService.imStorage nextFakeMessageId];
-            remindAttentionMessage.sign = sign;
-            remindAttentionMessage.conversationId = self.conversation.rowid;
-            remindAttentionMessage.status = eMessageStatus_Send_Succ;
-            
-            self.conversation.lastMessageId = remindAttentionMessage.msgId;
-            
-            [self.imService.imStorage.messageDao insert:remindAttentionMessage];
-            [self.imService.imStorage.conversationDao update:self.conversation];
-            self.remindMessageArray = [[NSMutableArray alloc] initWithObjects:remindAttentionMessage, nil];
-        }
-        
-        // 判断陌生人关系，设置 relation 字段
-        if ([self.imService getIsStanger:owner withUser:contact]) {
-            self.conversation.relation = eConversation_Relation_Stranger;
-            [self.imService.imStorage.conversationDao update:self.conversation];
-            
-            Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
-            if (! strangerConversation) {
-                strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
-                [self.imService.imStorage.conversationDao insert:strangerConversation];
+    if (contact.userRole == eUserRole_Student || contact.userRole == eUserRole_Teacher || contact.userRole == eUserRole_Institution) {
+        SocialContacts *social = [self.imService.imStorage.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
+        if (! social || ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive))) {
+            // 没有关注对方
+            if (self.conversation == nil) {
+                self.conversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:contact.userId toRole:contact.userRole lastMessageId:@"" chatType:eChatType_Chat];
+                
+                [self.imService.imStorage.conversationDao insert:self.conversation];
+                
+                self.conversationChanged = YES;
             }
             
-            strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
-            NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
-            if (count != strangerConversation.unReadNum) {
-                strangerConversation.status = 0;
+            NSString *sign = @"HERMES_MESSAGE_NOFOCUS_SIGN";
+            NSString *remindAttentionMsgId = [self.imService.imStorage.messageDao querySignMsgIdInConversation:self.conversation.rowid withSing:sign];
+            
+            if (remindAttentionMsgId == nil) {
+                IMNotificationMessageBody *messageBody = [[IMNotificationMessageBody alloc] init];
+                messageBody.content = [NSString stringWithFormat:@"<p><a href=\"hermes://o.c?a=addAttention&amp;userNumber=%lld&amp;userRole=%ld\">点此关注对方，</a>可以在我的关注中找到对方哟</p>",contact.userId,contact.userRole];
+                messageBody.type = eTxtMessageContentType_RICH_TXT;
+                IMMessage *remindAttentionMessage = [[IMMessage alloc] init];
+                remindAttentionMessage.messageBody = messageBody;
+                remindAttentionMessage.createAt = [NSDate date].timeIntervalSince1970;
+                remindAttentionMessage.chat_t = eChatType_Chat;
+                remindAttentionMessage.msg_t = eMessageType_NOTIFICATION;
+                remindAttentionMessage.receiver = owner.userId;
+                remindAttentionMessage.receiverRole = owner.userRole;
+                remindAttentionMessage.sender = contact.userId;
+                remindAttentionMessage.senderRole = contact.userRole;
+                remindAttentionMessage.msgId = [self.imService.imStorage nextFakeMessageId];
+                remindAttentionMessage.sign = sign;
+                remindAttentionMessage.conversationId = self.conversation.rowid;
+                remindAttentionMessage.status = eMessageStatus_Send_Succ;
+                
+                self.conversation.lastMessageId = remindAttentionMessage.msgId;
+                
+                [self.imService.imStorage.messageDao insert:remindAttentionMessage];
+                [self.imService.imStorage.conversationDao update:self.conversation];
+                self.remindMessageArray = [[NSMutableArray alloc] initWithObjects:remindAttentionMessage, nil];
             }
-            strangerConversation.unReadNum = count;
-            [self.imService.imStorage.conversationDao update:strangerConversation];
-            self.conversationChanged = YES;
+            
+            // 判断陌生人关系，设置 relation 字段
+            if ([self.imService getIsStanger:owner withUser:contact]) {
+                self.conversation.relation = eConversation_Relation_Stranger;
+                [self.imService.imStorage.conversationDao update:self.conversation];
+                
+                Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
+                if (! strangerConversation) {
+                    strangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:nil chatType:eChatType_Chat];
+                    [self.imService.imStorage.conversationDao insert:strangerConversation];
+                }
+                
+                strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:owner.userId ownerRole:owner.userRole];
+                NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
+                if (count != strangerConversation.unReadNum) {
+                    strangerConversation.status = 0;
+                }
+                strangerConversation.unReadNum = count;
+                [self.imService.imStorage.conversationDao update:strangerConversation];
+                self.conversationChanged = YES;
+            }
         }
     }
 }
