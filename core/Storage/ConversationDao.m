@@ -43,6 +43,7 @@
         return (_conv.ownerId == ownerId &&
                 _conv.ownerRole == ownerRole &&
                 _conv.toId == userId &&
+                _conv.toRole == otherRserRole &&
                 _conv.chat_t == chatType);
     } lock:YES];
     

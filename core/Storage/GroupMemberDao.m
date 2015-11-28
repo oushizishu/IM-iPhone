@@ -123,7 +123,7 @@
     
     __block NSMutableArray *groups;
     
-    NSString *query = [NSString stringWithFormat:@"select IMGROUPS.rowid, IMGROUPS.groupId, IMGROUPS.groupName, IMGROUPS.avatar, GROUPMEMBER.canDisband, GROUPMEMBER.canLeave, GROUPMEMBER.createTime, GROUPMEMBER.isAdmin, GROUPMEMBER.joinTime, GROUPMEMBER.msgStatus, GROUPMEMBER.pushStatus, GROUPMEMBER.remarkHeader, GROUPMEMBER.remarkName from IMGROUPS INNER JOIN GROUPMEMBER on IMGROUPS.groupId=GROUPMEMBER.groupId where GROUPMEMBER.userId=%lld and GROUPMEMBER.userRole=%ld", user.userId, user.userRole];
+    NSString *query = [NSString stringWithFormat:@"select IMGROUPS.rowid, IMGROUPS.groupId, IMGROUPS.groupName, IMGROUPS.avatar, GROUPMEMBER.canDisband, GROUPMEMBER.canLeave, GROUPMEMBER.createTime, GROUPMEMBER.isAdmin, GROUPMEMBER.joinTime, GROUPMEMBER.msgStatus, GROUPMEMBER.pushStatus, GROUPMEMBER.remarkHeader, GROUPMEMBER.remarkName from IMGROUPS INNER JOIN GROUPMEMBER on IMGROUPS.groupId=GROUPMEMBER.groupId where GROUPMEMBER.userId=%lld and GROUPMEMBER.userRole=%ld order by GROUPMEMBER.joinTime DESC;", user.userId, user.userRole];
     
     [self.dbHelper executeDB:^(FMDatabase *db) {
         FMResultSet *set = [db executeQuery:query];
