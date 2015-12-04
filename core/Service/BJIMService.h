@@ -11,6 +11,7 @@
 #import "BJIMStorage.h"
 #import "IMMessage.h"
 #import "BJIMAbstractEngine.h"
+#import "GroupDetail.h"
 
 
 @class BaseResponse;
@@ -48,6 +49,8 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
+
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;

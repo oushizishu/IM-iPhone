@@ -65,6 +65,10 @@
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesGetGroupDetail:(int64_t)groupId
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
                                      userRole:(IMUserRole)userRole
                                          succ:(onSuccess)succ

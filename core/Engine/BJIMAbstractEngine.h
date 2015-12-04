@@ -15,6 +15,7 @@
 #import "SyncConfigModel.h"
 #import "GetGroupMemberModel.h"
 #import "BaseResponse.h"
+#import "GroupDetail.h"
 
 typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
 {
@@ -155,6 +156,8 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 - (void)postGetUserInfo:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(User *result))callback;
 
 - (void)postGetGroupProfile:(int64_t)groupId callback:(void(^)(Group *result))callback;
+
+- (void)postGetGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
 //添加关注关系
 - (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;

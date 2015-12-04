@@ -148,6 +148,11 @@
     return [self.imService getGroup:groupId];
 }
 
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
+{
+    return [self.imService getGroupDetail:groupId callback:callback];
+}
+
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {

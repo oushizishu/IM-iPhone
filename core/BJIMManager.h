@@ -15,6 +15,7 @@
 
 #import "BaseResponse.h"
 #import "SocialContacts.h"
+#import "GroupDetail.h"
 /**
  *  IM 管理类， 与上层交互
  */
@@ -75,6 +76,9 @@
 
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
+
+//获取群组详情
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
 #pragma mark - current chat
 //开始聊天

@@ -307,6 +307,28 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)postGetGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
+{
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesGetGroupDetail:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            
+        }
+        else
+        {
+            [self callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(error,nil);
+    }];
+}
+
+
 - (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     //__WeakSelf__ weakSelf = self;

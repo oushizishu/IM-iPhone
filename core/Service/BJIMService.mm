@@ -519,6 +519,11 @@
     return group;
 }
 
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
+{
+    [self.imEngine postGetGroupDetail:groupId callback:callback];
+}
+
 #pragma mark - remark name
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
