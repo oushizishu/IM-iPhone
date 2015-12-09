@@ -307,7 +307,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)postGetGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
 {
     __WeakSelf__ weakSelf = self;
     
@@ -317,15 +317,53 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            
+            GroupDetail *groupDetail = [MTLJSONAdapter modelOfClass:[GroupDetail class] fromJSONDictionary:result.dictionaryData error:&error];
+            callback(nil,groupDetail);
         }
         else
         {
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
         callback(error,nil);
     }];
+}
+
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback
+{
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesGetGroupMembers:groupId page:page pageSize:pageSize succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            NSArray *members = [MTLJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:[result.data  objectForKey:@"list"] error:&error];
+            callback(nil,members,[result.data objectForKey:@"has_more"]);
+        }
+        else
+        {
+            callback(error,nil,0);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(error,nil,0);
+    }];
+}
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment
+                       filePath:(NSString*)filePath
+                       fileName:(NSString*)fileName
+                       callback:(void(^)(NSError *error ,NSString *storage_id))callback
+                       progress:(onProgress)progress
+{
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesUploadGroupFile:attachment filePath:nil fileName:nil success:^(id response, NSDictionary *responseHeaders, RequestParams *params){
+        
+    } failure:^(NSError *error, RequestParams *params) {
+        
+    } progress:progress];
 }
 
 

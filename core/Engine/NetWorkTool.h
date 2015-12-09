@@ -69,6 +69,27 @@
                                             succ:(onSuccess)succ
                                          failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesGetGroupMembers:(int64_t)groupId
+                                           page:(NSInteger)page
+                                       pageSize:(NSInteger)pageSize
+                                           succ:(onSuccess)succ
+                                        failure:(onFailure)failure;
+
++ (NSOperationQueue *)getGroupFileUploadQueue;
+
++ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
+                                    success:(onSuccess)success
+                                    failure:(onFailure)failure
+                                      retry:(onRetryRequest)retry
+                                   progress:(onProgress)progress;
+
++ (NSOperation *)hermesUploadGroupFile:(NSString*)attachment
+                              filePath:(NSString*)filePath
+                              fileName:(NSString*)fileName
+                               success:(onSuccess)success
+                               failure:(onFailure)failure
+                              progress:(onProgress)progress;
+
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
                                      userRole:(IMUserRole)userRole
                                          succ:(onSuccess)succ

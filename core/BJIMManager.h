@@ -79,6 +79,13 @@
 
 //获取群组详情
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
+//获取群成员
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback;
+//获取群文件
+- (void)getGroupFiles:(int64_t)groupId page:(NSInteger)page callback:(void(^)(NSError *error ))callback;
+//上传文件
+- (NSOperation*)uploadGroupFile:(NSString*)attachment callback:(void(^)(NSError *error ,NSString *storage_id))callback;
+//添加文件
 
 #pragma mark - current chat
 //开始聊天

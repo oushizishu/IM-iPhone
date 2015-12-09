@@ -52,6 +52,10 @@
 
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback;
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment callback:(void(^)(NSError *error ,NSString *storage_id))callback;
+
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
 - (NSArray *)getStudentContactsWithUser:(User *)user;

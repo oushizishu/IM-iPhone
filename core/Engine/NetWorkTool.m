@@ -9,6 +9,7 @@
 #import "NetWorkTool.h"
 #import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 #import "NSDictionary+Json.h"
+#import <AFNetworking.h>
 
 #define HOST_APIS @[@"http://dev01-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
@@ -24,7 +25,9 @@
 #define HERMES_API_GET_USER_INFO [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
 #define HERMES_API_GET_GROUP_PROFILE [NSString stringWithFormat:@"%@/hermes/getGroupProfile", HOST_API]
 
-#define HERMES_API_GET_GROUP_DETAIL [NSString stringWithFormat:@"%@/group/profile2", HOST_API]
+#define HERMES_API_GET_GROUP_DETAIL [NSString stringWithFormat:@"%@/hermes/getGroupProfile2", HOST_API]
+#define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
+#define HERMES_API_UPLOAD_GROUP_FILE [NSString stringWithFormat:@"%@/storage/uploadFile", HOST_API]
 
 #define HERMES_API_GET_ADD_ATTENTION [NSString stringWithFormat:@"%@/focus/addFocus", HOST_API]
 #define HERMES_API_GET_CANCEL_ATTENTION [NSString stringWithFormat:@"%@/focus/removeFocus", HOST_API]
@@ -33,7 +36,6 @@
 #define HERMES_API_ADD_RECENT_CONTACT [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
 
 //群组
-#define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
 #define HERMES_API_SET_GROUP_NAME [NSString stringWithFormat:@"%@/hermes/setGroupName", HOST_API]
 #define HERMES_API_SET_MSG_STATUS [NSString stringWithFormat:@"%@/hermes/setMsgStatus", HOST_API]
 #define HERMES_API_SET_PUSH_STATUS [NSString stringWithFormat:@"%@/hermes/setPushStatus", HOST_API]
@@ -260,10 +262,148 @@
         failure(nil, nil);
         return nil;
     }
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:kHttpMethod_POST];
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:kHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesGetGroupMembers:(int64_t)groupId
+                                           page:(NSInteger)page
+                                       pageSize:(NSInteger)pageSize
+                                           succ:(onSuccess)succ
+                                        failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", pageSize] forKey:@"page_size"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (NSOperationQueue *)getGroupFileUploadQueue
+{
+    static NSOperationQueue *_groupFileUploadQueue = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _groupFileUploadQueue = [[NSOperationQueue alloc] init];
+        _groupFileUploadQueue.maxConcurrentOperationCount = 1;
+    });
+    return _groupFileUploadQueue;
+}
+
++ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
+                                    success:(onSuccess)success
+                                    failure:(onFailure)failure
+                                      retry:(onRetryRequest)retry
+                                   progress:(onProgress)progress
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    //https
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    
+    //response
+    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.removesKeysWithNullValues = YES;
+    
+    NSMutableSet *contentTypes = [NSMutableSet setWithSet:responseSerializer.acceptableContentTypes];
+    [contentTypes addObject:@"text/plain"];
+    responseSerializer.acceptableContentTypes = contentTypes;
+    
+    manager.responseSerializer = responseSerializer;
+    
+    //request
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    [manager.requestSerializer setTimeoutInterval:requestParams.requestTimeOut];
+    
+    NSMutableURLRequest *request = nil;
+    
+    if (requestParams.httpMethod == kHttpMethod_GET)
+    {
+        //Get
+        NSError *error = nil;
+        request = [manager.requestSerializer requestWithMethod:@"GET" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams error:&error];
+    }
+    else if (requestParams.httpMethod == kHttpMethod_POST)
+    {
+        //Post
+        NSError *error = nil;
+        request = [manager.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
+            
+            NSArray *allKeys = requestParams.fileParams.allKeys;
+            for (NSString *key in allKeys) {
+                FileWrapper *wrapper = [requestParams.fileParams objectForKey:key];
+                NSURL *fileUrl = [NSURL fileURLWithPath:wrapper.filePath];
+                NSError *error = nil;
+                [formData appendPartWithFileURL:fileUrl name:key fileName:wrapper.fileName mimeType:wrapper.mimeType error:&error];
+            }
+        } error:&error];
+    }
+    
+    NSDate *__date = [NSDate date];
+    //request headers
+    request.allHTTPHeaderFields = requestParams.requestHeaders;
+    
+    __weak typeof(self) weakSelf = self;
+    AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        
+        if (success && ![operation isCancelled])
+        {
+            success(responseObject, operation.response.allHeaderFields, requestParams);
+        }
+        
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        
+        if (requestParams.maxRetryCount > 0)
+        {
+            requestParams.maxRetryCount --;
+            
+            BJNetRequestOperation *op = [weakSelf doNetworkRequest:requestParams success:success failure:failure retry:retry progress:progress];
+            if (retry)
+            {
+                retry(error, requestParams, op);
+            }
+            return ;
+        }
+        if (failure && ![operation isCancelled])
+        {
+            failure(error, requestParams);
+        }
+    }];
+    
+    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
+        if (progress)
+        {
+            progress(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
+        }
+    }];
+    
+    [[self getGroupFileUploadQueue] addOperation:operation];
+    return operation;
+}
+
++ (NSOperation *)hermesUploadGroupFile:(NSString*)attachment
+                              filePath:(NSString*)filePath
+                              fileName:(NSString*)fileName
+                               success:(onSuccess)success
+                               failure:(onFailure)failure
+                              progress:(onProgress)progress
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendFile:filePath mimeType:attachment filename:fileName forKey:@"attachment"];
+    return [self doNetworkRequest:requestParams success:success failure:failure retry:nil progress:progress];
 }
 
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId

@@ -157,7 +157,16 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 
 - (void)postGetGroupProfile:(int64_t)groupId callback:(void(^)(Group *result))callback;
 
-- (void)postGetGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
+
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback;
+
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment
+                       filePath:(NSString*)filePath
+                       fileName:(NSString*)fileName
+                       callback:(void(^)(NSError *error ,NSString *storage_id))callback
+                       progress:(onProgress)progress;
 
 //添加关注关系
 - (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;

@@ -153,6 +153,16 @@
     return [self.imService getGroupDetail:groupId callback:callback];
 }
 
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback
+{
+    return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
+}
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment callback:(void(^)(NSError *error ,NSString *storage_id))callback
+{
+    return [self.imService uploadGroupFile:attachment callback:callback];
+}
+
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {
