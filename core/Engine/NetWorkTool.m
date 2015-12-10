@@ -27,7 +27,9 @@
 
 #define HERMES_API_GET_GROUP_DETAIL [NSString stringWithFormat:@"%@/hermes/getGroupProfile2", HOST_API]
 #define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
+#define HERMES_API_GET_GROUP_LISTFILE [NSString stringWithFormat:@"%@/group/listFile", HOST_API]
 #define HERMES_API_UPLOAD_GROUP_FILE [NSString stringWithFormat:@"%@/storage/uploadFile", HOST_API]
+#define HERMES_API_ADD_GROUP_FILE [NSString stringWithFormat:@"%@/group/addFile", HOST_API]
 
 #define HERMES_API_GET_ADD_ATTENTION [NSString stringWithFormat:@"%@/focus/addFocus", HOST_API]
 #define HERMES_API_GET_CANCEL_ATTENTION [NSString stringWithFormat:@"%@/focus/removeFocus", HOST_API]
@@ -287,24 +289,41 @@
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (NSOperationQueue *)getGroupFileUploadQueue
++ (BJNetRequestOperation *)hermesGetGroupFiles:(int64_t)groupId
+                            last_file_id:(int64_t)last_file_id
+                                    succ:(onSuccess)succ
+                                 failure:(onFailure)failure
 {
-    static NSOperationQueue *_groupFileUploadQueue = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _groupFileUploadQueue = [[NSOperationQueue alloc] init];
-        _groupFileUploadQueue.maxConcurrentOperationCount = 1;
-    });
-    return _groupFileUploadQueue;
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_LISTFILE method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_file_id] forKey:@"last_file_id"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
++ (NSOperationQueue *)getGroupFileUploadQueue
+{
+    static AFHTTPRequestOperationManager *_uploadManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _uploadManager = [AFHTTPRequestOperationManager manager];
+        _uploadManager.operationQueue.maxConcurrentOperationCount = 1;
+    });
+    return _uploadManager;
+}
+
++ (NSOperation *)doNetworkRequest:(RequestParams *)requestParams
                                     success:(onSuccess)success
                                     failure:(onFailure)failure
                                       retry:(onRetryRequest)retry
                                    progress:(onProgress)progress
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    AFHTTPRequestOperationManager *manager = [self getGroupFileUploadQueue];
     //https
     manager.securityPolicy.allowInvalidCertificates = YES;
     
@@ -384,7 +403,7 @@
         }
     }];
     
-    [[self getGroupFileUploadQueue] addOperation:operation];
+    [manager.operationQueue addOperation:operation];
     return operation;
 }
 
@@ -400,11 +419,115 @@
         failure(nil, nil);
         return nil;
     }
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:kHttpMethod_GET];
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:kHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:attachment forKey:@"attachment"];
     [requestParams appendFile:filePath mimeType:attachment filename:fileName forKey:@"attachment"];
+    
     return [self doNetworkRequest:requestParams success:success failure:failure retry:nil progress:progress];
 }
+
++ (BJNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
+                                   storage_id:(int64_t)storage_id
+                                     fileName:(NSString*)fileName
+                                         succ:(onSuccess)succ
+                                      failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_ADD_GROUP_FILE method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", storage_id] forKey:@"storage_id"];
+    [requestParams appendPostParamValue:fileName forKey:@"filename"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (NSOperationQueue *)getGroupFileDownloadQueue
+{
+    static AFHTTPRequestOperationManager *_downloadManager = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        _downloadManager = [AFHTTPRequestOperationManager manager];
+        _downloadManager.operationQueue.maxConcurrentOperationCount = 1;
+    });
+    return _downloadManager;
+}
+
++ (BJNetRequestOperation *)doDownloadResource:(RequestParams *)requestParams
+                                 fileDownPath:(NSString *)filePath
+                                      success:(onSuccess)success
+                                        retry:(onRetryRequest)retry
+                                      failure:(onFailure)failure
+                                     progress:(onProgress)progress
+{
+    AFHTTPRequestOperationManager *manager = [self getGroupFileDownloadQueue];
+    //https
+    manager.securityPolicy.allowInvalidCertificates = YES;
+    AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
+    // timeout
+    [requestSerializer setTimeoutInterval:requestParams.requestTimeOut];
+    
+    NSError *error = nil;
+    NSURLRequest *request = [requestSerializer requestWithMethod:@"GET" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams error:&error];
+    
+    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
+    operation.securityPolicy.allowInvalidCertificates = YES;
+    
+    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:filePath append:NO];
+    
+    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
+        if (progress)
+        {
+            progress(bytesRead, totalBytesRead, totalBytesExpectedToRead);
+        }
+    }];
+    
+    __weak typeof(self) weakSelf = self;
+    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
+        if (success && ![operation isCancelled])
+        {
+            success(responseObject, operation.response.allHeaderFields, requestParams);
+        }
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        if (requestParams.maxRetryCount > 0)
+        {
+            requestParams.maxRetryCount -- ;
+            BJNetRequestOperation *op = [weakSelf doDownloadResource:requestParams fileDownPath:filePath success:success retry:retry failure:failure progress:progress];
+            if (retry)
+            {
+                retry(error, requestParams, op);
+            }
+            return ;
+        }
+        if (failure && ![operation isCancelled])
+        {
+            failure(error, requestParams);
+        }
+    }];
+    
+    [manager.operationQueue addOperation:operation];
+    return operation;
+}
+
++ (NSOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
+                                filePath:(NSString*)filePath
+                                 success:(onSuccess)success
+                                 failure:(onFailure)failure
+                                progress:(onProgress)progress
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:fileUrl method:kHttpMethod_GET];
+    return [self doDownloadResource:requestParams fileDownPath:filePath success:success retry:nil failure:failure progress:progress];
+}
+
 
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
                                      userRole:(IMUserRole)userRole

@@ -10,15 +10,27 @@
 
 @interface GroupFile : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, strong) NSString *fileId;
-@property (nonatomic, strong) NSString *file_type;
+@property (nonatomic, assign) int64_t group_id;
+@property (nonatomic, assign) int64_t fileId;
+@property (nonatomic, assign) int64_t storage_id;
+@property (nonatomic, assign) int64_t user_role;
+@property (nonatomic, assign) int64_t user_id;
+@property (nonatomic, assign) int64_t filesize;
+@property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, strong) NSString *file_url;
+@property (nonatomic, strong) NSString *file_type;
+@property (nonatomic, strong) NSString *filename;
+@property (nonatomic, strong) NSString *info;
+@property (nonatomic, strong) NSString *create_time;
+@property (nonatomic, assign) BOOL show_delete;
+@property (nonatomic, assign) BOOL support_preview;
+@property (nonatomic, assign) BOOL is_del;
+@property (nonatomic, assign) int64_t del_user_id;
 
 @end
 
 @interface GroupListFile : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, strong) NSString *page;
 @property (nonatomic, assign) int64_t page_size;
 @property (nonatomic, assign) int64_t total;
 @property (nonatomic, strong) NSArray<GroupFile *> *list;

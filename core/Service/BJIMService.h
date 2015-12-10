@@ -12,6 +12,7 @@
 #import "IMMessage.h"
 #import "BJIMAbstractEngine.h"
 #import "GroupDetail.h"
+#import <BJHL-Common-iOS-SDK/BJNetworkUtil.h>
 
 
 @class BaseResponse;
@@ -54,7 +55,25 @@
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback;
 
-- (NSOperation*)uploadGroupFile:(NSString*)attachment callback:(void(^)(NSError *error ,NSString *storage_id))callback;
+- (void)getGroupFiles:(int64_t)groupId
+         last_file_id:(int64_t)last_file_id
+             callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment
+                       filePath:(NSString*)filePath
+                       fileName:(NSString*)fileName
+                       callback:(void(^)(NSError *error ,int64_t storage_id))callback
+                       progress:(onProgress)progress;
+
+- (void)addGroupFile:(int64_t)groupId
+          storage_id:(int64_t)storage_id
+            fileName:(NSString*)fileName
+            callback:(void(^)(NSError *error ,GroupFile *groupFile))callback;
+
+- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+                         filePath:(NSString*)filePath
+                         callback:(void(^)(NSError *error))callback
+                         progress:(onProgress)progress;
 
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;

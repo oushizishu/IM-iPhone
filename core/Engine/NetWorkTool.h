@@ -75,9 +75,14 @@
                                            succ:(onSuccess)succ
                                         failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesGetGroupFiles:(int64_t)groupId
+                            last_file_id:(int64_t)last_file_id
+                                    succ:(onSuccess)succ
+                                 failure:(onFailure)failure;
+
 + (NSOperationQueue *)getGroupFileUploadQueue;
 
-+ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
++ (NSOperation *)doNetworkRequest:(RequestParams *)requestParams
                                     success:(onSuccess)success
                                     failure:(onFailure)failure
                                       retry:(onRetryRequest)retry
@@ -89,6 +94,27 @@
                                success:(onSuccess)success
                                failure:(onFailure)failure
                               progress:(onProgress)progress;
+
++ (BJNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
+                                   storage_id:(int64_t)storage_id
+                                     fileName:(NSString*)fileName
+                                         succ:(onSuccess)succ
+                                      failure:(onFailure)failure;
+
++ (NSOperationQueue *)getGroupFileDownloadQueue;
+
++ (NSOperation *)doDownloadResource:(RequestParams *)requestParams
+                       fileDownPath:(NSString *)filePath
+                            success:(onSuccess)success
+                              retry:(onRetryRequest)retry
+                            failure:(onFailure)failure
+                           progress:(onProgress)progress;
+
++ (NSOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
+                                filePath:(NSString*)filePath
+                                 success:(onSuccess)success
+                                 failure:(onFailure)failure
+                                progress:(onProgress)progress;
 
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
                                      userRole:(IMUserRole)userRole

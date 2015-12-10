@@ -158,9 +158,36 @@
     return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
 }
 
-- (NSOperation*)uploadGroupFile:(NSString*)attachment callback:(void(^)(NSError *error ,NSString *storage_id))callback
+- (void)getGroupFiles:(int64_t)groupId
+         last_file_id:(int64_t)last_file_id
+             callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
 {
-    return [self.imService uploadGroupFile:attachment callback:callback];
+    return [self.imService getGroupFiles:groupId last_file_id:last_file_id callback:callback];
+}
+
+- (NSOperation*)uploadGroupFile:(NSString*)attachment
+                       filePath:(NSString*)filePath
+                       fileName:(NSString*)fileName
+                       callback:(void(^)(NSError *error ,int64_t storage_id))callback
+                       progress:(onProgress)progress
+{
+    return [self.imService uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
+}
+
+- (void)addGroupFile:(int64_t)groupId
+          storage_id:(int64_t)storage_id
+            fileName:(NSString*)fileName
+            callback:(void(^)(NSError *error ,GroupFile *groupFile))callback
+{
+    return [self.imService addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
+}
+
+- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+                         filePath:(NSString*)filePath
+                         callback:(void(^)(NSError *error))callback
+                         progress:(onProgress)progress;
+{
+    return [self.imService downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
 }
 
 #pragma mark - current chat

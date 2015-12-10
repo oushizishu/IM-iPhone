@@ -16,15 +16,22 @@
 +(NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
+             @"group_id":@"group_id",
              @"fileId":@"id",
-             @"is_admin":@"is_admin",
-             @"is_major":@"is_major",
-             @"msg_status":@"msg_status",
-             @"push_status":@"push_status",
-             @"user_id":@"user_id",
+             @"storage_id":@"storage_id",
              @"user_role":@"user_role",
+             @"user_id":@"user_id",
+             @"filesize":@"filesize",
              @"user_name":@"user_name",
-             @"user_number":@"user_number",
+             @"file_url":@"file_url",
+             @"file_type":@"file_type",
+             @"filename":@"filename",
+             @"info":@"info",
+             @"create_time":@"create_time",
+             @"show_delete":@"show_delete",
+             @"support_preview":@"support_preview",
+             @"is_del":@"is_del",
+             @"del_user_id":@"del_user_id",
              };
 }
 
@@ -48,7 +55,6 @@
 +(NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-             @"page":@"page",
              @"page_size":@"page_size",
              @"total":@"total",
              @"list":@"list",

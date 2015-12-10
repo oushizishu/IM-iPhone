@@ -351,18 +351,87 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)getGroupFiles:(int64_t)groupId
+         last_file_id:(int64_t)last_file_id
+             callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesGetGroupFiles:groupId last_file_id:last_file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            GroupListFile *listFile = [MTLJSONAdapter modelOfClass:[GroupListFile class] fromJSONDictionary:result.data error:&error];
+            callback(nil,listFile.list);
+        }
+        else
+        {
+            callback(error,nil);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(error,nil);
+    }];
+}
+
 - (NSOperation*)uploadGroupFile:(NSString*)attachment
                        filePath:(NSString*)filePath
                        fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,NSString *storage_id))callback
+                       callback:(void(^)(NSError *error ,int64_t storage_id))callback
                        progress:(onProgress)progress
 {
     __WeakSelf__ weakSelf = self;
-    
-    [NetWorkTool hermesUploadGroupFile:attachment filePath:nil fileName:nil success:^(id response, NSDictionary *responseHeaders, RequestParams *params){
         
+    return [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, RequestParams *params){
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            int64_t storage_id = [[result.data objectForKey:@"id"] longLongValue];
+            callback(nil,storage_id);
+        }
+        else
+        {
+            callback(error,nil);
+        }
     } failure:^(NSError *error, RequestParams *params) {
-        
+         callback(error,nil);
+    } progress:progress];
+}
+
+- (void)addGroupFile:(int64_t)groupId
+          storage_id:(int64_t)storage_id
+            fileName:(NSString*)fileName
+            callback:(void(^)(NSError *error ,GroupFile *groupFile))callback
+{
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesAddGroupFile:groupId storage_id:storage_id fileName:fileName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            GroupFile *groupFile = [MTLJSONAdapter modelOfClass:[GroupFile class] fromJSONDictionary:[result.data objectForKey:@"file"] error:&error];
+            callback(nil,groupFile);
+        }
+        else
+        {
+            callback(error,nil);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(error,nil);
+    }];
+}
+
+- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+                         filePath:(NSString*)filePath
+                         callback:(void(^)(NSError *error))callback
+                         progress:(onProgress)progress
+{
+    __WeakSelf__ weakSelf = self;
+    return [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        callback(nil);
+    } failure:^(NSError *error, RequestParams *params) {
+        callback(error);
     } progress:progress];
 }
 
