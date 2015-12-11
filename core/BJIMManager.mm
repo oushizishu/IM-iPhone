@@ -190,6 +190,48 @@
     return [self.imService downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
 }
 
+- (void)previewGroupFile:(int64_t)groupId
+                 file_id:(int64_t)file_id
+                callback:(void(^)(NSError *error ,NSString *url))callback
+{
+    return [self.imService previewGroupFile:groupId file_id:file_id callback:callback];
+}
+
+- (void)setGroupMsgStatus:(int64_t)status
+                  groupId:(int64_t)groupId
+                 callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupMsgStatus:status groupId:groupId callback:callback];
+}
+
+- (void)deleteGroupFile:(int64_t)groupId
+                file_id:(int64_t)file_id
+               callback:(void(^)(NSError *error))callback
+{
+    return [self.imService deleteGroupFile:groupId file_id:file_id callback:callback];
+}
+
+-(void)createGroupNotice:(int64_t)groupId
+                 content:(NSString*)content
+                callback:(void(^)(NSError *error))callback
+{
+    return [self.imService createGroupNotice:groupId content:content callback:callback];
+}
+
+-(void)getGroupNotice:(int64_t)groupId
+              last_id:(int64_t)last_id
+            page_size:(int64_t)page_size
+             callback:(void(^)(NSError *error ,BOOL idAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
+{
+    return [self.imService getGroupNotice:groupId last_id:last_id page_size:page_size callback:callback];
+}
+
+-(void)removeGroupNotice:(int64_t)notice_id
+                callback:(void(^)(NSError *error))callback
+{
+    return [self.imService removeGroupNotice:notice_id callback:callback];
+}
+
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {

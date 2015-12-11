@@ -10,7 +10,6 @@
 
 @interface GroupFile : MTLModel<MTLJSONSerializing>
 
-@property (nonatomic, assign) int64_t group_id;
 @property (nonatomic, assign) int64_t fileId;
 @property (nonatomic, assign) int64_t storage_id;
 @property (nonatomic, assign) int64_t user_role;
@@ -24,8 +23,6 @@
 @property (nonatomic, strong) NSString *create_time;
 @property (nonatomic, assign) BOOL show_delete;
 @property (nonatomic, assign) BOOL support_preview;
-@property (nonatomic, assign) BOOL is_del;
-@property (nonatomic, assign) int64_t del_user_id;
 
 @end
 

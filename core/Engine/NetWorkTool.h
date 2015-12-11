@@ -116,6 +116,31 @@
                                  failure:(onFailure)failure
                                 progress:(onProgress)progress;
 
++ (BJNetRequestOperation *)hermesPreviewGroupFile:(int64_t)groupId
+                                          file_id:(int64_t)file_id
+                                             succ:(onSuccess)succ
+                                          failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesDeleteGroupFile:(int64_t)groupId
+                                         file_id:(int64_t)file_id
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesCreateGroupNotice:(int64_t)groupId
+                                           content:(NSString*)content
+                                              succ:(onSuccess)succ
+                                           failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesGetGroupNotice:(int64_t)groupId
+                                        last_id:(int64_t)last_id
+                                      page_size:(int64_t)page_size
+                                           succ:(onSuccess)succ
+                                        failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesRemoveGroupNotice:(int64_t)notice_id
+                                              succ:(onSuccess)succ
+                                           failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
                                      userRole:(IMUserRole)userRole
                                          succ:(onSuccess)succ

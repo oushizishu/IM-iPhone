@@ -105,6 +105,38 @@
                          callback:(void(^)(NSError *error))callback
                          progress:(onProgress)progress;
 
+//预览文件
+- (void)previewGroupFile:(int64_t)groupId
+                 file_id:(int64_t)file_id
+                callback:(void(^)(NSError *error ,NSString *url))callback;
+
+//新增设置群消息状态接口（与之前的接口有区别）
+- (void)setGroupMsgStatus:(int64_t)status
+                  groupId:(int64_t)groupId
+                 callback:(void(^)(NSError *error))callback;
+
+//删除群文件
+- (void)deleteGroupFile:(int64_t)groupId
+                file_id:(int64_t)file_id
+               callback:(void(^)(NSError *error))callback;
+
+//发布群公告
+-(void)createGroupNotice:(int64_t)groupId
+                 content:(NSString*)content
+                callback:(void(^)(NSError *error))callback;
+
+//浏览群公告
+-(void)getGroupNotice:(int64_t)groupId
+              last_id:(int64_t)last_id
+            page_size:(int64_t)page_size
+             callback:(void(^)(NSError *error ,BOOL idAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback;
+
+//删除群公告
+-(void)removeGroupNotice:(int64_t)notice_id
+                callback:(void(^)(NSError *error))callback;
+
+
+
 #pragma mark - current chat
 //开始聊天
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole;

@@ -75,6 +75,30 @@
                          callback:(void(^)(NSError *error))callback
                          progress:(onProgress)progress;
 
+- (void)previewGroupFile:(int64_t)groupId
+                 file_id:(int64_t)file_id
+                callback:(void(^)(NSError *error ,NSString *url))callback;
+
+- (void)setGroupMsgStatus:(int64_t)status
+                  groupId:(int64_t)groupId
+                 callback:(void(^)(NSError *error))callback;
+
+- (void)deleteGroupFile:(int64_t)groupId
+                file_id:(int64_t)file_id
+               callback:(void(^)(NSError *error))callback;
+
+-(void)createGroupNotice:(int64_t)groupId
+                 content:(NSString*)content
+                callback:(void(^)(NSError *error))callback;
+
+-(void)getGroupNotice:(int64_t)groupId
+              last_id:(int64_t)last_id
+            page_size:(int64_t)page_size
+             callback:(void(^)(NSError *error ,BOOL idAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback;
+
+-(void)removeGroupNotice:(int64_t)notice_id
+                callback:(void(^)(NSError *error))callback;
+
 - (NSArray *)getGroupsWithUser:(User *)user;
 - (NSArray *)getTeacherContactsWithUser:(User *)user;
 - (NSArray *)getStudentContactsWithUser:(User *)user;

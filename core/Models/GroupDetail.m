@@ -16,7 +16,6 @@
 +(NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-             @"group_id":@"group_id",
              @"fileId":@"id",
              @"storage_id":@"storage_id",
              @"user_role":@"user_role",
@@ -30,8 +29,6 @@
              @"create_time":@"create_time",
              @"show_delete":@"show_delete",
              @"support_preview":@"support_preview",
-             @"is_del":@"is_del",
-             @"del_user_id":@"del_user_id",
              };
 }
 
