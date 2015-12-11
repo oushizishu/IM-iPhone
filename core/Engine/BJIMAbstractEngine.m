@@ -329,7 +329,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback
 {
     __WeakSelf__ weakSelf = self;
     
@@ -340,14 +340,17 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
             NSArray *members = [MTLJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:[result.data  objectForKey:@"list"] error:&error];
-            callback(nil,members,[result.data objectForKey:@"has_more"]);
+            BOOL hasMore = [[result.data objectForKey:@"has_more"] boolValue];
+            BOOL is_admin = [[result.data objectForKey:@"is_admin"] boolValue];
+            BOOL is_major = [[result.data objectForKey:@"is_major"] boolValue];
+            callback(nil,members,hasMore,is_admin,is_major);
         }
         else
         {
-            callback(error,nil,0);
+            callback(error,nil,0,0,0);
         }
     } failure:^(NSError *error, RequestParams *params) {
-        callback(error,nil,0);
+        callback(error,nil,0,0,0);
     }];
 }
 
@@ -535,7 +538,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 -(void)getGroupNotice:(int64_t)groupId
               last_id:(int64_t)last_id
             page_size:(int64_t)page_size
-             callback:(void(^)(NSError *error ,BOOL idAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
+             callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
 {
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesGetGroupNotice:groupId last_id:last_id page_size:page_size succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
@@ -543,9 +546,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            BOOL isAdmin = [result.data objectForKey:@"is_admin"];
+            BOOL isAdmin = [[result.data objectForKey:@"is_admin"] boolValue];
             NSArray<GroupNotice *> *list = [MTLJSONAdapter modelsOfClass:[GroupNotice class] fromJSONArray:[result.data objectForKey:@"notice_list"] error:&error];
-            BOOL hasMore = [result.data objectForKey:@"has_more"];
+            BOOL hasMore = [[result.data objectForKey:@"has_more"] boolValue];
             callback(nil,isAdmin,list,hasMore);
         }
         else

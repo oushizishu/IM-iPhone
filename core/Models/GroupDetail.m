@@ -200,6 +200,8 @@
              @"group_source":@"group_source",
              @"member_list":@"member_list",
              @"notice":@"notice",
+             @"msg_status":@"msg_status",
+             @"is_admin":@"is_admin",
              };
 }
 

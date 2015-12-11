@@ -53,7 +53,7 @@
 
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
-- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore))callback;
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
 
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
@@ -94,7 +94,7 @@
 -(void)getGroupNotice:(int64_t)groupId
               last_id:(int64_t)last_id
             page_size:(int64_t)page_size
-             callback:(void(^)(NSError *error ,BOOL idAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback;
+             callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback;
 
 -(void)removeGroupNotice:(int64_t)notice_id
                 callback:(void(^)(NSError *error))callback;
