@@ -561,6 +561,16 @@
     [self.imEngine removeGroupMember:groupId user_number:user_number user_role:user_role callback:callback];
 }
 
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    [self.imEngine postLeaveGroup:groupId callback:callback];
+}
+
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    [self.imEngine postDisBandGroup:groupId callback:callback];
+}
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback

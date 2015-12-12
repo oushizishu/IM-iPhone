@@ -190,6 +190,16 @@
     return [self.imService removeGroupMember:groupId user_number:user_number user_role:user_role callback:callback];
 }
 
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    return [self.imService postLeaveGroup:groupId callback:callback];
+}
+
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    return [self.imService postDisBandGroup:groupId callback:callback];
+}
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback

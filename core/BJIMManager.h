@@ -108,6 +108,12 @@
                 user_role:(int64_t)user_role
                  callback:(void(^)(NSError *error))callback;
 
+//退群
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+
+//解散群
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+
 //获取群文件
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id

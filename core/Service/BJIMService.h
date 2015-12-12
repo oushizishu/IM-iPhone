@@ -75,6 +75,10 @@
                 user_role:(int64_t)user_role
                  callback:(void(^)(NSError *error))callback;
 
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback;
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
