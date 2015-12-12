@@ -120,6 +120,7 @@
              @"noticeId":@"id",
              @"user_id":@"user_id",
              @"user_role":@"user_role",
+             @"create_date":@"create_date",
              };
 }
 
