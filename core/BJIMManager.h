@@ -83,6 +83,31 @@
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 //获取群成员
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
+
+//移交群
+- (void)transferGroup:(int64_t)groupId
+          transfer_id:(int64_t)transfer_id
+        transfer_role:(int64_t)transfer_role
+             callback:(void(^)(NSError *error))callback;
+
+//设置群头像
+- (void)setGroupAvatar:(int64_t)groupId
+                avatar:(int64_t)avatar
+              callback:(void(^)(NSError *error))callback;
+
+//设置群管理
+- (void)setGroupAdmin:(int64_t)groupId
+          user_number:(int64_t)user_number
+            user_role:(int64_t)user_role
+               status:(int64_t)status
+             callback:(void(^)(NSError *error))callback;
+
+//移除群成员
+- (void)removeGroupMember:(int64_t)groupId
+              user_number:(int64_t)user_number
+                user_role:(int64_t)user_role
+                 callback:(void(^)(NSError *error))callback;
+
 //获取群文件
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id

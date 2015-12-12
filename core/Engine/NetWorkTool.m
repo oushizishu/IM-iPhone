@@ -27,6 +27,10 @@
 
 #define HERMES_API_GET_GROUP_DETAIL [NSString stringWithFormat:@"%@/hermes/getGroupProfile2", HOST_API]
 #define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
+#define HERMES_API_GET_GROUP_TRANSFERGROUP [NSString stringWithFormat:@"%@/hermes/transferGroup", HOST_API]
+#define HERMES_API_GET_GROUP_SETGROUPAVATAR [NSString stringWithFormat:@"%@/hermes/setGroupAvatar", HOST_API]
+#define HERMES_API_GET_GROUP_SETADMIN [NSString stringWithFormat:@"%@/hermes/setAdmin", HOST_API]
+#define HERMES_API_GET_GROUP_REMOVEMEMBER [NSString stringWithFormat:@"%@/hermes/removeMember", HOST_API]
 #define HERMES_API_GET_GROUP_LISTFILE [NSString stringWithFormat:@"%@/group/listFile", HOST_API]
 #define HERMES_API_UPLOAD_GROUP_FILE [NSString stringWithFormat:@"%@/storage/uploadFile", HOST_API]
 #define HERMES_API_ADD_GROUP_FILE [NSString stringWithFormat:@"%@/group/addFile", HOST_API]
@@ -291,6 +295,82 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", pageSize] forKey:@"page_size"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesTransferGroup:(int64_t)groupId
+                                   transfer_id:(int64_t)transfer_id
+                                 transfer_role:(int64_t)transfer_role
+                                          succ:(onSuccess)succ
+                                       failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_TRANSFERGROUP method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_role] forKey:@"transfer_role"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesSetGroupAvatar:(int64_t)groupId
+                                         avatar:(int64_t)avatar
+                                          succ:(onSuccess)succ
+                                       failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPAVATAR method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesSetGroupAdmin:(int64_t)groupId
+                                   user_number:(int64_t)user_number
+                                     user_role:(int64_t)user_role
+                                        status:(int64_t)status
+                                          succ:(onSuccess)succ
+                                       failure:(onFailure)failure;
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETADMIN method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", status] forKey:@"status"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesRemoveGroupMember:(int64_t)groupId
+                                       user_number:(int64_t)user_number
+                                         user_role:(int64_t)user_role
+                                              succ:(onSuccess)succ
+                                           failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETADMIN method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

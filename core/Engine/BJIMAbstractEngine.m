@@ -354,6 +354,106 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)transferGroup:(int64_t)groupId
+          transfer_id:(int64_t)transfer_id
+        transfer_role:(int64_t)transfer_role
+             callback:(void(^)(NSError *error))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesTransferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
+- (void)setGroupAvatar:(int64_t)groupId
+                avatar:(int64_t)avatar
+              callback:(void(^)(NSError *error))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesSetGroupAvatar:groupId avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
+- (void)setGroupAdmin:(int64_t)groupId
+          user_number:(int64_t)user_number
+            user_role:(int64_t)user_role
+               status:(int64_t)status
+             callback:(void(^)(NSError *error))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesSetGroupAdmin:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
+- (void)removeGroupMember:(int64_t)groupId
+              user_number:(int64_t)user_number
+                user_role:(int64_t)user_role
+                 callback:(void(^)(NSError *error))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesRemoveGroupMember:groupId user_number:user_number user_role:user_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback

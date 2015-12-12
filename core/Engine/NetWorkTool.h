@@ -75,6 +75,30 @@
                                            succ:(onSuccess)succ
                                         failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesTransferGroup:(int64_t)groupId
+                                   transfer_id:(int64_t)transfer_id
+                                 transfer_role:(int64_t)transfer_role
+                                          succ:(onSuccess)succ
+                                       failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesSetGroupAvatar:(int64_t)groupId
+                                         avatar:(int64_t)avatar
+                                           succ:(onSuccess)succ
+                                        failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesSetGroupAdmin:(int64_t)groupId
+                                   user_number:(int64_t)user_number
+                                     user_role:(int64_t)user_role
+                                        status:(int64_t)status
+                                          succ:(onSuccess)succ
+                                       failure:(onFailure)failure;
+
++ (BJNetRequestOperation *)hermesRemoveGroupMember:(int64_t)groupId
+                                       user_number:(int64_t)user_number
+                                         user_role:(int64_t)user_role
+                                              succ:(onSuccess)succ
+                                           failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesGetGroupFiles:(int64_t)groupId
                             last_file_id:(int64_t)last_file_id
                                     succ:(onSuccess)succ

@@ -55,6 +55,26 @@
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
 
+- (void)transferGroup:(int64_t)groupId
+          transfer_id:(int64_t)transfer_id
+        transfer_role:(int64_t)transfer_role
+             callback:(void(^)(NSError *error))callback;
+
+- (void)setGroupAvatar:(int64_t)groupId
+                avatar:(int64_t)avatar
+              callback:(void(^)(NSError *error))callback;
+
+- (void)setGroupAdmin:(int64_t)groupId
+          user_number:(int64_t)user_number
+            user_role:(int64_t)user_role
+               status:(int64_t)status
+             callback:(void(^)(NSError *error))callback;
+
+- (void)removeGroupMember:(int64_t)groupId
+              user_number:(int64_t)user_number
+                user_role:(int64_t)user_role
+                 callback:(void(^)(NSError *error))callback;
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;

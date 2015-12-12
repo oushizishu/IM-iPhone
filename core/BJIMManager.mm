@@ -158,6 +158,38 @@
     return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
 }
 
+- (void)transferGroup:(int64_t)groupId
+          transfer_id:(int64_t)transfer_id
+        transfer_role:(int64_t)transfer_role
+             callback:(void(^)(NSError *error))callback
+{
+    return [self.imService transferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role callback:callback];
+}
+
+- (void)setGroupAvatar:(int64_t)groupId
+                avatar:(int64_t)avatar
+              callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupAvatar:groupId avatar:avatar callback:callback];
+}
+
+- (void)setGroupAdmin:(int64_t)groupId
+          user_number:(int64_t)user_number
+            user_role:(int64_t)user_role
+               status:(int64_t)status
+             callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupAdmin:groupId user_number:user_number user_role:user_role status:status callback:callback];
+}
+
+- (void)removeGroupMember:(int64_t)groupId
+              user_number:(int64_t)user_number
+                user_role:(int64_t)user_role
+                 callback:(void(^)(NSError *error))callback
+{
+    return [self.imService removeGroupMember:groupId user_number:user_number user_role:user_role callback:callback];
+}
+
 - (void)getGroupFiles:(int64_t)groupId
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
