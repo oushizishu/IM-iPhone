@@ -579,7 +579,7 @@
     [self.imEngine getGroupFiles:groupId last_file_id:last_file_id callback:callback];
 }
 
-- (NSOperation*)uploadGroupFile:(NSString*)attachment
+- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                        filePath:(NSString*)filePath
                        fileName:(NSString*)fileName
                        callback:(void(^)(NSError *error ,int64_t storage_id))callback
@@ -596,7 +596,7 @@
     [self.imEngine addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
 }
 
-- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                          filePath:(NSString*)filePath
                          callback:(void(^)(NSError *error))callback
                          progress:(onProgress)progress

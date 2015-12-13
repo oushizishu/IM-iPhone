@@ -186,7 +186,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 
-- (NSOperation*)uploadGroupFile:(NSString*)attachment
+- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                        filePath:(NSString*)filePath
                        fileName:(NSString*)fileName
                        callback:(void(^)(NSError *error ,int64_t storage_id))callback
@@ -197,7 +197,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
             fileName:(NSString*)fileName
             callback:(void(^)(NSError *error ,GroupFile *groupFile))callback;
 
-- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                          filePath:(NSString*)filePath
                          callback:(void(^)(NSError *error))callback
                          progress:(onProgress)progress;

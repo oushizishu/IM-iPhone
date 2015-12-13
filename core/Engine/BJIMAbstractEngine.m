@@ -476,7 +476,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (NSOperation*)uploadGroupFile:(NSString*)attachment
+- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                        filePath:(NSString*)filePath
                        fileName:(NSString*)fileName
                        callback:(void(^)(NSError *error ,int64_t storage_id))callback
@@ -525,7 +525,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (NSOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                          filePath:(NSString*)filePath
                          callback:(void(^)(NSError *error))callback
                          progress:(onProgress)progress

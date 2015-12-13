@@ -106,13 +106,13 @@
 
 + (NSOperationQueue *)getGroupFileUploadQueue;
 
-+ (NSOperation *)doNetworkRequest:(RequestParams *)requestParams
++ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
                                     success:(onSuccess)success
                                     failure:(onFailure)failure
                                       retry:(onRetryRequest)retry
                                    progress:(onProgress)progress;
 
-+ (NSOperation *)hermesUploadGroupFile:(NSString*)attachment
++ (BJNetRequestOperation *)hermesUploadGroupFile:(NSString*)attachment
                               filePath:(NSString*)filePath
                               fileName:(NSString*)fileName
                                success:(onSuccess)success
@@ -127,14 +127,14 @@
 
 + (NSOperationQueue *)getGroupFileDownloadQueue;
 
-+ (NSOperation *)doDownloadResource:(RequestParams *)requestParams
++ (BJNetRequestOperation *)doDownloadResource:(RequestParams *)requestParams
                        fileDownPath:(NSString *)filePath
                             success:(onSuccess)success
                               retry:(onRetryRequest)retry
                             failure:(onFailure)failure
                            progress:(onProgress)progress;
 
-+ (NSOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
++ (BJNetRequestOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
                                 filePath:(NSString*)filePath
                                  success:(onSuccess)success
                                  failure:(onFailure)failure

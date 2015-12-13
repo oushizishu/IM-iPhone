@@ -402,7 +402,7 @@
     return _uploadManager;
 }
 
-+ (NSOperation *)doNetworkRequest:(RequestParams *)requestParams
++ (BJNetRequestOperation *)doNetworkRequest:(RequestParams *)requestParams
                                     success:(onSuccess)success
                                     failure:(onFailure)failure
                                       retry:(onRetryRequest)retry
@@ -489,10 +489,10 @@
     }];
     
     [manager.operationQueue addOperation:operation];
-    return operation;
+    return [[BJNetRequestOperation alloc] initWithHttpOperation:operation];
 }
 
-+ (NSOperation *)hermesUploadGroupFile:(NSString*)attachment
++ (BJNetRequestOperation *)hermesUploadGroupFile:(NSString*)attachment
                               filePath:(NSString*)filePath
                               fileName:(NSString*)fileName
                                success:(onSuccess)success
@@ -595,10 +595,10 @@
     }];
     
     [manager.operationQueue addOperation:operation];
-    return operation;
+    return [[BJNetRequestOperation alloc] initWithHttpOperation:operation];
 }
 
-+ (NSOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
++ (BJNetRequestOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
                                 filePath:(NSString*)filePath
                                  success:(onSuccess)success
                                  failure:(onFailure)failure
