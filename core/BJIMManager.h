@@ -283,6 +283,7 @@
 - (void)addDeliveryMessageDelegate:(id<IMDeliveredMessageDelegate>)delegate;
 - (void)addCmdMessageDelegate:(id<IMCmdMessageDelegate>)delegate;
 - (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
+- (void)addNewGroupNoticeDelegate:(id<IMNewGRoupNoticeDelegate>)delegate;
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
 - (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
 - (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;

@@ -49,6 +49,7 @@
 @property (nonatomic, strong) NSHashTable *deliveredMessageDelegates;
 @property (nonatomic, strong) NSHashTable *cmdMessageDelegates;
 @property (nonatomic, strong) NSHashTable *contactChangedDelegates;
+@property (nonatomic, strong) NSHashTable *groupNoticeDelegates;
 @property (nonatomic, strong) NSHashTable *loadMoreMessagesDelegates;
 @property (nonatomic, strong) NSHashTable *recentContactsDelegates;
 @property (nonatomic, strong) NSHashTable *userInfoDelegates;
@@ -1379,6 +1380,26 @@
     {
         if ([delegate respondsToSelector:@selector(didMyContactsChanged)])
             [delegate didMyContactsChanged];
+    }
+}
+
+- (void)addNewGroupNoticeDelegate:(id<IMNewGRoupNoticeDelegate>)delegate
+{
+    if (self.groupNoticeDelegates == nil)
+    {
+        self.groupNoticeDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    
+    [self.groupNoticeDelegates addObject:delegate];
+}
+- (void)notifyNewGroupNotice
+{
+    NSEnumerator *enumerator = [self.groupNoticeDelegates objectEnumerator];
+    id<IMNewGRoupNoticeDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(didNewGroupNotice)])
+            [delegate didNewGroupNotice];
     }
 }
 

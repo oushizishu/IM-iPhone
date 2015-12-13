@@ -190,6 +190,12 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@protocol IMNewGRoupNoticeDelegate <NSObject>
+
+- (void)didNewGroupNotice;
+
+@end
+
 @class Conversation;
 @protocol IMLoadMessageDelegate <NSObject>
 

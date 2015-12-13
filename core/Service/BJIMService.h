@@ -256,6 +256,9 @@
 - (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
 - (void)notifyContactChanged;
 
+- (void)addNewGroupNoticeDelegate:(id<IMNewGRoupNoticeDelegate>)delegate;
+- (void)notifyNewGroupNotice;
+
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
 - (void)notifyPreLoadMessages:(NSArray *)messages conversation:(Conversation *)conversation;
 - (void)notifyLoadMoreMessages:(NSArray *)messages conversation:(Conversation *)conversation hasMore:(BOOL)hasMore;

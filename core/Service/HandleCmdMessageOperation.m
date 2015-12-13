@@ -13,6 +13,7 @@
 #define ACTION_CMD_INNER_NEW_FANS       @"new_fans"
 #define ACTION_CMD_INNER_REMOVE_FANS    @"remove_fans"
 #define ACTION_CMD_CONTACT_INFO_CHANGE  @"contact_info_change"
+#define ACTION_CMD_NEW_GROUP_NOTICE     @"new_group_notice"
 
 @interface HandleCmdMessageOperation()
 
@@ -35,6 +36,8 @@
         self.resultSelector =  [self dealRemoveFreshFans:messageBody service:self.imService];
     } else if ([action isEqualToString:ACTION_CMD_CONTACT_INFO_CHANGE]) {
         self.resultSelector = [self dealContactInfoChange:messageBody service:self.imService];
+    }else if ([action isEqualToString:ACTION_CMD_NEW_GROUP_NOTICE]) {
+        self.resultSelector = [self dealNewGRoupNotice:messageBody service:self.imService];
     }
     
 }
@@ -145,6 +148,23 @@
         return @selector(notifyContactChanged);
     }
     return nil;
+    
+}
+
+- (SEL)dealNewGRoupNotice:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
+{
+    NSError *error;
+    NSDictionary *notice = [messageBody.payload[@"notice"] jsonValue];
+    
+    NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
+    
+    int64_t groupId = [[notice objectForKey:@"group_id"] longLongValue];
+    NSString *content = [notice objectForKey:@"content"];
+    NSString *objectkey = [NSString stringWithFormat:@"NewGroupNotice_%lld",groupId];
+    [userDefaultes setObject:content forKey:objectkey];
+    [userDefaultes synchronize];
+    
+    return @selector(notifyNewGroupNotice);
     
 }
 

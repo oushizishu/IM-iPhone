@@ -675,6 +675,11 @@ if (! [[IMEnvironment shareInstance] isLogin]) return nil;
     [self.imService addContactChangedDelegate:delegate];
 }
 
+- (void)addNewGroupNoticeDelegate:(id<IMNewGRoupNoticeDelegate>)delegate
+{
+    [self.imService addNewGroupNoticeDelegate:delegate];
+}
+
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate
 {
     [self.imService addLoadMoreMessagesDelegate:delegate];
