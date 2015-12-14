@@ -14,6 +14,7 @@
 
 #import "GroupDetail.h"
 #import <BJHL-Common-iOS-SDK/BJNetworkUtil.h>
+#import "IMBaseOperation.h"
 
 
 @class BaseResponse;
@@ -155,6 +156,8 @@
 
 - (void)applicationEnterBackground;
 - (void)applicationEnterForeground;
+
+- (void)appendOperationAfterContacts:(IMBaseOperation *)operation;
 
 #pragma mark - add Delegates
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;

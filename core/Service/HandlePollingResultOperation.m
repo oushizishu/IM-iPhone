@@ -16,6 +16,7 @@
 #import "IMMessage+DB.h"
 
 #import "IMEnvironment.h"
+#import "IMInnerCMDMessageProcessor.h"
 
 @interface HandlePollingResultOperation()
 
@@ -74,13 +75,25 @@
         
         if (message.msg_t == eMessageType_CMD)
         {// CMD 消息，不入库
+            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+            NSString *cmdMsgKey = [NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId, (long)owner.userRole];
+            NSString *oldCmdMsgId = [user objectForKey:cmdMsgKey];
+            if ([oldCmdMsgId longLongValue] < [message.msgId longLongValue]) {
+                [user setObject:message.msgId forKey: cmdMsgKey];
+                [user synchronize];
+            }
            if (self.cmdMessages == nil)
            {
                self.cmdMessages = [[NSMutableArray alloc] init];
            }
             
-            [self.cmdMessages addObject:message];
+            BOOL suc = [IMInnerCMDMessageProcessor processMessage:message withService:self.imService];
+            
+            if (! suc) {
+                [self.cmdMessages addObject:message];
+            }
             continue;
+            
         }
         
         Conversation *conversation = nil;

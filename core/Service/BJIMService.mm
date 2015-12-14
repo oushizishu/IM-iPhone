@@ -829,6 +829,11 @@
 
 }
 
+- (void)appendOperationAfterContacts:(id)operation
+{
+    [self.syncContactsOperationQueue addOperation:operation];
+}
+
 #pragma mark - application call back
 - (void)applicationEnterForeground
 {
