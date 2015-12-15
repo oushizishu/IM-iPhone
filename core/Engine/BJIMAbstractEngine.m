@@ -308,8 +308,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
 {
-    __WeakSelf__ weakSelf = self;
-    
     [NetWorkTool hermesGetGroupDetail:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
         NSError *error;
@@ -321,6 +319,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -330,7 +331,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback
 {
-    __WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesGetGroupMembers:groupId page:page pageSize:pageSize succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
@@ -346,6 +346,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil,0,0,0);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -358,7 +361,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         transfer_role:(int64_t)transfer_role
              callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesTransferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -368,6 +370,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -382,7 +387,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 avatar:(int64_t)avatar
               callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSetGroupAvatar:groupId avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -392,6 +396,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -408,7 +415,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                status:(int64_t)status
              callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesSetGroupAdmin:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -418,6 +424,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -433,7 +442,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 user_role:(int64_t)user_role
                  callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesRemoveGroupMember:groupId user_number:user_number user_role:user_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -443,6 +451,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -457,7 +468,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesGetGroupFiles:groupId last_file_id:last_file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -468,6 +478,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -481,7 +494,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                                  callback:(void(^)(NSError *error ,int64_t storage_id))callback
                                  progress:(onProgress)progress
 {
-    __WeakSelf__ weakSelf = self;
     
     return [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, RequestParams *params){
         NSError *error;
@@ -493,10 +505,13 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
-            callback(error,nil);
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error,0);
         }
     } failure:^(NSError *error, RequestParams *params) {
-        callback(error,nil);
+        callback(error,0);
     } progress:progress];
 }
 
@@ -505,7 +520,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             fileName:(NSString*)fileName
             callback:(void(^)(NSError *error ,GroupFile *groupFile))callback
 {
-    __WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesAddGroupFile:groupId storage_id:storage_id fileName:fileName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
@@ -517,6 +531,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -529,7 +546,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                                    callback:(void(^)(NSError *error))callback
                                    progress:(onProgress)progress
 {
-    __WeakSelf__ weakSelf = self;
     return [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         callback(nil);
     } failure:^(NSError *error, RequestParams *params) {
@@ -541,7 +557,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                  file_id:(int64_t)file_id
                 callback:(void(^)(NSError *error ,NSString *url))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesPreviewGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -552,6 +567,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -563,7 +581,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                   groupId:(int64_t)groupId
                  callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         
@@ -589,7 +606,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 file_id:(int64_t)file_id
                callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesDeleteGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -613,7 +629,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                  content:(NSString*)content
                 callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesCreateGroupNotice:groupId content:content succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -639,7 +654,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             page_size:(int64_t)page_size
              callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesGetGroupNotice:groupId last_id:last_id page_size:page_size succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -652,6 +666,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,NO,nil,NO);
         }
         
@@ -665,7 +682,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 -(void)removeGroupNotice:(int64_t)notice_id
                 callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesRemoveGroupNotice:notice_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
