@@ -322,6 +322,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -347,6 +350,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil,0,0,0);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -369,6 +375,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -393,6 +402,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -419,6 +431,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -444,6 +459,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -469,6 +487,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -494,6 +515,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -518,6 +542,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -553,6 +580,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
@@ -653,6 +683,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         else
         {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
             callback(error,NO,nil,NO);
         }
 
