@@ -418,7 +418,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesSetGroupAdmin:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        if (result != nil  && result.code == RESULT_CODE_SUCC)
         {
             callback(nil);
         }
@@ -445,7 +445,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesRemoveGroupMember:groupId user_number:user_number user_role:user_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             callback(nil);
         }
