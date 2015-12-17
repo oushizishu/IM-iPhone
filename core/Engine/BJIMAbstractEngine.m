@@ -364,7 +364,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     [NetWorkTool hermesTransferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             callback(nil);
         }

@@ -309,7 +309,7 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_TRANSFERGROUP method:kHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_role] forKey:@"transfer_role"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
