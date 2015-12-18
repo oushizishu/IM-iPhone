@@ -701,6 +701,7 @@
 }
 
 + (BJNetRequestOperation *)hermesRemoveGroupNotice:(int64_t)notice_id
+                                          group_id:(int64_t)group_id
                                               succ:(onSuccess)succ
                                            failure:(onFailure)failure
 {
@@ -712,6 +713,7 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_REMOVE_GROUP_NOTICE method:kHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", notice_id] forKey:@"notice_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", group_id] forKey:@"group_id"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

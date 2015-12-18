@@ -127,6 +127,7 @@
              callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback;
 
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback;
 
 - (NSArray *)getGroupsWithUser:(User *)user;

@@ -160,6 +160,7 @@
 
 //删除群公告
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback;
 
 #pragma mark - current chat

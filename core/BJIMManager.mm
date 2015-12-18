@@ -277,9 +277,10 @@
 }
 
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback
 {
-    return [self.imService removeGroupNotice:notice_id callback:callback];
+    return [self.imService removeGroupNotice:notice_id group_id:group_id callback:callback];
 }
 
 #pragma mark - current chat

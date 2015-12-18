@@ -708,9 +708,10 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 }
 
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback
 {
-    [NetWorkTool hermesRemoveGroupNotice:notice_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesRemoveGroupNotice:notice_id group_id:group_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
