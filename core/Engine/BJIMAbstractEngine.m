@@ -491,7 +491,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 - (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
-                                 callback:(void(^)(NSError *error ,int64_t storage_id))callback
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
                                  progress:(onProgress)progress
 {
     
@@ -501,17 +501,18 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
             int64_t storage_id = [[result.data objectForKey:@"id"] longLongValue];
-            callback(nil,storage_id);
+            NSString *storage_url = [result.data objectForKey:@"url"];
+            callback(nil,storage_id,storage_url);
         }
         else
         {
             if (!error) {
                 error = [NSError bjim_errorWithReason:result.msg code:result.code];
             }
-            callback(error,0);
+            callback(error,0,nil);
         }
     } failure:^(NSError *error, RequestParams *params) {
-        callback(error,0);
+        callback(error,0,nil);
     } progress:progress];
 }
 
