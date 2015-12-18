@@ -409,6 +409,33 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)setGroupNameAvatar:(int64_t)groupId
+                 groupName:(NSString*)groupName
+                    avatar:(int64_t)avatar
+                  callback:(void(^)(NSError *error))callback
+{
+    [NetWorkTool hermesSetGroupNameAvatar:groupId groupName:groupName avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
 - (void)setGroupAdmin:(int64_t)groupId
           user_number:(int64_t)user_number
             user_role:(int64_t)user_role

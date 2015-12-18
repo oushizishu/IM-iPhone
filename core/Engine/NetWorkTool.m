@@ -31,6 +31,7 @@
 #define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
 #define HERMES_API_GET_GROUP_TRANSFERGROUP [NSString stringWithFormat:@"%@/hermes/transferGroup", HOST_API]
 #define HERMES_API_GET_GROUP_SETGROUPAVATAR [NSString stringWithFormat:@"%@/hermes/setGroupAvatar", HOST_API]
+#define HERMES_API_GET_GROUP_SETGROUPNameAVATAR [NSString stringWithFormat:@"%@/group/setNameAvatar", HOST_API]
 #define HERMES_API_GET_GROUP_SETADMIN [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
 #define HERMES_API_GET_GROUP_REMOVEMEMBER [NSString stringWithFormat:@"%@/group/removeMember", HOST_API]
 #define HERMES_API_GET_GROUP_LISTFILE [NSString stringWithFormat:@"%@/group/listFile", HOST_API]
@@ -327,6 +328,25 @@
     RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPAVATAR method:kHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (BJNetRequestOperation *)hermesSetGroupNameAvatar:(int64_t)groupId
+                                          groupName:(NSString*)groupName
+                                             avatar:(int64_t)avatar
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPNameAVATAR method:kHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:groupName forKey:@"group_name"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }

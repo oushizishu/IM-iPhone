@@ -85,6 +85,12 @@
                 avatar:(int64_t)avatar
               callback:(void(^)(NSError *error))callback;
 
+//设置群头像与名称
+- (void)setGroupNameAvatar:(int64_t)groupId
+                 groupName:(NSString*)groupName
+                    avatar:(int64_t)avatar
+                  callback:(void(^)(NSError *error))callback;
+
 //设置群管理
 - (void)setGroupAdmin:(int64_t)groupId
           user_number:(int64_t)user_number

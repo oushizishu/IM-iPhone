@@ -86,6 +86,12 @@
                                            succ:(onSuccess)succ
                                         failure:(onFailure)failure;
 
++ (BJNetRequestOperation *)hermesSetGroupNameAvatar:(int64_t)groupId
+                                          groupName:(NSString*)groupName
+                                             avatar:(int64_t)avatar
+                                               succ:(onSuccess)succ
+                                            failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesSetGroupAdmin:(int64_t)groupId
                                    user_number:(int64_t)user_number
                                      user_role:(int64_t)user_role
