@@ -149,6 +149,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                 [weakSelf resetPollingIndex];
             }
             
+            /*
             if ([model.ops count] > 0)
             {
                 // 联系人有改变，刷新联系人
@@ -157,6 +158,7 @@ static int ddLogLevel = DDLogLevelVerbose;
                     [weakSelf syncContacts];
                 }
             }
+            */
             
             if ([[IMEnvironment shareInstance] isCurrentChatToGroup] || [[IMEnvironment shareInstance] isCurrentChatToUser])
             {

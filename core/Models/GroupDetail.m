@@ -197,6 +197,7 @@
              @"origin_avatar":@"origin_avatar",
              @"status":@"status",
              @"user_id":@"user_id",
+             @"user_number":@"user_number",
              @"user_role":@"user_role",
              @"group_source":@"group_source",
              @"member_list":@"member_list",

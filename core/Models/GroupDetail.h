@@ -93,6 +93,7 @@
 @property (nonatomic, assign) int64_t origin_avatar;
 @property (nonatomic, assign) int64_t status;
 @property (nonatomic, assign) int64_t user_id;
+@property (nonatomic, assign) int64_t user_number;
 @property (nonatomic, assign) int64_t user_role;
 @property (nonatomic, assign) int64_t msg_status;
 @property (nonatomic, assign) BOOL is_admin;

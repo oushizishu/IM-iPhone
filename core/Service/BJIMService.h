@@ -86,7 +86,7 @@
 - (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                        filePath:(NSString*)filePath
                        fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,int64_t storage_id))callback
+                       callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
                        progress:(onProgress)progress;
 
 - (void)addGroupFile:(int64_t)groupId
