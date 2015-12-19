@@ -75,6 +75,8 @@
         
         if (message.msg_t == eMessageType_CMD)
         {// CMD 消息，不入库
+            
+            
             NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
             NSString *cmdMsgKey = [NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId, (long)owner.userRole];
             NSString *oldCmdMsgId = [user objectForKey:cmdMsgKey];

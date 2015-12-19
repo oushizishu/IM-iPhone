@@ -52,6 +52,9 @@
                    case eMessageType_NOTIFICATION:
                        messageBody = [IMNotificationMessageBody modelWithDictionary:dictioanry error:&error];
                        break;
+                   case eMessageType_CMD:
+                       messageBody = [IMCmdMessageBody modelWithDictionary:dictioanry error:&error];
+                       break;
                    default:
                        break;
                }
