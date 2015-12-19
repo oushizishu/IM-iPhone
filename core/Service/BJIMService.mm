@@ -545,6 +545,14 @@
     [self.imEngine setGroupAvatar:groupId avatar:avatar callback:callback];
 }
 
+- (void)setGroupNameAvatar:(int64_t)groupId
+                 groupName:(NSString*)groupName
+                    avatar:(int64_t)avatar
+                  callback:(void(^)(NSError *error))callback
+{
+    [self.imEngine setGroupNameAvatar:groupId groupName:groupName avatar:avatar callback:callback];
+}
+
 - (void)setGroupAdmin:(int64_t)groupId
           user_number:(int64_t)user_number
             user_role:(int64_t)user_role
@@ -641,9 +649,10 @@
 }
 
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback
 {
-    [self.imEngine removeGroupNotice:notice_id callback:callback];
+    [self.imEngine removeGroupNotice:notice_id group_id:group_id callback:callback];
 }
 
 #pragma mark - remark name

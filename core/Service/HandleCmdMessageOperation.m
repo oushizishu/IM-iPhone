@@ -9,11 +9,13 @@
 #import "HandleCmdMessageOperation.h"
 #import "IMEnvironment.h"
 #import "NSString+Json.h"
+#import "NSDictionary+Json.h"
 
 #define ACTION_CMD_INNER_NEW_FANS       @"new_fans"
 #define ACTION_CMD_INNER_REMOVE_FANS    @"remove_fans"
 #define ACTION_CMD_CONTACT_INFO_CHANGE  @"contact_info_change"
 #define ACTION_CMD_NEW_GROUP_NOTICE     @"new_group_notice"
+#define ACTION_CMD_UPDATE_CONTACT       @"update_contact"
 
 @interface HandleCmdMessageOperation()
 
@@ -38,6 +40,9 @@
         self.resultSelector = [self dealContactInfoChange:messageBody service:self.imService];
     }else if ([action isEqualToString:ACTION_CMD_NEW_GROUP_NOTICE]) {
         self.resultSelector = [self dealNewGRoupNotice:messageBody service:self.imService];
+    }else if ([action isEqualToString:ACTION_CMD_UPDATE_CONTACT])
+    {
+        self.resultSelector = [self dealUpdateContact:messageBody service:self.imService];
     }
     
 }
@@ -153,19 +158,55 @@
 
 - (SEL)dealNewGRoupNotice:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
 {
-    NSError *error;
-    NSDictionary *notice = [messageBody.payload[@"notice"] jsonValue];
+    NSMutableDictionary *notice = [[NSMutableDictionary alloc] initWithDictionary:[messageBody.payload[@"notice"] jsonValue]];
     
     NSUserDefaults *userDefaultes = [NSUserDefaults standardUserDefaults];
     
+    User *owner = [IMEnvironment shareInstance].owner;
     int64_t groupId = [[notice objectForKey:@"group_id"] longLongValue];
-    NSString *content = [notice objectForKey:@"content"];
-    NSString *objectkey = [NSString stringWithFormat:@"NewGroupNotice_%lld",groupId];
-    [userDefaultes setObject:content forKey:objectkey];
+    NSString *objectkey = [NSString stringWithFormat:@"UserId_%lld_userRole_%ld_NewGroupNotice_%lld",owner.userId,owner.userRole,groupId];
+    
+    BOOL ifNotify = YES;
+    
+    if ([notice objectForKey:@"content"] != nil && [[notice objectForKey:@"content"] length] > 0) {
+        NSDictionary *oldNotice = [[userDefaultes objectForKey:objectkey] jsonValue];
+        if (oldNotice != nil) {
+            if ([[oldNotice objectForKey:@"id"] longLongValue]>=[[notice objectForKey:@"id"] longLongValue]) {
+                ifNotify = NO;
+                [notice setObject:@"NO" forKey:@"ifAutoShow"];
+            }else
+            {
+                [notice setObject:@"YES" forKey:@"ifAutoShow"];
+            }
+        }else
+        {
+            [notice setObject:@"YES" forKey:@"ifAutoShow"];
+        }
+        
+        [userDefaultes setObject:[notice jsonString] forKey:objectkey];
+    }else
+    {
+        ifNotify = NO;
+        [userDefaultes removeObjectForKey:objectkey];
+    }
+    
     [userDefaultes synchronize];
     
-    return @selector(notifyNewGroupNotice);
+    if(ifNotify)
+    {
+        return @selector(notifyNewGroupNotice);
+    }else
+    {
+        return nil;
+    }
+
     
+}
+
+- (SEL)dealUpdateContact:(IMCmdMessageBody *)messageBody service:(BJIMService *)imService
+{
+    [imService.imEngine syncContacts];
+    return nil;
 }
 
 

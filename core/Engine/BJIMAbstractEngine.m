@@ -415,6 +415,33 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)setGroupNameAvatar:(int64_t)groupId
+                 groupName:(NSString*)groupName
+                    avatar:(int64_t)avatar
+                  callback:(void(^)(NSError *error))callback
+{
+    [NetWorkTool hermesSetGroupNameAvatar:groupId groupName:groupName avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, RequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+}
+
 - (void)setGroupAdmin:(int64_t)groupId
           user_number:(int64_t)user_number
             user_role:(int64_t)user_role
@@ -698,10 +725,10 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 }
 
 -(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback
 {
-    __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesRemoveGroupNotice:notice_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesRemoveGroupNotice:notice_id group_id:group_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)

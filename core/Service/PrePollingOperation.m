@@ -63,6 +63,15 @@
             [__excludeUserMsgIds appendFormat:@"%lld,", [msg.msgId longLongValue]];
         }
         
+        if (groupLastMsgId != nil) {
+            
+            NSString *groupCMDMaxID = [user objectForKey:[NSString stringWithFormat:@"%lld_%ld_%lld_GroupCMDMessage_MAXID",owner.userId, (long)owner.userRole,group.groupId]];
+            
+            if ([groupCMDMaxID longLongValue] > [groupLastMsgId integerValue]) {
+                groupLastMsgId = groupCMDMaxID;
+            }
+        }
+        
         NSDictionary *dic = @{@"group_id":[NSString stringWithFormat:@"%lld", group.groupId],
                               @"last_msg_id":groupLastMsgId == nil ? @"0": [NSString stringWithFormat:@"%ld", (long)[groupLastMsgId integerValue]]
                               };

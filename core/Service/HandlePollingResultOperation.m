@@ -328,13 +328,26 @@
         
         if (message.msg_t == eMessageType_CMD)
         {// CMD 消息，不入库
-            //记录收到的最大cmd消息
-            NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
-            NSString *cmdMsgKey = [NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId, (long)owner.userRole];
-            NSString *oldCmdMsgId = [user objectForKey:cmdMsgKey];
-            if ([oldCmdMsgId longLongValue] < [message.msgId longLongValue]) {
-                [user setObject:message.msgId forKey: cmdMsgKey];
-                [user synchronize];
+            
+            if (message.chat_t == eChatType_Chat) {
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSString *cmdMsgKey = [NSString stringWithFormat:@"%lld_%ld_CMDMessage_MAXID",owner.userId, (long)owner.userRole];
+                NSString *oldCmdMsgId = [user objectForKey:cmdMsgKey];
+                if ([oldCmdMsgId longLongValue] < [message.msgId longLongValue]) {
+                    [user setObject:message.msgId forKey: cmdMsgKey];
+                    [user synchronize];
+                }
+            }else if(message.chat_t == eChatType_GroupChat)
+            {
+                Group *chatToGroup = [self.imService.imStorage.groupDao load:message.receiver];
+                
+                NSUserDefaults *user = [NSUserDefaults standardUserDefaults];
+                NSString *groupCMDMsgKey = [NSString stringWithFormat:@"%lld_%ld_%lld_GroupCMDMessage_MAXID",owner.userId, (long)owner.userRole,chatToGroup.groupId];
+                NSString *oldCmdMsgId = [user objectForKey:groupCMDMsgKey];
+                if ([oldCmdMsgId longLongValue] < [message.msgId longLongValue]) {
+                    [user setObject:message.msgId forKey: groupCMDMsgKey];
+                    [user synchronize];
+                }
             }
             
            if (self.cmdMessages == nil)
