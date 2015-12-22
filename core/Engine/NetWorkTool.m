@@ -529,6 +529,23 @@
     return [self doNetworkRequest:requestParams success:success failure:failure retry:nil progress:progress];
 }
 
++ (BJNetRequestOperation *)hermesUploadFaceImage:(NSString *)fileName
+                                        filePath:(NSString *)filePath
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return nil;
+    }
+    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendFile:filePath mimeType:@"image/*" filename:fileName forKey:@"attachment"];
+    
+    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
+}
+
 + (BJNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
                                    storage_id:(int64_t)storage_id
                                      fileName:(NSString*)fileName

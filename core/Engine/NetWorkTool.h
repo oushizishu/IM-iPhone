@@ -125,6 +125,11 @@
                                          failure:(onFailure)failure
                                         progress:(onProgress)progress;
 
++ (BJNetRequestOperation *)hermesUploadFaceImage:(NSString *)fileName
+                                        filePath:(NSString *)filePath
+                                            succ:(onSuccess)succ
+                                         failure:(onFailure)failure;
+
 + (BJNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
                                    storage_id:(int64_t)storage_id
                                      fileName:(NSString*)fileName

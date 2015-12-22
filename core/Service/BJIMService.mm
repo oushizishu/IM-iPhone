@@ -557,6 +557,13 @@
     return [self.imEngine uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
 }
 
+- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+                                 filePath:(NSString*)filePath
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
+{
+    return [self.imEngine uploadImageFile:fileName filePath:filePath callback:callback];
+}
+
 - (void)addGroupFile:(int64_t)groupId
           storage_id:(int64_t)storage_id
             fileName:(NSString*)fileName
