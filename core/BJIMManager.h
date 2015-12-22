@@ -129,10 +129,16 @@
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 //上传文件
 - (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
-                       filePath:(NSString*)filePath
-                       fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                       progress:(onProgress)progress;
+                                 filePath:(NSString*)filePath
+                                 fileName:(NSString*)fileName
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
+                                 progress:(onProgress)progress;
+
+//上传图片文件
+- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+                                 filePath:(NSString*)filePath
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback;
+
 //添加文件
 - (void)addGroupFile:(int64_t)groupId
           storage_id:(int64_t)storage_id

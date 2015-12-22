@@ -89,10 +89,14 @@
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 
 - (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
-                       filePath:(NSString*)filePath
-                       fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                       progress:(onProgress)progress;
+                                 filePath:(NSString*)filePath
+                                 fileName:(NSString*)fileName
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
+                                 progress:(onProgress)progress;
+
+- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+                                 filePath:(NSString*)filePath
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback;
 
 - (void)addGroupFile:(int64_t)groupId
           storage_id:(int64_t)storage_id

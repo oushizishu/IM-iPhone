@@ -192,10 +192,14 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 
 - (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
-                       filePath:(NSString*)filePath
-                       fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                       progress:(onProgress)progress;
+                                 filePath:(NSString*)filePath
+                                 fileName:(NSString*)fileName
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
+                                 progress:(onProgress)progress;
+
+- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+                                 filePath:(NSString*)filePath
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback;
 
 - (void)addGroupFile:(int64_t)groupId
           storage_id:(int64_t)storage_id
@@ -203,9 +207,9 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
             callback:(void(^)(NSError *error ,GroupFile *groupFile))callback;
 
 - (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
-                         filePath:(NSString*)filePath
-                         callback:(void(^)(NSError *error))callback
-                         progress:(onProgress)progress;
+                                   filePath:(NSString*)filePath
+                                   callback:(void(^)(NSError *error))callback
+                                   progress:(onProgress)progress;
 
 - (void)previewGroupFile:(int64_t)groupId
                  file_id:(int64_t)file_id
