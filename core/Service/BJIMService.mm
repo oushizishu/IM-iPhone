@@ -230,7 +230,7 @@
     message.status = eMessageStatus_Send_Fail;
     [self.imStorage.messageDao update:message];
     
-    [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"msg"]];
+    [self notifyDeliverMessage:message errorCode:error.code error:[error.userInfo valueForKey:@"NSLocalizedFailureReason"]];
 }
 
 #pragma mark - Polling Delegate
