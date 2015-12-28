@@ -630,7 +630,23 @@
                   groupId:(int64_t)groupId
                  callback:(void(^)(NSError *error))callback
 {
-    [self.imEngine setGroupMsgStatus:status groupId:groupId callback:callback];
+    WS(weakSelf);
+    [self.imEngine setGroupMsgStatus:status groupId:groupId callback:^(NSError *error) {
+        callback(error);
+        if (error == nil) {
+            User *owner = [IMEnvironment shareInstance].owner;
+            Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
+            if (status == 3) {
+                conv.relation = eConversation_Relation_Group_Closed;
+            }else
+            {
+                conv.relation = eConverastion_Relation_Normal;
+            }
+            [weakSelf.imStorage.conversationDao update:conv];
+            [weakSelf notifyConversationChanged];
+        }
+    }];
+    
 }
 
 - (void)deleteGroupFile:(int64_t)groupId
