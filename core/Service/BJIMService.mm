@@ -635,14 +635,18 @@
         callback(error);
         if (error == nil) {
             User *owner = [IMEnvironment shareInstance].owner;
+            Group *group = [weakSelf.imStorage.groupDao load:groupId];
             Conversation *conv = [weakSelf getConversationUserOrGroupId:groupId userRole:eUserRole_Anonymous ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_GroupChat];
             if (status == 3) {
                 conv.relation = eConversation_Relation_Group_Closed;
+                group.pushStatus = eGroupPushStatus_open;
             }else
             {
                 conv.relation = eConverastion_Relation_Normal;
+                group.pushStatus = eGroupPushStatus_close;
             }
             [weakSelf.imStorage.conversationDao update:conv];
+            [weakSelf.imStorage.groupDao insertOrUpdate:group];
             [weakSelf notifyConversationChanged];
         }
     }];
