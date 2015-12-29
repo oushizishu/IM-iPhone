@@ -130,7 +130,7 @@
 - (void)doAfterOperationOnMain
 {
     if (self.ifRefuse) {
-        [self.imService notifyDeliverMessage:self.message errorCode:-1 error:nil];
+        [self.imService notifyDeliverMessage:self.message errorCode:510008 error:nil];
         [self.imService notifyConversationChanged];
         
     }else
