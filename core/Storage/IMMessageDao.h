@@ -32,6 +32,9 @@
 - (NSString *)querySignMsgIdInConversation:(NSInteger)conversationId withSing:(NSString *)sign;
 - (NSString *)queryAllMessageMaxMsgId;
 
+//删除会话所有消息
+- (void)deleteAllMessageInConversation:(NSInteger)conversationId;
+
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId;
 - (NSArray *)loadGroupChatMessages:(Group *)group inConversation:(NSInteger)conversationId;
 - (NSArray *)queryChatExludeMessagesMaxMsgId:(NSString *)maxMsgId;

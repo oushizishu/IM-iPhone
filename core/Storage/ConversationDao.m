@@ -111,6 +111,31 @@
     }
 }
 
+- (void)deleteAllConversation:(int64_t)ownerId userRole:(IMUserRole)ownerRole
+{
+    /*
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"delete from CONVERSATION where ownerId=%lld \
+                         AND ownerRole=%ld", ownerId, (long)ownerRole];
+        [db executeQuery:sql];
+    }];
+    */
+    NSString *sql = [NSString stringWithFormat:@"delete from CONVERSATION where ownerId=%lld \
+                     AND ownerRole=%ld", ownerId, (long)ownerRole];
+    [self.dbHelper executeSQL:sql arguments:nil];
+    [self clear];
+}
+
+- (NSArray *)loadAllNoConditionWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
+{
+    NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
+                              AND ownerRole=%ld",ownerId,(long)ownerRole];
+    NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
+    [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
+    
+    return array;
+}
+
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
 {
     NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \

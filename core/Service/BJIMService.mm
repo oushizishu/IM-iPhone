@@ -1065,6 +1065,22 @@
     return [self.imStorage.socialContactsDao getAllAttentionsInstitutionCount:user];
 }
 
+- (void)clearConversationAndMessage
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    
+    NSArray *conversationList = [self.imStorage.conversationDao loadAllNoConditionWithOwnerId:user.userId userRole:user.userRole];
+    
+    for(int i = 0; i < [conversationList count]; i++)
+    {
+        Conversation *conversation = [conversationList objectAtIndex:i];
+        [self.imStorage.messageDao deleteAllMessageInConversation:conversation.rowid];
+    }
+    [self.imStorage.conversationDao deleteAllConversation:user.userId userRole:user.userRole];
+    
+    [self notifyConversationChanged];
+}
+
 - (NSArray *)getMyBlackList
 {
     User *user = [IMEnvironment shareInstance].owner;

@@ -210,6 +210,9 @@
 // 我关注的机构数
 - (NSInteger)getMyAttentionsBelongToInstitutionCount;
 
+//清空用户所有会话及消息
+- (void)clearConversationAndMessage;
+
 // 我的黑名单列表
 - (NSArray *)getMyBlackList;
 

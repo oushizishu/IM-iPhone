@@ -180,6 +180,18 @@
     return message.msgId;
 }
 
+- (void)deleteAllMessageInConversation:(NSInteger)conversationId
+{
+    /*
+    [self.dbHelper executeDB:^(FMDatabase *db) {
+        NSString *sql = [NSString stringWithFormat:@"delete from IMMESSAGE where conversationid=%lld", conversationId];
+        [db executeQuery:sql];
+    }];
+    */
+    NSString *sql = [NSString stringWithFormat:@"delete from IMMESSAGE where conversationid=%lld", conversationId];
+    [self.dbHelper executeSQL:sql arguments:nil];
+}
+
 - (NSArray *)loadChatMessagesInConversation:(NSInteger)conversationId
 {
     NSString *queryString = [NSString stringWithFormat:@" conversationId=%ld \

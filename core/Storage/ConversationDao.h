@@ -27,6 +27,11 @@
 //设置会话relation状态
 - (void)setConversationRelation:(Conversation*)conversation withRelation:(CONVERSATION_RELATION)relation;
 
+//删除用户所有会话
+- (void)deleteAllConversation:(int64_t)ownerId userRole:(IMUserRole)ownerRole;
+//获取所有会话
+- (NSArray *)loadAllNoConditionWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole;
+
 /**
  *  返回非陌生人的会话
  *

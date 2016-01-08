@@ -540,6 +540,12 @@
     return [self.imService getMyAttentionsBelongToInstitutionCount];
 }
 
+- (void)clearConversationAndMessage
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return ;
+    return [self.imService clearConversationAndMessage];
+}
+
 - (NSArray *)getMyBlackList
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return nil;
