@@ -139,6 +139,9 @@
 {
     [self.readOperationQueue cancelAllOperations];
     [self.writeOperationQueue cancelAllOperations];
+    [self.sendMessageOperationQueue cancelAllOperations];
+    [self.receiveMessageOperationQueue cancelAllOperations];
+    [self.syncContactsOperationQueue cancelAllOperations];
     
     self.bIsServiceActive = NO;
     
