@@ -77,6 +77,7 @@
 
 @property (nonatomic ,strong) NSString *course;
 @property (nonatomic ,strong) NSString *course_arrange;
+@property (nonatomic ,strong) NSString *order_url;
 @property (nonatomic ,strong) NSArray<GroupTeacher *> *major_teacher_list;
 
 @end

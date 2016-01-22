@@ -146,6 +146,7 @@
     return @{
              @"course":@"course",
              @"course_arrange":@"course_arrange",
+             @"order_url":@"order_url",
              @"major_teacher_list":@"major_teacher_list",
              };
 }
