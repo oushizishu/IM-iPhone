@@ -1,1 +1,0 @@
-../../../BJHL-Common-iOS-SDK/core/JLPermissions/JLPhotosPermission.h

@@ -1,1 +1,0 @@
-../../../BJHL-Common-iOS-SDK/core/BJPhotoBrowser/Classes/BJPictureCommon.h

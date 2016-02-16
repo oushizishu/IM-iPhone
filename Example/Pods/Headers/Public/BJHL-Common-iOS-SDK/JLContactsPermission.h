@@ -1,1 +1,0 @@
-../../../BJHL-Common-iOS-SDK/core/JLPermissions/JLContactsPermission.h

@@ -1465,6 +1465,9 @@
         self.loadMoreMessagesDelegates = [NSHashTable weakObjectsHashTable];
     }
     
+    // 只有在正常聊天时才需要加载消息列表， 所以只保持一个监听。否则会导致消息错乱
+    [self.loadMoreMessagesDelegates removeAllObjects];
+    
     [self.loadMoreMessagesDelegates addObject:delegate];
 }
 
