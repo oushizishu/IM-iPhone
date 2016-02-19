@@ -419,6 +419,7 @@ public:
 
 - (void)doLogin
 {
+    if (nullptr == webSocket) return;
     std::string data = [self construct_login_req];
     webSocket->send(data);
     self.engineActive = YES;
