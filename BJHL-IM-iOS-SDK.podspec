@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
 
   s.source_files = 'core/**/*.{h,m,cpp,mm}'
   s.vendored_libraries = 'core/lib/*.a'
-
+  s.libraries        = 'stdc++'
   s.resource_bundles = {
     'BJHL-IM-iOS-SDK' => ['Resources/*']
   }
