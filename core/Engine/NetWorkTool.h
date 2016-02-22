@@ -177,16 +177,6 @@
                                               succ:(onSuccess)succ
                                            failure:(onFailure)failure;
 
-+ (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
-                                     userRole:(IMUserRole)userRole
-                                         succ:(onSuccess)succ
-                                      failure:(onFailure)failure;
-
-+ (BJNetRequestOperation *)hermesCancelAttention:(int64_t)userId
-                                        userRole:(IMUserRole)userRole
-                                            succ:(onSuccess)succ
-                                         failure:(onFailure)failure;
-
 + (BJNetRequestOperation *)hermesAddBlacklist:(int64_t)userId
                                      userRole:(IMUserRole)userRole
                                          succ:(onSuccess)succ

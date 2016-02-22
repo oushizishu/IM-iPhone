@@ -25,8 +25,6 @@
 typedef NS_ENUM(NSInteger, IMSDKUSer) {
     USER_SYSTEM_SECRETARY = 100000100, // 系统小秘书
     USER_CUSTOM_WAITER    =   100000110, // 客服
-    USER_STRANGER         =   -1000100, // 陌生人
-    USER_FRESH_FANS       =   -1000200, // 新粉丝
 };
 
 
@@ -49,8 +47,6 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Kefu = 7,
     eUserRole_System = 100, //系统通知
     eUserRole_Anonymous = -1,
-    eUserRole_Stanger = -2, //陌生人
-    eUserRole_Fans = -3 // 新粉丝
 };
 
 #pragma mark - 消息类型
@@ -122,31 +118,9 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
     eError_token_invalid = 510005, //token 失效
 };
 
-#pragma mark - 黑名单关系
-typedef NS_ENUM(NSInteger, IMBlackStatus) {
-    eIMBlackStatus_Normal = 0, // 正常
-    eIMBlackStatus_Passive = 1, // 被拉黑
-    eIMBlackStatus_Active = 2, // 我拉黑ta
-};
-
 #pragma mark - 来源类型
 typedef NS_ENUM(NSInteger, IMOriginType) {
-    eIMOriginType_Attention = 0, //关注
     eIMOriginType_Order = 1, //订单
-};
-
-#pragma mark - 关注类型
-typedef NS_ENUM(NSInteger, IMFocusType) {
-    eIMFocusType_None = 0, // 未设置
-    eIMFocusType_Active = 1, // 主动关注， 我关注TA
-    eIMFocusType_Passive = 2, // 被关注， TA 关注我
-    eIMFocusType_Both = 3, // 互相关注
-};
-
-#pragma mark - 浅关注类型
-typedef NS_ENUM(NSInteger, IMTinyFocus) {
-    eIMTinyFocus_None = 0, // 未浅关注
-    eIMTinyFocus_Been = 1, // 已浅关注
 };
 
 

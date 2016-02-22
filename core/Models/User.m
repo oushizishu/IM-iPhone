@@ -22,12 +22,6 @@
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             return @([value longLongValue]);
         }];
-    } else if ([key isEqualToString:@"focusTime"] || [key isEqualToString:@"fansTime"] || [key isEqualToString:@"blackTime"]) {
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            NSTimeInterval timestamp = [value doubleValue];
-            return [NSDate dateWithTimeIntervalSince1970:timestamp];
-            
-        }];
     }
     return nil;
 }
@@ -43,14 +37,7 @@
       @"nameHeader":@"name_header",
       @"remarkName":@"remark_name",
       @"remarkHeader":@"remark_header",
-      @"blackStatus":@"black_status",
       @"originType":@"origin_type",
-      @"focusType":@"focus_type",
-      @"tinyFocus":@"tiny_focus",
-      @"focusTime":@"focus_time",
-      @"fansTime":@"fans_time",
-      @"blackStatus":@"black_status",
-      @"blackTime":@"black_time"
       };
 }
 

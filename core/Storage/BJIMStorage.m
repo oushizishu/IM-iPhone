@@ -17,7 +17,6 @@
 #import "StudentContacts.h"
 #import "InstitutionContacts.h"
 #import "RecentContacts.h"
-#import "SocialContactsDao.h"
 
 
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
@@ -64,14 +63,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         self.conversationDao = [[ConversationDao alloc] init];
         self.conversationDao.dbHelper = self.dbHelper;
         self.conversationDao.imStroage = self;
-        
-        self.nFansContactDao = [[FreshFansContactDao alloc] init];
-        self.nFansContactDao.dbHelper = self.dbHelper;
-        self.nFansContactDao.imStroage = self;
-        
-        self.socialContactsDao = [[SocialContactsDao alloc] init];
-        self.socialContactsDao.dbHelper = self.dbHelper;
-        self.socialContactsDao.imStroage = self;
     }
     return self;
 }
@@ -86,17 +77,15 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     [self.groupMemberDao clear];
     [self.messageDao clear];
     [self.conversationDao clear];
-    [self.nFansContactDao clear];
-    [self.socialContactsDao clear];
 }
 
 #pragma mark conversation
-
+//计算未读条数 免打扰的不计数
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole
 {
     __block NSInteger num = 0;
     [self.dbHelper executeDB:^(FMDatabase *db) {
-        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and relation=%ld and toId<>%ld and toId<>%ld and status=0", ownerId, (long)userRole, (long)eConverastion_Relation_Normal, (long)USER_FRESH_FANS, (long)USER_STRANGER];
+        NSString *query = [NSString stringWithFormat:@"select sum(unReadNum) from CONVERSATION where ownerId=%lld and ownerRole=%ld and relation=%ld and status=0", ownerId, (long)userRole, (long)eConverastion_Relation_Normal];
         FMResultSet *result = [db executeQuery: query];
         while ([result next])
         {
@@ -159,39 +148,6 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
         relation.remarkName = contact.remarkName;
         relation.remarkHeader = contact.remarkHeader;
         [self.institutionDao insertOrUpdateContact:relation owner:owner];
-    }
-    
-    // 联系人新增关注表
-    SocialContacts *social = [self.socialContactsDao loadContactId:contact.userId contactRole:contact.userRole ownerId:owner.userId ownerRole:owner.userRole];
-    if (! social) {
-        social = [[SocialContacts alloc] init];
-        social.userId = owner.userId;
-        social.userRole = owner.userRole;
-        social.contactId = contact.userId;
-        social.contactRole = contact.userRole;
-        social.blackStatus = contact.blackStatus;
-        social.originType = contact.originType;
-        social.focusType = contact.focusType;
-        social.tinyFoucs = contact.tinyFocus;
-        social.focusTime = contact.focusTime;
-        social.fansTime = contact.fansTime;
-        social.blackTime = contact.blackTime;
-        
-        social.remarkName = contact.remarkName;
-        social.remarkHeader = contact.remarkHeader;
-        
-        [self.socialContactsDao insert:social];
-    } else {
-        social.remarkName = contact.remarkName;
-        social.remarkHeader = contact.remarkHeader;
-        social.blackStatus = contact.blackStatus;
-        social.originType = contact.originType;
-        social.focusType = contact.focusType;
-        social.tinyFoucs = contact.tinyFocus;
-        social.focusTime = contact.focusTime;
-        social.fansTime = contact.fansTime;
-        social.blackTime = contact.blackTime;
-        [self.socialContactsDao update:social];
     }
 }
 

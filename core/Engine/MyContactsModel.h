@@ -15,8 +15,5 @@
 @property (nonatomic, strong) NSArray *organizationList;
 @property (nonatomic, strong) NSArray *studentList;
 @property (nonatomic, strong) NSArray *groupList;
-@property (nonatomic, strong) NSArray *fansList;
-@property (nonatomic, strong) NSArray *focusList;
-@property (nonatomic, strong) NSArray *blackList;
 
 @end

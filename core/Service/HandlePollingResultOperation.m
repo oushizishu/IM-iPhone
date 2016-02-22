@@ -46,28 +46,6 @@
             owner.name = user.name;
             owner.avatar = user.avatar;
         }
-        if (user.userRole == eUserRole_Teacher || user.userRole == eUserRole_Student || user.userRole == eUserRole_Institution) {
-            SocialContacts *contacts = [self.imService.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
-            if (contacts != nil) {
-                contacts.remarkName = user.remarkName;
-                contacts.remarkHeader = user.remarkHeader;
-                contacts.blackStatus = user.blackStatus;
-                contacts.originType = user.originType;
-                contacts.focusType = user.focusType;
-                contacts.tinyFoucs = user.tinyFocus;
-                if (user.focusTime != nil) {
-                    contacts.focusTime = user.focusTime;
-                }
-                if (user.fansTime != nil) {
-                    contacts.fansTime = user.fansTime;
-                }
-                
-                [self.imService.imStorage.socialContactsDao update:contacts];
-            }else
-            {
-                [self.imService.imStorage.socialContactsDao insert:user withOwner:owner];
-            }
-        }
     }
 }
 
@@ -138,28 +116,6 @@
     {// 创建新的 conversation，unreadnumber 不增加
         conversation = [[Conversation alloc] initWithOwnerId:message.sender ownerRole:message.senderRole toId:message.receiver toRole:message.receiverRole lastMessageId:message.msgId chatType:message.chat_t];
         
-        User *owner = [IMEnvironment shareInstance].owner;
-        
-        if(message.chat_t == eChatType_Chat)
-        {
-            User *user = [self.imService getUser:message.receiver role:message.receiverRole];
-            //判断会话对象是否为陌生人
-            if ([self.imService getIsStanger:user withUser:owner]) {
-                conversation.relation = 1;
-                
-                //获取陌生人会话
-                Conversation *stangerConversation = [self.imService getConversationUserOrGroupId:-1000100 userRole:-2 ownerId:owner.userId ownerRole:owner.userRole chat_t:eChatType_Chat];
-                if (stangerConversation == nil) {
-                    stangerConversation = [[Conversation alloc] initWithOwnerId:owner.userId ownerRole:owner.userRole toId:-1000100 toRole:-2 lastMessageId:message.msgId chatType:eChatType_Chat];
-                    [self.imService.imStorage.conversationDao insert:stangerConversation];
-                }else
-                {
-                    stangerConversation.lastMessageId = message.msgId;
-                    [self.imService.imStorage.conversationDao update:stangerConversation];
-                }
-            }
-        }
-        
         [self.imService insertConversation:conversation];
     }
     else
@@ -214,10 +170,6 @@
     User *owner = [IMEnvironment shareInstance].owner;
     User *toUser = [self.imService.imStorage.userDao loadUser:message.sender role:message.senderRole];
     
-    if ([self.imService getIsStanger:owner withUser:toUser] && conversation.chat_t == eChatType_Chat && conversation.relation != eConversation_Relation_Stranger) {
-        conversation.relation = eConversation_Relation_Stranger;
-    }
-    
     //如果当前正处于这个聊天室， 消息数不增加
     if ([[IMEnvironment shareInstance] isCurrentChatToUser]) {
         if (conversation.toId == [IMEnvironment shareInstance].currentChatToUserId &&
@@ -232,30 +184,6 @@
     
     [self.imService.imStorage.messageDao update:message];
     [self.imService.imStorage.conversationDao update:conversation];
-    
-    //判断会话对象是否为陌生人, 处理“陌生人消息”会话的maxMsgId, unReadNum
-    if ([self.imService getIsStanger:owner withUser:toUser] && ! [self isKindOfClass:[HandleGetMsgOperation class]]) {
-        
-        //获取陌生人会话
-        Conversation *strangerConversation = [self.imService getConversationUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger ownerId:message.receiver ownerRole:message.receiverRole chat_t:eChatType_Chat];
-        
-        if (strangerConversation == nil) {
-            strangerConversation = [[Conversation alloc] initWithOwnerId:message.receiver ownerRole:message.receiverRole toId:USER_STRANGER toRole:eUserRole_Stanger lastMessageId:message.msgId chatType:eChatType_Chat];
-            
-            [self.imService.imStorage.conversationDao insert:strangerConversation];
-        }
-        
-        strangerConversation.lastMessageId = [self.imService.imStorage.conversationDao queryStrangerConversationsMaxMsgId:message.receiver ownerRole:message.receiverRole];
-        NSInteger count =[self.imService.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
-        if (count != strangerConversation.unReadNum) {
-            strangerConversation.status = 0;
-        }
-
-        strangerConversation.unReadNum = count;
-        
-        [self.imService.imStorage.conversationDao update:strangerConversation];
-        
-    }
     
     return conversation;
 }

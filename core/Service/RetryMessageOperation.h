@@ -14,6 +14,4 @@
 
 @property (nonatomic, strong) IMMessage *message;
 @property (nonatomic, weak) BJIMService *imService;
-@property (nonatomic, strong)NSMutableArray *remindMessageArray;
-@property (nonatomic)BOOL ifRefuse;
 @end

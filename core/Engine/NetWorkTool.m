@@ -41,8 +41,6 @@
 #define HERMES_API_GET_GROUP_NOTICE [NSString stringWithFormat:@"%@/hermes/getGroupNotice", HOST_API]
 #define HERMES_API_REMOVE_GROUP_NOTICE [NSString stringWithFormat:@"%@/hermes/removeGroupNotice", HOST_API]
 
-#define HERMES_API_GET_ADD_ATTENTION [NSString stringWithFormat:@"%@/focus/addFocus", HOST_API]
-#define HERMES_API_GET_CANCEL_ATTENTION [NSString stringWithFormat:@"%@/focus/removeFocus", HOST_API]
 #define HERMES_API_GET_ADD_BLACKLIST [NSString stringWithFormat:@"%@/hermes/addBlack", HOST_API]
 #define HERMES_API_GET_CANCEL_BLACKLIST [NSString stringWithFormat:@"%@/hermes/removeBlack", HOST_API]
 #define HERMES_API_ADD_RECENT_CONTACT [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
@@ -734,41 +732,6 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", notice_id] forKey:@"notice_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", group_id] forKey:@"group_id"];
-    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
-}
-
-
-+ (BJNetRequestOperation *)hermesAddAttention:(int64_t)userId
-                                     userRole:(IMUserRole)userRole
-                                         succ:(onSuccess)succ
-                                      failure:(onFailure)failure;
-{
-    if (! [[IMEnvironment shareInstance] isLogin])
-    {
-        failure(nil, nil);
-        return nil;
-    }
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_ADD_ATTENTION method:kHttpMethod_POST];
-    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
-    return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
-}
-
-+ (BJNetRequestOperation *)hermesCancelAttention:(int64_t)userId
-                                        userRole:(IMUserRole)userRole
-                                            succ:(onSuccess)succ
-                                         failure:(onFailure)failure
-{
-    if (! [[IMEnvironment shareInstance] isLogin])
-    {
-        failure(nil, nil);
-        return nil;
-    }
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:HERMES_API_GET_CANCEL_ATTENTION method:kHttpMethod_POST];
-    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
-    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     return [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:succ failure:failure];
 }
 

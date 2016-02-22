@@ -25,7 +25,6 @@
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
-#import "SetSocialFocusOperation.h"
 
 #import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
@@ -33,7 +32,6 @@
 
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
-#import "PassiveBlacklistOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
@@ -60,8 +58,6 @@
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
-@property (nonatomic, strong) User *stanger;
-@property (nonatomic, strong) User *nFans;
 
 @property (nonatomic, strong, readonly) NSOperationQueue *readOperationQueue; //DB 读操作线程
 @property (nonatomic, strong, readonly) NSOperationQueue *sendMessageOperationQueue; // 消息发送在独立线程上操作
@@ -244,11 +240,6 @@
     
     if(error.code == 510007)//被对方拉黑
     {
-        PassiveBlacklistOperation *passiveOperation = [[PassiveBlacklistOperation alloc] init];
-        passiveOperation.message = message;
-        passiveOperation.imService = self;
-        
-        [self.writeOperationQueue addOperation:passiveOperation];
     }else if(error.code == 510008)//自己拉黑对方
     {
         
@@ -435,14 +426,6 @@
     if (userId == [self getCustomWaiter].userId && userRole == [self getCustomWaiter].userRole)
     {
         return [self getCustomWaiter];
-    }
-    
-    if (userId == USER_STRANGER && userRole == eUserRole_Stanger) {
-        return [self getStranger];
-    }
-    
-    if (userId == USER_FRESH_FANS && userRole == eUserRole_Fans) {
-        return [self getFreshFans];
     }
     
     User *owner = [IMEnvironment shareInstance].owner;
@@ -742,11 +725,6 @@
     return member;
 }
 
-- (SocialContacts *)getSocialUser:(User *)user owner:(User *)owner
-{
-    return [self.imStorage.socialContactsDao loadContactId:user.userId contactRole:user.userRole ownerId:owner.userId ownerRole:owner.userRole];
-}
-
 
 - (NSArray *)getGroupsWithUser:(User *)user
 {
@@ -849,225 +827,6 @@
     return _customeWaiter;
 }
 
-- (User *)getStranger
-{
-    if (_stanger == nil) {
-        _stanger = [self.imStorage.userDao loadUser:USER_STRANGER role:eUserRole_Stanger];
-        if (_stanger == nil) {
-            _stanger = [[User alloc] init];
-            _stanger.userId = USER_STRANGER;
-            _stanger.userRole = eUserRole_Stanger;
-            _stanger.name = @"陌生人消息";
-            [self.imStorage.userDao insertOrUpdateUser:_stanger];
-        }
-    }
-    return _stanger;
-}
-
-- (Conversation *)getStrangerConversation
-{
-    User *owner = [IMEnvironment shareInstance].owner;
-    User *stanger = [self getStranger];
-    return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:stanger.userId userRole:stanger.userRole chatType:eChatType_Chat];
-}
-
-- (NSArray *)getMyStrangerConversations
-{
-    User *owner = [IMEnvironment shareInstance].owner;
-    
-    NSMutableArray *reArray;
-    reArray = [[NSMutableArray alloc] init];
-    NSArray *list = [self.imStorage.conversationDao loadAllStrangerWithOwnerId:owner.userId userRole:owner.userRole];
-    
-    if (list != nil) {
-        [reArray addObjectsFromArray:list];
-    }
-    
-    __WeakSelf__ weakSelf = self;
-    [reArray enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-        Conversation *conversation = (Conversation *)obj;
-        conversation.imService = weakSelf;
-    }];
-    
-    return reArray;
-}
-
-- (void)clearStangerConversationUnreadCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    [self.imStorage.nFansContactDao deleteAllFreshFans:user];
-    Conversation *stangerConversation = [self.imStorage.conversationDao loadWithOwnerId:user.userId ownerRole:user.userRole otherUserOrGroupId:USER_STRANGER userRole:eUserRole_Stanger chatType:eChatType_Chat];
-    if (stangerConversation) {
-        stangerConversation.unReadNum = 0;
-        [self.imStorage.conversationDao update:stangerConversation];
-        [self notifyConversationChanged];
-        
-        NSInteger allUnReadnum = [self.imStorage sumOfAllConversationUnReadNumOwnerId:user.userId userRole:user.userRole];
-        NSInteger otherUnReadNum = [self.imStorage.conversationDao sumOfAllUnReadNumBeenHiden:user];
-        [self notifyUnReadNumChanged:allUnReadnum other:otherUnReadNum];
-    }
-}
-
-- (NSInteger)getMyStrangerConversationsCountHaveNoRead
-{
-    User *owner = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.conversationDao countOfStrangerCovnersationAndUnreadNumNotZero:owner.userId userRole:owner.userRole];
-}
-
-- (User *)getFreshFans
-{
-    if (_nFans == nil) {
-        _nFans = [self.imStorage.userDao loadUser:USER_FRESH_FANS role:eUserRole_Fans];
-        if (_nFans == nil) {
-            _nFans = [[User alloc] init];
-            _nFans.userId = USER_FRESH_FANS;
-            _nFans.userRole = eUserRole_Fans;
-            _nFans.name = @"新粉丝";
-            [self.imStorage.userDao insertOrUpdateUser:_nFans];
-        }
-    }
-    return _nFans;
-}
-
-- (Conversation *)getFreshFansConversation
-{
-    User *owner = [IMEnvironment shareInstance].owner;
-    User *newFans = [self getFreshFans];
-    return [self.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:newFans.userId userRole:newFans.userRole chatType:eChatType_Chat];
-}
-
-- (NSArray*)getMyFreshFans
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadALLFreshFans:user];
-}
-
-- (void)clearMyFreshFans
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    [self.imStorage.nFansContactDao deleteAllFreshFans:user];
-    Conversation *freshConversation = [self.imStorage.conversationDao loadWithOwnerId:user.userId ownerRole:user.userRole otherUserOrGroupId:USER_FRESH_FANS userRole:eUserRole_Fans chatType:eChatType_Chat];
-    if (freshConversation) {
-        freshConversation.unReadNum = 0;
-        [self.imStorage.conversationDao update:freshConversation];
-        [self notifyConversationChanged];
-    }
-}
-
-- (NSInteger)getMyFreshFansCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getALLFreshFansCount:user];
-}
-
-- (NSArray *)getMyMutualUsers
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllMutualUser:user];
-}
-
-- (NSInteger)getMyMutualUsersCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllMutualUserCount:user];
-}
-
-- (NSArray *)getMyFans
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllFans:user];
-}
-
-- (NSInteger)getMyFansCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllFansCount:user];
-}
-
-- (NSArray *)getMyFansBelongToTeacher
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllFansTeacher:user];
-}
-
-- (NSInteger)getMyFansBelongToTeacherCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllFansTeacherCount:user];
-}
-
-- (NSArray *)getMyFansBelongToStudent
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllFansStudent:user];
-}
-
-- (NSInteger)getMyFansBelongToStudentCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllFansStudentCount:user];
-}
-
-- (NSArray *)getMyFansBelongToInstitution
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllFansInstitution:user];
-}
-
-- (NSInteger)getMyFansBelongToInstitutionCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllFansInstitutionCount:user];
-}
-
-- (NSArray *)getMyAttentions
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllAttentions:user];
-}
-
-- (NSInteger)getMyAttentionsCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllAttentionsCount:user];
-}
-
-- (NSArray *)getMyAttentionsBelongToTeacher
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllAttentionsTeacher:user];
-}
-
-- (NSInteger)getMyAttentionsBelongToTeacherCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllAttentionsTeacherCount:user];
-}
-
-- (NSArray *)getMyAttentionsBelongToStudent
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllAttentionsStudent:user];
-}
-
-- (NSInteger)getMyAttentionsBelongToStudentCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllAttentionsStudentCount:user];
-}
-
-- (NSArray *)getMyAttentionsBelongToInstitution
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllAttentionsInstitution:user];
-}
-
-- (NSInteger)getMyAttentionsBelongToInstitutionCount
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao getAllAttentionsInstitutionCount:user];
-}
-
 - (void)clearConversationAndMessage
 {
     User *user = [IMEnvironment shareInstance].owner;
@@ -1082,157 +841,6 @@
     [self.imStorage.conversationDao deleteAllConversation:user.userId userRole:user.userRole];
     
     [self notifyConversationChanged];
-}
-
-- (NSArray *)getMyBlackList
-{
-    User *user = [IMEnvironment shareInstance].owner;
-    return [self.imStorage.socialContactsDao loadAllBlacks:user];
-}
-
-- (BOOL)getIsStanger:(User*)fromUser withUser:(User*)toUser
-{
-    //初始时，设定默认不是陌生人关系。
-    BOOL isStranger = NO;
-    User *owner = [IMEnvironment shareInstance].owner;
-    
-    if (owner.userId == fromUser.userId && owner.userRole == fromUser.userRole) {
-        // 判断我和对方是不是陌生人关系
-        if (fromUser.userRole != eUserRole_Student && toUser.userRole == eUserRole_Student) {
-            // 学生给非学生发消息，都不是陌生人
-            isStranger = NO;
-        } else if (toUser.userRole != eUserRole_Student
-                   && toUser.userRole != eUserRole_Teacher
-                   && toUser.userRole != eUserRole_Institution) {
-            // 对方非主要角色，都不是陌生人
-            isStranger = NO;
-        } else {
-            //我是任一角色，对方不是学生，查表判断
-            SocialContacts *social = [self.imStorage.socialContactsDao loadContactId:toUser.userId contactRole:toUser.userRole ownerId:fromUser.userId ownerRole:fromUser.userRole];
-            
-            if (!social) {
-                isStranger = YES;
-            } else {
-                if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Passive)
-                    && (social.tinyFoucs == eIMTinyFocus_None)) {
-                    isStranger = YES;
-                }
-            }
-        }
-    } else if (owner.userId == toUser.userId && owner.userRole == toUser.userRole) {
-        // 判断对方和我是不是陌生人关系
-        if (fromUser.userRole == eUserRole_Student && toUser.userRole != eUserRole_Student) {
-            // 学生发来的消息， 并且我不是学生。不是陌生人
-            isStranger = NO;
-        } else if (fromUser.userRole != eUserRole_Student
-                   && fromUser.userRole != eUserRole_Teacher
-                   && fromUser.userRole != eUserRole_Institution) {
-            // 发送者非主要角色，不是陌生人
-            isStranger = NO;
-        } else {
-           // 对方不是学生，我是任一角色，查表判断
-            SocialContacts *social = [self.imStorage.socialContactsDao loadContactId:fromUser.userId contactRole:fromUser.userRole ownerId:toUser.userId ownerRole:toUser.userRole];
-            
-            if (!social) {
-                isStranger = YES;
-            } else {
-               if ((social.focusType == eIMFocusType_None || social.focusType == eIMFocusType_Active)) {
-                   isStranger = YES;
-               }
-            }
-        }
-    }
-    
-    return isStranger;
-}
-
-- (void)addAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
-{
-    __WeakSelf__ weakSelf = self;
-    [self.imEngine postAddAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if(result.code == 0)
-        {
-            User *owner = [IMEnvironment shareInstance].owner;
-            SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
-            operation.imService = weakSelf;
-            operation.owner = owner;
-            operation.contact = contact;
-            operation.bAddFocus = YES;
-            
-            contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
-            
-            contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
-            
-            [weakSelf.writeOperationQueue addOperation:operation];
-        }
-        if (callback)
-            callback(err,result, contact);
-    }];
-}
-
-- (void)cancelAttention:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
-{
-    __WeakSelf__ weakSelf = self;
-    [self.imEngine postCancelAttention:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if(result.code == 0)
-        {
-            User *owner = [IMEnvironment shareInstance].owner;
-            SetSocialFocusOperation *operation = [[SetSocialFocusOperation alloc] init];
-            operation.imService = weakSelf;
-            operation.owner = owner;
-            operation.contact = contact;
-            operation.bAddFocus = NO;
-            
-            contact.focusType = (IMFocusType)[[result.data objectForKey:@"focus_type"] integerValue];
-            
-            contact.focusTime = [NSDate dateWithTimeIntervalSince1970:[[result.data objectForKey:@"time"] integerValue]];
-            
-            contact.tinyFocus = eIMTinyFocus_None;
-            
-            [weakSelf.writeOperationQueue addOperation:operation];
-        }
-        if (callback)
-            callback(err,result, contact);
-    }];
-}
-
-- (void)addBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    __WeakSelf__ weakSelf = self;
-    [self.imEngine postAddBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if (result.code == 0) {
-            User *owner = [IMEnvironment shareInstance].owner;
-            if (result.code == 0) {
-                [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Active contact:contact owner:owner];
-                if (owner.userRole == eUserRole_Teacher) {
-                    
-                }else if(owner.userRole == eUserRole_Student)
-                {
-                    [weakSelf.imStorage.studentDao deleteContactId:contact.userId contactRole:contact.userRole owner:owner];
-                }else if(owner.userRole == eUserRole_Institution)
-                {
-                    
-                }
-                [weakSelf notifyContactChanged];
-            }
-        }
-        if (callback)
-            callback(err,result);
-    }];
-}
-
-- (void)cancelBlacklist:(User*)contact callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    __WeakSelf__ weakSelf = self;
-    [self.imEngine postCancelBlacklist:contact.userId role:contact.userRole callback:^(NSError *err ,BaseResponse *result) {
-        if(result.code == 0)
-        {
-            User *owner = [IMEnvironment shareInstance].owner;
-            [weakSelf.imStorage.socialContactsDao setContactBacklist:eIMBlackStatus_Normal contact:contact owner:owner];
-        }
-        if (callback)
-            callback(err,result);
-    }];
 }
 
 - (BJIMAbstractEngine *)imEngine

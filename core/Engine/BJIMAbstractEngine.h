@@ -236,11 +236,6 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
                 group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback;
 
-//添加关注关系
-- (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
-//取消关注关系
-- (void)postCancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
-
 //添加黑名单
 - (void)postAddBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback;
 //取消黑名单

@@ -23,12 +23,6 @@
 @property (nonatomic, copy) NSString *remarkName; //备注名
 @property (nonatomic, copy) NSString *remarkHeader; //备注首字母
 
-@property (nonatomic, assign) IMBlackStatus blackStatus;
 @property (nonatomic, assign) IMOriginType originType;
-@property (nonatomic, assign) IMFocusType focusType;
-@property (nonatomic, assign) IMTinyFocus tinyFocus;
-@property (nonatomic, copy) NSDate *focusTime;
-@property (nonatomic, copy) NSDate *fansTime;
-@property (nonatomic, copy) NSDate *blackTime;
 
 @end

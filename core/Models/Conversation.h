@@ -14,7 +14,6 @@
 
 typedef NS_ENUM(NSInteger, CONVERSATION_RELATION) {
     eConverastion_Relation_Normal = 0, // 会话人/群 关系正常
-    eConversation_Relation_Stranger = 1, // 会话人为 陌生人
     eConversation_Relation_Group_Closed = 2 // 会话群已开启免打扰
 };
 

@@ -62,42 +62,6 @@
             return nil;
         }];
     }
-    else if ([key isEqualToString:@"focusList"])
-    {
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            if ([value isKindOfClass:[NSArray class]])
-            {
-                NSError *error;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
-                return array;
-            }
-            return nil;
-        }];
-    }
-    else if ([key isEqualToString:@"fansList"])
-    {
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            if ([value isKindOfClass:[NSArray class]])
-            {
-                NSError *error;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
-                return array;
-            }
-            return nil;
-        }];
-    }
-    else if ([key isEqualToString:@"blackList"])
-    {
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            if ([value isKindOfClass:[NSArray class]])
-            {
-                NSError *error;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
-                return array;
-            }
-            return nil;
-        }];
-    }
     
     return nil;
 }
@@ -109,9 +73,6 @@
             @"organizationList" :@"organization_list",
             @"studentList"      :@"student_list",
             @"groupList"        :@"group_list",
-            @"focusList"        :@"focus_list",
-            @"fansList"         :@"fans_list",
-            @"blackList"        :@"black_list"
              };
 }
 

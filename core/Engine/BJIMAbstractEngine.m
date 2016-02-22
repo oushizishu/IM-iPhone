@@ -772,34 +772,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)postAddAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    //__WeakSelf__ weakSelf = self;
-    
-    [NetWorkTool hermesAddAttention:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-            NSError *error;
-            BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-            callback(nil,result);
-        } failure:^(NSError *error, RequestParams *params) {
-            callback(error,nil);
-    }];
-    
-}
-
-- (void)postCancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    //__WeakSelf__ weakSelf = self;
-    
-    [NetWorkTool hermesCancelAttention:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
-        NSError *error;
-        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
-        callback(nil,result);
-    } failure:^(NSError *error, RequestParams *params) {
-        callback(error,nil);
-    }];
-    
-}
-
 - (void)postAddBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
 {
     //__WeakSelf__ weakSelf = self;

@@ -148,148 +148,6 @@
     return [self.imService getGroup:groupId];
 }
 
-- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
-{
-    return [self.imService getGroupDetail:groupId callback:callback];
-}
-
-- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback
-{
-    return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
-}
-
-- (void)transferGroup:(int64_t)groupId
-          transfer_id:(int64_t)transfer_id
-        transfer_role:(int64_t)transfer_role
-             callback:(void(^)(NSError *error))callback
-{
-    return [self.imService transferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role callback:callback];
-}
-
-- (void)setGroupAvatar:(int64_t)groupId
-                avatar:(int64_t)avatar
-              callback:(void(^)(NSError *error))callback
-{
-    return [self.imService setGroupAvatar:groupId avatar:avatar callback:callback];
-}
-
-- (void)setGroupNameAvatar:(int64_t)groupId
-                 groupName:(NSString*)groupName
-                    avatar:(int64_t)avatar
-                  callback:(void(^)(NSError *error))callback
-{
-    return [self.imService setGroupNameAvatar:groupId groupName:groupName avatar:avatar callback:callback];
-}
-
-- (void)setGroupAdmin:(int64_t)groupId
-          user_number:(int64_t)user_number
-            user_role:(int64_t)user_role
-               status:(int64_t)status
-             callback:(void(^)(NSError *error))callback
-{
-    return [self.imService setGroupAdmin:groupId user_number:user_number user_role:user_role status:status callback:callback];
-}
-
-- (void)removeGroupMember:(int64_t)groupId
-              user_number:(int64_t)user_number
-                user_role:(int64_t)user_role
-                 callback:(void(^)(NSError *error))callback
-{
-    return [self.imService removeGroupMember:groupId user_number:user_number user_role:user_role callback:callback];
-}
-
-- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
-{
-    return [self.imService postLeaveGroup:groupId callback:callback];
-}
-
-- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
-{
-    return [self.imService postDisBandGroup:groupId callback:callback];
-}
-
-- (void)getGroupFiles:(int64_t)groupId
-         last_file_id:(int64_t)last_file_id
-             callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
-{
-    return [self.imService getGroupFiles:groupId last_file_id:last_file_id callback:callback];
-}
-
-- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
-                       filePath:(NSString*)filePath
-                       fileName:(NSString*)fileName
-                       callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url ))callback
-                       progress:(onProgress)progress
-{
-    return [self.imService uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
-}
-
-- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
-                                 filePath:(NSString*)filePath
-                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-{
-    return [self.imService uploadImageFile:fileName filePath:filePath callback:callback];
-}
-
-- (void)addGroupFile:(int64_t)groupId
-          storage_id:(int64_t)storage_id
-            fileName:(NSString*)fileName
-            callback:(void(^)(NSError *error ,GroupFile *groupFile))callback
-{
-    return [self.imService addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
-}
-
-- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
-                         filePath:(NSString*)filePath
-                         callback:(void(^)(NSError *error))callback
-                         progress:(onProgress)progress;
-{
-    return [self.imService downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
-}
-
-- (void)previewGroupFile:(int64_t)groupId
-                 file_id:(int64_t)file_id
-                callback:(void(^)(NSError *error ,NSString *url))callback
-{
-    return [self.imService previewGroupFile:groupId file_id:file_id callback:callback];
-}
-
-- (void)setGroupMsgStatus:(int64_t)status
-                  groupId:(int64_t)groupId
-                 callback:(void(^)(NSError *error))callback
-{
-    return [self.imService setGroupMsgStatus:status groupId:groupId callback:callback];
-}
-
-- (void)deleteGroupFile:(int64_t)groupId
-                file_id:(int64_t)file_id
-               callback:(void(^)(NSError *error))callback
-{
-    return [self.imService deleteGroupFile:groupId file_id:file_id callback:callback];
-}
-
--(void)createGroupNotice:(int64_t)groupId
-                 content:(NSString*)content
-                callback:(void(^)(NSError *error))callback
-{
-    return [self.imService createGroupNotice:groupId content:content callback:callback];
-}
-
--(void)getGroupNotice:(int64_t)groupId
-              last_id:(int64_t)last_id
-            page_size:(int64_t)page_size
-             callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
-{
-    return [self.imService getGroupNotice:groupId last_id:last_id page_size:page_size callback:callback];
-}
-
--(void)removeGroupNotice:(int64_t)notice_id
-                group_id:(int64_t)group_id
-                callback:(void(^)(NSError *error))callback
-{
-    return [self.imService removeGroupNotice:notice_id group_id:group_id callback:callback];
-}
-
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {
@@ -327,26 +185,6 @@
     if (! [[IMEnvironment shareInstance] isLogin])
         return nil;
  	return [self.imService getAllConversationWithOwner:[IMEnvironment shareInstance].owner];
-}
-
-- (NSArray *)getStangerConversation
-{
-    if (! [[IMEnvironment shareInstance] isLogin])
-        return nil;
-    return [self.imService getMyStrangerConversations];
-}
-
-- (void)clearStangerConversationUnreadCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return;
-    [self.imService clearStangerConversationUnreadCount];
-}
-
-- (NSInteger)getStangerConversationCountHaveNoRead
-{
-    if (! [[IMEnvironment shareInstance] isLogin])
-        return 0;
-    return [self.imService getMyStrangerConversationsCountHaveNoRead];
 }
 
 - (Conversation *)getConversationGroupId:(int64_t)groupId
@@ -413,143 +251,10 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
-- (NSArray *)getMyMutualUsers;
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyMutualUsers];
-}
-
-- (NSInteger)getMyMutualUsersCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyMutualUsersCount];
-}
-
-- (NSArray*)getMyFreshFans
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyFreshFans];
-}
-
-- (void)clearMyFreshFans
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return;
-    [self.imService clearMyFreshFans];
-}
-
-- (NSInteger)getMyFreshFansCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyFreshFansCount];
-}
-
-- (NSArray *)getMyFans
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyFans];
-}
-
-- (NSInteger)getMyFansCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyFansCount];
-}
-
-- (NSArray *)getMyFansBelongToTeacher
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyFansBelongToTeacher];
-}
-
-- (NSInteger)getMyFansBelongToTeacherCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyFansBelongToTeacherCount];
-}
-
-- (NSArray *)getMyFansBelongToStudent
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyFansBelongToStudent];
-}
-
-- (NSInteger)getMyFansBelongToStudentCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyFansBelongToStudentCount];
-}
-
-- (NSArray *)getMyFansBelongToInstitution
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyFansBelongToInstitution];
-}
-
-- (NSInteger)getMyFansBelongToInstitutionCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyFansBelongToInstitutionCount];
-}
-
-
-- (NSArray *)getMyAttentions
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyAttentions];
-}
-
-- (NSInteger)getMyAttentionsCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyAttentionsCount];
-}
-
-- (NSArray *)getMyAttentionsBelongToTeacher
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyAttentionsBelongToTeacher];
-}
-
-- (NSInteger)getMyAttentionsBelongToTeacherCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyAttentionsBelongToTeacherCount];
-}
-
-- (NSArray *)getMyAttentionsBelongToStudent
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyAttentionsBelongToStudent];
-}
-
-- (NSInteger)getMyAttentionsBelongToStudentCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyAttentionsBelongToStudentCount];
-}
-
-- (NSArray *)getMyAttentionsBelongToInstitution
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyAttentionsBelongToInstitution];
-}
-
-- (NSInteger)getMyAttentionsBelongToInstitutionCount
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return 0;
-    return [self.imService getMyAttentionsBelongToInstitutionCount];
-}
-
 - (void)clearConversationAndMessage
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return ;
     return [self.imService clearConversationAndMessage];
-}
-
-- (NSArray *)getMyBlackList
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    return [self.imService getMyBlackList];
 }
 
 - (void)setUser:(User *)user
@@ -571,30 +276,6 @@
     }
     
     [self.imService addRecentContactId:userId contactRole:userRole callback:callback];
-}
-
-- (void)addAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
-{
-    User *user = [self.imService getUser:userId role:userRole];
-    [self.imService addAttention:user callback:callback];
-}
-
-- (void)cancelAttention:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result, User *user))callback
-{
-    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
-    [self.imService cancelAttention:user callback:callback];
-}
-
-- (void)addBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
-    [self.imService addBlacklist:user callback:callback];
-}
-
-- (void)cancelBlacklist:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(NSError *error ,BaseResponse *result))callback
-{
-    User *user = [self.imService.imStorage.userDao loadUser:userId role:userRole];
-    [self.imService cancelBlacklist:user callback:callback];
 }
 
 #pragma mark - 备注名
@@ -644,21 +325,6 @@
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return NO;
     return [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner] != nil;
-}
-
-- (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId
-{
-    if (! [[IMEnvironment shareInstance] isLogin]) return eGroupMsg_All;
-    GroupMember *member = [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner];
-    return member.msgStatus;
-}
-
-- (SocialContacts *)getSocialUser:(User *)user
-{
-if (! [[IMEnvironment shareInstance] isLogin]) return nil;
-    
-    return [self.imService getSocialUser:user owner:[IMEnvironment shareInstance].owner];
-    
 }
 
 #pragma mark - 应用进入前后台
@@ -826,6 +492,156 @@ if (! [[IMEnvironment shareInstance] isLogin]) return nil;
         return;
     }
     [self.imService setGroupPushStatus:status groupId:groupId];
+}
+
+
+- (IMGroupMsgStatus)getGroupMsgStatus:(int64_t)groupId
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return eGroupMsg_All;
+    GroupMember *member = [self.imService getGroupMember:groupId ofUser:[IMEnvironment shareInstance].owner];
+    return member.msgStatus;
+}
+
+- (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback
+{
+    return [self.imService getGroupDetail:groupId callback:callback];
+}
+
+- (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback
+{
+    return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
+}
+
+- (void)transferGroup:(int64_t)groupId
+          transfer_id:(int64_t)transfer_id
+        transfer_role:(int64_t)transfer_role
+             callback:(void(^)(NSError *error))callback
+{
+    return [self.imService transferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role callback:callback];
+}
+
+- (void)setGroupAvatar:(int64_t)groupId
+                avatar:(int64_t)avatar
+              callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupAvatar:groupId avatar:avatar callback:callback];
+}
+
+- (void)setGroupNameAvatar:(int64_t)groupId
+                 groupName:(NSString*)groupName
+                    avatar:(int64_t)avatar
+                  callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupNameAvatar:groupId groupName:groupName avatar:avatar callback:callback];
+}
+
+- (void)setGroupAdmin:(int64_t)groupId
+          user_number:(int64_t)user_number
+            user_role:(int64_t)user_role
+               status:(int64_t)status
+             callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupAdmin:groupId user_number:user_number user_role:user_role status:status callback:callback];
+}
+
+- (void)removeGroupMember:(int64_t)groupId
+              user_number:(int64_t)user_number
+                user_role:(int64_t)user_role
+                 callback:(void(^)(NSError *error))callback
+{
+    return [self.imService removeGroupMember:groupId user_number:user_number user_role:user_role callback:callback];
+}
+
+- (void)postLeaveGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    return [self.imService postLeaveGroup:groupId callback:callback];
+}
+
+- (void)postDisBandGroup:(int64_t)groupId callback:(void (^)(NSError *err))callback
+{
+    return [self.imService postDisBandGroup:groupId callback:callback];
+}
+
+- (void)getGroupFiles:(int64_t)groupId
+         last_file_id:(int64_t)last_file_id
+             callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
+{
+    return [self.imService getGroupFiles:groupId last_file_id:last_file_id callback:callback];
+}
+
+- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+                                 filePath:(NSString*)filePath
+                                 fileName:(NSString*)fileName
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url ))callback
+                                 progress:(onProgress)progress
+{
+    return [self.imService uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
+}
+
+- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+                                 filePath:(NSString*)filePath
+                                 callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
+{
+    return [self.imService uploadImageFile:fileName filePath:filePath callback:callback];
+}
+
+- (void)addGroupFile:(int64_t)groupId
+          storage_id:(int64_t)storage_id
+            fileName:(NSString*)fileName
+            callback:(void(^)(NSError *error ,GroupFile *groupFile))callback
+{
+    return [self.imService addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
+}
+
+- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+                                   filePath:(NSString*)filePath
+                                   callback:(void(^)(NSError *error))callback
+                                   progress:(onProgress)progress;
+{
+    return [self.imService downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
+}
+
+- (void)previewGroupFile:(int64_t)groupId
+                 file_id:(int64_t)file_id
+                callback:(void(^)(NSError *error ,NSString *url))callback
+{
+    return [self.imService previewGroupFile:groupId file_id:file_id callback:callback];
+}
+
+- (void)setGroupMsgStatus:(int64_t)status
+                  groupId:(int64_t)groupId
+                 callback:(void(^)(NSError *error))callback
+{
+    return [self.imService setGroupMsgStatus:status groupId:groupId callback:callback];
+}
+
+- (void)deleteGroupFile:(int64_t)groupId
+                file_id:(int64_t)file_id
+               callback:(void(^)(NSError *error))callback
+{
+    return [self.imService deleteGroupFile:groupId file_id:file_id callback:callback];
+}
+
+-(void)createGroupNotice:(int64_t)groupId
+                 content:(NSString*)content
+                callback:(void(^)(NSError *error))callback
+{
+    return [self.imService createGroupNotice:groupId content:content callback:callback];
+}
+
+-(void)getGroupNotice:(int64_t)groupId
+              last_id:(int64_t)last_id
+            page_size:(int64_t)page_size
+             callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
+{
+    return [self.imService getGroupNotice:groupId last_id:last_id page_size:page_size callback:callback];
+}
+
+-(void)removeGroupNotice:(int64_t)notice_id
+                group_id:(int64_t)group_id
+                callback:(void(^)(NSError *error))callback
+{
+    return [self.imService removeGroupNotice:notice_id group_id:group_id callback:callback];
 }
 
 @end

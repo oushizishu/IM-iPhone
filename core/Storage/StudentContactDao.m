@@ -20,7 +20,6 @@
     
     [self.dbHelper executeDB:^(FMDatabase *db) {
         
-//        SOCIALCONTACTS.blackStatus, SOCIALCONTACTS.originType, SOCIALCONTACTS.focusType, SOCIALCONTACTS.tinyFocus, SOCIALCONTACTS.focusTime, SOCIALCONTACTS.fansTime, SOCIALCONTACTS.blackTime \
         
         // 采用内级联查询
         NSString *insTableName = [StudentContacts getTableName];
