@@ -51,7 +51,7 @@
 {
     NSError *error;
     User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:[messageBody.payload[@"user"] jsonValue] error:&error];
-    User *owner = [IMEnvironment shareInstance].owner;
+//    User *owner = [IMEnvironment shareInstance].owner;
     [imService.imStorage.userDao insertOrUpdateUser:user];
     
     return @selector(notifyContactChanged);

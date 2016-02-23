@@ -36,36 +36,36 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 - (void)logDBOperationSQL:(NSString *)sql class:(__unsafe_unretained Class)clazz
 {
-    DEBUG_MODE_CODE_BEGIN
-    
-    sqlCount ++ ;
-    if (sql)
-        DDLogInfo(@"DaoStatistics target:[%@] SQL:[%@]", clazz, sql);
-    
-    if (sqlCount % 30 == 0)
-        [self statistics];
-    
-    DEBUG_MODE_CODE_END
+//    DEBUG_MODE_CODE_BEGIN
+//    
+//    sqlCount ++ ;
+//    if (sql)
+//        DDLogInfo(@"DaoStatistics target:[%@] SQL:[%@]", clazz, sql);
+//    
+//    if (sqlCount % 30 == 0)
+//        [self statistics];
+//    
+//    DEBUG_MODE_CODE_END
 }
 
 - (void)logDBCacheSQL:(NSString *)sql class:(__unsafe_unretained Class)clazz
 {
-    DEBUG_MODE_CODE_BEGIN
-    
-    cacheCount ++ ;
-    DDLogInfo(@"DaoStatistics target:[%@] SQL Cache :[%@]", clazz, sql);
-    if (cacheCount % 30 == 0)
-        [self statistics];
-    DEBUG_MODE_CODE_END
+//    DEBUG_MODE_CODE_BEGIN
+//    
+//    cacheCount ++ ;
+//    DDLogInfo(@"DaoStatistics target:[%@] SQL Cache :[%@]", clazz, sql);
+//    if (cacheCount % 30 == 0)
+//        [self statistics];
+//    DEBUG_MODE_CODE_END
 }
 
 - (void)statistics
 {
-    DEBUG_MODE_CODE_BEGIN
-    
-    DDLogInfo(@"********DaoStatistics [sqlCount:%ld] [cacheCount:%ld]*********************", (long)sqlCount, (long)cacheCount);
-    
-    DEBUG_MODE_CODE_END
+//    DEBUG_MODE_CODE_BEGIN
+//    
+//    DDLogInfo(@"********DaoStatistics [sqlCount:%ld] [cacheCount:%ld]*********************", (long)sqlCount, (long)cacheCount);
+//    
+//    DEBUG_MODE_CODE_END
 }
 
 @end
