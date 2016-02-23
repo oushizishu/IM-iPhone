@@ -34,7 +34,6 @@ Pod::Spec.new do |s|
   s.public_header_files = 'core/**/*.h'
   s.frameworks = 'CoreData'
 
-s.dependency 'MagicalRecord', '~> 2.3.2'
 s.dependency 'AFNetworking', '~> 2.5'
 s.dependency 'Mantle', '~>2.0.2'
 s.dependency 'CocoaLumberjack', '~> 2.0.1'
