@@ -958,6 +958,13 @@
 			path = UIimage;
 			sourceTree = "<group>";
 		};
+		255E667C1C7C2A44004DB7B7 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 		5872C8EACEE0B4B50E814DAA /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -1066,6 +1073,7 @@
 		9552DAFD1B91AEDA001E8D4C /* im-iphone-kit */ = {
 			isa = PBXGroup;
 			children = (
+				255E667C1C7C2A44004DB7B7 /* ViewController */,
 				255E63701C7AC154004DB7B7 /* BJChatUtilsMacro.h */,
 				255E63711C7AC154004DB7B7 /* BJIMConstantKit.h */,
 				255E63721C7AC154004DB7B7 /* BJIMKit.h */,
@@ -1093,6 +1101,7 @@
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
 				E5F8432C5F34151A5E259F94 /* Copy Pods Resources */,
+				D0754FC8AA1A19402BD8BBF2 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1112,6 +1121,7 @@
 				6003F5AB195388D20070C39A /* Frameworks */,
 				6003F5AC195388D20070C39A /* Resources */,
 				4305EC455E287A72EDB01A1C /* Copy Pods Resources */,
+				52E1A4ED1DAA851ACDC0A485 /* Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1290,6 +1300,21 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		52E1A4ED1DAA851ACDC0A485 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Tests/Pods-Tests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		7B7C5E95FEC567635F4744E9 /* Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1303,6 +1328,21 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		D0754FC8AA1A19402BD8BBF2 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BJHL-IM-iOS-SDK/Pods-BJHL-IM-iOS-SDK-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E5F8432C5F34151A5E259F94 /* Copy Pods Resources */ = {
@@ -1563,11 +1603,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Prefix.pch";
 				INFOPLIST_FILE = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrnb",
-					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrwb",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};
@@ -1584,11 +1620,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Prefix.pch";
 				INFOPLIST_FILE = "BJHL-IM-iOS-SDK/BJHL-IM-iOS-SDK-Info.plist";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrnb",
-					"$(PROJECT_DIR)/BJHL-IM-iOS-SDK/Chat/InputController/VoiceConvert/opencore-amrwb",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = app;
 			};

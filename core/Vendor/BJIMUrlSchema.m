@@ -7,12 +7,12 @@
 //
 
 #import "BJIMUrlSchema.h"
-#import <BJAction.h>
 #import "BJIMManager.h"
-#import "MBProgressHUD.h"
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 @interface BJIMUrlSchema()
-@property (nonatomic, strong) BJAction *actionManager;
+@property (nonatomic, strong) BJCFAction *actionManager;
 
 @end
 
@@ -32,7 +32,7 @@
 {
     self = [super init];
     if (self) {
-        self.actionManager = [[BJAction alloc] init];
+        self.actionManager = [[BJCFAction alloc] init];
         //hermes://o.c?a=xxx
         [self.actionManager setScheme:@"hermes"];
         [self.actionManager setHost:@"o.c"];

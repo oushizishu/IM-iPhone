@@ -8,7 +8,9 @@
 
 #import "MessageListTableViewCell.h"
 #import "JSBadgeView.h"
-#import "UIView+Borders.h"
+
+#import <BJHL-Kit-iOS/BJHL-Kit-iOS.h>
+
 @interface MessageListTableViewCell ()
 @property (strong, nonatomic)JSBadgeView *badgeView;
 @property (strong, nonatomic)UIView *redView;

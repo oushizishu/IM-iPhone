@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <BJHL-Common-iOS-SDK/UIView+Basic.h>
+
 #import <BJHL-IM-iOS-SDK/Conversation.h>
 
 @interface BJConversationTableViewCell : UITableViewCell

@@ -26,17 +26,26 @@ Pod::Spec.new do |s|
 
   s.source_files = 'core/**/*.{h,m,cpp,mm}'
   s.vendored_libraries = 'core/lib/*.a'
-  s.libraries        = 'stdc++'
+  s.libraries        = 'stdc++', 'z'
   s.resource_bundles = {
     'BJHL-IM-iOS-SDK' => ['Resources/*']
   }
 
   s.public_header_files = 'core/**/*.h'
   s.frameworks = 'CoreData'
-  s.dependency 'AFNetworking', '~> 2.5'
-  s.dependency 'Mantle', '~>2.0.2'
-  s.dependency 'CocoaLumberjack', '~> 2.0.1'
-  s.dependency 'BJHL-Common-iOS-SDK', '~>0.6.3'
-  s.dependency 'LKDBHelper', '~>2.1.3'
-  s.dependency 'YLGIFImage', '~> 0.11'
+
+s.dependency 'MagicalRecord', '~> 2.3.2'
+s.dependency 'AFNetworking', '~> 2.5'
+s.dependency 'Mantle', '~>2.0.2'
+s.dependency 'CocoaLumberjack', '~> 2.0.1'
+s.dependency 'BJHL-Kit-iOS', '~> 1.0.8'
+s.dependency 'BJHL-Foundation-iOS', '~> 1.1.4'
+s.dependency 'BJHL-Media-iOS', '~> 1.0.2'
+s.dependency 'BJHL-Permissions-iOS', '~> 1.0.1'
+s.dependency 'BJHL-Foundation-iOS', '~> 1.1.4'
+s.dependency 'BJHL-Network-iOS', '~> 1.0.8'
+s.dependency 'BJHL-PictureBrowser-iOS', '~> 1.0.0'
+s.dependency 'LKDBHelper', '~>2.1.3'
+s.dependency 'YLGIFImage', '~> 0.11'
+s.dependency 'MBProgressHUD'
 end

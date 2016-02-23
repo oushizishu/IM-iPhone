@@ -7,17 +7,17 @@
 //
 
 #import "BJIMSocketEngine.h"
-#import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import <CocoaLumberjack/DDLegacyMacros.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 #import "NSDictionary+Json.h"
-#import "BJTimer.h"
+#import "BJCFTimer.h"
 #import "NSString+Json.h"
 #import "NSError+BJIM.h"
 #import "NSUserDefaults+Device.h"
-#import "NSString+MD5Addition.h"
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -124,7 +124,7 @@ public:
     IMSocketDelegate *socketDelegate;
 }
 
-@property (nonatomic, strong) BJTimer *heartBeatTimer;
+@property (nonatomic, strong) BJCFTimer *heartBeatTimer;
 @property (nonatomic, strong) NSMutableDictionary *requestQueue;
 @property (nonatomic, assign) NSInteger retryConnectCount;
 @property (nonatomic, copy) NSString *device;
@@ -137,7 +137,7 @@ public:
 - (void)syncConfig
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
@@ -150,7 +150,7 @@ public:
             DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         DDLogError(@"Sync Config Fail [%@]", error.userInfo);
     }];
 }
@@ -165,7 +165,7 @@ public:
     
     self.device = [NSUserDefaults deviceString];
     self.token = [NSString stringWithFormat:@"%@Hermes%lld%ld", self.device, [IMEnvironment shareInstance].owner.userId, (long)[IMEnvironment shareInstance].owner.userRole];
-    self.token = [self.token stringFromMD5];
+    self.token = [self.token bjcf_stringFromMD5];
     
     webSocket = network::WebSocketInterface::createWebsocket();
     socketDelegate = new IMSocketDelegate();
@@ -293,7 +293,7 @@ public:
     if ([messageType isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
 //        登陆成功后再开启心跳
-        self.heartBeatTimer = [BJTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
+        self.heartBeatTimer = [BJCFTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
         // 每次登陆完成后，拉一次消息。
         [self.pollingDelegate onShouldStartPolling];
     }

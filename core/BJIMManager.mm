@@ -9,10 +9,11 @@
 #import "BJIMManager.h"
 #import "BJIMService.h"
 #import <CocoaLumberjack/CocoaLumberjack.h>
-#import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 #import "BJIMService+GroupManager.h"
 #import "NSError+BJIM.h"
 #import "GroupMember.h"
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 @interface BJIMManager()
 @property (nonatomic, strong) BJIMService *imService;
@@ -41,7 +42,7 @@
     NSDateComponents *dateComponents = [greCalendar components:NSYearCalendarUnit | NSMonthCalendarUnit | NSDayCalendarUnit | NSHourCalendarUnit | NSMinuteCalendarUnit | NSSecondCalendarUnit | NSWeekCalendarUnit | NSWeekdayCalendarUnit | NSWeekOfMonthCalendarUnit | NSWeekOfYearCalendarUnit fromDate:[NSDate date]];
     
     
-    NSString *logDir = [NSString stringWithFormat:@"%@/%ld-%ld-%ld", [BJFileManagerTool docDir], (long)dateComponents.year, (long)dateComponents.month, (long)dateComponents.day];
+    NSString *logDir = [NSString stringWithFormat:@"%@/%ld-%ld-%ld", [BJCFFileManagerTool docDir], (long)dateComponents.year, (long)dateComponents.month, (long)dateComponents.day];
     
     [DDLog addLogger:[[DDFileLogger alloc] initWithLogFileManager:[[DDLogFileManagerDefault alloc] initWithLogsDirectory:logDir]]];
     // And we also enable colors
@@ -569,16 +570,16 @@
     return [self.imService getGroupFiles:groupId last_file_id:last_file_id callback:callback];
 }
 
-- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url ))callback
-                                 progress:(onProgress)progress
+                                 progress:(BJCNOnProgress)progress
 {
     return [self.imService uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
 }
 
-- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
 {
@@ -593,10 +594,10 @@
     return [self.imService addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
 }
 
-- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                                    filePath:(NSString*)filePath
                                    callback:(void(^)(NSError *error))callback
-                                   progress:(onProgress)progress;
+                                   progress:(BJCNOnProgress)progress;
 {
     return [self.imService downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
 }

@@ -12,7 +12,7 @@
 #import "IMMessage.h"
 #import "BJIMAbstractEngine.h"
 #import "GroupDetail.h"
-#import <BJHL-Common-iOS-SDK/BJNetworkUtil.h>
+#import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 
 @class BaseResponse;
@@ -88,13 +88,13 @@
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 
-- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                                 progress:(onProgress)progress;
+                                 progress:(BJCNOnProgress)progress;
 
-- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback;
 
@@ -103,10 +103,10 @@
             fileName:(NSString*)fileName
             callback:(void(^)(NSError *error ,GroupFile *groupFile))callback;
 
-- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                          filePath:(NSString*)filePath
                          callback:(void(^)(NSError *error))callback
-                         progress:(onProgress)progress;
+                         progress:(BJCNOnProgress)progress;
 
 - (void)previewGroupFile:(int64_t)groupId
                  file_id:(int64_t)file_id

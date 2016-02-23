@@ -10,12 +10,15 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 #import "BJIMStorage.h"
-#import "BJTimer.h"
+#import "BJCFTimer.h"
 #import "RecentContactModel.h"
 #import "NSError+BJIM.h"
 #import "GetGroupMemberModel.h"
 #import "GroupMemberListData.h"
 #import <AFNetworkReachabilityManager.h>
+
+#import <BJHL-Network-iOS/BJHL-Network-iOS.h>
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -26,7 +29,7 @@ static int ddLogLevel = DDLogLevelVerbose;
     BOOL _bIsPollingRequesting;
 }
 
-@property (nonatomic, strong) BJTimer *pollingTimer;
+@property (nonatomic, strong) BJCFTimer *pollingTimer;
 @property (nonatomic, strong) NSArray *im_polling_delta;
 @end
 
@@ -62,7 +65,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSyncConfig:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         
@@ -79,7 +82,7 @@ static int ddLogLevel = DDLogLevelVerbose;
             DDLogWarn(@"Sync Config Fail [url:%@][params:%@]", params.url, params.urlPostParams);
             [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         DDLogError(@"Sync Config Fail [%@]", error.userInfo);
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
@@ -92,7 +95,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSendMessage:message succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
@@ -110,7 +113,7 @@ static int ddLogLevel = DDLogLevelVerbose;
             DDLogWarn(@"Post Message Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
         }
         [weakSelf checkNetworkQuality];
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         DDLogError(@"Post Message Fail [url:%@][%@]", params.url, error.userInfo);
         NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
         [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
@@ -129,7 +132,7 @@ static int ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesPostPollingRequestUserLastMsgId:max_user_msg_id excludeUserMsgIds:excludeUserMsgs group_last_msg_ids:group_last_msg_ids currentGroup:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -177,7 +180,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         
         [weakSelf checkNetworkQuality];
         
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         _bIsPollingRequesting = NO;
         DDLogError(@"Post Polling Request Fail[url:%@][%@]", params.url, error.userInfo);
         [weakSelf nextPollingAt];
@@ -226,11 +229,11 @@ static int ddLogLevel = DDLogLevelVerbose;
     _pollingIndex = -1;
 }
 
-- (BJTimer *)pollingTimer
+- (BJCFTimer *)pollingTimer
 {
     if (_pollingTimer == nil)
     {
-        _pollingTimer = [BJTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) forMode:NSRunLoopCommonModes];
+        _pollingTimer = [BJCFTimer scheduledTimerWithTimeInterval:1 target:self selector:@selector(handlePollingEvent) forMode:NSRunLoopCommonModes];
     }
     
     return _pollingTimer;

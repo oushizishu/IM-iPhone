@@ -7,7 +7,6 @@
 //
 
 #import "IMEnvironment.h"
-#import <BJHL-Common-iOS-SDK/BJFileManagerTool.h>
 
 @implementation IMEnvironment
 

@@ -8,7 +8,6 @@
 
 #import "BJIMService+GroupManager.h"
 #import "NSError+BJIM.h"
-#import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import "NetWorkTool.h"
 #import "BJIMConstants.h"
 #import "GroupMemberListData.h"
@@ -17,6 +16,9 @@
 #import "HandleGetGroupMemberOperation.h"
 
 #import "HandleDisbandGroupOperation.h"
+
+#import <BJHL-Network-iOS/BJHL-Network-iOS.h>
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 

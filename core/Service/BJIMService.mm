@@ -7,7 +7,6 @@
 //
 
 #import "BJIMService.h"
-#import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import "Conversation+DB.h"
 #import "IMEnvironment.h"
 #import "BJIMStorage.h"
@@ -32,6 +31,8 @@
 
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
@@ -573,16 +574,16 @@
     [self.imEngine getGroupFiles:groupId last_file_id:last_file_id callback:callback];
 }
 
-- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                                 progress:(onProgress)progress
+                                 progress:(BJCNOnProgress)progress
 {
     return [self.imEngine uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
 }
 
-- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
 {
@@ -597,10 +598,10 @@
     [self.imEngine addGroupFile:groupId storage_id:storage_id fileName:fileName callback:callback];
 }
 
-- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                          filePath:(NSString*)filePath
                          callback:(void(^)(NSError *error))callback
-                         progress:(onProgress)progress
+                         progress:(BJCNOnProgress)progress
 {
     return [self.imEngine downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
 }
@@ -787,14 +788,14 @@
                contactRole:(IMUserRole)userRole
                   callback:(void (^)(BaseResponse *))callback
 {
-    [NetWorkTool hermesAddRecentContactId:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesAddRecentContactId:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
        if (callback)
        {
            NSError *error;
            BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
            callback(result);
        }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
        if (callback)
            callback(nil);
     }];

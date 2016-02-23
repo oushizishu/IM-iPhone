@@ -10,11 +10,13 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 #import "NSError+BJIM.h"
-#import <BJHL-Common-iOS-SDK/BJCommonDefines.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
 #import <CocoaLumberjack/DDLegacyMacros.h>
 #import "GroupMemberListData.h"
 #import "LimitQueue.h"
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -52,7 +54,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetContactSucc:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -74,7 +76,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
         
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         DDLogError(@"Sync Contact Fail [%@]", error.userInfo);
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -101,7 +103,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     if (message.msg_t == eMessageType_IMG)
     {
-        [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        [NetWorkTool hermesStorageUploadImage:message succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
             NSError *error;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
@@ -116,14 +118,14 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
                 [self callbackErrorCode:result.code errMsg:result.msg];
             }
-        } failure:^(NSError *error, RequestParams *params) {
+        } failure:^(NSError *error, BJCNRequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
             [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
         }];
     }
     else if (message.msg_t == eMessageType_AUDIO)
     {
-        [NetWorkTool hermesStorageUploadAudio:message succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+        [NetWorkTool hermesStorageUploadAudio:message succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
             NSError *error;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
@@ -138,7 +140,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 DDLogWarn(@"Post Message Achive Fail[url:%@][msg:%@]", params.url, params.urlPostParams);
                 [self callbackErrorCode:result.code errMsg:result.msg];
             }
-        } failure:^(NSError *error, RequestParams *params) {
+        } failure:^(NSError *error, BJCNRequestParams *params) {
             NSError *_error = [[NSError alloc] initWithDomain:error.domain code:error.code userInfo:@{@"msg":@"网络异常,请检查网络连接"}];
             [weakSelf.postMessageDelegate onPostMessageFail:message error:_error];
         }];
@@ -186,7 +188,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesGetMsg:[lastMessageId longLongValue] groupId:groupId uid:userId userRole:userRole excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetMsg:[lastMessageId longLongValue] groupId:groupId uid:userId userRole:userRole excludeMsgIds:excludeIds succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -205,7 +207,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         DDLogError(@"Get MSG FAIL [url:%@][%@]", params.url, error.userInfo);
         [weakSelf.getMsgDelegate onGetMsgFailMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId isFirstGetMsg:isFirstGetMsg];
         
@@ -221,7 +223,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesChangeRemarkNameUserId:userId userRole:userRole remarkName:remarkName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesChangeRemarkNameUserId:userId userRole:userRole remarkName:remarkName succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
          NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -238,7 +240,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
         
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(remarkName, nil, error.code, @"网络异常,请检查网络连接");
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
@@ -253,7 +255,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesGetUserInfo:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetUserInfo:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         
@@ -269,7 +271,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(nil);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(nil);
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -281,7 +283,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesGetGroupProfile:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupProfile:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         
@@ -299,7 +301,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             
             
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(nil);
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
@@ -311,7 +313,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesGetGroupDetail:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupDetail:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -327,7 +329,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
@@ -336,7 +338,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesGetGroupMembers:groupId page:page pageSize:pageSize succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupMembers:groupId page:page pageSize:pageSize succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -355,7 +357,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil,0,0,0);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil,0,0,0);
     }];
 }
@@ -366,7 +368,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
              callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesTransferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesTransferGroup:groupId transfer_id:transfer_id transfer_role:transfer_role succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
@@ -380,7 +382,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if(callback)
         {
             callback(error);
@@ -393,7 +395,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
               callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesSetGroupAvatar:groupId avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupAvatar:groupId avatar:avatar succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -407,7 +409,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if(callback)
         {
             callback(error);
@@ -420,7 +422,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                     avatar:(int64_t)avatar
                   callback:(void(^)(NSError *error))callback
 {
-    [NetWorkTool hermesSetGroupNameAvatar:groupId groupName:groupName avatar:avatar succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupNameAvatar:groupId groupName:groupName avatar:avatar succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -434,7 +436,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if(callback)
         {
             callback(error);
@@ -449,7 +451,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
              callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesSetGroupAdmin:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupAdmin:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
@@ -463,7 +465,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if(callback)
         {
             callback(error);
@@ -477,7 +479,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                  callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesRemoveGroupMember:groupId user_number:user_number user_role:user_role succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesRemoveGroupMember:groupId user_number:user_number user_role:user_role succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
@@ -491,7 +493,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if(callback)
         {
             callback(error);
@@ -504,7 +506,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesGetGroupFiles:groupId last_file_id:last_file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupFiles:groupId last_file_id:last_file_id succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -519,20 +521,20 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
 
-- (BJNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
-                                 progress:(onProgress)progress
+                                 progress:(BJCNOnProgress)progress
 {
     __WeakSelf__ weakSelf = self;
         
-    return [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, RequestParams *params){
+    return [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params){
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -548,16 +550,16 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
          callback(error,nil,nil);
     } progress:progress];
 }
 
-- (BJNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
 {
-    return [NetWorkTool hermesUploadFaceImage:fileName filePath:filePath succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    return [NetWorkTool hermesUploadFaceImage:fileName filePath:filePath succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -573,7 +575,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,0,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,0,nil);
     }];
 }
@@ -585,7 +587,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesAddGroupFile:groupId storage_id:storage_id fileName:fileName succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesAddGroupFile:groupId storage_id:storage_id fileName:fileName succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -600,20 +602,20 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
 
-- (BJNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
                                    filePath:(NSString*)filePath
                                    callback:(void(^)(NSError *error))callback
-                                   progress:(onProgress)progress
+                                   progress:(BJCNOnProgress)progress
 {
     __WeakSelf__ weakSelf = self;
-    return [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    return [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         callback(nil);
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error);
     } progress:progress];
 }
@@ -623,7 +625,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 callback:(void(^)(NSError *error ,NSString *url))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesPreviewGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesPreviewGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -638,7 +640,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error,nil);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
@@ -649,7 +651,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
@@ -662,7 +664,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -674,7 +676,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesDeleteGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesDeleteGroupFile:groupId file_id:file_id succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
@@ -686,7 +688,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -698,7 +700,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 callback:(void(^)(NSError *error))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesCreateGroupNotice:groupId content:content succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesCreateGroupNotice:groupId content:content succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
@@ -710,7 +712,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -724,7 +726,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
              callback:(void(^)(NSError *error ,BOOL isAdmin ,NSArray<GroupNotice*> *list ,BOOL hasMore))callback
 {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesGetGroupNotice:groupId last_id:last_id page_size:page_size succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupNotice:groupId last_id:last_id page_size:page_size succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -742,7 +744,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(error,NO,nil,NO);
         }
 
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error, NO,nil,NO);
         }
@@ -753,7 +755,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 group_id:(int64_t)group_id
                 callback:(void(^)(NSError *error))callback
 {
-    [NetWorkTool hermesRemoveGroupNotice:notice_id group_id:group_id succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesRemoveGroupNotice:notice_id group_id:group_id succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
@@ -765,7 +767,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
             callback(error);
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -776,11 +778,11 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     //__WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesAddBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesAddBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         callback(nil,result);
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
@@ -789,11 +791,11 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     //__WeakSelf__ weakSelf = self;
     
-    [NetWorkTool hermesCancelBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesCancelBlacklist:userId userRole:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         callback(nil,result);
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error,nil);
     }];
 }
@@ -804,7 +806,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesLeaveGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesLeaveGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         
@@ -820,7 +822,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -835,7 +837,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesDisbandGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesDisbandGroupWithGroupId:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
@@ -852,7 +854,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -868,7 +870,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesChangeGroupNameWithGroupId:groupId newName:name succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesChangeGroupNameWithGroupId:groupId newName:name succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
@@ -883,7 +885,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -898,7 +900,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
     
-    [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupMsgWithGroupId:groupId msgStatus:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         
@@ -914,7 +916,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(error);
         }
@@ -928,7 +930,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesGetGroupMemberWithModel:model succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupMemberWithModel:model succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         NSError *error;
@@ -949,7 +951,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(nil, error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(nil, error);
         }
@@ -962,7 +964,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesGetGroupMemberWithGroupId:groupId userRole:userRole page:index succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesGetGroupMemberWithGroupId:groupId userRole:userRole page:index succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         NSError *error;
@@ -983,7 +985,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(nil, error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback) {
             callback(nil, error);
         }
@@ -996,7 +998,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
     NSTimeInterval startTime = [[NSDate date] timeIntervalSince1970];
-    [NetWorkTool hermesSetGroupPushStatusWithGroupId:groupId pushStatus:stauts succ:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [NetWorkTool hermesSetGroupPushStatusWithGroupId:groupId pushStatus:stauts succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
         NSError *error;
@@ -1013,7 +1015,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             callback(error);
             [self callbackErrorCode:result.code errMsg:result.msg];
         }
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         if (callback)
         {
             callback(nil);

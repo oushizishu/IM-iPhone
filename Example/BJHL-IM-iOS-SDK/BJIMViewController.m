@@ -7,7 +7,9 @@
 //
 
 #import "BJIMViewController.h"
-#import <BJHL-Common-iOS-SDK/BJCommonProxy.h>
+
+#import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+
 #import <BJHL-IM-iOS-SDK/BJIMManager.h>
 #import "MessageListViewController.h"
 #import <BJHL-IM-iOS-SDK/BJIMStorage.h>
@@ -69,7 +71,7 @@
 - (void)loginClick:(id)sender {
     NSString *fullApi = @"http://test-appapi.genshuixue.com/auth/teacherLogin";
     NSString *authToken = @"GHsiZGV2aWNlX2lkIjoxNDk0NzYsInVzZXN1enFmIzsuMi0jYnFxYHV6cWYjOzItI2V2JDwzNjY1MzY5OjoyLiR1Y252JDwkW3treEZbbzwlgA";
-    RequestParams *requestParams = [[RequestParams alloc] initWithUrl:fullApi method:kHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fullApi method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:self.userIdText.text forKey:@"value"];
     [requestParams appendPostParamValue:self.passwordText.text forKey:@"password"];
     [requestParams appendPostParamValue:@"0" forKey:@"accept"];
@@ -83,7 +85,7 @@
 
     
     __WeakSelf__ weakSelf = self;
-    [BJCommonProxyInstance.networkUtil doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, RequestParams *params) {
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSDictionary *result = response[@"result"];
         if ([[response valueForKey:@"code"] integerValue] == 1)
         {
@@ -95,7 +97,7 @@
             [weakSelf.navigationController pushViewController:conversatinList animated:YES];
         }
         
-    } failure:^(NSError *error, RequestParams *params) {
+    } failure:^(NSError *error, BJCNRequestParams *params) {
         
     }];
 }
