@@ -92,7 +92,7 @@
 
 - (void)addRecentContactId:(int64_t)userId
                contactRole:(IMUserRole)userRole
-                  callback:(void(^)(BaseResponse *response))callback;
+                  callback:(void(^)(BaseResponse *response))callback __deprecated_msg("已过期");
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
@@ -128,7 +128,7 @@
 - (void)addContactChangedDelegate:(id<IMContactsChangedDelegate>)delegate;
 - (void)addNewGroupNoticeDelegate:(id<IMNewGRoupNoticeDelegate>)delegate;
 - (void)addLoadMoreMessagesDelegate:(id<IMLoadMessageDelegate>)delegate;
-- (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate;
+- (void)addRecentContactsDelegate:(id<IMRecentContactsDelegate>)delegate __deprecated_msg("已过期");
 - (void)addUserInfoChangedDelegate:(id<IMUserInfoChangedDelegate>)delegate;
 - (void)addGroupProfileChangedDelegate:(id<IMGroupProfileChangedDelegate>)delegate;
 - (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
