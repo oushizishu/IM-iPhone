@@ -193,8 +193,7 @@
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.jpg", [[NSDate date] timeIntervalSince1970]];
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:filename forKey:@"attachment"];
-    
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
 + (BJCNNetRequestOperation *)hermesStorageUploadAudio:(IMMessage *)message
@@ -208,7 +207,7 @@
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
 + (BJCNNetRequestOperation *)hermesChangeRemarkNameUserId:(int64_t)userId
