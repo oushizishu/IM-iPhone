@@ -30,7 +30,6 @@ extern "C" {
 #include <stdarg.h>
 #endif
 
-/* That's a bad idea since it will leak all internal defines outside */
 #include "lws_config.h"
 
 #if defined(WIN32) || defined(_WIN32)
@@ -91,11 +90,15 @@ extern "C" {
 #endif
 
 #ifdef LWS_OPENSSL_SUPPORT
-#ifdef USE_CYASSL
+#ifdef USE_WOLFSSL
+#ifdef USE_OLD_CYASSL
 #include <cyassl/openssl/ssl.h>
 #else
+#include <wolfssl/openssl/ssl.h>
+#endif /* not USE_OLD_CYASSL */
+#else
 #include <openssl/ssl.h>
-#endif /* not USE_CYASSL */
+#endif /* not USE_WOLFSSL */
 #endif
 
 #define CONTEXT_PORT_NO_LISTEN -1
@@ -174,6 +177,7 @@ enum libwebsocket_context_options {
 	LWS_SERVER_OPTION_LIBEV = 16,
 	LWS_SERVER_OPTION_DISABLE_IPV6 = 32,
 	LWS_SERVER_OPTION_DISABLE_OS_CA_CERTS = 64,
+	LWS_SERVER_OPTION_PEER_CERT_NOT_REQUIRED = 128,
 };
 
 enum libwebsocket_callback_reasons {
@@ -184,6 +188,7 @@ enum libwebsocket_callback_reasons {
 	LWS_CALLBACK_CLOSED,
 	LWS_CALLBACK_CLOSED_HTTP,
 	LWS_CALLBACK_RECEIVE,
+	LWS_CALLBACK_RECEIVE_PONG,
 	LWS_CALLBACK_CLIENT_RECEIVE,
 	LWS_CALLBACK_CLIENT_RECEIVE_PONG,
 	LWS_CALLBACK_CLIENT_WRITEABLE,
@@ -586,7 +591,9 @@ struct libwebsocket_extension;
  *				an incoming client
  *
  *  LWS_CALLBACK_CLIENT_CONNECTION_ERROR: the request client connection has
- *        been unable to complete a handshake with the remote server
+ *        been unable to complete a handshake with the remote server.  If
+ *	  in is non-NULL, you can find an error string of length len where
+ *	  it points to.
  *
  *  LWS_CALLBACK_CLIENT_FILTER_PRE_ESTABLISH: this is the last chance for the
  *				client user code to examine the http headers
@@ -1137,6 +1144,14 @@ lws_add_http_header_status(struct libwebsocket_context *context,
 LWS_EXTERN int lws_http_transaction_completed(struct libwebsocket *wsi);
 
 #ifdef LWS_USE_LIBEV
+typedef void (lws_ev_signal_cb)(EV_P_ struct ev_signal *w, int revents);
+
+LWS_VISIBLE LWS_EXTERN int
+libwebsocket_sigint_cfg(
+	struct libwebsocket_context *context,
+	int use_ev_sigint,
+	lws_ev_signal_cb* cb);
+
 LWS_VISIBLE LWS_EXTERN int
 libwebsocket_initloop(
 	struct libwebsocket_context *context, struct ev_loop *loop);
@@ -1205,7 +1220,21 @@ libwebsocket_set_timeout(struct libwebsocket *wsi,
  * the big length style
  */
 
-#define LWS_SEND_BUFFER_PRE_PADDING (4 + 10 + (2 * MAX_MUX_RECURSION))
+// Pad LWS_SEND_BUFFER_PRE_PADDING to the CPU word size, so that word references
+// to the address immediately after the padding won't cause an unaligned access
+// error. Sometimes the recommended padding is even larger than the size of a void *.
+// For example, for the X86-64 architecture, in Intel's document
+// https://software.intel.com/en-us/articles/data-alignment-when-migrating-to-64-bit-intel-architecture
+// they recommend that structures larger than 16 bytes be aligned to 16-byte
+// boundaries.
+// 
+#if __x86_64__
+#define _LWS_PAD_SIZE 16       // Intel recommended for best performance.
+#else
+#define _LWS_PAD_SIZE LWS_SIZEOFPTR   /* Size of a pointer on the target architecture */
+#endif
+#define _LWS_PAD(n) (((n) % _LWS_PAD_SIZE) ? ((n) + (_LWS_PAD_SIZE - ((n) % _LWS_PAD_SIZE))) : (n))
+#define LWS_SEND_BUFFER_PRE_PADDING _LWS_PAD(4 + 10 + (2 * MAX_MUX_RECURSION))
 #define LWS_SEND_BUFFER_POST_PADDING 4
 
 LWS_VISIBLE LWS_EXTERN int
@@ -1333,9 +1362,12 @@ lws_frame_is_binary(struct libwebsocket *wsi);
 
 LWS_VISIBLE LWS_EXTERN int
 lws_is_ssl(struct libwebsocket *wsi);
-
+#ifdef LWS_SHA1_USE_OPENSSL_NAME
+#define libwebsockets_SHA1 SHA1
+#else
 LWS_VISIBLE LWS_EXTERN unsigned char *
 libwebsockets_SHA1(const unsigned char *d, size_t n, unsigned char *md);
+#endif
 
 LWS_VISIBLE LWS_EXTERN int
 lws_b64_encode_string(const char *in, int in_len, char *out, int out_size);

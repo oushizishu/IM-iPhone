@@ -253,6 +253,7 @@ namespace network {
         info.ka_interval = 500;
         info.ka_probes = 2;
         
+//        lws_set_log_level(LLL_ERR |LLL_WARN |LLL_NOTICE|LLL_INFO|LLL_DEBUG|LLL_PARSER,nullptr);
         _wsContext = libwebsocket_create_context(&info);
         
         if(nullptr != _wsContext)
