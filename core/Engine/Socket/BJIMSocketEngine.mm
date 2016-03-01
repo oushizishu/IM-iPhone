@@ -231,8 +231,9 @@ public:
     [dic setObject:message.sign forKey:@"sign"];
     
     NSString *uuid = [self uuidString];
-    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
-    webSocket->send(data);
+    std::string resultBuf;
+    [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid result:&resultBuf];
+    webSocket->send(resultBuf);
     
     RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
     [self.requestQueue setObject:item forKey:uuid];
@@ -272,8 +273,9 @@ public:
     }
     
     NSString *uuid = [self uuidString];
-    std::string data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid];
-    webSocket->send(data);
+    std::string resultBuf;
+    [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid result:&resultBuf];
+    webSocket->send(resultBuf);
     
     // 所有请求都需要临时缓存起来
     RequestItem *item = [[RequestItem alloc] initWithRequestPullMessage];
@@ -366,8 +368,9 @@ public:
 {
     if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
         return;
-    std::string data = [self construct_heart_beat];
-    webSocket->send(data);
+    std::string resultBuf;
+    [self construct_heart_beat: &resultBuf];
+    webSocket->send(resultBuf);
 }
 
 /**
@@ -420,14 +423,15 @@ public:
 - (void)doLogin
 {
     if (nullptr == webSocket) return;
-    std::string data = [self construct_login_req];
-    webSocket->send(data);
+    std::string resultBuf;
+    [self construct_login_req: &resultBuf];
+    webSocket->send(resultBuf);
     self.engineActive = YES;
     _retryConnectCount = 0; // 连上之后标志位重置
 }
 
 #pragma mark construct data
-- (std::string)construct_login_req
+- (void)construct_login_req:(std::string *)resultBuf
 {
     NSDictionary *dic = @{
                           @"message_type":SOCKET_API_REQUEST_LOGIN,
@@ -440,10 +444,11 @@ public:
     
     NSString *string = [dic jsonString];
     std::string buf([string UTF8String]);
-    return buf;
+    resultBuf->clear();
+    resultBuf->append([string UTF8String]);
 }
 
-- (std::string)construct_heart_beat
+- (void)construct_heart_beat:(std::string *)resultBuf
 {
     NSDictionary *dic = @{
                           @"message_type":SOCKET_API_REQUEST_HEART_BEAT,
@@ -454,11 +459,11 @@ public:
     
     
     NSString *string = [dic jsonString];
-    std::string buf([string UTF8String]);
-    return buf;
+    resultBuf->clear();
+    resultBuf->append([string UTF8String]);
 }
 
-- (std::string)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType sign:(NSString *)uuid
+- (void)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType sign:(NSString *)uuid result:(std::string *)resultBuf
 {
     NSDictionary *dic = @{
                           @"message_type":messageType,
@@ -470,8 +475,8 @@ public:
                           };
     
     NSString *str = [dic jsonString];
-    std::string buf([str UTF8String]);
-    return buf;
+    resultBuf->clear();
+    resultBuf->append([str UTF8String]);
 }
 
 - (NSString *)uuidString
