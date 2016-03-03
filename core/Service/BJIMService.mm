@@ -84,6 +84,9 @@
     
     [self startEngine];
     
+    [self.imEngine syncConfig];
+    [self.imEngine syncContacts];
+    
     // bugfix
     /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
      修复过一次以后就不再需要了*/
@@ -105,10 +108,7 @@
     self.imEngine.networkEfficiencyDelegate = self;
     
     [self.imEngine start];
-    
-    [self.imEngine syncConfig];
-    [self.imEngine syncContacts];
-    
+   
     __WeakSelf__ weakSelf = self;
     self.imEngine.errCodeFilterCallback = ^(IMErrorType code, NSString *errMsg){
         [weakSelf notifyErrorCode:code msg:errMsg];
