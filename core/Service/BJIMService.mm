@@ -924,8 +924,10 @@
 #pragma mark - application call back
 - (void)applicationEnterForeground
 {
-    if (self.bIsServiceActive && self.bIsEnterFromBackground)
+    if (self.bIsServiceActive && self.bIsEnterFromBackground) {
         [self.imEngine start];
+        self.bIsEnterFromBackground = NO;
+    }
 }
 
 - (void)applicationEnterBackground
