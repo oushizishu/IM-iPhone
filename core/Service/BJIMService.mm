@@ -65,6 +65,9 @@
 @property (nonatomic, strong, readonly) NSOperationQueue *receiveMessageOperationQueue; // 接受消息在独立线程上操作
 @property (nonatomic, strong, readonly) NSOperationQueue *syncContactsOperationQueue; // 联系人数据量比较大， 放在单独线程中
 
+/* 标记当前是否从后台进入到前台 */
+@property (nonatomic, assign) BOOL bIsEnterFromBackground;
+
 @end
 
 @implementation BJIMService
@@ -921,12 +924,13 @@
 #pragma mark - application call back
 - (void)applicationEnterForeground
 {
-    if (self.bIsServiceActive)
+    if (self.bIsServiceActive && self.bIsEnterFromBackground)
         [self.imEngine start];
 }
 
 - (void)applicationEnterBackground
 {
+    self.bIsEnterFromBackground = YES;
     [self.imEngine stop];
 }
 
