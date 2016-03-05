@@ -393,7 +393,7 @@ public:
 
 - (void)checkNetworkEfficiency
 {
-    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT && webSocket != nullptr && [self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT && [self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
     {
         [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
     }
