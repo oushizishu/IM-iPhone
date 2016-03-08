@@ -17,6 +17,8 @@
 @property (nonatomic, weak) LKDBHelper *dbHelper;
 @property (nonatomic, weak) BJIMStorage *imStroage;
 
+- (instancetype)initWithDBHelper:(LKDBHelper *)dbHelper;
+
 - (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock;
 
 - (void)detach:(id)key;

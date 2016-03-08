@@ -9,6 +9,9 @@
 #import "IMBaseDao.h"
 #import "InstitutionContacts.h"
 
+/**
+ *  4.1 版本之后被废弃。 使用 {@link ContactsDao}
+ */
 @interface InstitutionContactDao : IMBaseDao
 - (NSArray *)loadAll:(int64_t)userId role:(IMUserRole)contactRole;
 

@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 
+/**
+ *  4.1 版本之后被废弃。 使用 {@link Contacts}
+ */
 @interface StudentContacts : NSObject
 
 @property (nonatomic, assign) int64_t userId;

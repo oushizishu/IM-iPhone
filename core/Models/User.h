@@ -25,4 +25,6 @@
 
 @property (nonatomic, assign) IMOriginType originType;
 
+@property (nonatomic, copy) NSDate *createTime; // 联系人关系建立时间
+
 @end

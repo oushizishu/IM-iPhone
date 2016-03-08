@@ -32,7 +32,10 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 
+#import "NSUserDefaults+IMSDK.h"
+
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import "TransformContactInfoToNewDBOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
@@ -88,17 +91,30 @@
     [self startEngine];
     
     [self.imEngine syncConfig];
-    [self.imEngine syncContacts];
+    
     
     // bugfix
     /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
      修复过一次以后就不再需要了*/
 //    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
+    // 4.1 之前的版本需要将联系人数据迁移到新的库中
+    NSComparisonResult result = [BJIM_VERSION_41 compare:[NSUserDefaults getSavedIMSDKVersion]];
+    if (result == NSOrderedDescending) {
+       // 需要做联系人迁移
+//        TransformContactInfoToNewDBOperation *operation = [[TransformContactInfoToNewDBOperation alloc] init];
+//        operation.imService = self;
+//        [self.syncContactsOperationQueue addOperation:operation];
+    }
+    
+    [self.imEngine syncContacts];
+    
     {
         ResetMsgIdOperation *operation = [[ResetMsgIdOperation alloc] init];
         operation.imService = self;
         [self.writeOperationQueue addOperation:operation];
     }
+    
+    [NSUserDefaults saveIMSDKVersion:[[IMEnvironment shareInstance] getCurrentVersion]];
 }
 
 - (void)startEngine
@@ -686,8 +702,9 @@
         {
             user.remarkName = remarkName;
             user.remarkHeader = remarkHeader;
-            [weakSelf.imStorage insertOrUpdateContactOwner:[IMEnvironment shareInstance].owner contact:user];
+            
             User *owner = owner = [IMEnvironment shareInstance].owner;
+            [weakSelf.imStorage.contactsDao insertOrUpdateContact:user owner:owner];
             Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:user.userId userRole:user.userRole chatType:eChatType_Chat];
             if (conversation && conversation.status == 0) {
                 [weakSelf notifyConversationChanged];
@@ -712,7 +729,7 @@
     User *contact = [[User alloc] init];
     contact.userId = teacherId;
     contact.userRole = eUserRole_Teacher;
-    return [self.imStorage hasContactOwner:user contact:contact];
+    return [self.imStorage.contactsDao hasContactOwner:user contact:contact];
 }
 
 - (BOOL)hasInsitituion:(int64_t)institutionId ofUser:(User *)user
@@ -720,7 +737,7 @@
     User *contact = [[User alloc] init];
     contact.userId = institutionId;
     contact.userRole = eUserRole_Institution;
-    return [self.imStorage hasContactOwner:user contact:contact];
+    return [self.imStorage.contactsDao hasContactOwner:user contact:contact];
 }
 
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user
@@ -738,53 +755,17 @@
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Teacher];
 }
 
 - (NSArray *)getStudentContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Student];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Student];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Student];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Student];
 }
 
 - (NSArray *)getInstitutionContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Institution];
 }
 
 - (void)addRecentContactId:(int64_t)userId

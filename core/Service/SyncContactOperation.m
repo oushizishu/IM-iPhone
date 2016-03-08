@@ -11,6 +11,9 @@
 #import "BJIMService.h"
 #import "GroupMember.h"
 
+#import "ContactsDao.h"
+#import "Contacts.h"
+
 @implementation SyncContactOperation
 - (void)doOperationOnBackground
 {
@@ -75,7 +78,7 @@
     
     // 直接执行sql， 不走缓存层。提升效率
     NSString *deleteGroupSql = [NSString stringWithFormat:@"delete from %@ where userId=%lld and userRole=%ld", [GroupMember getTableName],currentUser.userId, (long)currentUser.userRole];
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+    [self.imService.imStorage.dbHelperInfo executeDB:^(FMDatabase *db) {
         [db executeUpdate:deleteGroupSql];
         NSInteger count = excutorSQLs.count;
         for (NSInteger index = 0; index < count; ++ index) {
@@ -84,7 +87,7 @@
         }
     }];
     
-    NSString *tableName = [self contactsTableName:currentUser];
+    NSString *tableName = [Contacts getTableName];//[self contactsTableName:currentUser];
     
     // 更新机构联系人
     NSArray *organizationList = self.model.organizationList;
@@ -98,7 +101,7 @@
     NSArray *studentList = self.model.studentList;
     // 分批写入, 这样就不需要长时间占用 FMDB 中 threadLock.
     __block BOOL needRefreshUI = NO;
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+    [self.imService.imStorage.dbHelperInfo executeDB:^(FMDatabase *db) {
         NSString *sql = [NSString stringWithFormat:@"select count(*) from %@ where userId=%lld and contactRole=%ld", tableName, currentUser.userId, (long)eUserRole_Student];
         
         FMResultSet *set = [db executeQuery:sql];
@@ -127,7 +130,7 @@
 {
     User *currentUser = [[IMEnvironment shareInstance] owner];
     
-    NSString *tableName = [self contactsTableName:currentUser];
+    NSString *tableName = [Contacts getTableName];//[self contactsTableName:currentUser];
     
     NSString *deleteSQL = [NSString stringWithFormat:@"delete from %@ where userId=%lld and contactRole=%ld", tableName, currentUser.userId, (long)userRole];
     
@@ -137,7 +140,7 @@
         batchCount += 1;
     }
     
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+    [self.imService.imStorage.dbHelperInfo executeDB:^(FMDatabase *db) {
         [db executeUpdate:deleteSQL withArgumentsInArray:nil];
     }];
     
@@ -166,26 +169,27 @@
 {
     if ([userList count] == 0) return;
     User *currentUser = [IMEnvironment shareInstance].owner;
-    NSString *contactTableName = [self contactsTableName:currentUser];
+    NSString *contactTableName = [Contacts getTableName];//[self contactsTableName:currentUser];
     
     NSInteger count = [userList count];
     __weak typeof(self) weakSelf = self;
-    [self.imService.imStorage.dbHelper executeDB:^(FMDatabase *db) {
+    [self.imService.imStorage.dbHelperInfo executeDB:^(FMDatabase *db) {
         
         for (NSInteger index = 0; index < count; ++ index) {
             User *user = [userList objectAtIndex:index];
             [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
             
             if (index == 0) {
-                [weakSelf.imService.imStorage insertOrUpdateContactOwner:currentUser contact:user];
+                [weakSelf.imService.imStorage.contactsDao insertOrUpdateContact:user owner:currentUser];
             } else {
                 NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
                 
                 NSArray *arguments = @[@(user.userRole),
                                        user.remarkName==nil?@"":user.remarkName,
                                        @(currentUser.userId),
+                                       @(currentUser.userRole),
                                        @(user.userId),
-                                       @((long long)[[NSDate date] timeIntervalSince1970]),
+                                       user.createTime==nil?[NSDate date]:user.createTime,
                                        user.remarkHeader==nil?@"":user.remarkHeader,
                                        ];
                 
@@ -198,29 +202,29 @@
 
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
-    NSString *sql = @"replace into %@(contactRole,remarkName,userId,contactId,createTime,remarkHeader) \
-                               values(?,?,?,?,?,?)";
+    NSString *sql = @"replace into %@(contactRole,remarkName,userId, userRole,contactId,createTime,remarkHeader) \
+                               values(?,?,?,?,?,?,?)";
     sql = [NSString stringWithFormat:sql, tableName];
     return sql;
 }
-
-- (NSString *)contactsTableName:(User *)owner
-{
-    if (owner.userRole == eUserRole_Teacher)
-    {
-        return [TeacherContacts getTableName];
-    }
-    else if (owner.userRole == eUserRole_Institution)
-    {
-        return [InstitutionContacts getTableName];
-    }
-    else if (owner.userRole == eUserRole_Student)
-    {
-        return [StudentContacts getTableName];
-    }
-    return nil;
-}
-
+//
+//- (NSString *)contactsTableName:(User *)owner
+//{
+//    if (owner.userRole == eUserRole_Teacher)
+//    {
+//        return [TeacherContacts getTableName];
+//    }
+//    else if (owner.userRole == eUserRole_Institution)
+//    {
+//        return [InstitutionContacts getTableName];
+//    }
+//    else if (owner.userRole == eUserRole_Student)
+//    {
+//        return [StudentContacts getTableName];
+//    }
+//    return nil;
+//}
+//
 - (NSString *)generatorGroupMmeberSql
 {
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \

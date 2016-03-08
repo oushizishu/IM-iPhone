@@ -13,13 +13,16 @@
 #import "Group.h"
 #import "IMMessage.h"
 #import "GroupMember.h"
-#import "TeacherContacts.h"
-#import "StudentContacts.h"
-#import "InstitutionContacts.h"
+//#import "TeacherContacts.h"
+//#import "StudentContacts.h"
+//#import "InstitutionContacts.h"
+#import "Contacts.h"
 #import "RecentContacts.h"
 
 
 #define IM_STRAGE_NAME @"bjhl-hermes-db"
+#define IM_STRAGE_NAME_INFO @"bjhl-hermes-info-db"
+
 const NSString *const IMTeacherContactTableName  = @"TEACHERCONTACTS";
 const NSString *const IMStudentContactTabaleName = @"STUDENTCONTACTS";
 const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS";
@@ -32,28 +35,34 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     if (self)
     {
         self.dbHelper = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME];
+        self.dbHelperInfo = [[LKDBHelper alloc] initWithDBName:IM_STRAGE_NAME_INFO];
+        
         self.userDao = [[UserDao alloc] init];
-        self.userDao.dbHelper = self.dbHelper;
+        self.userDao.dbHelper = self.dbHelperInfo;
         self.userDao.imStroage = self;
         
-        self.institutionDao = [[InstitutionContactDao alloc] init];
-        self.institutionDao.dbHelper = self.dbHelper;
-        self.institutionDao.imStroage = self;
+        self.contactsDao = [[ContactsDao alloc] initWithDBHelper:self.dbHelperInfo];
+        self.contactsDao.imStroage = self;
         
-        self.studentDao = [[StudentContactDao alloc] init];
-        self.studentDao.dbHelper = self.dbHelper;
-        self.studentDao.imStroage = self;
         
-        self.teacherDao = [[TeacherContactDao alloc] init];
-        self.teacherDao.dbHelper = self.dbHelper;
-        self.teacherDao.imStroage = self;
+//        self.institutionDao = [[InstitutionContactDao alloc] init];
+//        self.institutionDao.dbHelper = self.dbHelperInfo;
+//        self.institutionDao.imStroage = self;
+//        
+//        self.studentDao = [[StudentContactDao alloc] init];
+//        self.studentDao.dbHelper = self.dbHelperInfo;
+//        self.studentDao.imStroage = self;
+//        
+//        self.teacherDao = [[TeacherContactDao alloc] init];
+//        self.teacherDao.dbHelper = self.dbHelperInfo;
+//        self.teacherDao.imStroage = self;
         
         self.groupDao = [[GroupDao alloc] init];
-        self.groupDao.dbHelper = self.dbHelper;
+        self.groupDao.dbHelper = self.dbHelperInfo;
         self.groupDao.imStroage = self;
         
         self.groupMemberDao = [[GroupMemberDao alloc] init];
-        self.groupMemberDao.dbHelper = self.dbHelper;
+        self.groupMemberDao.dbHelper = self.dbHelperInfo;
         self.groupMemberDao.imStroage = self;
         
         self.messageDao = [[IMMessageDao alloc] init];
@@ -70,9 +79,10 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (void)clearSession
 {
     [self.userDao clear];
-    [self.institutionDao clear];
-    [self.studentDao clear];
-    [self.teacherDao clear];
+//    [self.institutionDao clear];
+//    [self.studentDao clear];
+//    [self.teacherDao clear];
+    [self.contactsDao clear];
     [self.groupDao clear];
     [self.groupMemberDao clear];
     [self.messageDao clear];
@@ -96,60 +106,60 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return num;
 }
 
-#pragma mark contact
-- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact
-{
-    if (owner.userRole == eUserRole_Institution)
-    {
-        return ([self.institutionDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
-    }
-    else if (owner.userRole == eUserRole_Student)
-    {
-        return ([self.studentDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
-    }
-    else if (owner.userRole == eUserRole_Teacher)
-    {
-        return ([self.teacherDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
-    }
-    return NO;
-}
-
-- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact
-{
-    if (owner.userRole == eUserRole_Teacher)
-    {
-        TeacherContacts *relation = [[TeacherContacts alloc] init];
-        relation.userId = owner.userId;
-        relation.contactId = contact.userId;
-        relation.contactRole = contact.userRole;
-        relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.remarkName = contact.remarkName;
-        relation.remarkHeader = contact.remarkHeader;
-        [self.teacherDao insertOrUpdateContact:relation owner:owner];
-    }
-    else if (owner.userRole == eUserRole_Student)
-    {
-        StudentContacts *relation = [[StudentContacts alloc] init];
-        relation.userId = owner.userId;
-        relation.contactId = contact.userId;
-        relation.contactRole = contact.userRole;
-        relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.remarkName = contact.remarkName;
-        relation.remarkHeader = contact.remarkHeader;
-        [self.studentDao insertOrUpdateContact:relation owner:owner];
-    }
-    else if (owner.userRole == eUserRole_Institution)
-    {
-        InstitutionContacts *relation = [[InstitutionContacts alloc] init];
-        relation.userId = owner.userId;
-        relation.contactId = contact.userId;
-        relation.contactRole = contact.userRole;
-        relation.createTime = [[NSDate date] timeIntervalSince1970];
-        relation.remarkName = contact.remarkName;
-        relation.remarkHeader = contact.remarkHeader;
-        [self.institutionDao insertOrUpdateContact:relation owner:owner];
-    }
-}
+//#pragma mark contact
+//- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact
+//{
+//    if (owner.userRole == eUserRole_Institution)
+//    {
+//        return ([self.institutionDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
+//    }
+//    else if (owner.userRole == eUserRole_Student)
+//    {
+//        return ([self.studentDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
+//    }
+//    else if (owner.userRole == eUserRole_Teacher)
+//    {
+//        return ([self.teacherDao loadContactId:contact.userId contactRole:contact.userRole owner:owner] != nil);
+//    }
+//    return NO;
+//}
+//
+//- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact
+//{
+//    if (owner.userRole == eUserRole_Teacher)
+//    {
+//        TeacherContacts *relation = [[TeacherContacts alloc] init];
+//        relation.userId = owner.userId;
+//        relation.contactId = contact.userId;
+//        relation.contactRole = contact.userRole;
+//        relation.createTime = [[NSDate date] timeIntervalSince1970];
+//        relation.remarkName = contact.remarkName;
+//        relation.remarkHeader = contact.remarkHeader;
+//        [self.teacherDao insertOrUpdateContact:relation owner:owner];
+//    }
+//    else if (owner.userRole == eUserRole_Student)
+//    {
+//        StudentContacts *relation = [[StudentContacts alloc] init];
+//        relation.userId = owner.userId;
+//        relation.contactId = contact.userId;
+//        relation.contactRole = contact.userRole;
+//        relation.createTime = [[NSDate date] timeIntervalSince1970];
+//        relation.remarkName = contact.remarkName;
+//        relation.remarkHeader = contact.remarkHeader;
+//        [self.studentDao insertOrUpdateContact:relation owner:owner];
+//    }
+//    else if (owner.userRole == eUserRole_Institution)
+//    {
+//        InstitutionContacts *relation = [[InstitutionContacts alloc] init];
+//        relation.userId = owner.userId;
+//        relation.contactId = contact.userId;
+//        relation.contactRole = contact.userRole;
+//        relation.createTime = [[NSDate date] timeIntervalSince1970];
+//        relation.remarkName = contact.remarkName;
+//        relation.remarkHeader = contact.remarkHeader;
+//        [self.institutionDao insertOrUpdateContact:relation owner:owner];
+//    }
+//}
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole
 {
@@ -175,37 +185,37 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
     return [self.dbHelper executeSQL:queryString arguments:nil];
 }
 
-- (void)deleteMyContactWithUser:(User*)user
-{
-    if (user.userRole == eUserRole_Teacher)
-    {
-        [self.teacherDao deleteAllContacts:user];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        [self.studentDao deleteAllContacts:user];
-    }
-    else if(user.userRole == eUserRole_Institution)
-    {
-        [self.institutionDao deleteAllContacts:user];
-    }
-}
+//- (void)deleteMyContactWithUser:(User*)user
+//{
+//    if (user.userRole == eUserRole_Teacher)
+//    {
+//        [self.teacherDao deleteAllContacts:user];
+//    }
+//    else if (user.userRole == eUserRole_Student)
+//    {
+//        [self.studentDao deleteAllContacts:user];
+//    }
+//    else if(user.userRole == eUserRole_Institution)
+//    {
+//        [self.institutionDao deleteAllContacts:user];
+//    }
+//}
 
-- (void)deleteContactId:(int64_t)contactId contactRole:(IMUserRole)contactRole owner:(User *)owner
-{
-    if (owner.userRole == eUserRole_Teacher)
-    {
-        [self.teacherDao deleteContactId:contactId contactRole:contactRole owner:owner];
-    }
-    else if (owner.userRole == eUserRole_Student)
-    {
-        [self.studentDao deleteContactId:contactId contactRole:contactRole owner:owner];
-    }
-    else if(owner.userRole == eUserRole_Institution)
-    {
-        [self.institutionDao deleteContactId:contactId contactRole:contactRole owner:owner];
-    }
-}
+//- (void)deleteContactId:(int64_t)contactId contactRole:(IMUserRole)contactRole owner:(User *)owner
+//{
+//    if (owner.userRole == eUserRole_Teacher)
+//    {
+//        [self.teacherDao deleteContactId:contactId contactRole:contactRole owner:owner];
+//    }
+//    else if (owner.userRole == eUserRole_Student)
+//    {
+//        [self.studentDao deleteContactId:contactId contactRole:contactRole owner:owner];
+//    }
+//    else if(owner.userRole == eUserRole_Institution)
+//    {
+//        [self.institutionDao deleteContactId:contactId contactRole:contactRole owner:owner];
+//    }
+//}
 
 - (NSArray *)queryAllBugMessages
 {
@@ -220,10 +230,10 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 
 - (void)updateGroupErrorMsgId:(NSString *)errMsgId newMsgId:(NSString *)msgId
 {
-    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" lastMessageId='%@'", msgId] where:[NSString stringWithFormat:@" lastMessageId='%@'", errMsgId]];
+    [self.dbHelperInfo updateToDB:[Group class] set:[NSString stringWithFormat:@" lastMessageId='%@'", msgId] where:[NSString stringWithFormat:@" lastMessageId='%@'", errMsgId]];
     
-    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" startMessageId='%@'", msgId] where:[NSString stringWithFormat:@" startMessageId='%@'", errMsgId]];
-    [self.dbHelper updateToDB:[Group class] set:[NSString stringWithFormat:@" endMessageId='%@'", msgId] where:[NSString stringWithFormat:@" endMessageId='%@'", errMsgId]];
+    [self.dbHelperInfo updateToDB:[Group class] set:[NSString stringWithFormat:@" startMessageId='%@'", msgId] where:[NSString stringWithFormat:@" startMessageId='%@'", errMsgId]];
+    [self.dbHelperInfo updateToDB:[Group class] set:[NSString stringWithFormat:@" endMessageId='%@'", msgId] where:[NSString stringWithFormat:@" endMessageId='%@'", errMsgId]];
 }
 
 - (NSString *)nextFakeMessageId

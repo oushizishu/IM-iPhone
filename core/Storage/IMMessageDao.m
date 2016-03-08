@@ -188,7 +188,7 @@
         [db executeQuery:sql];
     }];
     */
-    NSString *sql = [NSString stringWithFormat:@"delete from IMMESSAGE where conversationid=%lld", conversationId];
+    NSString *sql = [NSString stringWithFormat:@"delete from IMMESSAGE where conversationid=%ld", conversationId];
     [self.dbHelper executeSQL:sql arguments:nil];
 }
 

@@ -9,13 +9,14 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 #import "UserDao.h"
-#import "InstitutionContactDao.h"
-#import "StudentContactDao.h"
-#import "TeacherContactDao.h"
+//#import "InstitutionContactDao.h"
+//#import "StudentContactDao.h"
+//#import "TeacherContactDao.h"
 #import "GroupDao.h"
 #import "GroupMemberDao.h"
 #import "IMMessageDao.h"
 #import "ConversationDao.h"
+#import "ContactsDao.h"
 
 @class BJIMConversationDBManager;
 @class User;
@@ -27,14 +28,21 @@
 @interface BJIMStorage : NSObject
 
 @property (nonatomic, strong) UserDao *userDao;
-@property (nonatomic, strong) InstitutionContactDao *institutionDao;
-@property (nonatomic, strong) StudentContactDao *studentDao;
-@property (nonatomic, strong) TeacherContactDao *teacherDao;
+//@property (nonatomic, strong) InstitutionContactDao *institutionDao;
+//@property (nonatomic, strong) StudentContactDao *studentDao;
+//@property (nonatomic, strong) TeacherContactDao *teacherDao;
+@property (nonatomic, strong) ContactsDao *contactsDao;
 @property (nonatomic, strong) GroupDao *groupDao;
 @property (nonatomic, strong) GroupMemberDao *groupMemberDao;
 @property (nonatomic, strong) IMMessageDao *messageDao;
 @property (nonatomic, strong) ConversationDao *conversationDao;
-@property (nonatomic, strong) LKDBHelper *dbHelper;
+
+/**
+ *  用户表，联系人表， 群组表独立在一个 DB 中。 消息， 会话在另一个DB 中
+ * 为了兼容旧版本，老的 DB 实例存储 消息，会话等数据.
+ */
+@property (nonatomic, strong) LKDBHelper *dbHelper; //存储 message，会话信息
+@property (nonatomic, strong) LKDBHelper *dbHelperInfo; // 存储 user， group 以及关系信息
 
 //clear DB cache
 - (void)clearSession;
@@ -43,9 +51,9 @@
 - (long)sumOfAllConversationUnReadNumOwnerId:(int64_t)ownerId userRole:(IMUserRole)userRole;
 
 //contact
-- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact;
-- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact;
-- (void)deleteMyContactWithUser:(User *)user;
+//- (BOOL)hasContactOwner:(User *)owner contact:(User *)contact;
+//- (void)insertOrUpdateContactOwner:(User *)owner contact:(User *)contact;
+//- (void)deleteMyContactWithUser:(User *)user;
 
 - (NSArray *)queryRecentContactsWithUserId:(int64_t)userId userRole:(IMUserRole)userRole;
 
@@ -66,7 +74,7 @@
  */
 - (NSString *)nextFakeMessageId;
 
-- (void)deleteContactId:(int64_t)contactId
-            contactRole:(IMUserRole)contactRole
-                  owner:(User *)owner;
+//- (void)deleteContactId:(int64_t)contactId
+//            contactRole:(IMUserRole)contactRole
+//                  owner:(User *)owner;
 @end

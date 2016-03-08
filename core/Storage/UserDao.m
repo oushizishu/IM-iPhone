@@ -7,9 +7,10 @@
 //
 
 #import "UserDao.h"
-#import "InstitutionContacts.h"
-#import "StudentContacts.h"
-#import "TeacherContacts.h"
+//#import "InstitutionContacts.h"
+//#import "StudentContacts.h"
+//#import "TeacherContacts.h"
+#import "ContactsDao.h"
 #import "BJIMStorage.h"
 
 @implementation UserDao
@@ -43,24 +44,10 @@
     
     if (user)
     {
-        if (owner.userRole == eUserRole_Institution)
-        {
-           InstitutionContacts *_contact = [self.imStroage.institutionDao loadContactId:userId contactRole:userRole owner:owner];
-            user.remarkName = _contact.remarkName;
-            user.remarkHeader = _contact.remarkHeader;
-        }
-        else if (owner.userRole == eUserRole_Student)
-        {
-            StudentContacts *_contact = [self.imStroage.studentDao loadContactId:userId contactRole:userRole owner:owner];
-            user.remarkName = _contact.remarkName;
-            user.remarkHeader = _contact.remarkHeader;
-        }
-        else if (owner.userRole == eUserRole_Teacher)
-        {
-            TeacherContacts *_contact = [self.imStroage.teacherDao loadContactId:userId contactRole:userRole owner:owner];
-            user.remarkName = _contact.remarkName;
-            user.remarkHeader = _contact.remarkHeader;
-        }
+        Contacts *contact = [self.imStroage.contactsDao loadContactId:userId contactRole:userRole owner:owner];
+        user.remarkName = contact.remarkName;
+        user.remarkHeader = contact.remarkHeader;
+        user.createTime = contact.createTime;
     }
     return user;
 }

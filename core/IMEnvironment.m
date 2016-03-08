@@ -53,4 +53,9 @@
 {
     return self.currentChatToUserId > 0 && self.currentChatToUserRole >= 0;
 }
+
+- (NSString *)getCurrentVersion
+{
+    return BJIM_VERSTION;
+}
 @end

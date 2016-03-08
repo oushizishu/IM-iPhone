@@ -45,7 +45,6 @@
 {
     return @{
              @"userId":@"userId",
-             @"userId":@"userId",
              @"userRole":@"userRole",
              @"name":@"name",
              @"avatar":@"avatar",

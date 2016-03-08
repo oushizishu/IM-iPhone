@@ -20,6 +20,15 @@
     return self;
 }
 
+- (instancetype)initWithDBHelper:(LKDBHelper *)dbHelper
+{
+    self = [self init];
+    if (self) {
+        self.dbHelper = dbHelper;
+    }
+    return self;
+}
+
 - (void)attachEntityKey:(id)key entity:(id)entity lock:(BOOL)lock
 {
     [self.identityScope appendObject:entity key:key lock:lock];

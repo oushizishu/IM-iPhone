@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import "BJIMConstants.h"
 
+/**
+ *  已废弃
+ */
 @interface RecentContacts : NSObject
 
 @property (nonatomic, assign) int64_t userId;
