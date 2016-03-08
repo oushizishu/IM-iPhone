@@ -174,6 +174,8 @@
     
     _contact.relation |= eUserRelation_black_active;
     [self.dbHelper updateToDB:_contact where:nil];
+    contact.relation = _contact.relation;
+    [self.imStroage.userDao insertOrUpdateUser:contact];
 }
 
 - (void)removeBlack:(User *)contact owner:(User *)owner
@@ -185,6 +187,8 @@
     
     _contact.relation &= ~eUserRelation_black_active;
     [self.dbHelper updateToDB:_contact where:nil];
+    contact.relation = _contact.relation;
+    [self.imStroage.userDao insertOrUpdateUser:contact];
 }
 
 - (void)removeAllBlack:(User *)owner
