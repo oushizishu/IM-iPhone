@@ -151,4 +151,15 @@
     }];
     return count;
 }
+
+- (void)resetAllUnReadNum:(User *)owner
+{
+    NSMutableString *update = [[NSMutableString alloc] init];
+    [update appendFormat:@"update %@ set unReadNum=0 where ", [Conversation getTableName]];
+    [update appendFormat:@" ownerId=%lld and ownerRole=%ld", owner.userId,
+                       owner.userRole];
+    
+    [self.dbHelper executeSQL:update arguments:nil];
+    [self clear];
+}
 @end

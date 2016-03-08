@@ -72,6 +72,8 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (Group *)getGroup:(int64_t)groupId;
 
+- (void)resetAllUnReadNum;
+
 #pragma mark - current chat
 //开始聊天
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole;
@@ -93,6 +95,17 @@
 - (void)addRecentContactId:(int64_t)userId
                contactRole:(IMUserRole)userRole
                   callback:(void(^)(BaseResponse *response))callback __deprecated_msg("已过期");
+
+#pragma mark - 关系操作，拉黑
+- (void)addBlackContactId:(int64_t)userId
+              contactRole:(IMUserRole)userRole
+                 callback:(void(^)(BaseResponse *response))callback;
+
+- (void)removeBlackContactId:(int64_t)userId
+                 contactRole:(IMUserRole)userRole
+                    callback:(void(^)(BaseResponse *reponse))callback;
+
+- (void)getBlackList:(void(^)(NSArray<User *> *blacklist))callback;
 
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName

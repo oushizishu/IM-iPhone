@@ -219,6 +219,12 @@
     [self.readOperationQueue addOperation:operation];
 }
 
+- (void)resetAllUnReadNum:(User *)owner
+{
+    [self.imStorage.conversationDao resetAllUnReadNum:owner];
+    [self notifyUnReadNumChanged:0 other:0];
+}
+
 #pragma mark - Post Message Delegate
 - (void)onPostMessageSucc:(IMMessage *)message result:(SendMsgModel *)model
 {
@@ -785,6 +791,61 @@
     }];
 }
 
+#pragma mark - 关系操作，拉黑
+- (void)addBlackContactId:(int64_t)userId
+              contactRole:(IMUserRole)userRole
+                    owner:(User *)owner
+                 callback:(void(^)(BaseResponse *response))callback
+{
+    __weak typeof(self) weakSelf = self;
+    [self.imEngine postAddBlacklist:userId role:userRole callback:^(NSError *error, BaseResponse *result) {
+        if(error == nil && weakSelf) {
+            User *user = [weakSelf.imStorage.userDao loadUser:userId role:userRole];
+            if (! user) {
+                user = [[User alloc] init];
+                user.userId = userId;
+                user.userRole = userRole;
+            }
+            [weakSelf.imStorage.contactsDao addBlack:user owner:owner];
+        }
+        if (callback) {
+            callback(result);
+        }
+    }];
+}
+
+- (void)removeBlackContactId:(int64_t)userId
+                 contactRole:(IMUserRole)userRole
+                       owner:(User *)owner
+                    callback:(void(^)(BaseResponse *reponse))callback
+{
+    __weak typeof(self) weakSelf = self;
+    [self.imEngine postCancelBlacklist:userId role:userRole callback:^(NSError *error, BaseResponse *result) {
+        if (error == nil && weakSelf) {
+            User *user = [weakSelf.imStorage.userDao loadUser:userId role:userRole];
+            if (! user) {
+                user = [[User alloc] init];
+                user.userId = userId;
+                user.userRole = userRole;
+            }
+            [weakSelf.imStorage.contactsDao removeBlack:user owner:owner];
+        }
+    }];
+}
+
+- (void)getAllBlackOwner:(User *)owner
+                callback:(void(^)(NSArray<User *> *blacklist))callback
+{
+    if (! callback) return;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray *result = [weakSelf.imStorage.contactsDao loadAllBlack:owner];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(result);
+        });
+    });
+}
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

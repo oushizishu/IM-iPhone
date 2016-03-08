@@ -149,6 +149,12 @@
     return [self.imService getGroup:groupId];
 }
 
+- (void)resetAllUnReadNum
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return;
+    [self.imService resetAllUnReadNum:[IMEnvironment shareInstance].owner];
+}
+
 #pragma mark - current chat
 - (void)startChatToUserId:(int64_t)userId role:(IMUserRole)userRole
 {
@@ -173,6 +179,47 @@
 //    [self.imService removeOperationsWhileStopChat];
     // clear message cache
     [self.imService.imStorage.messageDao clear];
+}
+
+#pragma mark - 关系操作，拉黑
+- (void)addBlackContactId:(int64_t)userId
+              contactRole:(IMUserRole)userRole
+                 callback:(void(^)(BaseResponse *response))callback
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        if (callback) {
+            BaseResponse *response = [[BaseResponse alloc] initWithErrorCode:IMSDK_ERROR_CODE_NATIVE_NOT_FOUND errorMsg:@"请先登录 IM SDK"];
+            callback(response);
+        }
+        return;
+    }
+    [self.imService addBlackContactId:userId contactRole:userRole owner:[IMEnvironment shareInstance].owner callback:callback];
+}
+
+- (void)removeBlackContactId:(int64_t)userId
+                 contactRole:(IMUserRole)userRole
+                    callback:(void(^)(BaseResponse *reponse))callback
+{
+    if (![[IMEnvironment shareInstance] isLogin]) {
+        if (callback) {
+            BaseResponse *response = [[BaseResponse alloc] initWithErrorCode:IMSDK_ERROR_CODE_NATIVE_NOT_FOUND errorMsg:@"请先登录 IM SDK"];
+            callback(response);
+        }
+        return;
+    }
+    [self.imService removeBlackContactId:userId contactRole:userRole owner:[IMEnvironment shareInstance].owner callback:callback];
+}
+
+- (void)getBlackList:(void(^)(NSArray<User *> *blacklist))callback
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) {
+        if (callback) {
+            callback(nil);
+        }
+        return;
+    }
+    
+    [self.imService getAllBlackOwner:[IMEnvironment shareInstance].owner callback:callback];
 }
 
 #pragma mark - setter & getter

@@ -118,6 +118,10 @@
         [weakSelf doAfterOperationOnMain];
     });
 
+    // 黑名单
+    NSArray *blackList = self.model.blackList;
+    [self.imService.imStorage.contactsDao removeAllBlack:currentUser];
+    [self executorContacts:blackList relation:eUserRelation_black_active];
 }
 
 - (void)doAfterOperationOnMain
@@ -150,7 +154,7 @@
         NSInteger len = MIN(SYNC_CONTACT_BATCH_COUNT, count - start);
         NSArray *array = [userList objectsAtIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(start, len)]];
         
-        [self executorContacts:array];
+        [self executorContacts:array relation:eUserRelation_normal];
         [NSThread sleepForTimeInterval:0.2]; // 让线程等待一会执行, 避免数据量太大的情况下 CPU 占用率持续太高
         
         if (index != 0 && batchCount > 20) { // 加载中途刷新一次界面，避免等待时间过长
@@ -165,7 +169,7 @@
     
 }
 
-- (void)executorContacts:(NSArray *)userList
+- (void)executorContacts:(NSArray *)userList relation:(IMUserRelation)relation
 {
     if ([userList count] == 0) return;
     User *currentUser = [IMEnvironment shareInstance].owner;
@@ -191,6 +195,7 @@
                                        @(user.userId),
                                        user.createTime==nil?[NSDate date]:user.createTime,
                                        user.remarkHeader==nil?@"":user.remarkHeader,
+                                       @(relation)
                                        ];
                 
                 [db executeUpdate:sql withArgumentsInArray:arguments];
@@ -202,8 +207,8 @@
 
 - (NSString *)generatorContactSql:(User *)contact inTable:(NSString *)tableName owner:(User *)owner;
 {
-    NSString *sql = @"replace into %@(contactRole,remarkName,userId, userRole,contactId,createTime,remarkHeader) \
-                               values(?,?,?,?,?,?,?)";
+    NSString *sql = @"replace into %@(contactRole,remarkName,userId, userRole,contactId,createTime,remarkHeader, relation) \
+                               values(?,?,?,?,?,?,?, ?)";
     sql = [NSString stringWithFormat:sql, tableName];
     return sql;
 }

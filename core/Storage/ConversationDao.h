@@ -51,4 +51,6 @@
  *  @return <#return value description#>
  */
 - (NSInteger)sumOfAllUnReadNumBeenHiden:(User *)owner;
+
+- (void)resetAllUnReadNum:(User *)owner;
 @end

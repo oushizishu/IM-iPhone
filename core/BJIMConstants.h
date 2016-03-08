@@ -51,6 +51,14 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Anonymous = -1,
 };
 
+#pragma mark - 用户关系
+typedef NS_ENUM(NSInteger, IMUserRelation)
+{
+    eUserRelation_normal = 0, // 正常关系
+    eUserRelation_black_passive = 1, //被拉黑
+    eUserRelation_black_active = 2,// 主动拉黑
+};
+
 #pragma mark - 消息类型
 typedef NS_ENUM(NSInteger, IMMessageType)
 {

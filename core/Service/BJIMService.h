@@ -34,6 +34,8 @@
 - (void)sendMessage:(IMMessage *)message;
 - (void)retryMessage:(IMMessage *)message;
 - (void)loadMessagesUser:(User *)user orGroup:(Group *)group minMsgId:(NSString *)minMsgId;
+- (void)resetAllUnReadNum:(User *)owner;
+
 
 #pragma mark - getter 
 - (NSArray *)getAllConversationWithOwner:(User *)owner;
@@ -141,6 +143,23 @@
 - (void)addRecentContactId:(int64_t)userId
                contactRole:(IMUserRole)userRole
                   callback:(void(^)(BaseResponse *response))callback;
+
+
+#pragma mark - 关系操作，拉黑
+- (void)addBlackContactId:(int64_t)userId
+              contactRole:(IMUserRole)userRole
+                    owner:(User *)owner
+                 callback:(void(^)(BaseResponse *response))callback;
+
+- (void)removeBlackContactId:(int64_t)userId
+                 contactRole:(IMUserRole)userRole
+                       owner:(User *)owner
+                    callback:(void(^)(BaseResponse *reponse))callback;
+
+- (void)getAllBlackOwner:(User *)owner
+                callback:(void(^)(NSArray<User *> *blacklist))callback;
+
+
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

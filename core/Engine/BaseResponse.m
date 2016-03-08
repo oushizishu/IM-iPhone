@@ -12,6 +12,16 @@ static int ddLogLevel = DDLogLevelVerbose;
 
 @implementation BaseResponse
 
+- (instancetype)initWithErrorCode:(NSInteger)code errorMsg:(NSString *)msg
+{
+    self = [super init];
+    if (self) {
+        self.code = code;
+        self.msg = msg;
+    }
+    return self;
+}
+
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
