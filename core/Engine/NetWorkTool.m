@@ -67,6 +67,7 @@
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
     
 }
@@ -98,6 +99,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", message.msg_t] forKey:@"msg_t"];
     [requestParams appendPostParamValue:message.sign forKey:@"sign"];
     
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -110,6 +112,7 @@
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -142,6 +145,7 @@
         [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"current_group_id"];
     }
     
+    [NetWorkTool insertCommonParams:requestParams];
  
 //    DDLogInfo(@"[Post Polling][url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
@@ -175,6 +179,7 @@
     {
         [requestParams appendPostParamValue:excludeMsgIds forKey:@"exclude_msgs"];
     }
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -193,6 +198,7 @@
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.jpg", [[NSDate date] timeIntervalSince1970]];
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:filename forKey:@"attachment"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
@@ -207,6 +213,7 @@
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
@@ -226,6 +233,7 @@
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [requestParmas appendPostParamValue:remarkName forKey:@"remark_name"];
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -244,6 +252,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -260,6 +269,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:@"1" forKey:@"group_auth"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -275,6 +285,7 @@
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -294,6 +305,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", pageSize] forKey:@"page_size"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -313,6 +325,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_role] forKey:@"transfer_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -330,6 +343,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -349,6 +363,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:groupName forKey:@"group_name"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -370,6 +385,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", status] forKey:@"status"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -389,6 +405,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -406,6 +423,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_file_id] forKey:@"last_file_id"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -526,7 +544,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:attachment forKey:@"attachment"];
     [requestParams appendFile:filePath mimeType:attachment filename:fileName forKey:@"attachment"];
-    
+    [NetWorkTool insertCommonParams:requestParams];
     return [self doNetworkRequest:requestParams success:success failure:failure retry:nil progress:progress];
 }
 
@@ -543,7 +561,7 @@
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:fileName forKey:@"attachment"];
-    
+   [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -563,6 +581,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", storage_id] forKey:@"storage_id"];
     [requestParams appendPostParamValue:fileName forKey:@"filename"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -645,6 +664,7 @@
         return nil;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fileUrl method:kBJCNHttpMethod_GET];
+    [NetWorkTool insertCommonParams:requestParams];
     return [self doDownloadResource:requestParams fileDownPath:filePath success:success retry:nil failure:failure progress:progress];
 }
 
@@ -662,6 +682,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -679,6 +700,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -696,6 +718,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:content forKey:@"content"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -715,6 +738,7 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_id] forKey:@"last_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", page_size] forKey:@"page_size"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -732,6 +756,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", notice_id] forKey:@"notice_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", group_id] forKey:@"group_id"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -749,6 +774,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -766,6 +792,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -783,6 +810,7 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
@@ -800,6 +828,7 @@
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_LEAVE_GROUP method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -815,6 +844,7 @@
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+   [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -835,6 +865,7 @@
     if (model.groupId != eUserRole_Anonymous) {
         [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.userRole] forKey:@"user_role"];
     }
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -855,6 +886,7 @@
     if (userRole != eUserRole_Anonymous) {
         [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)userRole] forKey:@"user_role"];
     }
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -871,6 +903,7 @@
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:name forKey:@"group_name"];
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -887,6 +920,7 @@
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"msg_status"];
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
@@ -903,6 +937,13 @@
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"push_status"];
+    [NetWorkTool insertCommonParams:requestParmas];
     return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
+
++ (void)insertCommonParams:(BJCNRequestParams *)requestParms
+{
+    [requestParms appendPostParamValue:@"im_version" forKey:[[IMEnvironment shareInstance] getCurrentVersion]];
+}
+
 @end

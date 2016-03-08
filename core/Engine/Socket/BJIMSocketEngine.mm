@@ -229,6 +229,7 @@ public:
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.chat_t]] forKey:@"chat_t"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.msg_t]] forKey:@"msg_t"];
     [dic setObject:message.sign forKey:@"sign"];
+    [dic setObject:[self URLEncodedString:[[IMEnvironment shareInstance] getCurrentVersion]] forKey:@"im_version"];
     
     NSString *uuid = [self uuidString];
     std::string resultBuf;
@@ -258,6 +259,7 @@ public:
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [dic setObject:[NSString stringWithFormat:@"%lld", max_user_msg_id] forKey:@"user_last_msg_id"];
+    [dic setObject:[self URLEncodedString:[[IMEnvironment shareInstance] getCurrentVersion]] forKey:@"im_version"];
     if ([group_last_msg_ids length] > 0)
     {
         [dic setObject:group_last_msg_ids forKey:@"groups_last_msg_id"];
@@ -438,7 +440,8 @@ public:
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", (long)[IMEnvironment shareInstance].owner.userRole],
                           @"device":self.device,
-                          @"token":self.token
+                          @"token":self.token,
+                          @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     
     
@@ -454,7 +457,8 @@ public:
                           @"message_type":SOCKET_API_REQUEST_HEART_BEAT,
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", (long)[IMEnvironment shareInstance].owner.userRole],
-                          @"token":self.token
+                          @"token":self.token,
+                          @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     
     
@@ -471,7 +475,8 @@ public:
                           @"user_role":[NSString stringWithFormat:@"%ld", (long)[IMEnvironment shareInstance].owner.userRole],
                           @"param":[params socketParamsString],
                           @"sign":uuid,
-                          @"token":self.token
+                          @"token":self.token,
+                          @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     
     NSString *str = [dic jsonString];
