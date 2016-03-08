@@ -11,7 +11,9 @@
 
 
 #pragma mark - im version.
-#define BJIM_VERSTION @"1.0"
+#define BJIM_VERSION_10     @"1.0.0"      // 4.0 之前的版本号都为 1.0；
+#define BJIM_VERSION_41     @"4.1.0"    // 去除完关注体系；拆分数据库
+#define BJIM_VERSTION       BJIM_VERSION_41
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>
@@ -47,6 +49,14 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Kefu = 7,
     eUserRole_System = 100, //系统通知
     eUserRole_Anonymous = -1,
+};
+
+#pragma mark - 用户关系
+typedef NS_ENUM(NSInteger, IMUserRelation)
+{
+    eUserRelation_normal = 0, // 正常关系
+    eUserRelation_black_passive = 1, //被拉黑
+    eUserRelation_black_active = 2,// 主动拉黑
 };
 
 #pragma mark - 消息类型

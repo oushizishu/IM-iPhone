@@ -34,7 +34,7 @@
         [self.imStroage.userDao.identityScope lock];
         
         while ([set next]) {
-            int64_t userId =[set longLongIntForColumnIndex:1];
+            int64_t userId = [set longLongIntForColumnIndex:1];
             IMUserRole userRole = [set longForColumnIndex:2];
             
             NSString *key = [NSString stringWithFormat:@"%lld-%ld", userId, (long)userRole];
@@ -63,7 +63,6 @@
         [set close];
     }];
     
-//    [self.identityScope unlock];
     return users;
 }
 

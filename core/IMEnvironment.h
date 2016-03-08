@@ -32,4 +32,6 @@
 - (BOOL)isCurrentChatToGroup;
 - (BOOL)isCurrentChatToUser;
 
+- (NSString *)getCurrentVersion;
+
 @end

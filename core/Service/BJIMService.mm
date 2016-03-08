@@ -32,7 +32,10 @@
 #import "NetWorkTool.h"
 #import "BaseResponse.h"
 
+#import "NSUserDefaults+IMSDK.h"
+
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import "TransformContactInfoToNewDBOperation.h"
 
 @interface BJIMService()<IMEnginePostMessageDelegate,
                          IMEngineSynContactDelegate,
@@ -88,17 +91,30 @@
     [self startEngine];
     
     [self.imEngine syncConfig];
-    [self.imEngine syncContacts];
+    
     
     // bugfix
     /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.
      修复过一次以后就不再需要了*/
 //    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
+    // 4.1 之前的版本需要将联系人数据迁移到新的库中
+    NSComparisonResult result = [BJIM_VERSION_41 compare:[NSUserDefaults getSavedIMSDKVersion]];
+    if (result == NSOrderedDescending) {
+       // 需要做联系人迁移
+//        TransformContactInfoToNewDBOperation *operation = [[TransformContactInfoToNewDBOperation alloc] init];
+//        operation.imService = self;
+//        [self.syncContactsOperationQueue addOperation:operation];
+    }
+    
+    [self.imEngine syncContacts];
+    
     {
         ResetMsgIdOperation *operation = [[ResetMsgIdOperation alloc] init];
         operation.imService = self;
         [self.writeOperationQueue addOperation:operation];
     }
+    
+    [NSUserDefaults saveIMSDKVersion:[[IMEnvironment shareInstance] getCurrentVersion]];
 }
 
 - (void)startEngine
@@ -201,6 +217,12 @@
     operation.chatToUser = user;
 //    [self.operationQueue addOperation:operation];
     [self.readOperationQueue addOperation:operation];
+}
+
+- (void)resetAllUnReadNum:(User *)owner
+{
+    [self.imStorage.conversationDao resetAllUnReadNum:owner];
+    [self notifyUnReadNumChanged:0 other:0];
 }
 
 #pragma mark - Post Message Delegate
@@ -686,8 +708,9 @@
         {
             user.remarkName = remarkName;
             user.remarkHeader = remarkHeader;
-            [weakSelf.imStorage insertOrUpdateContactOwner:[IMEnvironment shareInstance].owner contact:user];
+            
             User *owner = owner = [IMEnvironment shareInstance].owner;
+            [weakSelf.imStorage.contactsDao insertOrUpdateContact:user owner:owner];
             Conversation *conversation = [weakSelf.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:user.userId userRole:user.userRole chatType:eChatType_Chat];
             if (conversation && conversation.status == 0) {
                 [weakSelf notifyConversationChanged];
@@ -712,7 +735,7 @@
     User *contact = [[User alloc] init];
     contact.userId = teacherId;
     contact.userRole = eUserRole_Teacher;
-    return [self.imStorage hasContactOwner:user contact:contact];
+    return [self.imStorage.contactsDao hasContactOwner:user contact:contact];
 }
 
 - (BOOL)hasInsitituion:(int64_t)institutionId ofUser:(User *)user
@@ -720,7 +743,7 @@
     User *contact = [[User alloc] init];
     contact.userId = institutionId;
     contact.userRole = eUserRole_Institution;
-    return [self.imStorage hasContactOwner:user contact:contact];
+    return [self.imStorage.contactsDao hasContactOwner:user contact:contact];
 }
 
 - (GroupMember *)getGroupMember:(int64_t)groupId ofUser:(User *)user
@@ -738,53 +761,17 @@
 
 - (NSArray *)getTeacherContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Teacher];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Teacher];
 }
 
 - (NSArray *)getStudentContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Student];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Student];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Student];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Student];
 }
 
 - (NSArray *)getInstitutionContactsWithUser:(User *)user
 {
-    if (user.userRole == eUserRole_Teacher)
-    {
-        return [self.imStorage.teacherDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    else if (user.userRole == eUserRole_Student)
-    {
-        return [self.imStorage.studentDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    else if (user.userRole == eUserRole_Institution)
-    {
-        return [self.imStorage.institutionDao loadAll:user.userId role:eUserRole_Institution];
-    }
-    return nil;
+    return [self.imStorage.contactsDao loadAll:user role:eUserRole_Institution];
 }
 
 - (void)addRecentContactId:(int64_t)userId
@@ -804,6 +791,61 @@
     }];
 }
 
+#pragma mark - 关系操作，拉黑
+- (void)addBlackContactId:(int64_t)userId
+              contactRole:(IMUserRole)userRole
+                    owner:(User *)owner
+                 callback:(void(^)(BaseResponse *response))callback
+{
+    __weak typeof(self) weakSelf = self;
+    [self.imEngine postAddBlacklist:userId role:userRole callback:^(NSError *error, BaseResponse *result) {
+        if(error == nil && weakSelf) {
+            User *user = [weakSelf.imStorage.userDao loadUser:userId role:userRole];
+            if (! user) {
+                user = [[User alloc] init];
+                user.userId = userId;
+                user.userRole = userRole;
+            }
+            [weakSelf.imStorage.contactsDao addBlack:user owner:owner];
+        }
+        if (callback) {
+            callback(result);
+        }
+    }];
+}
+
+- (void)removeBlackContactId:(int64_t)userId
+                 contactRole:(IMUserRole)userRole
+                       owner:(User *)owner
+                    callback:(void(^)(BaseResponse *reponse))callback
+{
+    __weak typeof(self) weakSelf = self;
+    [self.imEngine postCancelBlacklist:userId role:userRole callback:^(NSError *error, BaseResponse *result) {
+        if (error == nil && weakSelf) {
+            User *user = [weakSelf.imStorage.userDao loadUser:userId role:userRole];
+            if (! user) {
+                user = [[User alloc] init];
+                user.userId = userId;
+                user.userRole = userRole;
+            }
+            [weakSelf.imStorage.contactsDao removeBlack:user owner:owner];
+        }
+    }];
+}
+
+- (void)getAllBlackOwner:(User *)owner
+                callback:(void(^)(NSArray<User *> *blacklist))callback
+{
+    if (! callback) return;
+    
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSArray *result = [weakSelf.imStorage.contactsDao loadAllBlack:owner];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            callback(result);
+        });
+    });
+}
 
 #pragma mark -系统小秘书 & 客服
 //系统小秘书

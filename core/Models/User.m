@@ -38,13 +38,13 @@
       @"remarkName":@"remark_name",
       @"remarkHeader":@"remark_header",
       @"originType":@"origin_type",
+      @"createTime":@"create_time"
       };
 }
 
 + (NSDictionary *)getTableMapping
 {
     return @{
-             @"userId":@"userId",
              @"userId":@"userId",
              @"userRole":@"userRole",
              @"name":@"name",

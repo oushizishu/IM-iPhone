@@ -15,8 +15,8 @@
 @property (nonatomic, assign) int64_t userId;
 @property (nonatomic, assign) IMUserRole userRole;
 @property (nonatomic, assign) int64_t groupId;
-@property (nonatomic, assign) NSInteger isAdmin;
-@property (nonatomic, assign) int64_t createTime;
+@property (nonatomic, assign) BOOL isAdmin;
+@property (nonatomic, copy) NSDate *createTime;
 
 @property (nonatomic, assign) IMGroupMsgStatus msgStatus;
 @property (nonatomic, assign) BOOL canLeave;//是否能退出

@@ -122,7 +122,7 @@
 
 - (NSArray *)loadAllWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole
 {
-    NSString *queryString  = [NSString stringWithFormat:@"ownerId=%lld \
+    NSString *queryString = [NSString stringWithFormat:@"ownerId=%lld \
                               AND ownerRole=%ld and status=0 ORDER BY lastMessageId DESC",ownerId,(long)ownerRole];
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     [[DaoStatistics sharedInstance] logDBOperationSQL:queryString class:[Conversation class]];
@@ -150,5 +150,16 @@
         [set close];
     }];
     return count;
+}
+
+- (void)resetAllUnReadNum:(User *)owner
+{
+    NSMutableString *update = [[NSMutableString alloc] init];
+    [update appendFormat:@"update %@ set unReadNum=0 where ", [Conversation getTableName]];
+    [update appendFormat:@" ownerId=%lld and ownerRole=%ld", owner.userId,
+                       owner.userRole];
+    
+    [self.dbHelper executeSQL:update arguments:nil];
+    [self clear];
 }
 @end
