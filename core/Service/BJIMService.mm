@@ -829,6 +829,9 @@
                 user.userRole = userRole;
             }
             [weakSelf.imStorage.contactsDao removeBlack:user owner:owner];
+            if (callback) {
+                callback(result);
+            }
         }
     }];
 }
