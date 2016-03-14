@@ -16,7 +16,7 @@
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
 #define HERMES_API_SYNC_CONFIG [NSString stringWithFormat:@"%@/hermes/syncConfig", HOST_API]
-#define HERMES_API_MY_CONTACTS [NSString stringWithFormat:@"%@/hermes/myContacts", HOST_API]
+#define HERMES_API_MY_CONTACTS [NSString stringWithFormat:@"%@/hermes/getMyContacts", HOST_API]
 #define HERMES_API_SEND_MESSAGE [NSString stringWithFormat:@"%@/hermes/sendMsg", HOST_API]
 #define HERMES_API_POLLING [NSString stringWithFormat:@"%@/hermes/polling", HOST_API]
 #define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
