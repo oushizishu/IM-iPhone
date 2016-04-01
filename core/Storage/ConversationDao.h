@@ -32,6 +32,9 @@
 //获取所有会话
 - (NSArray *)loadAllNoConditionWithOwnerId:(int64_t)ownerId userRole:(IMUserRole)ownerRole;
 
+// 获取所有最后一条是关注消息的会话
+- (NSArray *)loadAllWithLastMessageIdAttention;
+
 /**
  *  返回非陌生人的会话
  *

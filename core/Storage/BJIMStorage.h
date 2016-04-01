@@ -77,4 +77,9 @@
 //- (void)deleteContactId:(int64_t)contactId
 //            contactRole:(IMUserRole)contactRole
 //                  owner:(User *)owner;
+
+/**
+ *  删除 3.0 中关注插入的本地消息
+ */
+- (void)deleteDirtyMessages;
 @end

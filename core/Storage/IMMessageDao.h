@@ -47,5 +47,4 @@
 -  (NSArray*)loadMoreMessageWithConversationId:(NSInteger)conversationId
                                       minMsgId:(NSString *)minMsgId;
 
-
 @end

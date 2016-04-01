@@ -24,6 +24,7 @@
 #import "RetryMessageOperation.h"
 #import "ResetConversationUnreadNumOperation.h"
 #import "ResetMsgIdOperation.h"
+#import "HistoryDirtyDataCleanOperation.h"
 
 #import "BJIMAbstractEngine.h"
 #import "BJIMHttpEngine.h"
@@ -98,12 +99,16 @@
      修复过一次以后就不再需要了*/
 //    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
     // 4.1 之前的版本需要将联系人数据迁移到新的库中
-    NSComparisonResult result = [BJIM_VERSION_41 compare:[NSUserDefaults getSavedIMSDKVersion]];
+    NSComparisonResult result = [BJIM_VERSION_42 compare:[NSUserDefaults getSavedIMSDKVersion]];
     if (result == NSOrderedDescending) {
-       // 需要做联系人迁移
+       // 需要做联系人迁移Deprecated ===> 做历史关注数据清除
 //        TransformContactInfoToNewDBOperation *operation = [[TransformContactInfoToNewDBOperation alloc] init];
 //        operation.imService = self;
 //        [self.syncContactsOperationQueue addOperation:operation];
+        HistoryDirtyDataCleanOperation *operation = [[HistoryDirtyDataCleanOperation alloc] init];
+        operation.imService = self;
+        // 主要更新 message 表。 在读之前将数据更新过来
+        [self.readOperationQueue addOperation:operation];
     }
     
     [self.imEngine syncContacts];
