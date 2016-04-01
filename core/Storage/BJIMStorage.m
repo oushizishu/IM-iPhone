@@ -242,7 +242,7 @@ const NSString *const IMInstitutionContactTableName     = @"INSTITUTIONCONTACTS"
 - (void)deleteDirtyMessages
 {
     // 本地未发出的通知类型消息都是 关注 插入的消息。 全部删掉
-    NSString *where = [NSString stringWithFormat:@" msgId like '%.%' and msg_t = %ld", eMessageType_NOTIFICATION];
+    NSString *where = [NSString stringWithFormat:@" msgId like '%%.%%' and msg_t = %ld", eMessageType_NOTIFICATION];
     [self.dbHelper deleteWithClass:[IMMessage class] where:where];
 }
 

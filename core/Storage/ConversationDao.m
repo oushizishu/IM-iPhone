@@ -170,4 +170,10 @@
     [self.dbHelper executeSQL:update arguments:nil];
     [self clear];
 }
+
+- (void)deleteStrangerConversations
+{
+    NSString *where = @" toId=-1000100 and toRole=-2";
+    [self.dbHelper deleteWithClass:[Conversation class] where:where];
+}
 @end

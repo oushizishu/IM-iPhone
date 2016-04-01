@@ -14,7 +14,8 @@
 #define BJIM_VERSION_10     @"1.0.0"      // 4.0 之前的版本号都为 1.0；
 #define BJIM_VERSION_41     @"4.1.0"    // 去除完关注体系；拆分数据库
 #define BJIM_VERSION_42     @"4.2.0"    // 清除关注历史数据
-#define BJIM_VERSTION       BJIM_VERSION_42
+#define BJIM_VERSION_43     @"4.3.0"    // bugfix
+#define BJIM_VERSTION       BJIM_VERSION_43
 
 #import <LKDBHelper/NSObject+LKModel.h>
 #import <Mantle/Mantle.h>

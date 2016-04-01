@@ -99,7 +99,7 @@
      修复过一次以后就不再需要了*/
 //    if (! [[NSUserDefaults standardUserDefaults] valueForKey:@"ResetMsgIdOperation"])
     // 4.1 之前的版本需要将联系人数据迁移到新的库中
-    NSComparisonResult result = [BJIM_VERSION_42 compare:[NSUserDefaults getSavedIMSDKVersion]];
+    NSComparisonResult result = [BJIM_VERSION_43 compare:[NSUserDefaults getSavedIMSDKVersion]];
     if (result == NSOrderedDescending) {
        // 需要做联系人迁移Deprecated ===> 做历史关注数据清除
 //        TransformContactInfoToNewDBOperation *operation = [[TransformContactInfoToNewDBOperation alloc] init];

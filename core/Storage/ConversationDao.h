@@ -34,6 +34,8 @@
 
 // 获取所有最后一条是关注消息的会话
 - (NSArray *)loadAllWithLastMessageIdAttention;
+// 删除陌生人会话
+- (void)deleteStrangerConversations;
 
 /**
  *  返回非陌生人的会话
