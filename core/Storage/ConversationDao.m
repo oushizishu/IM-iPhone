@@ -140,7 +140,7 @@
 
 - (NSArray *)loadAllWithLastMessageIdAttention
 {
-    NSString *queryString = @" lastMessageId like '%.%.'";
+    NSString *queryString = @" lastMessageId like '%.%'";
     NSArray *array = [self.dbHelper search:[Conversation class] where:queryString orderBy:nil offset:0 count:0];
     
     return array;
