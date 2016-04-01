@@ -9,6 +9,7 @@
 #import "HistoryDirtyDataCleanOperation.h"
 #import "BJIMService.h"
 #import "BJIMStorage.h"
+#import "IMEnvironment.h"
 
 @implementation HistoryDirtyDataCleanOperation
 
@@ -27,6 +28,13 @@
         
         conversation.lastMessageId = _msgId;
         [self.imService.imStorage.conversationDao update:conversation];
+    }
+    
+    // 删除陌生人会话
+    User *owner = [IMEnvironment shareInstance].owner;
+    Conversation *strangerConversation = [self.imService.imStorage.conversationDao loadWithOwnerId:owner.userId ownerRole:owner.userRole otherUserOrGroupId:-1000100 userRole:-2 chatType:eChatType_Chat];
+    if (strangerConversation) {
+        [self.imService.imStorage.dbHelper deleteToDB:strangerConversation];
     }
 }
 
