@@ -413,7 +413,13 @@
                                      ownerRole:(IMUserRole)ownerRole
                                         chat_t:(IMChatType)chat_t
 {
-    return [self.imStorage.conversationDao loadWithOwnerId:ownerId ownerRole:ownerRole otherUserOrGroupId:userOrGroupId userRole:userRole chatType:chat_t];
+    Conversation *converstaion = [self.imStorage.conversationDao loadWithOwnerId:ownerId ownerRole:ownerRole otherUserOrGroupId:userOrGroupId userRole:userRole chatType:chat_t];
+    
+    if (! converstaion.imService) {
+        converstaion.imService = self;
+    }
+    
+    return converstaion;
 }
 
 - (void)insertConversation:(Conversation *)conversation
