@@ -46,4 +46,5 @@ s.dependency 'BJHL-PictureBrowser-iOS', '~> 1.0.0'
 s.dependency 'LKDBHelper', '~>2.1.3'
 s.dependency 'YLGIFImage', '~> 0.11'
 s.dependency 'MBProgressHUD'
+s.dependency 'BJHL-Websocket-iOS', '~> 0.2.0'
 end

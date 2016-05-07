@@ -17,6 +17,7 @@
 
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
+#import "IMJSONAdapter.h"
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -64,7 +65,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            MyContactsModel *model = [MTLJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            MyContactsModel *model = [IMJSONAdapter modelOfClass:[MyContactsModel class] fromJSONDictionary:result.dictionaryData error:&error];
             if (weakSelf.synContactDelegate)
             {
                 [weakSelf.synContactDelegate didSyncContacts:model];
@@ -108,7 +109,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
             {
-                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
+                PostAchiveModel *model = [IMJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
@@ -130,7 +131,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
             if (result != nil && result.code == RESULT_CODE_SUCC)
             {
-                PostAchiveModel *model = [MTLJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
+                PostAchiveModel *model = [IMJSONAdapter modelOfClass:[PostAchiveModel class] fromJSONDictionary:result.dictionaryData error:&error];
                 [weakSelf.postMessageDelegate onPostMessageAchiveSucc:message result:model];
             }
             else
@@ -197,7 +198,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if(result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            PollingResultModel *model = [IMJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:&error];
             [weakSelf.getMsgDelegate onGetMsgSuccMinMsgId:lastMessageId userId:userId userRole:userRole groupId:groupId result:model isFirstGetMsg:isFirstGetMsg];
         }
         else
@@ -263,7 +264,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
-            User *user = [MTLJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
+            User *user = [IMJSONAdapter modelOfClass:[User class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(user);
         }
         else
@@ -291,7 +292,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            Group *group = [MTLJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.dictionaryData error:&error];
+            Group *group = [IMJSONAdapter modelOfClass:[Group class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(group);
         }
         else
@@ -319,7 +320,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            GroupDetail *groupDetail = [MTLJSONAdapter modelOfClass:[GroupDetail class] fromJSONDictionary:result.dictionaryData error:&error];
+            GroupDetail *groupDetail = [IMJSONAdapter modelOfClass:[GroupDetail class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(nil,groupDetail);
         }
         else
@@ -344,7 +345,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            NSArray *members = [MTLJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:[result.data  objectForKey:@"list"] error:&error];
+            NSArray *members = [IMJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:[result.data  objectForKey:@"list"] error:&error];
             BOOL hasMore = [[result.data objectForKey:@"has_more"] boolValue];
             BOOL is_admin = [[result.data objectForKey:@"is_admin"] boolValue];
             BOOL is_major = [[result.data objectForKey:@"is_major"] boolValue];
@@ -511,7 +512,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            GroupListFile *listFile = [MTLJSONAdapter modelOfClass:[GroupListFile class] fromJSONDictionary:result.data error:&error];
+            GroupListFile *listFile = [IMJSONAdapter modelOfClass:[GroupListFile class] fromJSONDictionary:result.data error:&error];
             callback(nil,listFile.list);
         }
         else
@@ -592,7 +593,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            GroupFile *groupFile = [MTLJSONAdapter modelOfClass:[GroupFile class] fromJSONDictionary:[result.data objectForKey:@"file"] error:&error];
+            GroupFile *groupFile = [IMJSONAdapter modelOfClass:[GroupFile class] fromJSONDictionary:[result.data objectForKey:@"file"] error:&error];
             callback(nil,groupFile);
         }
         else
@@ -732,7 +733,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
             BOOL isAdmin = [[result.data objectForKey:@"is_admin"] boolValue];
-            NSArray<GroupNotice *> *list = [MTLJSONAdapter modelsOfClass:[GroupNotice class] fromJSONArray:[result.data objectForKey:@"notice_list"] error:&error];
+            NSArray<GroupNotice *> *list = [IMJSONAdapter modelsOfClass:[GroupNotice class] fromJSONArray:[result.data objectForKey:@"notice_list"] error:&error];
             BOOL hasMore = [[result.data objectForKey:@"has_more"] boolValue];
             callback(nil,isAdmin,list,hasMore);
         }
@@ -937,7 +938,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
         {
-            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
+            GroupMemberListData *members = [IMJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
             members.page = model.page;
             members.groupId = model.groupId;
             members.userRole = model.userRole;
@@ -971,7 +972,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC)
         {
-            GroupMemberListData *members = [MTLJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
+            GroupMemberListData *members = [IMJSONAdapter modelOfClass:[GroupMemberListData class] fromJSONDictionary:result.dictionaryData error:&error];
             members.page = index;
             members.groupId = groupId;
             members.userRole = userRole;

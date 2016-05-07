@@ -19,6 +19,7 @@
 
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import "IMJSONAdapter.h"
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -73,7 +74,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            SyncConfigModel *model = [IMJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
             weakSelf.im_polling_delta = model.polling_delta;
             [weakSelf.syncConfigDelegate onSyncConfig:model];
         }
@@ -102,7 +103,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error ;
-            SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            SendMsgModel *model = [IMJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.dictionaryData error:&error];
             [weakSelf.postMessageDelegate onPostMessageSucc:message result:model];
         }
         else
@@ -142,7 +143,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:nil];
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
-            PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:nil];
+            PollingResultModel *model = [IMJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.dictionaryData error:nil];
             if (weakSelf.pollingDelegate)
             {
                 [weakSelf.pollingDelegate onPollingFinish:model];

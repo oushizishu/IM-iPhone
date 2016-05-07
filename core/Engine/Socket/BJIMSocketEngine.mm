@@ -18,6 +18,9 @@
 #import "NSUserDefaults+Device.h"
 
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import <BJHL-Websocket-iOS/BJWebSocketBase.h>
+#import <ReactiveCocoa/ReactiveCocoa.h>
+#import "IMJSONAdapter.h"
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -106,33 +109,33 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 @end
 
-class IMSocketDelegate : public network::Delegate
-{
-public:
-    BJIMSocketEngine *engine;
-    virtual ~IMSocketDelegate();
-    virtual void onOpen(network::WebSocketInterface* ws);
-    virtual void onMessage(network::WebSocketInterface* ws, const network::Data& data);
-    virtual void onClose(network::WebSocketInterface* ws);
-    virtual void onError(network::WebSocketInterface* ws, const network::ErrorCode& error);
-};
-
 @interface BJIMSocketEngine()
 {
     NSTimeInterval _receiveMessageNewTime; // 用于标识收到 messageNew 信号的时间。 屏蔽调同时收到大量的 messageNew 信号
-@private
-    IMSocketDelegate *socketDelegate;
 }
 
-@property (nonatomic, strong) BJCFTimer *heartBeatTimer;
 @property (nonatomic, strong) NSMutableDictionary *requestQueue;
 @property (nonatomic, assign) NSInteger retryConnectCount;
 @property (nonatomic, copy) NSString *device;
 @property (nonatomic, copy) NSString *token;
+@property (nonatomic, nonnull, strong) BJWebSocketBase *webSocketClient;
+@property (nonatomic, strong) RACDisposable *heartBeatDispose;
 
 @end
 
 @implementation BJIMSocketEngine
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        WS(weakSelf);
+        [[RACObserve(self, retryConnectCount) distinctUntilChanged] subscribeNext:^(id x) {
+            [weakSelf checkNetworkEfficiency];
+        }];
+    }
+    return self;
+}
 
 - (void)syncConfig
 {
@@ -142,7 +145,7 @@ public:
         if (result != nil && result.code == RESULT_CODE_SUCC)
         {
             NSError *error;
-            SyncConfigModel *model = [MTLJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
+            SyncConfigModel *model = [IMJSONAdapter modelOfClass:[SyncConfigModel class] fromJSONDictionary:result.dictionaryData error:&error];
             [weakSelf.syncConfigDelegate onSyncConfig:model];
         }
         else
@@ -157,34 +160,19 @@ public:
 
 - (void)start
 {
-    if (webSocket != nullptr && webSocket->getReadyState() == network::State::OPEN)
-    {
-        // 已经连接上，
-        return;
-    }
+    
+    [self.webSocketClient connect];
     
     self.device = [NSUserDefaults deviceString];
     self.token = [NSString stringWithFormat:@"%@Hermes%lld%ld", self.device, [IMEnvironment shareInstance].owner.userId, (long)[IMEnvironment shareInstance].owner.userRole];
     self.token = [self.token bjcf_stringFromMD5];
     
-    webSocket = network::WebSocketInterface::createWebsocket();
-    socketDelegate = new IMSocketDelegate();
-    socketDelegate->engine = self;
-    
-    std::string url([SOCKET_HOST UTF8String]);
-    webSocket->init(*socketDelegate, url);
+    [self doLogin];
 }
 
 - (void)stop
 {
-    network::WebSocketInterface::releaseWebsocket(webSocket);
-    delete socketDelegate;
-    socketDelegate = nullptr;
-    webSocket = nullptr;
-    
-    [self.heartBeatTimer invalidate];
-    self.heartBeatTimer = nil;
-    
+    [self.webSocketClient disconnect];
     self.engineActive = NO;
 }
 
@@ -205,13 +193,6 @@ public:
 - (void)postMessage:(IMMessage *)message
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;
-    
-    
-    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
-    {
-        [self.postMessageDelegate onPostMessageFail:message error:[NSError bjim_errorWithReason:@"连接网络失败" code:404]];
-        return;
-    }
    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -232,9 +213,10 @@ public:
     [dic setObject:[self URLEncodedString:[[IMEnvironment shareInstance] getCurrentVersion]] forKey:@"im_version"];
     
     NSString *uuid = [self uuidString];
-    std::string resultBuf;
-    [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid result:&resultBuf];
-    webSocket->send(resultBuf);
+    
+    NSDictionary *data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
+   
+    [self.webSocketClient sendRequestWithDictionary:data];
     
     RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
     [self.requestQueue setObject:item forKey:uuid];
@@ -248,13 +230,6 @@ public:
 {
     _receiveMessageNewTime = 0;
     if (![[IMEnvironment shareInstance] isLogin]) return;
-    
-    
-    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
-    {
-        [self.pollingDelegate onPollingFinish:nil];
-        return;
-    }
    
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -275,10 +250,8 @@ public:
     }
     
     NSString *uuid = [self uuidString];
-    std::string resultBuf;
-    [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid result:&resultBuf];
-    webSocket->send(resultBuf);
-    
+    NSDictionary *data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid];
+    [self.webSocketClient sendRequestWithDictionary:data];
     // 所有请求都需要临时缓存起来
     RequestItem *item = [[RequestItem alloc] initWithRequestPullMessage];
     [self.requestQueue setObject:item forKey:uuid];
@@ -296,8 +269,6 @@ public:
     
     if ([messageType isEqualToString:SOCKET_API_RESPONSE_LOGIN])
     { // 登陆成功回调
-//        登陆成功后再开启心跳
-        self.heartBeatTimer = [BJCFTimer scheduledTimerWithTimeInterval:120 target:self selector:@selector(doHeartbeat) forMode:NSRunLoopCommonModes];
         // 每次登陆完成后，拉一次消息。
         [self.pollingDelegate onShouldStartPolling];
     }
@@ -331,7 +302,7 @@ public:
     RequestItem *item = [self.requestQueue objectForKey:uuid];
     if (result && result.code == RESULT_CODE_SUCC)
     {
-        SendMsgModel *model = [MTLJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
+        SendMsgModel *model = [IMJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
         
         [self.postMessageDelegate onPostMessageSucc:item.message result:model];
     }
@@ -351,7 +322,7 @@ public:
     BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
     if (result && result.code == RESULT_CODE_SUCC)
     {
-        PollingResultModel *model = [MTLJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
+        PollingResultModel *model = [IMJSONAdapter modelOfClass:[PollingResultModel class] fromJSONDictionary:result.data error:&error];
         [self.pollingDelegate onPollingFinish:model];
     }
     else
@@ -368,11 +339,8 @@ public:
  */
 -  (void)doHeartbeat
 {
-    if (webSocket == nullptr || webSocket->getReadyState() != network::State::OPEN)
-        return;
-    std::string resultBuf;
-    [self construct_heart_beat: &resultBuf];
-    webSocket->send(resultBuf);
+    NSDictionary *data = [self construct_heart_beat];
+    [self.webSocketClient sendRequestWithDictionary:data];
 }
 
 /**
@@ -380,22 +348,23 @@ public:
  */
 - (void)reconnect
 {
-    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT)
+    if (self.retryConnectCount > COUNT_SOCKET_MAX_RECONNECT)
     { //重连了五次没有成功
         DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
 
+        [self stop];
         return;// 重连了5次还没有成功，不再重连了
     }
     
-    _retryConnectCount ++ ;
+    self.retryConnectCount ++ ;
     
-    [self stop];
-    [self start];
+//    [self stop];
+//    [self start];
 }
 
 - (void)checkNetworkEfficiency
 {
-    if (_retryConnectCount > COUNT_SOCKET_MAX_RECONNECT && [self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
+    if (self.retryConnectCount > COUNT_SOCKET_MAX_RECONNECT && [self.networkEfficiencyDelegate respondsToSelector:@selector(networkEfficiencyChanged:engine:)])
     {
         [self.networkEfficiencyDelegate networkEfficiencyChanged:IMNetwork_Efficiency_Low engine:self];
     }
@@ -424,16 +393,14 @@ public:
 
 - (void)doLogin
 {
-    if (nullptr == webSocket) return;
-    std::string resultBuf;
-    [self construct_login_req: &resultBuf];
-    webSocket->send(resultBuf);
+    NSDictionary *data = [self construct_login_req];
+    [self.webSocketClient sendRequestWithDictionary:data];
     self.engineActive = YES;
-    _retryConnectCount = 0; // 连上之后标志位重置
+    self.retryConnectCount = 0; // 连上之后标志位重置
 }
 
 #pragma mark construct data
-- (void)construct_login_req:(std::string *)resultBuf
+- (NSDictionary *)construct_login_req
 {
     NSDictionary *dic = @{
                           @"message_type":SOCKET_API_REQUEST_LOGIN,
@@ -445,13 +412,10 @@ public:
                           };
     
     
-    NSString *string = [dic jsonString];
-    std::string buf([string UTF8String]);
-    resultBuf->clear();
-    resultBuf->append([string UTF8String]);
+    return dic;
 }
 
-- (void)construct_heart_beat:(std::string *)resultBuf
+- (NSDictionary *)construct_heart_beat
 {
     NSDictionary *dic = @{
                           @"message_type":SOCKET_API_REQUEST_HEART_BEAT,
@@ -460,14 +424,10 @@ public:
                           @"token":self.token,
                           @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
-    
-    
-    NSString *string = [dic jsonString];
-    resultBuf->clear();
-    resultBuf->append([string UTF8String]);
+    return dic;
 }
 
-- (void)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType sign:(NSString *)uuid result:(std::string *)resultBuf
+- (NSDictionary *)construct_req_param:(NSDictionary *)params messageType:(NSString *)messageType sign:(NSString *)uuid
 {
     NSDictionary *dic = @{
                           @"message_type":messageType,
@@ -478,10 +438,7 @@ public:
                           @"token":self.token,
                           @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
-    
-    NSString *str = [dic jsonString];
-    resultBuf->clear();
-    resultBuf->append([str UTF8String]);
+    return dic;
 }
 
 - (NSString *)uuidString
@@ -499,36 +456,32 @@ public:
     return _requestQueue;
 }
 
-#pragma mark - WebSocket Delegate
-IMSocketDelegate::~IMSocketDelegate()
+- (BJWebSocketBase *)webSocketClient
 {
-    engine = nullptr;
-}
-
-void IMSocketDelegate::onOpen(network::WebSocketInterface *ws)
-{
-//    [engine doLogin];
-    [engine performSelector:@selector(doLogin) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-}
-
-void IMSocketDelegate::onMessage(network::WebSocketInterface *ws, const network::Data &data)
-{
-    NSString *string = [NSString stringWithUTF8String:data.bytes];
-    [engine performSelector:@selector(didReciveMessage:) onThread:[NSThread mainThread] withObject:string waitUntilDone:NO];
-}
-
-void IMSocketDelegate::onClose(network::WebSocketInterface *ws)
-{
-//    [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-//    [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-}
-
-void IMSocketDelegate::onError(network::WebSocketInterface *ws, const network::ErrorCode &error)
-{
-    [engine performSelector:@selector(reconnect) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-    // 当连接发生错误时， 已经发出去的请求全部取消，并且处理错误回调.
-    [engine performSelector:@selector(cancelAllRequest) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
-    [engine performSelector:@selector(checkNetworkEfficiency) onThread:[NSThread mainThread] withObject:nil waitUntilDone:NO];
+    if (_webSocketClient == nil) {
+        _webSocketClient = [[BJWebSocketBase alloc] initWithIpAddr:SOCKET_HOST];
+        
+        // 心跳
+        WS(weakSelf);
+        [[RACObserve(_webSocketClient, state) distinctUntilChanged] subscribeNext:^(id x) {
+            [weakSelf.heartBeatDispose dispose];
+            if (weakSelf.webSocketClient.state == BJ_WS_STATE_Connected) {
+                weakSelf.heartBeatDispose = [[RACSignal interval:120 onScheduler:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground]] subscribeNext:^(id x) {
+                    [weakSelf doHeartbeat];
+                }];
+            }
+        }];
+        
+        [[_webSocketClient rac_signalForSelector:@selector(onReconnect)] subscribeNext:^(id x) {
+            [weakSelf reconnect];
+        }];
+        
+        [[[_webSocketClient rac_signalForSelector:@selector(onResponseWithString:)] deliverOnMainThread]
+          subscribeNext:^(RACTuple *tuple) {
+              [weakSelf didReciveMessage:tuple.first];
+          }];
+    }
+    return _webSocketClient;
 }
 
 @end

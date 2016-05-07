@@ -9,6 +9,7 @@
 #import "PollingResultModel.h"
 #import "IMMessage.h"
 #import "User.h"
+#import "IMJSONAdapter.h"
 
 @implementation UnReadNum
 
@@ -52,7 +53,7 @@
        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
           if ([value isKindOfClass:[NSArray class]])
           {
-              NSArray *array = [MTLJSONAdapter modelsOfClass:[IMMessage class] fromJSONArray:value error:nil];
+              NSArray *array = [IMJSONAdapter modelsOfClass:[IMMessage class] fromJSONArray:value error:nil];
               return array;
           }
            return nil;
@@ -64,7 +65,7 @@
            
            if ([value isKindOfClass:[NSArray class]])
            {
-               NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:error];
+               NSArray *array = [IMJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:error];
                return array;
            }
            return nil;
@@ -76,7 +77,7 @@
             
             if ([value isKindOfClass:[NSArray class]])
             {
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[Group class] fromJSONArray:value error:nil];
+                NSArray *array = [IMJSONAdapter modelsOfClass:[Group class] fromJSONArray:value error:nil];
                 return array;
             }
             return nil;
@@ -87,7 +88,7 @@
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
            if ([value isKindOfClass:[NSArray class]])
            {
-               NSArray *array = [MTLJSONAdapter modelsOfClass:[UnReadNum class] fromJSONArray:value error:nil];
+               NSArray *array = [IMJSONAdapter modelsOfClass:[UnReadNum class] fromJSONArray:value error:nil];
                return array;
            }
             return nil;
@@ -98,7 +99,7 @@
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             if ([value isKindOfClass:[NSDictionary class]])
             {
-                Info *info = [MTLJSONAdapter modelOfClass:[Info class] fromJSONDictionary:value error:nil];
+                Info *info = [IMJSONAdapter modelOfClass:[Info class] fromJSONDictionary:value error:nil];
                 return info;
             }
             return nil;

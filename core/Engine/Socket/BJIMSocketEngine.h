@@ -10,11 +10,7 @@
 #include "WebSocketInterface.h"
 #import "BJIMAbstractEngine.h"
 
-@interface BJIMSocketEngine : BJIMAbstractEngine {
-    @private
-    network::WebSocketInterface *webSocket;
-}
-
+@interface BJIMSocketEngine : BJIMAbstractEngine
 - (void)syncConfig;
 
 - (void)start;

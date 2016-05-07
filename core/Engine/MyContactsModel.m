@@ -9,6 +9,7 @@
 #import "MyContactsModel.h"
 #import "User.h"
 #import "Group.h"
+#import "IMJSONAdapter.h"
 
 @implementation MyContactsModel
 
@@ -20,7 +21,7 @@
            if ([value isKindOfClass:[NSArray class]])
            {
                NSError *error;
-               NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
+               NSArray *array = [IMJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
                return array;
            }
             return nil;
@@ -32,7 +33,7 @@
             if ([value isKindOfClass:[NSArray class]])
             {
                 NSError *error;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
+                NSArray *array = [IMJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
                 return array;
             }
             return nil;
@@ -44,7 +45,7 @@
             if ([value isKindOfClass:[NSArray class]])
             {
                 NSError *error;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
+                NSArray *array = [IMJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
                 return array;
             }
             return nil;
@@ -56,7 +57,7 @@
            if ([value isKindOfClass:[NSArray class]])
            {
                NSError *error ;
-               NSArray *array = [MTLJSONAdapter modelsOfClass:[Group class] fromJSONArray:value error:&error];
+               NSArray *array = [IMJSONAdapter modelsOfClass:[Group class] fromJSONArray:value error:&error];
                return array;
            }
             return nil;
@@ -68,7 +69,7 @@
             if ([value isKindOfClass:[NSArray class]])
             {
                 NSError *error ;
-                NSArray *array = [MTLJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
+                NSArray *array = [IMJSONAdapter modelsOfClass:[User class] fromJSONArray:value error:&error];
                 return array;
             }
             return nil;

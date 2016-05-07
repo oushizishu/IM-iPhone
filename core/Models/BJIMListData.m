@@ -7,6 +7,7 @@
 //
 
 #import "BJIMListData.h"
+#import "IMJSONAdapter.h"
 
 static int ddLogLevel = DDLogLevelVerbose;
 
@@ -29,7 +30,7 @@ static int ddLogLevel = DDLogLevelVerbose;
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             if ([value isKindOfClass:[NSArray class]]) {
                 if ([self modelClassStr]) {
-                    return [MTLJSONAdapter modelsOfClass:NSClassFromString([self modelClassStr]) fromJSONArray:value error:error];
+                    return [IMJSONAdapter modelsOfClass:NSClassFromString([self modelClassStr]) fromJSONArray:value error:error];
                 }
                 return value;
             }

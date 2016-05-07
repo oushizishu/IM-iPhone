@@ -7,6 +7,7 @@
 //
 
 #import "SyncConfigModel.h"
+#import "IMJSONAdapter.h"
 
 @implementation SimpleUserModel
 
@@ -27,7 +28,7 @@
     if ([key isEqualToString:@"administrators"] || [key isEqualToString:@"customWaiter"] || [key isEqualToString:@"systemSecretary"]) {
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
             if ([value isKindOfClass:[NSDictionary class]]) {
-                SimpleUserModel *user = [MTLJSONAdapter modelOfClass:[SimpleUserModel class] fromJSONDictionary:value error:error];
+                SimpleUserModel *user = [IMJSONAdapter modelOfClass:[SimpleUserModel class] fromJSONDictionary:value error:error];
                 return user;
             }
             else if (value)
