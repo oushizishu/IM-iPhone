@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "BJHL-IM-iOS-SDK"
-  s.version          = "1.0.0"
+  s.version          = "4.3.1"
   s.summary          = "BJHL-IM-iOS-SDK."
   s.description      = <<-DESC
                       百家互联 iOS IM SDK
