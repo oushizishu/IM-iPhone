@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "BJHL-IM-iOS-SDK"
-  s.version          = "4.3.1"
+  s.version          = "4.3.2"
   s.summary          = "BJHL-IM-iOS-SDK."
   s.description      = <<-DESC
                       百家互联 iOS IM SDK
@@ -34,17 +34,17 @@ Pod::Spec.new do |s|
   s.public_header_files = 'core/**/*.h'
   s.frameworks = 'CoreData'
 
-s.dependency 'AFNetworking', '~> 2.5'
-s.dependency 'Mantle', '~>2.0.2'
-s.dependency 'CocoaLumberjack', '~> 2.0.1'
-s.dependency 'BJHL-Kit-iOS', '~> 1.0.8'
-s.dependency 'BJHL-Foundation-iOS', '~> 1.1.4'
-s.dependency 'BJHL-Media-iOS', '~> 1.0.2'
-s.dependency 'BJHL-Permissions-iOS', '~> 1.0.1'
-s.dependency 'BJHL-Network-iOS', '~> 1.0.8'
-s.dependency 'BJHL-PictureBrowser-iOS', '~> 1.0.0'
-s.dependency 'LKDBHelper', '~>2.1.3'
-s.dependency 'YLGIFImage', '~> 0.11'
+s.dependency 'AFNetworking'
+s.dependency 'Mantle'
+s.dependency 'CocoaLumberjack'
+s.dependency 'BJHL-Kit-iOS'
+s.dependency 'BJHL-Foundation-iOS'
+s.dependency 'BJHL-Media-iOS'
+s.dependency 'BJHL-Permissions-iOS'
+s.dependency 'BJHL-Network-iOS'
+s.dependency 'BJHL-PictureBrowser-iOS'
+s.dependency 'LKDBHelper'
+s.dependency 'YLGIFImage'
 s.dependency 'MBProgressHUD'
-s.dependency 'BJHL-Websocket-iOS', '~> 0.2.0'
+s.dependency 'BJHL-Websocket-iOS'
 end
