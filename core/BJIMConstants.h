@@ -225,6 +225,12 @@ static const double UNAVALIABLE_MESSAGE_ID =  -1;
 
 @end
 
+@protocol IMUserAvatarInvalidDelegate <NSObject>
+
+- (void)onUserAvatarInvalid:(User *)user;
+
+@end
+
 /**
  *  主动处理登陆退出回调
  */

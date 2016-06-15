@@ -147,7 +147,7 @@
 - (void)addDisconnectionDelegate:(id<IMDisconnectionDelegate>)delegate;
 - (void)addLoginLogoutDelegate:(id<IMLoginLogoutDelegate>)delegate;
 - (void)addUnReadNumChangedDelegate:(id<IMUnReadNumChangedDelegate>)delegate;
-
+- (void)addUserAvatarInvalidDelegate:(id<IMUserAvatarInvalidDelegate>)delegate;
 @end
 
 @class GetGroupMemberModel;

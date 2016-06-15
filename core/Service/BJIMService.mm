@@ -60,6 +60,7 @@
 @property (nonatomic, strong) NSHashTable *disconnectionStateDelegates;
 @property (nonatomic, strong) NSHashTable *imLoginLogoutDelegates;
 @property (nonatomic, strong) NSHashTable *imUnReadNumChangedDelegates;
+@property (nonatomic, strong) NSHashTable *imUserAvatarInvalidDelegates;
 
 @property (nonatomic, strong) User *systemSecretary;
 @property (nonatomic, strong) User *customeWaiter;
@@ -1301,6 +1302,27 @@
         if ([delegate respondsToSelector:@selector(didUnReadNumChanged:otherUnReadNum:)])
         {
             [delegate didUnReadNumChanged:unReadNum otherUnReadNum:otherNum];
+        }
+    }
+}
+
+- (void)addUserAvatarInvalidDelegate:(id<IMUserAvatarInvalidDelegate>)delegate
+{
+    if (self.imUserAvatarInvalidDelegates == nil) {
+        self.imUserAvatarInvalidDelegates = [NSHashTable weakObjectsHashTable];
+    }
+    [self.imUserAvatarInvalidDelegates addObject:delegate];
+}
+
+- (void)notifyUserAvatarInvalid:(User *)user
+{
+    NSEnumerator *enumerator = [self.imUserAvatarInvalidDelegates objectEnumerator];
+    id<IMUserAvatarInvalidDelegate> delegate = nil;
+    while (delegate = [enumerator nextObject])
+    {
+        if ([delegate respondsToSelector:@selector(onUserAvatarInvalid:)])
+        {
+            [delegate onUserAvatarInvalid:user];
         }
     }
 }

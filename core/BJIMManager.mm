@@ -451,6 +451,11 @@
     [self.imService addUnReadNumChangedDelegate:delegate];
 }
 
+- (void)addUserAvatarInvalidDelegate:(id<IMUserAvatarInvalidDelegate>)delegate
+{
+    [self.imService addUserAvatarInvalidDelegate:delegate];
+}
+
 @end;
 
 @implementation BJIMManager (GroupManager)

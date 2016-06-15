@@ -231,4 +231,6 @@
 - (void)addUnReadNumChangedDelegate:(id<IMUnReadNumChangedDelegate>)delegate;
 - (void)notifyUnReadNumChanged:(NSInteger)unReadNum other:(NSInteger)otherNum;
 
+- (void)addUserAvatarInvalidDelegate:(id<IMUserAvatarInvalidDelegate>)delegate;
+- (void)notifyUserAvatarInvalid:(User *)user;
 @end

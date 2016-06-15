@@ -39,6 +39,19 @@
     {
         User *user = [users objectAtIndex:index];
         
+        if ([user.avatar length] == 0) {
+            User *_user = [self.imService.imStorage.userDao loadUser:user.userId role:user.userRole];
+            if (_user && [_user.avatar length] > 0) {
+                user.avatar = _user.avatar;
+            } else {
+                // notify user avatar invalid.
+                __weak typeof(self) weakSelf = self;
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [weakSelf.imService notifyUserAvatarInvalid:user];
+                });
+            }
+        }
+        
         [self.imService.imStorage.userDao insertOrUpdateUser:user];
         
         if (user.userId == owner.userId && user.userRole == owner.userRole)
