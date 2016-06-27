@@ -94,6 +94,9 @@
     
     [self.imEngine syncConfig];
     
+    // 提交用户信息
+    [NetWorkTool hermesSetUserName:owner.name userAvatar:owner.avatar];
+    
     
     // bugfix
     /** 初始化启动 msgId 修改线程。老版本中包含部分 msgId 没有做对齐处理。在线程中修复数据.

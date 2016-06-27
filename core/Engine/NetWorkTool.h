@@ -217,4 +217,6 @@
 + (BJCNNetRequestOperation *)hermesSetGroupPushStatusWithGroupId:(int64_t)groupId pushStatus:(IMGroupPushStatus)status
                                                           succ:(BJCNOnSuccess)succ
                                                        failure:(BJCNOnFailure)failure;
+
++ (BJCNNetRequestOperation *)hermesSetUserName:(NSString *)userName userAvatar:(NSString *)userAvatar;
 @end

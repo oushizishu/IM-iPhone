@@ -53,6 +53,9 @@
 #define HERMES_API_LEAVE_GROUP [NSString stringWithFormat:@"%@/hermes/quitGroup", HOST_API]
 #define HERMES_API_DISBAND_GROUP [NSString stringWithFormat:@"%@/hermes/dissolveGroup", HOST_API]
 
+//user
+#define HERMES_API_SET_USER_INFO [NSString stringWithFormat:@"%@/hermes/setUserInfo", HOST_API]
+
 #import "GetGroupMemberModel.h"
 
 @implementation NetWorkTool
@@ -944,6 +947,20 @@
 + (void)insertCommonParams:(BJCNRequestParams *)requestParms
 {
     [requestParms appendPostParamValue:@"im_version" forKey:[[IMEnvironment shareInstance] getCurrentVersion]];
+}
+
++ (BJCNNetRequestOperation *)hermesSetUserName:(NSString *)userName userAvatar:(NSString *)userAvatar
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return nil;
+    }
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_USER_INFO method:kBJCNHttpMethod_POST];
+    [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParmas appendPostParamValue:userName  forKey:@"user_name"];
+    [requestParmas appendPostParamValue:userAvatar forKey:@"user_avatar"];
+    [NetWorkTool insertCommonParams:requestParmas];
+    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:nil failure:nil];
 }
 
 @end
