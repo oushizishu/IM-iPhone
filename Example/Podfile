@@ -1,11 +1,11 @@
 source 'https://github.com/CocoaPods/Specs.git'
 source 'http://git.baijiahulian.com/app/specs.git'
 
-target 'BJHL-IM-iOS-SDK', :exclusive => true do
+target 'BJHL-IM-iOS-SDK' do
   pod "BJHL-IM-iOS-SDK", :path => "../"
 end
 
-target 'Tests', :exclusive => true do
+target 'Tests' do
   pod "BJHL-IM-iOS-SDK", :path => "../"
   pod 'MagicalRecord'
 end
