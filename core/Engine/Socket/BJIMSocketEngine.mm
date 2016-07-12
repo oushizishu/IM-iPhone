@@ -472,7 +472,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             }
         }];
         
-        [[_webSocketClient rac_signalForSelector:@selector(onReconnect)] subscribeNext:^(id x) {
+        [[_webSocketClient rac_signalForSelector:@selector(onWillReconnect)] subscribeNext:^(id x) {
             [weakSelf reconnect];
         }];
         
