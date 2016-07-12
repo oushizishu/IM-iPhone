@@ -257,10 +257,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     [self.requestQueue setObject:item forKey:uuid];
 }
 
-- (void)didReciveMessage:(NSString *)message
+- (void)didReciveMessage:(NSDictionary *)result
 {
     if (! self.isEngineActive) return;
-    NSDictionary *result = [message jsonValue];
     if (!result) return;
     
     NSString *messageType = [result objectForKey:@"message_type"];
@@ -460,6 +459,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     if (_webSocketClient == nil) {
         _webSocketClient = [[BJWebSocketBase alloc] initWithIpAddr:SOCKET_HOST];
+        _webSocketClient.responseType = BJ_WS_ResponseType_json;
         
         // 心跳
         WS(weakSelf);
@@ -476,7 +476,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             [weakSelf reconnect];
         }];
         
-        [[[_webSocketClient rac_signalForSelector:@selector(onResponseWithString:)] deliverOnMainThread]
+        [[[_webSocketClient rac_signalForSelector:@selector(onResponseWithDictionary:)] deliverOnMainThread]
           subscribeNext:^(RACTuple *tuple) {
               [weakSelf didReciveMessage:tuple.first];
           }];

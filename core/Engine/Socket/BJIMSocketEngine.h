@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#include "WebSocketInterface.h"
 #import "BJIMAbstractEngine.h"
 
 @interface BJIMSocketEngine : BJIMAbstractEngine
