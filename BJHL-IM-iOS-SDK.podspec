@@ -47,4 +47,5 @@ s.dependency 'LKDBHelper'
 s.dependency 'YLGIFImage'
 s.dependency 'MBProgressHUD'
 s.dependency 'BJHL-Websocket-iOS'
+s.dependency 'ReactiveCocoa'
 end
