@@ -25,11 +25,11 @@ Pod::Spec.new do |s|
   s.requires_arc = true
 
   s.source_files = 'core/**/*.{h,m,cpp,mm}'
-  s.vendored_libraries = 'core/lib/*.a'
+  # s.vendored_libraries = 'core/lib/*.a'
   s.libraries        = 'stdc++', 'z'
-  s.resource_bundles = {
-    'BJHL-IM-iOS-SDK' => ['Resources/*']
-  }
+  # s.resource_bundles = {
+  #   'BJHL-IM-iOS-SDK' => ['Resources/*']
+  # }
 
   s.public_header_files = 'core/**/*.h'
   s.frameworks = 'CoreData'
