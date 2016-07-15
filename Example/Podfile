@@ -3,7 +3,6 @@ source 'http://git.baijiahulian.com/app/specs.git'
 
 target 'BJHL-IM-iOS-SDK' do
   pod "BJHL-IM-iOS-SDK", :path => "../"
-  pod 'BJHL-Websocket-iOS', :git => 'git@git.baijiahulian.com:mobileliveplayer/websocket-iOS.git', :branch => 'develop-PocketSocket'
 end
 
 target 'Tests' do
