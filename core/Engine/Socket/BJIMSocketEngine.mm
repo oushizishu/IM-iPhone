@@ -216,7 +216,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     
     NSDictionary *data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
    
-    [self.webSocketClient sendRequestWithDictionary:data];
+    [self.webSocketClient sendRequest:data];
     
     RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
     [self.requestQueue setObject:item forKey:uuid];
@@ -251,7 +251,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     
     NSString *uuid = [self uuidString];
     NSDictionary *data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_PULL sign:uuid];
-    [self.webSocketClient sendRequestWithDictionary:data];
+    [self.webSocketClient sendRequest:data];
     // 所有请求都需要临时缓存起来
     RequestItem *item = [[RequestItem alloc] initWithRequestPullMessage];
     [self.requestQueue setObject:item forKey:uuid];
@@ -339,7 +339,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 -  (void)doHeartbeat
 {
     NSDictionary *data = [self construct_heart_beat];
-    [self.webSocketClient sendRequestWithDictionary:data];
+    [self.webSocketClient sendRequest:data];
 }
 
 /**
@@ -393,7 +393,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 - (void)doLogin
 {
     NSDictionary *data = [self construct_login_req];
-    [self.webSocketClient sendRequestWithDictionary:data];
+    [self.webSocketClient sendRequest:data];
     self.engineActive = YES;
     self.retryConnectCount = 0; // 连上之后标志位重置
 }
@@ -459,7 +459,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     if (_webSocketClient == nil) {
         _webSocketClient = [[BJWebSocketBase alloc] initWithIpAddr:SOCKET_HOST];
-        _webSocketClient.responseType = BJ_WS_ResponseType_json;
+        _webSocketClient.responseType = BJ_WS_ResponseType_Dictionary;
         
         // 心跳
         WS(weakSelf);
