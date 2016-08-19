@@ -233,7 +233,7 @@
 - (NSString *)generatorGroupMmeberSql
 {
     NSString *sql = @"replace into %@(msgStatus,isAdmin,canLeave,userId, \
-                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId, joinTime) values(?,?,?,?,?,?,?,?,?,?,?, ?)";
+                    pushStatus,userRole,createTime,canDisband,remarkHeader,remarkName,groupId, joinTime) values(?,?,?,?,?,?,?,?,?,?,?,?)";
     sql = [NSString stringWithFormat:sql, [GroupMember getTableName]];
     return sql;
 }
