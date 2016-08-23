@@ -565,7 +565,8 @@
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:fileName forKey:@"attachment"];
    [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+//    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:failure progress:nil];
 }
 
 + (BJCNNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
