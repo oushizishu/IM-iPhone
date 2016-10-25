@@ -16,6 +16,7 @@
 #import "GetGroupMemberModel.h"
 #import "BaseResponse.h"
 #import "GroupDetail.h"
+#import "IMUserOnlieStatusResult.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
@@ -162,6 +163,8 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
 
+- (void)postGetUserOnLineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlieStatusResult *result))callback;
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role
@@ -191,13 +194,13 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
          last_file_id:(int64_t)last_file_id
              callback:(void(^)(NSError *error ,NSArray<GroupFile *> *list))callback;
 
-- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (void)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
                                  progress:(BJCNOnProgress)progress;
 
-- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (void)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback;
 
@@ -206,7 +209,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
             fileName:(NSString*)fileName
             callback:(void(^)(NSError *error ,GroupFile *groupFile))callback;
 
-- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (void)downloadGroupFile:(NSString*)fileUrl
                                    filePath:(NSString*)filePath
                                    callback:(void(^)(NSError *error))callback
                                    progress:(BJCNOnProgress)progress;

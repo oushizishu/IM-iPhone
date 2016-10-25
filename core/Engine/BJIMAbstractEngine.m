@@ -238,7 +238,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         else
         {
             callback(remarkName, nil, result.code, result.msg);
-            [self callbackErrorCode:result.code errMsg:result.msg];
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
         }
         
     } failure:^(NSError *error, BJCNRequestParams *params) {
@@ -246,6 +246,26 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         
         NSTimeInterval endTime = [[NSDate date] timeIntervalSince1970];
         [weakSelf recordHttpRequestTime:endTime - startTime];
+    }];
+}
+
+- (void)postGetUserOnLineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlieStatusResult *result))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesGetUserOnlineStatus:userId role:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && result.code == RESULT_CODE_SUCC) {
+            IMUserOnlieStatusResult *data = [IMJSONAdapter modelOfClass:[IMUserOnlieStatusResult class] fromJSONDictionary:result.data error:&error];
+            callback(data);
+        }
+        else
+        {
+            callback(nil);
+            [weakSelf callbackErrorCode:result.code errMsg:result.msg];
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        callback(nil);
     }];
 }
 
@@ -527,7 +547,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (BJCNNetRequestOperation*)uploadGroupFile:(NSString*)attachment
+- (void)uploadGroupFile:(NSString*)attachment
                                  filePath:(NSString*)filePath
                                  fileName:(NSString*)fileName
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
@@ -535,7 +555,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     __WeakSelf__ weakSelf = self;
         
-    return [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params){
+    [NetWorkTool hermesUploadGroupFile:attachment filePath:filePath fileName:fileName success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params){
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -556,11 +576,11 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     } progress:progress];
 }
 
-- (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
+- (void)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
 {
-    return [NetWorkTool hermesUploadFaceImage:fileName filePath:filePath succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+    [NetWorkTool hermesUploadFaceImage:fileName filePath:filePath succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
@@ -608,13 +628,13 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (BJCNNetRequestOperation*)downloadGroupFile:(NSString*)fileUrl
+- (void)downloadGroupFile:(NSString*)fileUrl
                                    filePath:(NSString*)filePath
                                    callback:(void(^)(NSError *error))callback
                                    progress:(BJCNOnProgress)progress
 {
     __WeakSelf__ weakSelf = self;
-    return [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+    [NetWorkTool hermesDownloadGroupFile:fileUrl filePath:filePath success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         callback(nil);
     } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error);

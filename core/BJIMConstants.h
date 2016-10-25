@@ -130,6 +130,24 @@ typedef NS_ENUM(NSInteger, IMErrorType) {
     eError_token_invalid = 510005, //token 失效
 };
 
+#pragma mark - 在线状态
+typedef NS_ENUM(NSInteger, IMUserOnlineStatus) {
+    eUserOnlineStatus_offline = 0,
+    eUserOnlieStatus_online = 1,
+    eUserOnlineStatus_online_pc = 2,
+    eUserOnlineStatus_online_android = 3,
+    eUserOnlineStatus_online_iPhone = 4
+};
+
+#pragma mark - 终端类型
+typedef NS_ENUM(NSInteger, IMEndType) {
+    eEndType_Unknown = 0,
+    eEndType_PC = 1,
+    eEndType_iPhone = 2,
+    eEndType_Android = 3
+};
+
+
 #pragma mark - 来源类型
 typedef NS_ENUM(NSInteger, IMOriginType) {
     eIMOriginType_Order = 1, //订单

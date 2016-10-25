@@ -71,6 +71,7 @@
 
 - (void)appendObject:(id)object key:(id)key lock:(BOOL)lock
 {
+    if (!key || !object) return;
     if (lock)
         [self lock];
     [self.dictionary setObject:object forKey:key];

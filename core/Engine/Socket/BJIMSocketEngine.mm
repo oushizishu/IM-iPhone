@@ -407,6 +407,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                           @"user_role":[NSString stringWithFormat:@"%ld", (long)[IMEnvironment shareInstance].owner.userRole],
                           @"device":self.device,
                           @"token":self.token,
+                          @"end_type":@(eEndType_iPhone),
                           @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     
@@ -421,6 +422,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                           @"user_number":[NSString stringWithFormat:@"%lld", [IMEnvironment shareInstance].owner.userId],
                           @"user_role":[NSString stringWithFormat:@"%ld", (long)[IMEnvironment shareInstance].owner.userRole],
                           @"token":self.token,
+                          @"end_type":@(eEndType_iPhone),
                           @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     return dic;
@@ -435,6 +437,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                           @"param":[params socketParamsString],
                           @"sign":uuid,
                           @"token":self.token,
+                          @"end_type":@(eEndType_iPhone),
                           @"im_version":[[IMEnvironment shareInstance] getCurrentVersion]
                           };
     return dic;

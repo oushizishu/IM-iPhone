@@ -52,6 +52,7 @@
 - (User *)getUser:(int64_t)userId role:(IMUserRole)userRole;
 - (void)setUser:(User *)user;
 - (Group *)getGroup:(int64_t)groupId;
+- (void)getUserOnlineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlineStatus onlineStatus))callback;
 
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 

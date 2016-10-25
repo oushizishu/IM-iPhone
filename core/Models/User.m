@@ -38,7 +38,8 @@
       @"remarkName":@"remark_name",
       @"remarkHeader":@"remark_header",
       @"originType":@"origin_type",
-      @"createTime":@"create_time"
+      @"createTime":@"create_time",
+      @"onlineStatus":@"online_status"
       };
 }
 

@@ -501,6 +501,18 @@
     [self.imStorage.userDao insertOrUpdateUser:user];
 }
 
+- (void)getUserOnlineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlineStatus onlineStatus))callback
+{
+    __WeakSelf__ weakSelf = self;
+    [self.imEngine postGetUserOnLineStatus:userId role:userRole callback:^(IMUserOnlieStatusResult *result) {
+        User *user = [weakSelf getUser:userId role:userRole];
+        if (!result) {
+            user.onlineStatus = result.onlineStatus;
+        }
+        callback(user.onlineStatus);
+    }];
+}
+
 - (Group *)getGroup:(int64_t)groupId
 {
     User *owner = [IMEnvironment shareInstance].owner;
@@ -620,14 +632,16 @@
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
                                  progress:(BJCNOnProgress)progress
 {
-    return [self.imEngine uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
+    [self.imEngine uploadGroupFile:attachment filePath:filePath fileName:fileName callback:callback progress:progress];
+    return nil;
 }
 
 - (BJCNNetRequestOperation*)uploadImageFile:(NSString*)fileName
                                  filePath:(NSString*)filePath
                                  callback:(void(^)(NSError *error ,int64_t storage_id,NSString *storage_url))callback
 {
-    return [self.imEngine uploadImageFile:fileName filePath:filePath callback:callback];
+    [self.imEngine uploadImageFile:fileName filePath:filePath callback:callback];
+    return nil;
 }
 
 - (void)addGroupFile:(int64_t)groupId
@@ -643,7 +657,8 @@
                          callback:(void(^)(NSError *error))callback
                          progress:(BJCNOnProgress)progress
 {
-    return [self.imEngine downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
+    [self.imEngine downloadGroupFile:fileUrl filePath:filePath callback:callback progress:progress];
+    return nil;
 }
 
 - (void)previewGroupFile:(int64_t)groupId

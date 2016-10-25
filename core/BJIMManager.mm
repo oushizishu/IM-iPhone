@@ -149,6 +149,11 @@
     return [self.imService getGroup:groupId];
 }
 
+- (void)getUserOnlineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlineStatus onlineStatus))callback
+{
+    [self.imService getUserOnlineStatus:userId role:userRole callback:callback];
+}
+
 - (void)resetAllUnReadNum
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;

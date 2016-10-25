@@ -55,34 +55,35 @@
 
 //user
 #define HERMES_API_SET_USER_INFO [NSString stringWithFormat:@"%@/hermes/setUserInfo", HOST_API]
+#define HERMES_API_GET_USER_ONLINE_STATUS [NSString stringWithFormat:@"%@/hermes/getUserOnlineStatus", HOST_API]
 
 #import "GetGroupMemberModel.h"
 
 @implementation NetWorkTool
 
-+ (BJCNNetRequestOperation *)hermesSyncConfig:(BJCNOnSuccess)succ
++ (void)hermesSyncConfig:(BJCNOnSuccess)succ
                                     failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
     
 }
 
-+ (BJCNNetRequestOperation *)hermesSendMessage:(IMMessage *)message
++ (void)hermesSendMessage:(IMMessage *)message
                                         succ:(BJCNOnSuccess)succ
                                      failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SEND_MESSAGE method:kBJCNHttpMethod_POST];
     
@@ -103,23 +104,23 @@
     [requestParams appendPostParamValue:message.sign forKey:@"sign"];
     
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation*)hermesGetContactSucc:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure
++ (void)hermesGetContactSucc:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesPostPollingRequestUserLastMsgId:(int64_t)last_user_msg_id
++ (void)hermesPostPollingRequestUserLastMsgId:(int64_t)last_user_msg_id
                                                excludeUserMsgIds:(NSString *)excludeUserMsgIds
                                               group_last_msg_ids:(NSString *)group_last_msg_ids
                                                     currentGroup:(int64_t)groupId
@@ -129,7 +130,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_POLLING method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -151,10 +152,10 @@
     [NetWorkTool insertCommonParams:requestParams];
  
 //    DDLogInfo(@"[Post Polling][url:%@][%@]", [requestParams url], [requestParams urlPostParams]);
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetMsg:(int64_t)eid
++ (void)hermesGetMsg:(int64_t)eid
                                 groupId:(int64_t)groupId
                                     uid:(int64_t)uid
                                userRole:(IMUserRole)userRole
@@ -165,7 +166,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_MSG method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -183,17 +184,17 @@
         [requestParams appendPostParamValue:excludeMsgIds forKey:@"exclude_msgs"];
     }
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesStorageUploadImage:(IMMessage *)message
++ (void)hermesStorageUploadImage:(IMMessage *)message
                                                succ:(BJCNOnSuccess)succ
                                             failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kBJCNHttpMethod_POST];
@@ -202,10 +203,10 @@
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:filename forKey:@"attachment"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
+    [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
-+ (BJCNNetRequestOperation *)hermesStorageUploadAudio:(IMMessage *)message
++ (void)hermesStorageUploadAudio:(IMMessage *)message
                                                succ:(BJCNOnSuccess)succ
                                             failure:(BJCNOnFailure)failure
 {
@@ -217,10 +218,10 @@
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
     [requestParams appendFile:filePath mimeType:@"audio/mp3" filename:filename forKey:@"attachment"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
+    [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:false progress:nil];
 }
 
-+ (BJCNNetRequestOperation *)hermesChangeRemarkNameUserId:(int64_t)userId
++ (void)hermesChangeRemarkNameUserId:(int64_t)userId
                                                userRole:(IMUserRole)userRole
                                              remarkName:(NSString *)remarkName
                                                    succ:(BJCNOnSuccess)succ
@@ -229,7 +230,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CHANGE_REMARK_NAME method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -237,11 +238,11 @@
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [requestParmas appendPostParamValue:remarkName forKey:@"remark_name"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
 
-+ (BJCNNetRequestOperation *)hermesGetUserInfo:(int64_t)userId
++ (void)hermesGetUserInfo:(int64_t)userId
                                         role:(IMUserRole)userRole
                                         succ:(BJCNOnSuccess)succ
                                      failure:(BJCNOnFailure)failure
@@ -249,50 +250,50 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_INFO method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupProfile:(int64_t)groupId
++ (void)hermesGetGroupProfile:(int64_t)groupId
                                             succ:(BJCNOnSuccess)succ
                                          failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:@"1" forKey:@"group_auth"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupDetail:(int64_t)groupId
++ (void)hermesGetGroupDetail:(int64_t)groupId
                                            succ:(BJCNOnSuccess)succ
                                         failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupMembers:(int64_t)groupId
++ (void)hermesGetGroupMembers:(int64_t)groupId
                                            page:(NSInteger)page
                                        pageSize:(NSInteger)pageSize
                                            succ:(BJCNOnSuccess)succ
@@ -301,7 +302,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -309,10 +310,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", pageSize] forKey:@"page_size"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesTransferGroup:(int64_t)groupId
++ (void)hermesTransferGroup:(int64_t)groupId
                                    transfer_id:(int64_t)transfer_id
                                  transfer_role:(int64_t)transfer_role
                                           succ:(BJCNOnSuccess)succ
@@ -321,7 +322,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_TRANSFERGROUP method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -329,10 +330,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_role] forKey:@"transfer_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetGroupAvatar:(int64_t)groupId
++ (void)hermesSetGroupAvatar:(int64_t)groupId
                                          avatar:(int64_t)avatar
                                           succ:(BJCNOnSuccess)succ
                                        failure:(BJCNOnFailure)failure
@@ -340,17 +341,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPAVATAR method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetGroupNameAvatar:(int64_t)groupId
++ (void)hermesSetGroupNameAvatar:(int64_t)groupId
                                           groupName:(NSString*)groupName
                                              avatar:(int64_t)avatar
                                                succ:(BJCNOnSuccess)succ
@@ -359,7 +360,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPNameAVATAR method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -367,10 +368,10 @@
     [requestParams appendPostParamValue:groupName forKey:@"group_name"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetGroupAdmin:(int64_t)groupId
++ (void)hermesSetGroupAdmin:(int64_t)groupId
                                    user_number:(int64_t)user_number
                                      user_role:(int64_t)user_role
                                         status:(int64_t)status
@@ -380,7 +381,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETADMIN method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -389,10 +390,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", status] forKey:@"status"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesRemoveGroupMember:(int64_t)groupId
++ (void)hermesRemoveGroupMember:(int64_t)groupId
                                        user_number:(int64_t)user_number
                                          user_role:(int64_t)user_role
                                               succ:(BJCNOnSuccess)succ
@@ -401,7 +402,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_REMOVEMEMBER method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -409,10 +410,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupFiles:(int64_t)groupId
++ (void)hermesGetGroupFiles:(int64_t)groupId
                             last_file_id:(int64_t)last_file_id
                                     succ:(BJCNOnSuccess)succ
                                  failure:(BJCNOnFailure)failure
@@ -420,118 +421,28 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_LISTFILE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_file_id] forKey:@"last_file_id"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (NSOperationQueue *)getGroupFileUploadQueue
-{
-    static AFHTTPRequestOperationManager *_uploadManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _uploadManager = [AFHTTPRequestOperationManager manager];
-        _uploadManager.operationQueue.maxConcurrentOperationCount = 1;
-    });
-    return _uploadManager;
-}
+//+ (NSOperationQueue *)getGroupFileUploadQueue
+//{
+//    static AFHTTPRequestOperationManager *_uploadManager = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        _uploadManager = [AFHTTPRequestOperationManager manager];
+//        _uploadManager.operationQueue.maxConcurrentOperationCount = 1;
+//    });
+//    return _uploadManager;
+//}
 
-+ (BJCNNetRequestOperation *)doNetworkRequest:(BJCNRequestParams *)requestParams
-                                    success:(BJCNOnSuccess)success
-                                    failure:(BJCNOnFailure)failure
-                                      retry:(BJCNOnRetryRequest)retry
-                                   progress:(BJCNOnProgress)progress
-{
-    AFHTTPRequestOperationManager *manager = [self getGroupFileUploadQueue];
-    //https
-    manager.securityPolicy.allowInvalidCertificates = YES;
-    
-    //response
-    AFJSONResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
-    responseSerializer.removesKeysWithNullValues = YES;
-    
-    NSMutableSet *contentTypes = [NSMutableSet setWithSet:responseSerializer.acceptableContentTypes];
-    [contentTypes addObject:@"text/plain"];
-    responseSerializer.acceptableContentTypes = contentTypes;
-    
-    manager.responseSerializer = responseSerializer;
-    
-    //request
-    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
-    [manager.requestSerializer setTimeoutInterval:requestParams.requestTimeOut];
-    
-    NSMutableURLRequest *request = nil;
-    
-    if (requestParams.httpMethod == kBJCNHttpMethod_GET)
-    {
-        //Get
-        NSError *error = nil;
-        request = [manager.requestSerializer requestWithMethod:@"GET" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams error:&error];
-    }
-    else if (requestParams.httpMethod == kBJCNHttpMethod_POST)
-    {
-        //Post
-        NSError *error = nil;
-        request = [manager.requestSerializer multipartFormRequestWithMethod:@"POST" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams constructingBodyWithBlock:^(id<AFMultipartFormData> formData) {
-            
-            NSArray *allKeys = requestParams.fileParams.allKeys;
-            for (NSString *key in allKeys) {
-                BJCNFileWrapper *wrapper = [requestParams.fileParams objectForKey:key];
-                NSURL *fileUrl = [NSURL fileURLWithPath:wrapper.filePath];
-                NSError *error = nil;
-                [formData appendPartWithFileURL:fileUrl name:key fileName:wrapper.fileName mimeType:wrapper.mimeType error:&error];
-            }
-        } error:&error];
-    }
-    
-    NSDate *__date = [NSDate date];
-    //request headers
-    request.allHTTPHeaderFields = requestParams.requestHeaders;
-    
-    __weak typeof(self) weakSelf = self;
-    AFHTTPRequestOperation *operation = [manager HTTPRequestOperationWithRequest:request success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        
-        if (success && ![operation isCancelled])
-        {
-            success(responseObject, operation.response.allHeaderFields, requestParams);
-        }
-        
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        
-        if (requestParams.maxRetryCount > 0)
-        {
-            requestParams.maxRetryCount --;
-            
-            BJCNNetRequestOperation *op = [weakSelf doNetworkRequest:requestParams success:success failure:failure retry:retry progress:progress];
-            if (retry)
-            {
-                retry(error, requestParams, op);
-            }
-            return ;
-        }
-        if (failure && ![operation isCancelled])
-        {
-            failure(error, requestParams);
-        }
-    }];
-    
-    [operation setUploadProgressBlock:^(NSUInteger bytesWritten, long long totalBytesWritten, long long totalBytesExpectedToWrite) {
-        if (progress)
-        {
-            progress(bytesWritten, totalBytesWritten, totalBytesExpectedToWrite);
-        }
-    }];
-    
-    [manager.operationQueue addOperation:operation];
-    return [[BJCNNetRequestOperation alloc] initWithHttpOperation:operation];
-}
-
-+ (BJCNNetRequestOperation *)hermesUploadGroupFile:(NSString*)attachment
++ (void)hermesUploadGroupFile:(NSString*)attachment
                               filePath:(NSString*)filePath
                               fileName:(NSString*)fileName
                                success:(BJCNOnSuccess)success
@@ -541,17 +452,18 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:attachment forKey:@"attachment"];
     [requestParams appendFile:filePath mimeType:attachment filename:fileName forKey:@"attachment"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [self doNetworkRequest:requestParams success:success failure:failure retry:nil progress:progress];
+    [BJCNNetworkUtilInstance doUploadResource:requestParams success:success failure:failure progress:progress];
+    
 }
 
-+ (BJCNNetRequestOperation *)hermesUploadFaceImage:(NSString *)fileName
++ (void)hermesUploadFaceImage:(NSString *)fileName
                                         filePath:(NSString *)filePath
                                             succ:(BJCNOnSuccess)succ
                                          failure:(BJCNOnFailure)failure
@@ -559,17 +471,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:fileName forKey:@"attachment"];
    [NetWorkTool insertCommonParams:requestParams];
 //    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
-    return [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:failure progress:nil];
+    [BJCNNetworkUtilInstance doUploadResource:requestParams success:succ failure:failure progress:nil];
 }
 
-+ (BJCNNetRequestOperation *)hermesAddGroupFile:(int64_t)groupId
++ (void)hermesAddGroupFile:(int64_t)groupId
                                    storage_id:(int64_t)storage_id
                                      fileName:(NSString*)fileName
                                          succ:(BJCNOnSuccess)succ
@@ -578,7 +490,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_GROUP_FILE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -586,77 +498,22 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", storage_id] forKey:@"storage_id"];
     [requestParams appendPostParamValue:fileName forKey:@"filename"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (NSOperationQueue *)getGroupFileDownloadQueue
-{
-    static AFHTTPRequestOperationManager *_downloadManager = nil;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        _downloadManager = [AFHTTPRequestOperationManager manager];
-        _downloadManager.operationQueue.maxConcurrentOperationCount = 1;
-    });
-    return _downloadManager;
-}
+//+ (NSOperationQueue *)getGroupFileDownloadQueue
+//{
+//    static AFHTTPRequestOperationManager *_downloadManager = nil;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        _downloadManager = [AFHTTPRequestOperationManager manager];
+//        _downloadManager.operationQueue.maxConcurrentOperationCount = 1;
+//    });
+//    return _downloadManager;
+//}
 
-+ (BJCNNetRequestOperation *)doDownloadResource:(BJCNRequestParams *)requestParams
-                                 fileDownPath:(NSString *)filePath
-                                      success:(BJCNOnSuccess)success
-                                        retry:(BJCNOnRetryRequest)retry
-                                      failure:(BJCNOnFailure)failure
-                                     progress:(BJCNOnProgress)progress
-{
-    AFHTTPRequestOperationManager *manager = [self getGroupFileDownloadQueue];
-    //https
-    manager.securityPolicy.allowInvalidCertificates = YES;
-    AFHTTPRequestSerializer *requestSerializer = [AFHTTPRequestSerializer serializer];
-    // timeout
-    [requestSerializer setTimeoutInterval:requestParams.requestTimeOut];
-    
-    NSError *error = nil;
-    NSURLRequest *request = [requestSerializer requestWithMethod:@"GET" URLString:[requestParams urlWithGetParams] parameters:requestParams.urlPostParams error:&error];
-    
-    AFHTTPRequestOperation *operation = [[AFHTTPRequestOperation alloc] initWithRequest:request];
-    operation.securityPolicy.allowInvalidCertificates = YES;
-    
-    operation.outputStream = [NSOutputStream outputStreamToFileAtPath:filePath append:NO];
-    
-    [operation setDownloadProgressBlock:^(NSUInteger bytesRead, long long totalBytesRead, long long totalBytesExpectedToRead) {
-        if (progress)
-        {
-            progress(bytesRead, totalBytesRead, totalBytesExpectedToRead);
-        }
-    }];
-    
-    __weak typeof(self) weakSelf = self;
-    [operation setCompletionBlockWithSuccess:^(AFHTTPRequestOperation *operation, id responseObject) {
-        if (success && ![operation isCancelled])
-        {
-            success(responseObject, operation.response.allHeaderFields, requestParams);
-        }
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        if (requestParams.maxRetryCount > 0)
-        {
-            requestParams.maxRetryCount -- ;
-            BJCNNetRequestOperation *op = [weakSelf doDownloadResource:requestParams fileDownPath:filePath success:success retry:retry failure:failure progress:progress];
-            if (retry)
-            {
-                retry(error, requestParams, op);
-            }
-            return ;
-        }
-        if (failure && ![operation isCancelled])
-        {
-            failure(error, requestParams);
-        }
-    }];
-    
-    [manager.operationQueue addOperation:operation];
-    return [[BJCNNetRequestOperation alloc] initWithHttpOperation:operation];
-}
 
-+ (BJCNNetRequestOperation *)hermesDownloadGroupFile:(NSString*)fileUrl
++ (void)hermesDownloadGroupFile:(NSString*)fileUrl
                                 filePath:(NSString*)filePath
                                  success:(BJCNOnSuccess)success
                                  failure:(BJCNOnFailure)failure
@@ -665,14 +522,14 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fileUrl method:kBJCNHttpMethod_GET];
     [NetWorkTool insertCommonParams:requestParams];
-    return [self doDownloadResource:requestParams fileDownPath:filePath success:success retry:nil failure:failure progress:progress];
+    [BJCNNetworkUtilInstance doDownloadResource:fileUrl fileDownPath:filePath success:success failure:failure progress:progress];
 }
 
-+ (BJCNNetRequestOperation *)hermesPreviewGroupFile:(int64_t)groupId
++ (void)hermesPreviewGroupFile:(int64_t)groupId
                                           file_id:(int64_t)file_id
                                              succ:(BJCNOnSuccess)succ
                                           failure:(BJCNOnFailure)failure
@@ -680,17 +537,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_PREVIEW_GROUP_FILE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesDeleteGroupFile:(int64_t)groupId
++ (void)hermesDeleteGroupFile:(int64_t)groupId
                                          file_id:(int64_t)file_id
                                             succ:(BJCNOnSuccess)succ
                                          failure:(BJCNOnFailure)failure
@@ -698,17 +555,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_GROUP_FILE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesCreateGroupNotice:(int64_t)groupId
++ (void)hermesCreateGroupNotice:(int64_t)groupId
                                            content:(NSString*)content
                                               succ:(BJCNOnSuccess)succ
                                            failure:(BJCNOnFailure)failure
@@ -716,17 +573,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_CREATE_GROUP_NOTICE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:content forKey:@"content"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupNotice:(int64_t)groupId
++ (void)hermesGetGroupNotice:(int64_t)groupId
                                         last_id:(int64_t)last_id
                                       page_size:(int64_t)page_size
                                            succ:(BJCNOnSuccess)succ
@@ -735,7 +592,7 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_NOTICE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -743,10 +600,10 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_id] forKey:@"last_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", page_size] forKey:@"page_size"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesRemoveGroupNotice:(int64_t)notice_id
++ (void)hermesRemoveGroupNotice:(int64_t)notice_id
                                           group_id:(int64_t)group_id
                                               succ:(BJCNOnSuccess)succ
                                            failure:(BJCNOnFailure)failure
@@ -754,17 +611,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_REMOVE_GROUP_NOTICE method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", notice_id] forKey:@"notice_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", group_id] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesAddBlacklist:(int64_t)userId
++ (void)hermesAddBlacklist:(int64_t)userId
                                      userRole:(IMUserRole)userRole
                                          succ:(BJCNOnSuccess)succ
                                       failure:(BJCNOnFailure)failure;
@@ -772,17 +629,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_ADD_BLACKLIST method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesCancelBlacklist:(int64_t)userId
++ (void)hermesCancelBlacklist:(int64_t)userId
                                         userRole:(IMUserRole)userRole
                                             succ:(BJCNOnSuccess)succ
                                          failure:(BJCNOnFailure)failure
@@ -790,17 +647,17 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CANCEL_BLACKLIST method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesAddRecentContactId:(int64_t)userId
++ (void)hermesAddRecentContactId:(int64_t)userId
                                                role:(IMUserRole)userRole
                                                succ:(BJCNOnSuccess)succ
                                             failure:(BJCNOnFailure)failure
@@ -808,58 +665,58 @@
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_RECENT_CONTACT method:kBJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
     [NetWorkTool insertCommonParams:requestParams];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
 #pragma mark - Group set
 
-+ (BJCNNetRequestOperation *)hermesLeaveGroupWithGroupId:(int64_t)groupId
++ (void)hermesLeaveGroupWithGroupId:(int64_t)groupId
                                                   succ:(BJCNOnSuccess)succ
                                                failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_LEAVE_GROUP method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesDisbandGroupWithGroupId:(int64_t)groupId
++ (void)hermesDisbandGroupWithGroupId:(int64_t)groupId
                                                     succ:(BJCNOnSuccess)succ
                                                  failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
    [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupMemberWithModel:(GetGroupMemberModel *)model
++ (void)hermesGetGroupMemberWithModel:(GetGroupMemberModel *)model
                                                       succ:(BJCNOnSuccess)succ
                                                    failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -870,17 +727,17 @@
         [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)model.userRole] forKey:@"user_role"];
     }
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesGetGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index
++ (void)hermesGetGroupMemberWithGroupId:(int64_t)groupId userRole:(IMUserRole)userRole page:(NSUInteger)index
                                                     succ:(BJCNOnSuccess)succ
                                                  failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
@@ -891,58 +748,58 @@
         [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)userRole] forKey:@"user_role"];
     }
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesChangeGroupNameWithGroupId:(int64_t)groupId newName:(NSString *)name
++ (void)hermesChangeGroupNameWithGroupId:(int64_t)groupId newName:(NSString *)name
                                                     succ:(BJCNOnSuccess)succ
                                                  failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_GROUP_NAME method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:name forKey:@"group_name"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetGroupMsgWithGroupId:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status
++ (void)hermesSetGroupMsgWithGroupId:(int64_t)groupId msgStatus:(IMGroupMsgStatus)status
                                                     succ:(BJCNOnSuccess)succ
                                                  failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_MSG_STATUS method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"msg_status"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetGroupPushStatusWithGroupId:(int64_t)groupId pushStatus:(IMGroupPushStatus)status
++ (void)hermesSetGroupPushStatusWithGroupId:(int64_t)groupId pushStatus:(IMGroupPushStatus)status
                                                           succ:(BJCNOnSuccess)succ
                                                        failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
         failure(nil, nil);
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_PUSH_STATUS method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"push_status"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:succ failure:failure];
 }
 
 + (void)insertCommonParams:(BJCNRequestParams *)requestParms
@@ -950,18 +807,37 @@
     [requestParms appendPostParamValue:@"im_version" forKey:[[IMEnvironment shareInstance] getCurrentVersion]];
 }
 
-+ (BJCNNetRequestOperation *)hermesSetUserName:(NSString *)userName userAvatar:(NSString *)userAvatar
++ (void)hermesSetUserName:(NSString *)userName userAvatar:(NSString *)userAvatar
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {
-        return nil;
+        return;
     }
     BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_USER_INFO method:kBJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:userName  forKey:@"user_name"];
     [requestParmas appendPostParamValue:userAvatar forKey:@"user_avatar"];
     [NetWorkTool insertCommonParams:requestParmas];
-    return [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:nil failure:nil];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParmas success:nil failure:nil];
+}
+
+
++ (void)hermesGetUserOnlineStatus:(int64_t)userId
+                             role:(IMUserRole)userRole
+                             succ:(BJCNOnSuccess)succ
+                          failure:(BJCNOnFailure)failure
+{
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        return;
+    }
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_ONLINE_STATUS method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+    
 }
 
 @end

@@ -28,4 +28,6 @@
 @property (nonatomic, copy) NSDate *createTime; // 联系人关系建立时间
 @property (nonatomic, assign) IMUserRelation relation; // 联系人关系类型
 
+@property (nonatomic, assign) IMUserOnlineStatus onlineStatus;
+
 @end
