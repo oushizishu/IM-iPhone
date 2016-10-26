@@ -60,6 +60,7 @@
         NSInteger rowid = _user.rowid;
         user = _user;
         _user.rowid = rowid;
+        _user.onlineStatus = user.onlineStatus;
         [self update:_user];
     }
     else

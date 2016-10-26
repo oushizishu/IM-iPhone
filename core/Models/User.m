@@ -50,7 +50,8 @@
              @"userRole":@"userRole",
              @"name":@"name",
              @"avatar":@"avatar",
-             @"nameHeader":@"nameHeader"
+             @"nameHeader":@"nameHeader",
+             @"onlineStatus":@"onlineStatus"
              };
 }
 

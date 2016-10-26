@@ -34,7 +34,10 @@
         [query appendFormat:@"select %@.rowid, %@.userId, %@.userRole, %@.name, %@.avatar, %@.nameHeader, ",
                         userTableName, userTableName, userTableName, userTableName, userTableName, userTableName];
         // 查询条件 contacts 表字段
-        [query appendFormat:@" %@.remarkName, %@.remarkHeader, %@.relation", contactTableName, contactTableName, contactTableName];
+        [query appendFormat:@" %@.remarkName, %@.remarkHeader, %@.relation, ", contactTableName, contactTableName, contactTableName];
+        
+        // 增加 user.onlineStatus
+        [query appendFormat:@" %@.onlineStatus", userTableName];
         // 表级联
         [query appendFormat:@" from %@ INNER JOIN %@ ", userTableName, contactTableName];
         // 级联条件
@@ -76,6 +79,7 @@
             user.remarkName = [set stringForColumnIndex:6];
             user.remarkHeader = [set stringForColumnIndex:7];
             user.relation = [set intForColumnIndex:8];
+            user.onlineStatus = [set intForColumnIndex:9];
             
             [self.imStroage.userDao attachEntityKey:key entity:user lock:NO];
             
