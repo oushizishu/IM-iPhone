@@ -54,6 +54,8 @@
 - (Group *)getGroup:(int64_t)groupId;
 - (void)getUserOnlineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlineStatus onlineStatus))callback;
 
+- (void)refreshMyContacts;
+
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;

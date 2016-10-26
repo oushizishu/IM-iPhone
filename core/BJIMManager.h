@@ -87,6 +87,7 @@
 - (NSArray *)getMyTeacherContacts;
 - (NSArray *)getMyStudentContacts;
 - (NSArray *)getMyInstitutionContacts;
+- (void)refreshAllContacts;
 
 //清空用户所有会话及消息
 - (void)clearConversationAndMessage;

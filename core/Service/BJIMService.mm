@@ -501,6 +501,11 @@
     [self.imStorage.userDao insertOrUpdateUser:user];
 }
 
+- (void)refreshMyContacts
+{
+    [self.imEngine syncContacts];
+}
+
 - (void)getUserOnlineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlineStatus onlineStatus))callback
 {
     __WeakSelf__ weakSelf = self;

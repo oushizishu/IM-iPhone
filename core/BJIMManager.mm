@@ -304,6 +304,12 @@
     return [self.imService getInstitutionContactsWithUser:[IMEnvironment shareInstance].owner];
 }
 
+- (void)refreshAllContacts
+{
+    if (! [[IMEnvironment shareInstance] isLogin]) return ;
+    [self.imService refreshMyContacts];
+}
+
 - (void)clearConversationAndMessage
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return ;
