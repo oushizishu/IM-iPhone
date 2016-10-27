@@ -511,7 +511,7 @@
     __WeakSelf__ weakSelf = self;
     [self.imEngine postGetUserOnLineStatus:userId role:userRole callback:^(IMUserOnlieStatusResult *result) {
         User *user = [weakSelf getUser:userId role:userRole];
-        if (!result) {
+        if (result) {
             user.onlineStatus = result.onlineStatus;
         }
         callback(user.onlineStatus);
