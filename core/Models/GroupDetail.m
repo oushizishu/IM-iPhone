@@ -101,6 +101,7 @@
              @"user_role":@"user_role",
              @"user_name":@"user_name",
              @"user_number":@"user_number",
+             @"onlineStatus":@"online_status"
              };
 }
 

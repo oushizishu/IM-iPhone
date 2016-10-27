@@ -471,6 +471,9 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             if (weakSelf.webSocketClient.state == BJ_WS_STATE_Connected) {
                 weakSelf.heartBeatDispose = [[RACSignal interval:120 onScheduler:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground]] subscribeNext:^(id x) {
                     [weakSelf doHeartbeat];
+                    NSDictionary *hackMessageNew = @{
+                                                     @"message_type":SOCKET_API_RESPONSE_MESSAGE_NEW};
+                    [weakSelf didReciveMessage:hackMessageNew];
                 }];
             }
         }];

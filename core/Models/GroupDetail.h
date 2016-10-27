@@ -59,6 +59,7 @@
 @property (nonatomic, assign) int64_t user_role;
 @property (nonatomic, strong) NSString *user_name;
 @property (nonatomic, assign) int64_t user_number;
+@property (nonatomic, assign) IMUserOnlineStatus onlineStatus;
 
 @end
 
