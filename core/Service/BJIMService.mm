@@ -1000,6 +1000,47 @@
     [self.syncContactsOperationQueue addOperation:operation];
 }
 
+#pragma mark - autoresponse
+- (void)addAutoResponseWithContent:(NSString *)content
+                           success:(void(^)())succss
+                           failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesAddAutoResponseWithUserId:user.userId role:user.userRole content:content success:succss failure:failure];
+}
+
+- (void)setEnableAutoResponseWithEnable:(BOOL)enable
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesSetAutoResponseWithUserId:user.userId role:user.userRole enable:enable success:succss failure:failure];
+}
+
+- (void)setSelectedAutoResponseWithContentId:(NSInteger)contentId
+                                     success:(void(^)())succss
+                                     failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesSetAutoResponseWithUserId:user.userId role:user.userRole contentId:contentId success:succss failure:failure];
+}
+
+- (void)delAutoResponseWithContentId:(NSInteger)contentId
+                             success:(void(^)())succss
+                             failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesDelAutoResponseWithUserId:user.userId role:user.userRole contentId:contentId success:succss failure:failure];
+}
+
+- (void)getAllAutoResponseWithSuccess:(void(^)(AutoResponseList *result))succss
+                              failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesGetAllAutoResponseWithUserId:user.userId role:user.userRole success:succss failure:failure];
+}
+
+
 
 #pragma mark - application call back
 - (void)applicationEnterForeground

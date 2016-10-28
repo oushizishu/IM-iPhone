@@ -11,6 +11,7 @@
 
 #import "IMMessage.h"
 #import "IMEnvironment.h"
+#import "AutoResponseList.h"
 
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
@@ -213,4 +214,36 @@
                              role:(IMUserRole)userRole
                              succ:(BJCNOnSuccess)succ
                           failure:(BJCNOnFailure)failure;
+
+
+#pragma mark - autoresponse
++ (void)hermesAddAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                                content:(NSString *)content
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
++ (void)hermesSetAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                                 enable:(BOOL)enable
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
++ (void)hermesSetAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                              contentId:(NSInteger)contentId
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
++ (void)hermesDelAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                              contentId:(NSInteger)contentId
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
++ (void)hermesGetAllAutoResponseWithUserId:(int64_t)userId
+                                      role:(IMUserRole)role
+                                   success:(void(^)(AutoResponseList *result))succss
+                                   failure:(void(^)(NSError *error))failure;
+
 @end

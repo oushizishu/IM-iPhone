@@ -15,6 +15,7 @@
 
 #import "BaseResponse.h"
 #import "GroupDetail.h"
+#import "AutoResponseList.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 /**
@@ -113,6 +114,26 @@
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
              callback:(void(^)(NSString *remarkName, NSInteger errCode, NSString *errMsg))callback;
+
+#pragma mark - autoresponse
+- (void)addAutoResponseWithContent:(NSString *)content
+                           success:(void(^)())succss
+                           failure:(void(^)(NSError *error))failure;
+
+- (void)setEnableAutoResponseWithEnable:(BOOL)enable
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
+- (void)setSelectedAutoResponseWithContentId:(NSInteger)contentId
+                                     success:(void(^)())succss
+                                     failure:(void(^)(NSError *error))failure;
+
+- (void)delAutoResponseWithContentId:(NSInteger)contentId
+                             success:(void(^)())succss
+                             failure:(void(^)(NSError *error))failure;
+
+- (void)getAllAutoResponseWithSuccess:(void(^)(AutoResponseList *result))succss
+                              failure:(void(^)(NSError *error))failure;
 
 
 //- (void)setRemarkName:(NSString *)remarkName

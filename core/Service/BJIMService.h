@@ -12,6 +12,7 @@
 #import "IMMessage.h"
 #import "BJIMAbstractEngine.h"
 #import "GroupDetail.h"
+#import "AutoResponseList.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 
@@ -192,6 +193,27 @@
 - (void)applicationEnterForeground;
 
 - (void)appendOperationAfterContacts:(IMBaseOperation *)operation;
+
+#pragma mark - autoresponse
+- (void)addAutoResponseWithContent:(NSString *)content
+                           success:(void(^)())succss
+                           failure:(void(^)(NSError *error))failure;
+
+- (void)setEnableAutoResponseWithEnable:(BOOL)enable
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure;
+
+- (void)setSelectedAutoResponseWithContentId:(NSInteger)contentId
+                                     success:(void(^)())succss
+                                     failure:(void(^)(NSError *error))failure;
+
+- (void)delAutoResponseWithContentId:(NSInteger)contentId
+                             success:(void(^)())succss
+                             failure:(void(^)(NSError *error))failure;
+
+- (void)getAllAutoResponseWithSuccess:(void(^)(AutoResponseList *result))succss
+                              failure:(void(^)(NSError *error))failure;
+
 
 #pragma mark - add Delegates
 - (void)addConversationChangedDelegate:(id<IMConversationChangedDelegate>)delegate;
