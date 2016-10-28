@@ -513,6 +513,7 @@
         User *user = [weakSelf getUser:userId role:userRole];
         if (result) {
             user.onlineStatus = result.onlineStatus;
+            [weakSelf.imStorage.userDao insertOrUpdateUser:user];
         }
         callback(user.onlineStatus);
     }];

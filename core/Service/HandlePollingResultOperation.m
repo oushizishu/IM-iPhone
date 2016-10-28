@@ -178,6 +178,10 @@
     
     if (! [self isKindOfClass:[HandleGetMsgOperation class]]) {
         conversation.status = 0;// 会话状态回归正常
+        
+        User *user = [self.imService.imStorage.userDao loadUser:conversation.toId role:conversation.toRole];
+        user.onlineStatus = eUserOnlieStatus_online;
+        [self.imService.imStorage.userDao insertOrUpdateUser:user];
     }
     
     User *owner = [IMEnvironment shareInstance].owner;
