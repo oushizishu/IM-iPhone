@@ -60,6 +60,9 @@
         NSInteger rowid = _user.rowid;
         _user.rowid = rowid;
         _user.onlineStatus = user.onlineStatus;
+        _user.name = user.name;
+        _user.nameHeader = user.nameHeader;
+        _user.avatar = user.avatar;
         [self update:_user];
     }
     else
