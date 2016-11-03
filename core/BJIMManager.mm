@@ -346,6 +346,43 @@
     [self.imService setRemarkName:remarkName user:user callback:callback];
 }
 
+
+#pragma mark - autoresponse
+- (void)addAutoResponseWithContent:(NSString *)content
+                           success:(void(^)())succss
+                           failure:(void(^)(NSError *error))failure;
+{
+    [self.imService addAutoResponseWithContent:content success:succss failure:failure];
+}
+
+- (void)setEnableAutoResponseWithEnable:(BOOL)enable
+                                success:(void(^)())succss
+                                failure:(void(^)(NSError *error))failure
+{
+    [self.imService setEnableAutoResponseWithEnable:enable success:succss failure:failure];
+}
+
+- (void)setSelectedAutoResponseWithContentId:(NSInteger)contentId
+                                     success:(void(^)())succss
+                                     failure:(void(^)(NSError *error))failure
+{
+    [self.imService setSelectedAutoResponseWithContentId:contentId success:succss failure:failure];
+}
+
+- (void)delAutoResponseWithContentId:(NSInteger)contentId
+                             success:(void(^)())succss
+                             failure:(void(^)(NSError *error))failure
+{
+    [self.imService delAutoResponseWithContentId:contentId success:succss failure:failure];
+}
+
+- (void)getAllAutoResponseWithSuccess:(void(^)(AutoResponseList *result))succss
+                              failure:(void(^)(NSError *error))failure
+{
+    [self.imService getAllAutoResponseWithSuccess:succss failure:failure];
+}
+
+
 //TODO
 //- (void)setRemarkName:(NSString *)remarkName
 //                group:(Group *)group

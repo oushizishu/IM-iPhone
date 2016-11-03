@@ -10,6 +10,10 @@
 #import "NSDictionary+Json.h"
 #import <AFNetworking.h>
 
+#import "BaseResponse.h"
+#import "NSError+BJIM.h"
+#import "IMJSONAdapter.h"
+
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
 #define HOST_APIS @[@"http://dev01-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
@@ -56,6 +60,12 @@
 //user
 #define HERMES_API_SET_USER_INFO [NSString stringWithFormat:@"%@/hermes/setUserInfo", HOST_API]
 #define HERMES_API_GET_USER_ONLINE_STATUS [NSString stringWithFormat:@"%@/hermes/getUserOnlineStatus", HOST_API]
+
+// autoResponse
+#define HERMES_API_ADD_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/addAutoResponse", HOST_API]
+#define HERMES_API_SET_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/setAutoResponse", HOST_API]
+#define HERMES_API_DELETE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/deleteAutoResponse", HOST_API]
+#define HERMES_API_GET_AUTO_RESPONSE_LIST  [NSString stringWithFormat:@"%@/hermes/getAutoResponseList", HOST_API]
 
 #import "GetGroupMemberModel.h"
 
@@ -839,5 +849,196 @@
     [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
     
 }
+
+
+#pragma mark - autoresponse
++ (void)hermesAddAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                                content:(NSString *)content
+                                success:(void (^)())succss
+                                failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:content forKey:@"content"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            if (succss) {
+                succss();
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
+
++ (void)hermesSetAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                                 enable:(BOOL)enable
+                                success:(void (^)())succss
+                                failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:@(enable) forKey:@"enable"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            if (succss) {
+                succss();
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)hermesSetAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                                 contentId:(NSInteger)contentId
+                                success:(void (^)())succss
+                                failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:@(contentId) forKey:@"content_id"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            if (succss) {
+                succss();
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)hermesDelAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                              contentId:(NSInteger)contentId
+                                success:(void (^)())succss
+                                failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:@(contentId) forKey:@"content_id"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            if (succss) {
+                succss();
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
+
++ (void)hermesGetAllAutoResponseWithUserId:(int64_t)userId
+                                      role:(IMUserRole)role
+                                   success:(void (^)(AutoResponseList *))succss
+                                   failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_AUTO_RESPONSE_LIST method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
+    
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            AutoResponseList *list = [IMJSONAdapter modelOfClass:[AutoResponseList class] fromJSONDictionary:result.data error:&error];
+            if (!error) {
+                if (succss) {
+                    succss(list);
+                }
+            } else {
+                if (failure) {
+                    failure(error);
+                }
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+
+}
+
 
 @end
