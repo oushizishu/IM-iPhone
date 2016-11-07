@@ -16,7 +16,7 @@
 
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
-#define HOST_APIS @[@"http://dev01-hermes.genshuixue.com", @"http://beta-hermes.genshuixue.com", @"http://hermes.genshuixue.com"]
+#define HOST_APIS @[@"https://dev01-hermes.genshuixue.com", @"https://beta-hermes.genshuixue.com", @"https://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
 #define HERMES_API_SYNC_CONFIG [NSString stringWithFormat:@"%@/hermes/syncConfig", HOST_API]
