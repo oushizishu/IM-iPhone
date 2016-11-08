@@ -7,6 +7,7 @@
 //
 
 #import "AutoResponseList.h"
+#import "IMJSONAdapter.h"
 
 @implementation AutoResponseSetting
 
@@ -36,6 +37,21 @@
 
 
 @implementation AutoResponseList
+
++ (NSValueTransformer *)JSONTransformerForKey:(NSString *)key
+{
+    if ([key isEqualToString:@"list"])
+    {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            if ([value isKindOfClass:[NSArray class]])
+            {
+                NSArray *array = [IMJSONAdapter modelsOfClass:[AutoResponseItem class] fromJSONArray:value error:nil];
+                return array;
+            }
+            return nil;
+        }];
+    }
+}
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
