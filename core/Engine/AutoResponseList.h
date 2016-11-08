@@ -29,6 +29,7 @@
 
 @property (nonatomic, strong) AutoResponseSetting *setting;
 @property (nonatomic, strong) NSArray<AutoResponseItem *> *list;
+@property (nonatomic, assign) NSInteger vipLevel;
 @end
 
 

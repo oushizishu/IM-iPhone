@@ -26,7 +26,7 @@
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
-             @"contentId"      :@"id",
+             @"contentId" :@"id",
              @"selected" :@"selected",
              @"content" : @"content",
              @"createTime" :@"create_time"
@@ -51,13 +51,27 @@
             return nil;
         }];
     }
+    else if ([key isEqualToString:@"setting"])
+    {
+        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+            if ([value isKindOfClass:[NSDictionary class]])
+            {
+                AutoResponseSetting *setting = [IMJSONAdapter modelOfClass:[AutoResponseSetting class] fromJSONDictionary:value error:nil];
+                return setting;
+            }
+            return nil;
+        }];
+        
+    }
+    return nil;
 }
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey
 {
     return @{
              @"setting":@"setting",
-             @"list" : @"list"
+             @"list" : @"list",
+             @"vipLevel":@"vip_level"
              };
 }
 
