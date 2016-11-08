@@ -117,8 +117,13 @@
 
 #pragma mark - autoresponse
 - (void)addAutoResponseWithContent:(NSString *)content
-                           success:(void(^)())succss
+                           success:(void(^)(NSInteger contentId))succss
                            failure:(void(^)(NSError *error))failure;
+
+- (void)editAutoResponseWithContent:(NSString *)content
+                          contentId:(NSInteger)contentId
+                            success:(void(^)(NSInteger contentId))succss
+                            failure:(void(^)(NSError *error))failure;
 
 - (void)setEnableAutoResponseWithEnable:(BOOL)enable
                                 success:(void(^)())succss

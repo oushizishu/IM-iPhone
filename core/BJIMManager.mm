@@ -349,10 +349,18 @@
 
 #pragma mark - autoresponse
 - (void)addAutoResponseWithContent:(NSString *)content
-                           success:(void(^)())succss
+                           success:(void(^)(NSInteger contentId))succss
                            failure:(void(^)(NSError *error))failure;
 {
     [self.imService addAutoResponseWithContent:content success:succss failure:failure];
+}
+
+- (void)editAutoResponseWithContent:(NSString *)content
+                          contentId:(NSInteger)contentId
+                            success:(void(^)(NSInteger contentId))succss
+                            failure:(void(^)(NSError *error))failure
+{
+    [self.imService editAutoResponseWithContent:content contentId:contentId success:succss failure:failure];
 }
 
 - (void)setEnableAutoResponseWithEnable:(BOOL)enable

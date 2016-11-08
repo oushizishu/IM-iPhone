@@ -1003,11 +1003,20 @@
 
 #pragma mark - autoresponse
 - (void)addAutoResponseWithContent:(NSString *)content
-                           success:(void(^)())succss
+                           success:(void(^)(NSInteger contentId))succss
                            failure:(void(^)(NSError *error))failure
 {
     User *user = [IMEnvironment shareInstance].owner;
     [NetWorkTool hermesAddAutoResponseWithUserId:user.userId role:user.userRole content:content success:succss failure:failure];
+}
+
+- (void)editAutoResponseWithContent:(NSString *)content
+                          contentId:(NSInteger)contentId
+                            success:(void(^)(NSInteger contentId))succss
+                            failure:(void(^)(NSError *error))failure
+{
+    User *user = [IMEnvironment shareInstance].owner;
+    [NetWorkTool hermesEditAutoResponseWithUserId:user.userId role:user.userRole contentId:contentId content:content success:succss failure:failure];
 }
 
 - (void)setEnableAutoResponseWithEnable:(BOOL)enable

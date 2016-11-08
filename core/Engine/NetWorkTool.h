@@ -220,8 +220,15 @@
 + (void)hermesAddAutoResponseWithUserId:(int64_t)userId
                                    role:(IMUserRole)role
                                 content:(NSString *)content
-                                success:(void(^)())succss
+                                success:(void(^)(NSInteger contentId))succss
                                 failure:(void(^)(NSError *error))failure;
+
++ (void)hermesEditAutoResponseWithUserId:(int64_t)userId
+                                    role:(IMUserRole)role
+                               contentId:(NSInteger)contentId
+                                 content:(NSString *)content
+                                 success:(void(^)(NSInteger contentId))succss
+                                 failure:(void (^)(NSError *))failure;  
 
 + (void)hermesSetAutoResponseWithUserId:(int64_t)userId
                                    role:(IMUserRole)role

@@ -66,7 +66,7 @@
 #define HERMES_API_SET_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/setAutoResponse", HOST_API]
 #define HERMES_API_DELETE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/deleteAutoResponse", HOST_API]
 #define HERMES_API_GET_AUTO_RESPONSE_LIST  [NSString stringWithFormat:@"%@/hermes/getAutoResponseList", HOST_API]
-
+#define HERMES_API_UPDATE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/updateAutoResponseList", HOST_API]
 #import "GetGroupMemberModel.h"
 
 @implementation NetWorkTool
@@ -855,7 +855,7 @@
 + (void)hermesAddAutoResponseWithUserId:(int64_t)userId
                                    role:(IMUserRole)role
                                 content:(NSString *)content
-                                success:(void (^)())succss
+                                success:(void(^)(NSInteger contentId))succss
                                 failure:(void (^)(NSError *))failure
 {
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
@@ -869,7 +869,9 @@
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (!error && result.code == RESULT_CODE_SUCC) {
             if (succss) {
-                succss();
+                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:result.data];
+                NSInteger contentId = [[dic valueForKey:@"id"] integerValue];
+                succss(contentId);
             }
         }
         else
@@ -888,6 +890,45 @@
     }];
 }
 
++ (void)hermesEditAutoResponseWithUserId:(int64_t)userId
+                                   role:(IMUserRole)role
+                               contentId:(NSInteger)contentId
+                                content:(NSString *)content
+                                success:(void(^)(NSInteger contentId))succss
+                                failure:(void (^)(NSError *))failure
+{
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPDATE_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:content forKey:@"content"];
+    [requestParams appendPostParamValue:@(contentId) forKey:@"content_id"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (!error && result.code == RESULT_CODE_SUCC) {
+            if (succss) {
+                NSDictionary *dic = [NSDictionary dictionaryWithDictionary:result.data];
+                NSInteger contentId = [[dic valueForKey:@"id"] integerValue];
+                succss(contentId);
+            }
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            if (failure) {
+                failure(error);
+            }
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if (failure) {
+            failure(error);
+        }
+    }];
+}
 
 + (void)hermesSetAutoResponseWithUserId:(int64_t)userId
                                    role:(IMUserRole)role
