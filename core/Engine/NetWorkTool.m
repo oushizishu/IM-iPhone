@@ -66,7 +66,7 @@
 #define HERMES_API_SET_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/setAutoResponse", HOST_API]
 #define HERMES_API_DELETE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/deleteAutoResponse", HOST_API]
 #define HERMES_API_GET_AUTO_RESPONSE_LIST  [NSString stringWithFormat:@"%@/hermes/getAutoResponseList", HOST_API]
-#define HERMES_API_UPDATE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/updateAutoResponseList", HOST_API]
+#define HERMES_API_UPDATE_AUTO_RESPONSE  [NSString stringWithFormat:@"%@/hermes/updateAutoResponse", HOST_API]
 #import "GetGroupMemberModel.h"
 
 @implementation NetWorkTool
