@@ -536,7 +536,7 @@
     }
     BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fileUrl method:kBJCNHttpMethod_GET];
     [NetWorkTool insertCommonParams:requestParams];
-    [BJCNNetworkUtilInstance doDownloadResource:fileUrl fileDownPath:filePath success:success failure:failure progress:progress];
+    [BJCNNetworkUtilInstance doDownloadResource:requestParams fileDownPath:filePath success:success failure:failure progress:progress];
 }
 
 + (void)hermesPreviewGroupFile:(int64_t)groupId
