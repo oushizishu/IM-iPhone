@@ -199,8 +199,8 @@
     SendMsgOperation *operation = [[SendMsgOperation alloc] init];
     operation.message = message;
     operation.imService = self;
+    [message.msgStatictis markStartSend];
     [self.sendMessageOperationQueue addOperation:operation]; //放在发送消息队列中
-    
     [self notifyWillDeliveryMessage:message];
 }
 
@@ -211,6 +211,7 @@
     RetryMessageOperation *operation = [[RetryMessageOperation alloc] init];
     operation.message = message;
     operation.imService = self;
+    [message.msgStatictis markStartSend];
     [self.sendMessageOperationQueue addOperation:operation]; // 放在发送消息队列中
     
     [self notifyWillDeliveryMessage:message];

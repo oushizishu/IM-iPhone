@@ -193,7 +193,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 - (void)postMessage:(IMMessage *)message
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;
-   
+    [message.msgStatictis markStartSendServer];
     NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
@@ -304,14 +304,17 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         SendMsgModel *model = [IMJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
         
         [self.postMessageDelegate onPostMessageSucc:item.message result:model];
+        [item.message.msgStatictis markFinishSendWithResult:YES];
     }
     else
     {
         [self callbackErrorCode:result.code errMsg:result.msg];
         NSError *error = [NSError bjim_errorWithReason:result.msg code:result.code];
         [self.postMessageDelegate onPostMessageFail:item.message error:error];
+        [item.message.msgStatictis markFinishSendWithResult:NO];
     }
     
+    [item.message.msgStatictis printMessageStatictis];
     [self.requestQueue removeObjectForKey:uuid];
 }
 

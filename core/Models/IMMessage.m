@@ -11,6 +11,7 @@
 
 
 @implementation IMMessage
+@synthesize msgStatictis=_msgStatictis;
 
 + (NSString *)getTableName
 {
@@ -126,6 +127,15 @@
              @"conversationId":@"conversationId",
              @"messageBody":@"messageBody",
              };
+}
+
+- (IMMessageStatusSts *)msgStatictis
+{
+    if (!_msgStatictis) {
+        _msgStatictis = [[IMMessageStatusSts alloc] init];
+        _msgStatictis.message = self;
+    }
+    return _msgStatictis;
 }
 
 @end

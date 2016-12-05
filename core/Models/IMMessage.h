@@ -19,6 +19,8 @@
 #import "IMCardMessageBody.h"
 #import "IMCmdMessageBody.h"
 
+#import "IMMessageStatusSts.h"
+
 @interface IMMessage : MTLModel<MTLJSONSerializing>
 
 @property (nonatomic, copy) NSString *msgId;
@@ -37,5 +39,7 @@
 
 @property (nonatomic, assign) NSInteger conversationId;
 @property (nonatomic, strong) IMMessageBody *messageBody;
+
+@property (nonatomic, strong, readonly) IMMessageStatusSts *msgStatictis;
 
 @end
