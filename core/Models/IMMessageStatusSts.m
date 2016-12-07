@@ -42,19 +42,19 @@
     NSTimeInterval timeOfServer = self.msgFinishSendTime - self.msgStartSendServerTime;
     NSTimeInterval timeOfTotal = self.msgFinishSendTime - self.msgStartSendTime;
     
-    NSString *log1 = [NSString stringWithFormat:@"消息发送本地消耗:%d s", (int)(timeOfLocal)];
-    NSString *log2 = [NSString stringWithFormat:@"消息发送远程消耗:%d s", (int)(timeOfServer)];
-    NSString *log3 = [NSString stringWithFormat:@"消息发送总消耗:%d s", (int)(timeOfTotal)];
-    NSLog(@"---------------------消息发送统计-------------------------");
-    NSLog(@"发送者 userNumber:%lld, role:%ld", _message.sender, _message.senderRole);
-    NSLog(@"接受者 userNumber:%lld, role:%ld", _message.receiver, _message.receiverRole);
-    NSLog(@"内容 %@", [_message.messageBody description]);
-    NSLog(@"~~~~~~~~~~~~~~~~~ 耗时 ~~~~~~~~~~~~~~~~~~~~~~~~");
-    NSLog(log1);
-    NSLog(log2);
-    NSLog(log3);
-    NSLog(@"发送结果 :%@", (_result?@"成功":@"失败"));
-    NSLog(@"---------------------消息发送统计  end-------------------------");
+    NSMutableString *log = [[NSMutableString alloc] init];
+    [log appendString:@"\n---------------------消息发送统计-------------------------\n"];
+    [log appendFormat:@"发送者 userNumber:%lld, role:%ld\n", _message.sender, _message.senderRole];
+    [log appendFormat:@"接受者 userNumber:%lld, role:%ld\n", _message.receiver, _message.receiverRole];
+    [log appendFormat:@"内容:\n %@\n", [_message.messageBody description]];
+    [log appendString:@"~~~~~~~~~~~~~~~~~ 耗时如下: ~~~~~~~~~~~~~~~~~~~~~~~~\n"];
+    [log appendFormat:@"消息发送本地消耗:%d ms\n", (int)(timeOfLocal * 1000)];
+    [log appendFormat:@"消息发送远程消耗:%d ms\n", (int)(timeOfServer * 1000)];
+    [log appendFormat:@"消息发送总消耗:%d ms\n", (int)(timeOfTotal * 1000)];
+    [log appendFormat:@"发送结果 :%@\n", (_result?@"成功":@"失败")];
+    [log appendString:@"---------------------消息发送统计  end-------------------------\n"];
+    
+    NSLog(log);
 }
 
 @end

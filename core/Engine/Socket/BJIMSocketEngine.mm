@@ -21,6 +21,7 @@
 #import <BJHL-Websocket-iOS/BJWebSocketBase.h>
 #import <ReactiveCocoa/ReactiveCocoa.h>
 #import "IMJSONAdapter.h"
+#import "TimeOutTaskQueue.h"
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
@@ -120,6 +121,8 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 @property (nonatomic, copy) NSString *token;
 @property (nonatomic, nonnull, strong) BJWebSocketBase *webSocketClient;
 @property (nonatomic, strong) RACDisposable *heartBeatDispose;
+@property (nonatomic, strong) TimeOutTaskQueue *sendMsgQueue;
+@property (nonatomic, strong) TimeOutTaskQueue *sendMsgResponseQueue; //发消息响应线程
 
 @end
 
@@ -133,6 +136,10 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         [[RACObserve(self, retryConnectCount) distinctUntilChanged] subscribeNext:^(id x) {
             [weakSelf checkNetworkEfficiency];
         }];
+        
+        _sendMsgQueue = [[TimeOutTaskQueue alloc] init];
+        _sendMsgResponseQueue = [[TimeOutTaskQueue alloc] init];
+        _sendMsgResponseQueue.timeOutAtSeconds = 10;
     }
     return self;
 }
@@ -160,7 +167,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 - (void)start
 {
-    
     [self.webSocketClient connect];
     
     self.device = [NSUserDefaults deviceString];
@@ -194,33 +200,63 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 {
     if (! [[IMEnvironment shareInstance] isLogin]) return;
     [message.msgStatictis markStartSendServer];
-    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
-    [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.senderRole]] forKey:@"sender_r"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%lld", message.receiver]] forKey:@"receiver"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.receiverRole]] forKey:@"receiver_r"];
-    [dic setObject:[self URLEncodedString:[message.messageBody description]] forKey:@"body"];
-    if (message.ext)
-    {
-        NSString *ext = [message.ext jsonString];
-        if (ext)
-            [dic setObject:[self URLEncodedString:ext] forKey:@"ext"];
-    }
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.chat_t]] forKey:@"chat_t"];
-    [dic setObject:[self URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.msg_t]] forKey:@"msg_t"];
-    [dic setObject:message.sign forKey:@"sign"];
-    [dic setObject:[self URLEncodedString:[[IMEnvironment shareInstance] getCurrentVersion]] forKey:@"im_version"];
     
-    NSString *uuid = [self uuidString];
+    WS(weakSelf);
+    TimeOutTask *task = [[TimeOutTask alloc] initWithRun:^{
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        [dic setObject:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%lld", message.sender]] forKey:@"sender"];
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.senderRole]] forKey:@"sender_r"];
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%lld", message.receiver]] forKey:@"receiver"];
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.receiverRole]] forKey:@"receiver_r"];
+        [dic setObject:[weakSelf URLEncodedString:[message.messageBody description]] forKey:@"body"];
+        if (message.ext)
+        {
+            NSString *ext = [message.ext jsonString];
+            if (ext)
+                [dic setObject:[weakSelf URLEncodedString:ext] forKey:@"ext"];
+        }
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.chat_t]] forKey:@"chat_t"];
+        [dic setObject:[weakSelf URLEncodedString:[NSString stringWithFormat:@"%ld", (long)message.msg_t]] forKey:@"msg_t"];
+        [dic setObject:message.sign forKey:@"sign"];
+        [dic setObject:[weakSelf URLEncodedString:[[IMEnvironment shareInstance] getCurrentVersion]] forKey:@"im_version"];
+        
+        NSString *uuid = [weakSelf uuidString];
+        
+        NSDictionary *data = [weakSelf construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
+        
+        [weakSelf.webSocketClient sendRequest:data];
+        
+        RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
+        [weakSelf.requestQueue setObject:item forKey:uuid];
+        
+        // 检查消息发送回执
+        TimeOutTask *responseCheckTask = [[TimeOutTask alloc] initWithRun:^{
+        } timeOut:^{
+            RequestItem *_item = [weakSelf.requestQueue objectForKey:uuid];
+            if (_item) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    NSError *error = [NSError bjim_errorWithReason:@"网络连接超时，请稍后重试" code:-2];
+                    [weakSelf.postMessageDelegate onPostMessageFail:_item.message error:error];
+                });
+                
+                [_item.message.msgStatictis markFinishSendWithResult:NO];
+                [_item.message.msgStatictis printMessageStatictis];
+                [weakSelf.requestQueue removeObjectForKey:uuid];
+            }
+        }];
+        [weakSelf.sendMsgResponseQueue offerTask:responseCheckTask];
+    } timeOut:^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSError *error = [NSError bjim_errorWithReason:@"网络连接超时，请稍后重试" code:-2];
+            [weakSelf.postMessageDelegate onPostMessageFail:message error:error];
+        });
+        [message.msgStatictis markFinishSendWithResult:NO];
+        [message.msgStatictis printMessageStatictis];
+        
+    }];
     
-    NSDictionary *data = [self construct_req_param:dic messageType:SOCKET_API_REQUEST_MESSAGE_SEND sign:uuid];
-   
-    [self.webSocketClient sendRequest:data];
-    
-    RequestItem *item = [[RequestItem alloc] initWithRequestPostMessage:message];
-    [self.requestQueue setObject:item forKey:uuid];
-    
+    [self.sendMsgQueue offerTask:task];
 }
 
 - (void)postPullRequest:(int64_t)max_user_msg_id
@@ -299,6 +335,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     NSError *error;
     BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
     RequestItem *item = [self.requestQueue objectForKey:uuid];
+    if (!item) return; // 已经超时了
     if (result && result.code == RESULT_CODE_SUCC)
     {
         SendMsgModel *model = [IMJSONAdapter modelOfClass:[SendMsgModel class] fromJSONDictionary:result.data error:&error];
@@ -350,15 +387,18 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
  */
 - (void)reconnect
 {
-    if (self.retryConnectCount > COUNT_SOCKET_MAX_RECONNECT)
-    { //重连了五次没有成功
-        DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
-
-        [self stop];
-        return;// 重连了5次还没有成功，不再重连了
-    }
-    
-    self.retryConnectCount ++ ;
+    if (!self.engineActive) return;
+    [self.webSocketClient performSelector:@selector(reconnect) withObject:nil afterDelay:2];
+    [self performSelector:@selector(doLogin) withObject:nil afterDelay:2];
+//    if (self.retryConnectCount > COUNT_SOCKET_MAX_RECONNECT)
+//    { //重连了五次没有成功
+//        DDLogError(@"BJIMSocketEngine 多次重练失败！！！！！！");
+//
+//        [self stop];
+//        return;// 重连了5次还没有成功，不再重连了
+//    }
+//    
+//    self.retryConnectCount ++ ;
     
 //    [self stop];
 //    [self start];
@@ -471,19 +511,28 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         WS(weakSelf);
         [[RACObserve(_webSocketClient, state) distinctUntilChanged] subscribeNext:^(id x) {
             [weakSelf.heartBeatDispose dispose];
+            
+            weakSelf.sendMsgQueue.execEnable = (weakSelf.webSocketClient.state == BJ_WS_STATE_Connected);
+            
             if (weakSelf.webSocketClient.state == BJ_WS_STATE_Connected) {
+                //TODO send message.
                 weakSelf.heartBeatDispose = [[RACSignal interval:120 onScheduler:[RACScheduler schedulerWithPriority:RACSchedulerPriorityBackground]] subscribeNext:^(id x) {
                     [weakSelf doHeartbeat];
                     NSDictionary *hackMessageNew = @{
                                                      @"message_type":SOCKET_API_RESPONSE_MESSAGE_NEW};
                     [weakSelf didReciveMessage:hackMessageNew];
                 }];
+            } else {
+                // 重连
+                if (weakSelf.webSocketClient.state == BJ_WS_STATE_Offline) {
+                    [weakSelf reconnect];
+                }
             }
         }];
         
-        [[_webSocketClient rac_signalForSelector:@selector(onWillReconnect)] subscribeNext:^(id x) {
-            [weakSelf reconnect];
-        }];
+//        [[_webSocketClient rac_signalForSelector:@selector(onWillReconnect)] subscribeNext:^(id x) {
+//            [weakSelf reconnect];
+//        }];
         
         [[[_webSocketClient rac_signalForSelector:@selector(onResponseWithDictionary:)] deliverOnMainThread]
           subscribeNext:^(RACTuple *tuple) {
