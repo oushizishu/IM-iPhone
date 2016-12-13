@@ -79,7 +79,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SYNC_CONFIG method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [NetWorkTool insertCommonParams:requestParams];
     [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
@@ -95,7 +95,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SEND_MESSAGE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SEND_MESSAGE method:BJCNHttpMethod_POST];
     
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", message.sender] forKey:@"sender"];
@@ -124,7 +124,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_MY_CONTACTS method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [NetWorkTool insertCommonParams:requestParams];
     [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
@@ -142,7 +142,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_POLLING method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_POLLING method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_user_msg_id] forKey:@"user_last_msg_id"];
     if ([excludeUserMsgIds length] > 0)
@@ -178,7 +178,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_MSG method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_MSG method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", eid] forKey:@"eid"];
     
@@ -207,7 +207,7 @@
         return;
     }
     IMImgMessageBody *messageBody = (IMImgMessageBody *)message.messageBody;
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.jpg", [[NSDate date] timeIntervalSince1970]];
     NSString *filePath = [NSString stringWithFormat:@"%@%@", [BJCFFileManagerTool libraryDir] ,messageBody.file];
@@ -221,7 +221,7 @@
                                             failure:(BJCNOnFailure)failure
 {
     IMAudioMessageBody *messageBody = (IMAudioMessageBody *)message.messageBody;
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_AUDIO method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_AUDIO method:BJCNHttpMethod_POST];
     [requestParams  appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", messageBody.length] forKey:@"length"];
     NSString *filename = [NSString stringWithFormat:@"hermes-%lf.mp3", [[NSDate date] timeIntervalSince1970]];
@@ -242,7 +242,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CHANGE_REMARK_NAME method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CHANGE_REMARK_NAME method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -262,7 +262,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_INFO method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_INFO method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -279,7 +279,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_PROFILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:@"1" forKey:@"group_auth"];
@@ -296,7 +296,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_DETAIL method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParams];
@@ -314,7 +314,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
@@ -334,7 +334,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_TRANSFERGROUP method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_TRANSFERGROUP method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", transfer_id] forKey:@"transfer_number"];
@@ -353,7 +353,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPAVATAR method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPAVATAR method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", avatar] forKey:@"avatar"];
@@ -372,7 +372,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPNameAVATAR method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETGROUPNameAVATAR method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:groupName forKey:@"group_name"];
@@ -393,7 +393,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETADMIN method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETADMIN method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
@@ -414,7 +414,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_REMOVEMEMBER method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_REMOVEMEMBER method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
@@ -433,7 +433,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_LISTFILE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_LISTFILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_file_id] forKey:@"last_file_id"];
@@ -464,7 +464,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_GROUP_FILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:attachment forKey:@"attachment"];
     [requestParams appendFile:filePath mimeType:attachment filename:fileName forKey:@"attachment"];
@@ -483,7 +483,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPLOAD_IMAGE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendFile:filePath mimeType:@"image/*" filename:fileName forKey:@"attachment"];
    [NetWorkTool insertCommonParams:requestParams];
@@ -502,7 +502,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_GROUP_FILE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_GROUP_FILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", storage_id] forKey:@"storage_id"];
@@ -534,7 +534,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fileUrl method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:fileUrl method:BJCNHttpMethod_GET];
     [NetWorkTool insertCommonParams:requestParams];
     [BJCNNetworkUtilInstance doDownloadResource:requestParams fileDownPath:filePath success:success failure:failure progress:progress];
 }
@@ -549,7 +549,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_PREVIEW_GROUP_FILE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_PREVIEW_GROUP_FILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
@@ -567,7 +567,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_GROUP_FILE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_GROUP_FILE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", file_id] forKey:@"file_id"];
@@ -585,7 +585,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_CREATE_GROUP_NOTICE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_CREATE_GROUP_NOTICE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:content forKey:@"content"];
@@ -604,7 +604,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_NOTICE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_NOTICE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", last_id] forKey:@"last_id"];
@@ -623,7 +623,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_REMOVE_GROUP_NOTICE method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_REMOVE_GROUP_NOTICE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", notice_id] forKey:@"notice_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", group_id] forKey:@"group_id"];
@@ -641,7 +641,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_ADD_BLACKLIST method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_ADD_BLACKLIST method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -659,7 +659,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CANCEL_BLACKLIST method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_CANCEL_BLACKLIST method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -677,7 +677,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_RECENT_CONTACT method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_RECENT_CONTACT method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -696,7 +696,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_LEAVE_GROUP method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_LEAVE_GROUP method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParmas];
@@ -712,7 +712,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DISBAND_GROUP method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
    [NetWorkTool insertCommonParams:requestParmas];
@@ -728,7 +728,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", model.groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)model.page] forKey:@"page"];
@@ -749,7 +749,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBERS method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lu",(unsigned long)index] forKey:@"page"];
@@ -770,7 +770,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_GROUP_NAME method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_GROUP_NAME method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:name forKey:@"group_name"];
@@ -787,7 +787,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_MSG_STATUS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_MSG_STATUS method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"msg_status"];
@@ -804,7 +804,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_PUSH_STATUS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_PUSH_STATUS method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParmas appendPostParamValue:[NSString stringWithFormat:@"%ld",(long)status] forKey:@"push_status"];
@@ -823,7 +823,7 @@
     {
         return;
     }
-    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_USER_INFO method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParmas = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_USER_INFO method:BJCNHttpMethod_POST];
     [requestParmas appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParmas appendPostParamValue:userName  forKey:@"user_name"];
     [requestParmas appendPostParamValue:userAvatar forKey:@"user_avatar"];
@@ -841,7 +841,7 @@
     {
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_ONLINE_STATUS method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_USER_ONLINE_STATUS method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)userRole] forKey:@"user_role"];
@@ -858,7 +858,7 @@
                                 success:(void(^)(NSInteger contentId))succss
                                 failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_ADD_AUTO_RESPONSE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
@@ -897,7 +897,7 @@
                                 success:(void(^)(NSInteger contentId))succss
                                 failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPDATE_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_UPDATE_AUTO_RESPONSE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
@@ -936,7 +936,7 @@
                                 success:(void (^)())succss
                                 failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
@@ -972,7 +972,7 @@
                                 success:(void (^)())succss
                                 failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_SET_AUTO_RESPONSE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
@@ -1008,7 +1008,7 @@
                                 success:(void (^)())succss
                                 failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_AUTO_RESPONSE method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_DELETE_AUTO_RESPONSE method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
@@ -1043,7 +1043,7 @@
                                    success:(void (^)(AutoResponseList *))succss
                                    failure:(void (^)(NSError *))failure
 {
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_AUTO_RESPONSE_LIST method:kBJCNHttpMethod_POST];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_AUTO_RESPONSE_LIST method:BJCNHttpMethod_POST];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userId] forKey:@"user_number"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", (long)role] forKey:@"user_role"];
