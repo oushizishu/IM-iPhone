@@ -127,6 +127,7 @@
         _contact.createTime = contact.createTime;
         _contact.remarkName = contact.remarkName;
         _contact.remarkHeader = contact.remarkHeader;
+        _contact.relation = contact.relation;
         [self.dbHelper insertToDB:_contact];
         
         [self attachEntityKey:key entity:_contact lock:YES];
@@ -136,6 +137,7 @@
         _contact.createTime = contact.createTime;
         _contact.remarkName = contact.remarkName;
         _contact.remarkHeader = contact.remarkHeader;
+        _contact.relation = contact.relation;
         [self.dbHelper updateToDB:_contact where:nil];
         [self attachEntityKey:key entity:_contact lock:YES];
     }

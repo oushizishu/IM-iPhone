@@ -184,6 +184,7 @@
             [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
             
             if (index == 0) {
+                user.relation = relation;
                 [weakSelf.imService.imStorage.contactsDao insertOrUpdateContact:user owner:currentUser];
             } else {
                 NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
