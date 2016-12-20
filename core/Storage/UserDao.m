@@ -48,6 +48,7 @@
         user.remarkName = contact.remarkName;
         user.remarkHeader = contact.remarkHeader;
         user.createTime = contact.createTime;
+        user.relation = contact.relation;
     }
     return user;
 }

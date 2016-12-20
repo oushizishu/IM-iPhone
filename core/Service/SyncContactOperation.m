@@ -181,27 +181,33 @@
         
         for (NSInteger index = 0; index < count; ++ index) {
             User *user = [userList objectAtIndex:index];
+          
+            user.relation = relation;
             [weakSelf.imService.imStorage.userDao insertOrUpdateUser:user];
             
-            if (index == 0) {
-                user.relation = relation;
+            if (relation == eUserRelation_black_active) {
+                // 黑名单 不走批量插入
                 [weakSelf.imService.imStorage.contactsDao insertOrUpdateContact:user owner:currentUser];
+                
             } else {
-                NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
-                
-                NSArray *arguments = @[@(user.userRole),
-                                       user.remarkName==nil?@"":user.remarkName,
-                                       @(currentUser.userId),
-                                       @(currentUser.userRole),
-                                       @(user.userId),
-                                       user.createTime==nil?[NSDate date]:user.createTime,
-                                       user.remarkHeader==nil?@"":user.remarkHeader,
-                                       @(relation)
-                                       ];
-                
-                [db executeUpdate:sql withArgumentsInArray:arguments];
+                if (index == 0) {
+                    [weakSelf.imService.imStorage.contactsDao insertOrUpdateContact:user owner:currentUser];
+                } else {
+                    NSString *sql = [weakSelf generatorContactSql:user inTable:contactTableName owner:currentUser];
+                    
+                    NSArray *arguments = @[@(user.userRole),
+                                           user.remarkName==nil?@"":user.remarkName,
+                                           @(currentUser.userId),
+                                           @(currentUser.userRole),
+                                           @(user.userId),
+                                           user.createTime==nil?[NSDate date]:user.createTime,
+                                           user.remarkHeader==nil?@"":user.remarkHeader,
+                                           @(relation)
+                                           ];
+                    
+                    [db executeUpdate:sql withArgumentsInArray:arguments];
+                }
             }
-            
         }
     }];
 }
