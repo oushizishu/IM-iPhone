@@ -592,6 +592,11 @@
     [self.imEngine setGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status callback:callback];
 }
 
+- (BOOL)hasContactOwner:(User *)owner
+                contact:(User *)contact {
+    [self.imStorage.contactsDao hasContactOwner:owner contact:contact];
+}
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

@@ -214,6 +214,11 @@
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback;
 
+
+// 判断owner 与 contact 是否为联系人
+- (BOOL)hasContactOwner:(User *)owner
+                contact:(User *)contact;
+
 //移交群
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id

@@ -71,6 +71,9 @@
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback;
 
+- (BOOL)hasContactOwner:(User *)owner
+                contact:(User *)contact;
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

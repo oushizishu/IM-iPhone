@@ -12,6 +12,7 @@
 #import "BJIMService+GroupManager.h"
 #import "NSError+BJIM.h"
 #import "GroupMember.h"
+#import "ContactsDao.h"
 
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 
@@ -635,6 +636,11 @@
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback {
     [self.imService setGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status callback:callback];
+}
+
+- (BOOL)hasContactOwner:(User *)owner
+                contact:(User *)contact {
+    [self.imService hasContactOwner:owner contact:contact];
 }
 
 - (void)transferGroup:(int64_t)groupId
