@@ -77,6 +77,18 @@
                                            succ:(BJCNOnSuccess)succ
                                         failure:(BJCNOnFailure)failure;
 
++ (void)hermesIsAdmin:(int64_t)groupId succ:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure;
+
++ (void)hermesGetSearchMemberList:(int64_t)groupId query:(NSString *)query succ:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure;
+
++ (void)hermesSetGroupMemberForbid:(int64_t)groupId
+                       user_number:(int64_t)user_number
+                         user_role:(int64_t)user_role
+                            status:(int64_t)status
+                              succ:(BJCNOnSuccess)succ
+                           failure:(BJCNOnFailure)failure;
+
+
 + (void)hermesTransferGroup:(int64_t)groupId
                                    transfer_id:(int64_t)transfer_id
                                  transfer_role:(int64_t)transfer_role

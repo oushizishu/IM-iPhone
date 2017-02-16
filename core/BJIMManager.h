@@ -110,6 +110,7 @@
 
 - (void)getBlackList:(void(^)(NSArray<User *> *blacklist))callback;
 
+
 #pragma mark - 备注名
 - (void)setRemarkName:(NSString *)remarkName
                  user:(User *)user
@@ -179,6 +180,8 @@
 @end
 
 @class GetGroupMemberModel;
+@class SearchMember;
+
 @interface BJIMManager (GroupManager)
 - (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
 - (void)getGroupProfile:(int64_t)groupId;
@@ -197,6 +200,19 @@
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 //获取群成员
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
+
+//判断当前用户是不是本群的管理员
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback;
+
+//群成员搜索
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback;
+
+//群用户禁言/解除禁言  status: 1:设置在该群中禁言  0:取消禁言
+- (void)setGroupMemberForbid:(int64_t)groupId
+                 user_number:(int64_t)user_number
+                   user_role:(int64_t)user_role
+                      status:(int64_t)status
+                    callback:(void(^)(NSError *error))callback;
 
 //移交群
 - (void)transferGroup:(int64_t)groupId

@@ -576,6 +576,22 @@
     [self.imEngine getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
 }
 
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback {
+    return [self.imEngine isAdmin:groupId callback:callback];
+}
+
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback {
+    return [self.imEngine getSearchMemberList:groupId query:query callback:callback];
+}
+
+- (void)setGroupMemberForbid:(int64_t)groupId
+                 user_number:(int64_t)user_number
+                   user_role:(int64_t)user_role
+                      status:(int64_t)status
+                    callback:(void(^)(NSError *error))callback {
+    [self.imEngine setGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status callback:callback];
+}
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

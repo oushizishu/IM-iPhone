@@ -383,6 +383,83 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback {
+    
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesIsAdmin:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            BOOL is_admin = [[result.data objectForKey:@"is_admin"] boolValue];
+            callback(nil, is_admin);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error,0);
+        }
+        
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        callback(error, 0);
+    }];
+}
+
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback {
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesGetSearchMemberList:groupId query:query succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            NSArray *listArr = [MTLJSONAdapter modelOfClass:[SearchMember class] fromJSONDictionary:result.data error:&error];
+            callback(nil,listArr);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error,nil);
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        callback(error, nil);
+    }];
+    
+}
+
+- (void)setGroupMemberForbid:(int64_t)groupId
+                 user_number:(int64_t)user_number
+                   user_role:(int64_t)user_role
+                      status:(int64_t)status
+                    callback:(void(^)(NSError *error))callback {
+    __WeakSelf__ weakSelf = self;
+    [NetWorkTool hermesSetGroupMemberForbid:groupId user_number:user_role user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && result.code == RESULT_CODE_SUCC)
+        {
+            callback(nil);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error);
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if(callback)
+        {
+            callback(error);
+        }
+    }];
+
+}
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

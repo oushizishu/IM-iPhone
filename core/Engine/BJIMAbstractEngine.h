@@ -17,6 +17,7 @@
 #import "BaseResponse.h"
 #import "GroupDetail.h"
 #import "IMUserOnlieStatusResult.h"
+#import "SearchMemberList.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
@@ -162,6 +163,16 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 - (void)getGroupDetail:(int64_t)groupId callback:(void(^)(NSError *error ,GroupDetail *groupDetail))callback;
 
 - (void)getGroupMembers:(int64_t)groupId page:(NSInteger)page pageSize:(NSInteger)pageSize callback:(void(^)(NSError *error ,NSArray *members,BOOL hasMore,BOOL is_admin,BOOL is_major))callback;
+
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback;
+
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback;
+
+- (void)setGroupMemberForbid:(int64_t)groupId
+                 user_number:(int64_t)user_number
+                   user_role:(int64_t)user_role
+                      status:(int64_t)status
+                    callback:(void(^)(NSError *error))callback;
 
 - (void)postGetUserOnLineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlieStatusResult *result))callback;
 

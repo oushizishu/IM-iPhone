@@ -19,36 +19,40 @@
 #define HOST_APIS @[@"https://dev01-hermes.genshuixue.com", @"https://beta-hermes.genshuixue.com", @"https://hermes.genshuixue.com"]
 #define HOST_API HOST_APIS[[IMEnvironment shareInstance].debugMode]
 
-#define HERMES_API_SYNC_CONFIG [NSString stringWithFormat:@"%@/hermes/syncConfig", HOST_API]
-#define HERMES_API_MY_CONTACTS [NSString stringWithFormat:@"%@/hermes/getMyContacts", HOST_API]
-#define HERMES_API_SEND_MESSAGE [NSString stringWithFormat:@"%@/hermes/sendMsg", HOST_API]
-#define HERMES_API_POLLING [NSString stringWithFormat:@"%@/hermes/polling", HOST_API]
-#define HERMES_API_GET_MSG [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
-#define HERMES_API_UPLOAD_IMAGE [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
-#define HERMES_API_UPLOAD_AUDIO [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
-#define HERMES_API_GET_CHANGE_REMARK_NAME [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
-#define HERMES_API_GET_USER_INFO [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
+#define HERMES_API_SYNC_CONFIG       [NSString stringWithFormat:@"%@/hermes/syncConfig", HOST_API]
+#define HERMES_API_MY_CONTACTS       [NSString stringWithFormat:@"%@/hermes/getMyContacts", HOST_API]
+#define HERMES_API_SEND_MESSAGE      [NSString stringWithFormat:@"%@/hermes/sendMsg", HOST_API]
+#define HERMES_API_POLLING           [NSString stringWithFormat:@"%@/hermes/polling", HOST_API]
+#define HERMES_API_GET_MSG           [NSString stringWithFormat:@"%@/hermes/getMsg", HOST_API]
+#define HERMES_API_UPLOAD_IMAGE      [NSString stringWithFormat:@"%@/storage/uploadImage", HOST_API]
+#define HERMES_API_UPLOAD_AUDIO      [NSString stringWithFormat:@"%@/storage/uploadAudio", HOST_API]
+#define HERMES_API_GET_CHANGE_REMARK_NAME   [NSString stringWithFormat:@"%@/hermes/setRemarkName", HOST_API]
+#define HERMES_API_GET_USER_INFO     [NSString stringWithFormat:@"%@/hermes/getUserInfo", HOST_API]
 #define HERMES_API_GET_GROUP_PROFILE [NSString stringWithFormat:@"%@/hermes/getGroupProfile", HOST_API]
 
-#define HERMES_API_GET_GROUP_DETAIL [NSString stringWithFormat:@"%@/hermes/getGroupProfile2", HOST_API]
+#define HERMES_API_GET_GROUP_DETAIL  [NSString stringWithFormat:@"%@/hermes/getGroupProfile2", HOST_API]
 #define HERMES_API_GET_GROUP_MEMBERS [NSString stringWithFormat:@"%@/hermes/getGroupMembers", HOST_API]
-#define HERMES_API_GET_GROUP_TRANSFERGROUP [NSString stringWithFormat:@"%@/hermes/transferGroup", HOST_API]
-#define HERMES_API_GET_GROUP_SETGROUPAVATAR [NSString stringWithFormat:@"%@/hermes/setGroupAvatar", HOST_API]
-#define HERMES_API_GET_GROUP_SETGROUPNameAVATAR [NSString stringWithFormat:@"%@/group/setNameAvatar", HOST_API]
-#define HERMES_API_GET_GROUP_SETADMIN [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
-#define HERMES_API_GET_GROUP_REMOVEMEMBER [NSString stringWithFormat:@"%@/group/removeMember", HOST_API]
-#define HERMES_API_GET_GROUP_LISTFILE [NSString stringWithFormat:@"%@/group/listFile", HOST_API]
-#define HERMES_API_UPLOAD_GROUP_FILE [NSString stringWithFormat:@"%@/storage/uploadFile", HOST_API]
-#define HERMES_API_ADD_GROUP_FILE [NSString stringWithFormat:@"%@/group/addFile", HOST_API]
-#define HERMES_API_PREVIEW_GROUP_FILE [NSString stringWithFormat:@"%@/group/previewFile", HOST_API]
-#define HERMES_API_DELETE_GROUP_FILE [NSString stringWithFormat:@"%@/group/deleteFile", HOST_API]
-#define HERMES_API_CREATE_GROUP_NOTICE [NSString stringWithFormat:@"%@/hermes/createGroupNotice", HOST_API]
-#define HERMES_API_GET_GROUP_NOTICE [NSString stringWithFormat:@"%@/hermes/getGroupNotice", HOST_API]
-#define HERMES_API_REMOVE_GROUP_NOTICE [NSString stringWithFormat:@"%@/hermes/removeGroupNotice", HOST_API]
+#define HERMES_API_GET_GROUP_TRANSFERGROUP   [NSString stringWithFormat:@"%@/hermes/transferGroup", HOST_API]
+#define HERMES_API_GET_GROUP_SETGROUPAVATAR  [NSString stringWithFormat:@"%@/hermes/setGroupAvatar", HOST_API]
+#define HERMES_API_GET_GROUP_SETGROUPNameAVATAR   [NSString stringWithFormat:@"%@/group/setNameAvatar", HOST_API]
+#define HERMES_API_GET_GROUP_SETADMIN        [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
+#define HERMES_API_GET_GROUP_REMOVEMEMBER    [NSString stringWithFormat:@"%@/group/removeMember", HOST_API]
+#define HERMES_API_GET_GROUP_LISTFILE        [NSString stringWithFormat:@"%@/group/listFile", HOST_API]
+#define HERMES_API_UPLOAD_GROUP_FILE         [NSString stringWithFormat:@"%@/storage/uploadFile", HOST_API]
+#define HERMES_API_ADD_GROUP_FILE            [NSString stringWithFormat:@"%@/group/addFile", HOST_API]
+#define HERMES_API_PREVIEW_GROUP_FILE        [NSString stringWithFormat:@"%@/group/previewFile", HOST_API]
+#define HERMES_API_DELETE_GROUP_FILE         [NSString stringWithFormat:@"%@/group/deleteFile", HOST_API]
+#define HERMES_API_CREATE_GROUP_NOTICE       [NSString stringWithFormat:@"%@/hermes/createGroupNotice", HOST_API]
+#define HERMES_API_GET_GROUP_NOTICE          [NSString stringWithFormat:@"%@/hermes/getGroupNotice", HOST_API]
+#define HERMES_API_REMOVE_GROUP_NOTICE       [NSString stringWithFormat:@"%@/hermes/removeGroupNotice", HOST_API]
 
-#define HERMES_API_GET_ADD_BLACKLIST [NSString stringWithFormat:@"%@/hermes/addBlack", HOST_API]
-#define HERMES_API_GET_CANCEL_BLACKLIST [NSString stringWithFormat:@"%@/hermes/removeBlack", HOST_API]
-#define HERMES_API_ADD_RECENT_CONTACT [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
+#define HERMES_API_GET_ADD_BLACKLIST         [NSString stringWithFormat:@"%@/hermes/addBlack", HOST_API]
+#define HERMES_API_GET_CANCEL_BLACKLIST      [NSString stringWithFormat:@"%@/hermes/removeBlack", HOST_API]
+#define HERMES_API_ADD_RECENT_CONTACT        [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
+
+#define HERMES_API_IS_ADMIN               [NSString stringWithFormat:@"%@/hermes/isAdmin", HOST_API]
+#define HERMES_API_SEARCH_MEMBER          [NSString stringWithFormat:@"%@/group/searchMember", HOST_API]
+#define HERMES_API_GET_GROUP_SETFORBID    [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
 
 //群组
 #define HERMES_API_SET_GROUP_NAME [NSString stringWithFormat:@"%@/hermes/setGroupName", HOST_API]
@@ -319,6 +323,54 @@
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", page] forKey:@"page"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%ld", pageSize] forKey:@"page_size"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (void)hermesIsAdmin:(int64_t)groupId succ:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return;
+    }
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_IS_ADMIN method:kBJCNHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (void)hermesGetSearchMemberList:(int64_t)groupId query:(NSString *)query succ:(BJCNOnSuccess)succ failure:(BJCNOnFailure)failure {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return;
+    }
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_IS_ADMIN method:kBJCNHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:query ?: @"" forKey:@"query"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+}
+
++ (void)hermesSetGroupMemberForbid:(int64_t)groupId
+                       user_number:(int64_t)user_number
+                         user_role:(int64_t)user_role
+                            status:(int64_t)status
+                              succ:(BJCNOnSuccess)succ
+                           failure:(BJCNOnFailure)failure {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return;
+    }
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_SETFORBID method:kBJCNHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_role] forKey:@"user_role"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", status] forKey:@"status"];
     [NetWorkTool insertCommonParams:requestParams];
     [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
