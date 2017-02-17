@@ -594,7 +594,7 @@
 
 - (BOOL)hasContactOwner:(User *)owner
                 contact:(User *)contact {
-    [self.imStorage.contactsDao hasContactOwner:owner contact:contact];
+    return [self.imStorage.contactsDao hasContactOwner:owner contact:contact];
 }
 
 - (void)transferGroup:(int64_t)groupId

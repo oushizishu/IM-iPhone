@@ -640,7 +640,7 @@
 
 - (BOOL)hasContactOwner:(User *)owner
                 contact:(User *)contact {
-    [self.imService hasContactOwner:owner contact:contact];
+    return [self.imService hasContactOwner:owner contact:contact];
 }
 
 - (void)transferGroup:(int64_t)groupId
