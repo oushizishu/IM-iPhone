@@ -626,7 +626,7 @@
     return [self.imService isAdmin:groupId callback:callback];
 }
 
-- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback {
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<GroupDetailMember *> *memberList))callback {
     return [self.imService getSearchMemberList:groupId query:query callback:callback];
 }
 

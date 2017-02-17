@@ -206,7 +206,7 @@
 - (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, IMGroupMemberRole groupMemberRole))callback;
 
 //群成员搜索
-- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback;
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<GroupDetailMember *> *memberList))callback;
 
 //群用户禁言/解除禁言  status: 1:设置在该群中禁言  0:取消禁言
 - (void)setGroupMemberForbid:(int64_t)groupId

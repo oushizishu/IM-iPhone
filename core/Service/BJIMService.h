@@ -63,7 +63,7 @@
 
 - (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, IMGroupMemberRole groupMemberRole))callback;
 
-- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback;
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<GroupDetailMember *> *memberList))callback;
 
 - (void)setGroupMemberForbid:(int64_t)groupId
                  user_number:(int64_t)user_number

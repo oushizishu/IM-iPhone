@@ -407,7 +407,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback {
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<GroupDetailMember *> *memberList))callback {
     __WeakSelf__ weakSelf = self;
     
     [NetWorkTool hermesGetSearchMemberList:groupId query:query succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
@@ -415,7 +415,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            NSArray *listArr = [MTLJSONAdapter modelOfClass:[SearchMember class] fromJSONDictionary:result.data error:&error];
+            NSArray *listArr = [IMJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:result.arrayData error:&error];
             callback(nil,listArr);
         }
         else
@@ -470,7 +470,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            MemberProfile *memberProfile = [MTLJSONAdapter modelOfClass:[MemberProfile class] fromJSONDictionary:result.dictionaryData error:&error];
+            MemberProfile *memberProfile = [IMJSONAdapter modelOfClass:[MemberProfile class] fromJSONDictionary:result.dictionaryData error:&error];
             callback(nil,memberProfile);
         }
         else

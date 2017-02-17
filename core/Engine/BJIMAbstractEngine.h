@@ -17,7 +17,6 @@
 #import "BaseResponse.h"
 #import "GroupDetail.h"
 #import "IMUserOnlieStatusResult.h"
-#import "SearchMemberList.h"
 #import "MemberProfile.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
@@ -167,7 +166,7 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
 
 - (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, IMGroupMemberRole groupMemberRole))callback;
 
-- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<SearchMember *> *memberList))callback;
+- (void)getSearchMemberList:(int64_t)groupId query:(NSString *)query callback:(void(^)(NSError *error, NSArray<GroupDetailMember *> *memberList))callback;
 
 - (void)setGroupMemberForbid:(int64_t)groupId
                  user_number:(int64_t)user_number
