@@ -471,7 +471,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
             MemberProfile *memberProfile = [IMJSONAdapter modelOfClass:[MemberProfile class] fromJSONDictionary:result.dictionaryData error:&error];
-            callback(nil,memberProfile);
+            callback(nil, memberProfile);
         }
         else
         {

@@ -33,12 +33,12 @@
     }
     else if ([key isEqualToString:@"isForbid"]){
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            return @([value integerValue] == 1);
+            return @([value integerValue] != 0);
         }];
     }
     else if ([key isEqualToString:@"isAdmin"]){
         return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            return @([value integerValue] == 1);
+            return @([value integerValue] != 0);
         }];
     }    
 }
