@@ -436,7 +436,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback {
     __WeakSelf__ weakSelf = self;
-    [NetWorkTool hermesSetGroupMemberForbid:groupId user_number:user_role user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+    [NetWorkTool hermesSetGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && result.code == RESULT_CODE_SUCC)
