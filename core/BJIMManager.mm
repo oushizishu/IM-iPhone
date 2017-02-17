@@ -635,12 +635,19 @@
                    user_role:(int64_t)user_role
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback {
-    [self.imService setGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status callback:callback];
+    return [self.imService setGroupMemberForbid:groupId user_number:user_number user_role:user_role status:status callback:callback];
 }
 
 - (BOOL)hasContactOwner:(User *)owner
                 contact:(User *)contact {
     return [self.imService hasContactOwner:owner contact:contact];
+}
+
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback {
+    return [self.imService getGroupMemberProfile:groupId user_number:user_number userRole:userRole callback:callback];
 }
 
 - (void)transferGroup:(int64_t)groupId

@@ -53,6 +53,7 @@
 #define HERMES_API_GROUP_IS_ADMIN         [NSString stringWithFormat:@"%@/group/isAdmin", HOST_API]
 #define HERMES_API_GROUP_SEARCH_MEMBER    [NSString stringWithFormat:@"%@/group/searchMember", HOST_API]
 #define HERMES_API_GET_GROUP_SETFORBID    [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
+#define HERMES_API_GET_GROUP_MEMBER_PROFILE      [NSString stringWithFormat:@"%@/group/memberProfile", HOST_API]
 
 //群组
 #define HERMES_API_SET_GROUP_NAME [NSString stringWithFormat:@"%@/hermes/setGroupName", HOST_API]
@@ -375,11 +376,31 @@
     [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
 }
 
++ (void)hermesGetGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                         succ:(BJCNOnSuccess)succ
+                      failure:(BJCNOnFailure)failure {
+    if (! [[IMEnvironment shareInstance] isLogin])
+    {
+        failure(nil, nil);
+        return;
+    }
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GET_GROUP_MEMBER_PROFILE method:kBJCNHttpMethod_GET];
+    [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", user_number] forKey:@"user_number"];
+    [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", userRole] forKey:@"user_role"];
+    [NetWorkTool insertCommonParams:requestParams];
+    [BJCNNetworkUtilInstance doNetworkRequest:requestParams success:succ failure:failure];
+}
+
+
 + (void)hermesTransferGroup:(int64_t)groupId
-                                   transfer_id:(int64_t)transfer_id
-                                 transfer_role:(int64_t)transfer_role
-                                          succ:(BJCNOnSuccess)succ
-                                       failure:(BJCNOnFailure)failure
+                transfer_id:(int64_t)transfer_id
+              transfer_role:(int64_t)transfer_role
+                       succ:(BJCNOnSuccess)succ
+                    failure:(BJCNOnFailure)failure
 {
     if (! [[IMEnvironment shareInstance] isLogin])
     {

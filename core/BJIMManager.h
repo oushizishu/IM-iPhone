@@ -181,6 +181,7 @@
 
 @class GetGroupMemberModel;
 @class SearchMember;
+@class MemberProfile;
 
 @interface BJIMManager (GroupManager)
 - (void)addGroupManagerDelegate:(id<IMGroupManagerResultDelegate>)delegate;
@@ -218,6 +219,12 @@
 // 判断owner 与 contact 是否为联系人
 - (BOOL)hasContactOwner:(User *)owner
                 contact:(User *)contact;
+
+// 获取群成员的信息
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback;
 
 //移交群
 - (void)transferGroup:(int64_t)groupId

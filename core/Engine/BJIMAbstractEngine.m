@@ -428,7 +428,6 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     } failure:^(NSError *error, BJCNRequestParams *params) {
         callback(error, nil);
     }];
-    
 }
 
 - (void)setGroupMemberForbid:(int64_t)groupId
@@ -458,6 +457,35 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         }
     }];
 
+}
+
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback {
+    __WeakSelf__ weakSelf = self;
+    
+    [NetWorkTool hermesGetGroupMemberProfile:groupId user_number:user_number userRole:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
+        NSError *error;
+        BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
+        if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
+        {
+            MemberProfile *memberProfile = [MTLJSONAdapter modelOfClass:[MemberProfile class] fromJSONDictionary:result.dictionaryData error:&error];
+            callback(nil,memberProfile);
+        }
+        else
+        {
+            if (!error) {
+                error = [NSError bjim_errorWithReason:result.msg code:result.code];
+            }
+            callback(error,nil);
+        }
+    } failure:^(NSError *error, BJCNRequestParams *params) {
+        if(callback)
+        {
+            callback(error, nil);
+        }
+    }];
 }
 
 - (void)transferGroup:(int64_t)groupId

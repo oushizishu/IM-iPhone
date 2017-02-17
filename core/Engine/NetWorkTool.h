@@ -88,6 +88,12 @@
                               succ:(BJCNOnSuccess)succ
                            failure:(BJCNOnFailure)failure;
 
++ (void)hermesGetGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                         succ:(BJCNOnSuccess)succ
+                      failure:(BJCNOnFailure)failure;
+
 
 + (void)hermesTransferGroup:(int64_t)groupId
                                    transfer_id:(int64_t)transfer_id

@@ -74,6 +74,11 @@
 - (BOOL)hasContactOwner:(User *)owner
                 contact:(User *)contact;
 
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback;
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

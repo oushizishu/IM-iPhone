@@ -597,6 +597,13 @@
     return [self.imStorage.contactsDao hasContactOwner:owner contact:contact];
 }
 
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback {
+    return [self.imEngine getGroupMemberProfile:groupId user_number:user_number userRole:userRole callback:callback];
+}
+
 - (void)transferGroup:(int64_t)groupId
           transfer_id:(int64_t)transfer_id
         transfer_role:(int64_t)transfer_role

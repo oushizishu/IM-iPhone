@@ -18,6 +18,7 @@
 #import "GroupDetail.h"
 #import "IMUserOnlieStatusResult.h"
 #import "SearchMemberList.h"
+#import "MemberProfile.h"
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 
 typedef NS_ENUM(NSInteger, IMNetworkEfficiency)
@@ -173,6 +174,11 @@ typedef void(^errCodeFilterCallback)(IMErrorType errorCode, NSString *errMsg);
                    user_role:(int64_t)user_role
                       status:(int64_t)status
                     callback:(void(^)(NSError *error))callback;
+
+- (void)getGroupMemberProfile:(int64_t)groupId
+                  user_number:(int64_t)user_number
+                     userRole:(IMUserRole)userRole
+                     callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback;
 
 - (void)postGetUserOnLineStatus:(int64_t)userId role:(IMUserRole)userRole callback:(void(^)(IMUserOnlieStatusResult *result))callback;
 
