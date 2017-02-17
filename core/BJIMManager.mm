@@ -622,7 +622,7 @@
     return [self.imService getGroupMembers:groupId page:page pageSize:pageSize callback:callback];
 }
 
-- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback {
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, IMGroupMemberRole groupMemberRole))callback {
     return [self.imService isAdmin:groupId callback:callback];
 }
 

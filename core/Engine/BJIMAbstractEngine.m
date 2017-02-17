@@ -383,7 +383,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     }];
 }
 
-- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, BOOL isAdmin))callback {
+- (void)isAdmin:(int64_t)groupId callback:(void(^)(NSError *error, IMGroupMemberRole groupMemberRole))callback {
     
     __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesIsAdmin:groupId succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
@@ -391,8 +391,8 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            BOOL is_admin = [[result.data objectForKey:@"is_admin"] boolValue];
-            callback(nil, is_admin);
+            NSInteger groupMemberRole = [[result.data objectForKey:@"is_admin"] integerValue];
+            callback(nil, groupMemberRole);
         }
         else
         {

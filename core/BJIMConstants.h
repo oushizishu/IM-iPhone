@@ -53,6 +53,13 @@ typedef NS_ENUM(NSInteger, IMUserRole)
     eUserRole_Anonymous = -1,
 };
 
+typedef NS_ENUM(NSInteger, IMGroupMemberRole)
+{
+    eIMGroupMemberRole_Normal = 0,  //群内普通成员
+    eIMGroupMemberRole_Admin = 1,   //群管理员
+    eIMGroupMemberRole_Owner = 2,   //群主
+};
+
 #pragma mark - 用户关系
 typedef NS_ENUM(NSInteger, IMUserRelation)
 {

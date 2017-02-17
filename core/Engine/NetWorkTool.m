@@ -50,8 +50,8 @@
 #define HERMES_API_GET_CANCEL_BLACKLIST      [NSString stringWithFormat:@"%@/hermes/removeBlack", HOST_API]
 #define HERMES_API_ADD_RECENT_CONTACT        [NSString stringWithFormat:@"%@/hermes/addRecentContact", HOST_API]
 
-#define HERMES_API_IS_ADMIN               [NSString stringWithFormat:@"%@/hermes/isAdmin", HOST_API]
-#define HERMES_API_SEARCH_MEMBER          [NSString stringWithFormat:@"%@/group/searchMember", HOST_API]
+#define HERMES_API_GROUP_IS_ADMIN         [NSString stringWithFormat:@"%@/group/isAdmin", HOST_API]
+#define HERMES_API_GROUP_SEARCH_MEMBER    [NSString stringWithFormat:@"%@/group/searchMember", HOST_API]
 #define HERMES_API_GET_GROUP_SETFORBID    [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
 
 //群组
@@ -333,7 +333,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_IS_ADMIN method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GROUP_IS_ADMIN method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [NetWorkTool insertCommonParams:requestParams];
@@ -346,7 +346,7 @@
         failure(nil, nil);
         return;
     }
-    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_IS_ADMIN method:kBJCNHttpMethod_GET];
+    BJCNRequestParams *requestParams = [[BJCNRequestParams alloc] initWithUrl:HERMES_API_GROUP_SEARCH_MEMBER method:kBJCNHttpMethod_GET];
     [requestParams appendPostParamValue:[IMEnvironment shareInstance].oAuthToken forKey:@"auth_token"];
     [requestParams appendPostParamValue:[NSString stringWithFormat:@"%lld", groupId] forKey:@"group_id"];
     [requestParams appendPostParamValue:query ?: @"" forKey:@"query"];
