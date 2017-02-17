@@ -52,7 +52,7 @@
 
 #define HERMES_API_GROUP_IS_ADMIN         [NSString stringWithFormat:@"%@/group/isAdmin", HOST_API]
 #define HERMES_API_GROUP_SEARCH_MEMBER    [NSString stringWithFormat:@"%@/group/searchMember", HOST_API]
-#define HERMES_API_GET_GROUP_SETFORBID    [NSString stringWithFormat:@"%@/group/setAdmin", HOST_API]
+#define HERMES_API_GET_GROUP_SETFORBID    [NSString stringWithFormat:@"%@/group/setForbid", HOST_API]
 #define HERMES_API_GET_GROUP_MEMBER_PROFILE      [NSString stringWithFormat:@"%@/group/memberProfile", HOST_API]
 
 //群组
