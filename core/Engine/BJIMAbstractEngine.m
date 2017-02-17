@@ -391,7 +391,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            NSInteger groupMemberRole = [[result.data objectForKey:@"is_admin"] integerValue];
+            NSInteger groupMemberRole = [[result.dictionaryData objectForKey:@"is_admin"] integerValue];
             callback(nil, groupMemberRole);
         }
         else
@@ -463,8 +463,8 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                   user_number:(int64_t)user_number
                      userRole:(IMUserRole)userRole
                      callback:(void (^)(NSError *error, MemberProfile *memberProfile))callback {
-    __WeakSelf__ weakSelf = self;
     
+    __WeakSelf__ weakSelf = self;
     [NetWorkTool hermesGetGroupMemberProfile:groupId user_number:user_number userRole:userRole succ:^(id response, NSDictionary *responseHeaders, BJCNRequestParams *params) {
         NSError *error;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
