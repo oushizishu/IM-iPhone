@@ -95,6 +95,7 @@
              @"avatar":@"avatar",
              @"is_admin":@"is_admin",
              @"is_major":@"is_major",
+             @"is_forbid":@"forbid_status",
              @"msg_status":@"msg_status",
              @"push_status":@"push_status",
              @"user_id":@"user_id",

@@ -53,6 +53,7 @@
 @property (nonatomic, strong) NSString *avatar;
 @property (nonatomic, assign) BOOL is_admin;
 @property (nonatomic, assign) BOOL is_major;
+@property (nonatomic, assign) BOOL is_forbid;
 @property (nonatomic, assign) int64_t msg_status;
 @property (nonatomic, assign) int64_t push_status;
 @property (nonatomic, assign) int64_t user_id;

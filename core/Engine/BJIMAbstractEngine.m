@@ -415,7 +415,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
         BaseResponse *result = [BaseResponse modelWithDictionary:response error:&error];
         if (result != nil && [result.data isKindOfClass:[NSDictionary class]] && result.code == RESULT_CODE_SUCC)
         {
-            NSArray *listArr = [IMJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:result.arrayData error:&error];
+            NSArray<GroupDetailMember *> *listArr = [IMJSONAdapter modelsOfClass:[GroupDetailMember class] fromJSONArray:[result.data objectForKey:@"list"] error:&error];
             callback(nil,listArr);
         }
         else
