@@ -9,8 +9,8 @@
   },
   "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "8870E068-32DA-450E-812F-FCD422D34A84",
   "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
-    "7943623831E57AA5B5F22494F40C3AA4A9A7FD2A" : "im-iphone\/Example\/im-iphone-kit",
-    "1A6B50604593D2417FF69F14BEB10B6372E71636" : "im-iphone"
+    "7943623831E57AA5B5F22494F40C3AA4A9A7FD2A" : "im-iphone\/im-iphone-kit\/",
+    "1A6B50604593D2417FF69F14BEB10B6372E71636" : "im-iphone\/"
   },
   "DVTSourceControlWorkspaceBlueprintNameKey" : "BJHL-IM-iOS-SDK",
   "DVTSourceControlWorkspaceBlueprintVersion" : 204,

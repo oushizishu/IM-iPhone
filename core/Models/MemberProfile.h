@@ -17,7 +17,8 @@
 @property (nonatomic, assign) IMUserRole userRole;
 
 @property (nonatomic, assign) BOOL isForbid;   // yes:禁言  no:正常
-@property (nonatomic, assign) BOOL isAdmin;   
+@property (nonatomic, assign) BOOL isAdmin;
+@property (nonatomic, assign) BOOL isMember;  //是否是本群的成员
 
 @property (nonatomic, strong) NSString *userName;
 @property (nonatomic, strong) NSString *avatar;
