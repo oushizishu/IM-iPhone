@@ -41,11 +41,11 @@
             return @([value integerValue] != 0);
         }];
     }
-    else if ([key isEqualToString:@"isMember"]){
-        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
-            return @([value integerValue] != 0);
-        }];
-    }
+//    else if ([key isEqualToString:@"isMember"]){
+//        return [MTLValueTransformer transformerUsingForwardBlock:^id(id value, BOOL *success, NSError *__autoreleasing *error) {
+//            return @([value integerValue] != 0);
+//        }];
+//    }
     return nil;
 }
 
