@@ -525,6 +525,20 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
             } else {
                 // 重连
                 if (weakSelf.webSocketClient.state == BJ_WS_STATE_Offline) {
+                    
+                    //增加逻辑: 重连的时候,循环用8887端口 和 8080端口不断尝试重连
+                    BOOL useDefaultPort = [[NSUserDefaults standardUserDefaults] boolForKey:@"useDefaultPort"];
+                    if (useDefaultPort) {
+                        _webSocketClient.wsServerPort = 8080;
+                        [[NSUserDefaults standardUserDefaults] setBool:NO forKey:@"useDefaultPort"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                    else {
+                        _webSocketClient.wsServerPort = 8887;
+                        [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"useDefaultPort"];
+                        [[NSUserDefaults standardUserDefaults] synchronize];
+                    }
+                    
                     [weakSelf reconnect];
                 }
             }
