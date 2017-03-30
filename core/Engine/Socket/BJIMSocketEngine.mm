@@ -116,7 +116,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 @implementation BJIMSocketBase
 
-- (void)onDisconnectWithCode:(BJWSDisconnectCode)code {
+- (void)onWillDisconnectWithCode:(BJWSDisconnectCode)code {
     if (code == BJ_WS_DisconnectCode_failedToConnect) {
         if (self.wsServerPort == 0) {
             self.wsServerPort = 8887;
