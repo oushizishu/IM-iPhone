@@ -110,6 +110,24 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
 @end
 
+@interface BJIMSocketBase : BJWebSocketBase
+
+@end
+
+@implementation BJIMSocketBase
+
+- (void)onDisconnectWithCode:(BJWSDisconnectCode)code {
+    if (code == BJ_WS_DisconnectCode_failedToConnect) {
+        if (self.wsServerPort == 0) {
+            self.wsServerPort = 8887;
+        }else {
+            self.wsServerPort = 0;
+        }
+    }
+}
+
+@end
+
 @interface BJIMSocketEngine()
 {
     NSTimeInterval _receiveMessageNewTime; // 用于标识收到 messageNew 信号的时间。 屏蔽调同时收到大量的 messageNew 信号
@@ -119,7 +137,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 @property (nonatomic, assign) NSInteger retryConnectCount;
 @property (nonatomic, copy) NSString *device;
 @property (nonatomic, copy) NSString *token;
-@property (nonatomic, nonnull, strong) BJWebSocketBase *webSocketClient;
+@property (nonatomic, nonnull, strong) BJIMSocketBase *webSocketClient;
 @property (nonatomic, strong) RACDisposable *heartBeatDispose;
 @property (nonatomic, strong) TimeOutTaskQueue *sendMsgQueue;
 @property (nonatomic, strong) TimeOutTaskQueue *sendMsgResponseQueue; //发消息响应线程
@@ -501,10 +519,10 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
     return _requestQueue;
 }
 
-- (BJWebSocketBase *)webSocketClient
+- (BJIMSocketBase *)webSocketClient
 {
     if (_webSocketClient == nil) {
-        _webSocketClient = [[BJWebSocketBase alloc] initWithIpAddr:SOCKET_HOST];
+        _webSocketClient = [[BJIMSocketBase alloc] initWithIpAddr:SOCKET_HOST];
         _webSocketClient.responseType = BJ_WS_ResponseType_Dictionary;
         
         // 心跳
@@ -526,6 +544,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                 // 重连
                 if (weakSelf.webSocketClient.state == BJ_WS_STATE_Offline) {
                     
+                /*
                     //增加逻辑: 重连的时候,循环用8887端口 和 8080端口不断尝试重连
                     BOOL useDefaultPort = [[NSUserDefaults standardUserDefaults] boolForKey:@"useDefaultPort"];
                     if (useDefaultPort) {
@@ -538,7 +557,7 @@ static DDLogLevel ddLogLevel = DDLogLevelVerbose;
                         [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"useDefaultPort"];
                         [[NSUserDefaults standardUserDefaults] synchronize];
                     }
-                    
+                */
                     [weakSelf reconnect];
                 }
             }
