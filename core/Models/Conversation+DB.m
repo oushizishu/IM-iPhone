@@ -9,6 +9,7 @@
 #import "Conversation+DB.h"
 #import "BJIMService.h"
 #import "IMMessage+DB.h"
+#import <objc/runtime.h>
 
 @implementation Conversation(DB)
 

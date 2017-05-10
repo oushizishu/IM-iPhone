@@ -8,6 +8,7 @@
 
 #import "IMMessage+DB.h"
 #import "BJIMService.h"
+#import <objc/runtime.h>
 
 @implementation IMMessage(DB)
 

@@ -19,6 +19,7 @@
 
 #import <BJHL-Network-iOS/BJHL-Network-iOS.h>
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
+#import <objc/runtime.h>
 
 static DDLogLevel ddLogLevel = DDLogLevelVerbose;
 
