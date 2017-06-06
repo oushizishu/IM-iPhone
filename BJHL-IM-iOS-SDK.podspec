@@ -9,19 +9,19 @@
 
 Pod::Spec.new do |s|
   s.name             = "BJHL-IM-iOS-SDK"
-  s.version          = "4.6.5"
+  s.version          = "4.6.6"
   s.summary          = "BJHL-IM-iOS-SDK."
   s.description      = <<-DESC
                       百家互联 iOS IM SDK
                        DESC
-  s.homepage         = "http://git.baijiahulian.com/app/im-iphone"
+  s.homepage         = "http://git.baijiahulian.com/iOS/im-iphone.git"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
   s.author           = { "yanglei" => "yanglei@baijiahulian.com" }
-  s.source           = { :git => "git@git.baijiahulian.com:app/im-iphone.git", :tag => s.version.to_s }
+  s.source           = { :git => "git@git.baijiahulian.com:iOS/im-iphone.git", :tag => s.version.to_s }
   # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
-  s.platform     = :ios, '6.1'
+  s.platform     = :ios, '8.0'
   s.requires_arc = true
 
   s.source_files = 'core/**/*.{h,m,cpp,mm}'
@@ -47,5 +47,5 @@ s.dependency 'LKDBHelper'
 s.dependency 'YLGIFImage'
 s.dependency 'MBProgressHUD'
 s.dependency 'BJHL-Websocket-iOS'
-s.dependency 'ReactiveCocoa'
+s.dependency 'ReactiveObjC'
 end

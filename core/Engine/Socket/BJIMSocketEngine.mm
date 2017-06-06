@@ -19,7 +19,8 @@
 
 #import <BJHL-Foundation-iOS/BJHL-Foundation-iOS.h>
 #import <BJHL-Websocket-iOS/BJWebSocketBase.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveObjC/ReactiveObjC.h>
+
 #import "IMJSONAdapter.h"
 #import "TimeOutTaskQueue.h"
 
